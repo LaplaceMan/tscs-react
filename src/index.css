@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ant-menu-inline {
+    border-right: none !important;
+}
+.ant-layout-sider-light {
+    flex: 0 0 16rem !important;
+    max-width: 16rem !important;
+    min-width: 16rem !important;
+    max-height: 100vh !important;
+    min-height: 100vh !important;
+    height: 100vh !important;
+    width: 16rem !important;
+  }
+
+.ant-menu-item {
+    border-radius: 12px !important;
+    padding-left: 16px !important;
+  }
