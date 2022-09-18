@@ -1,7 +1,7 @@
-import MenuLeft from "./components/Menu"
-import { Layout } from 'antd';
-const { Header, Content, Sider } = Layout;
-
+import {MenuSider, HeaderTop} from "./components"
+import { Layout } from 'antd'
+const { Header, Content, Sider } = Layout
+import AllRoutes from "./Routes"
 const App = () => {
   return (
     <div> 
@@ -9,14 +9,14 @@ const App = () => {
     <Sider
       trigger={null} theme="light"
       className="px-[24px]" >
-         <MenuLeft/> 
+         <MenuSider/> 
     </Sider>
     <Layout>
-      <Header style={{ padding: 0 }}>
-
+      <Header className="flex items-center" style={{padding: 0}}>
+        <HeaderTop/>
       </Header>
-      <Content className="bg-white" style={{ margin: '24px 16px 0', padding: 24, minHeight: 280 }}>
-          content
+      <Content style={{ margin: '24px 16px 0' }}>
+          {AllRoutes()}
       </Content>
     </Layout>
   </Layout>

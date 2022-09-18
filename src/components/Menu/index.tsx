@@ -1,10 +1,10 @@
-import { Menu } from 'antd';
-import React from 'react';
-import MenuItems from "./MenuItems";
-import MenuLogo from "./MenuLogo";
-import MenuFoot from "./MenuFoot";
+import { Menu } from 'antd'
+import MenuItems from "./MenuItems"
+import MenuLogo from "./MenuLogo"
+import MenuFoot from "./MenuFoot"
+import React from 'react'
 
-const MenuSider: React.FC = () => {
+const MenuSider = ():React.ReactElement => {
   return (
     <div>
       <MenuLogo />
@@ -16,7 +16,7 @@ const MenuSider: React.FC = () => {
       />
       <MenuFoot />
     </div>
-  );
-};
+  )
+}
 
-export default MenuSider;
+export default MenuSider

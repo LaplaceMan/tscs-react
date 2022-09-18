@@ -20,6 +20,8 @@ export default defineConfig({
           '@menu-item-group-height': '50px',
           '@menu-item-boundary-margin': '0px',
           '@menu-item-vertical-margin': '0px',
+          '@layout-header-height': '4.3rem',
+          '@avatar-border-radius': '0.5rem'
         },
       }
     }

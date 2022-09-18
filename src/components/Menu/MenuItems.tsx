@@ -7,31 +7,32 @@ import {
   MdOutlineHome,
   MdOutlineAttachMoney,
   MdOutlineAddBusiness
-} from 'react-icons/md';
-import type { MenuProps } from 'antd';
-type MenuItem = Required<MenuProps>['items'][number];
-function getItem(
+} from 'react-icons/md'
+import type { MenuProps } from 'antd'
+import { Link } from "react-router-dom";
+type MenuItem = Required<MenuProps>['items'][number]
+const getItem = (
   label: React.ReactNode,
   key: React.Key,
   icon?: React.ReactNode,
   children?: MenuItem[],
   type?: 'group',
-): MenuItem {
+): MenuItem => {
   return {
     key,
     icon,
     children,
     label,
     type,
-  } as MenuItem;
+  } as MenuItem
 }
 
 const MenuItems: MenuItem[] = [
   getItem('Services', 'g1', null, [
-    getItem('Dashboard', 'm1', <MdOutlineDashboard />),
-    getItem('Market', 'm2', <MdOutlineShopTwo />),
-    getItem('Submit Application', 'm3', <MdOutlineAssignment />),
-    getItem('Upload Subtitles', 'm4', <MdOutlineUploadFile />),
+    getItem(<Link to="/market">Market</Link>, 'm1', <MdOutlineShopTwo />),
+    getItem('Dashboard', 'm2', <MdOutlineDashboard />),
+    getItem('Application', 'm3', <MdOutlineAssignment />),
+    getItem('Contribution', 'm4', <MdOutlineUploadFile />),
     getItem('Government', 'm5', <MdOutlineGroup />),
   ], 'group'),
 
@@ -40,6 +41,6 @@ const MenuItems: MenuItem[] = [
     getItem('Assets', 'm7', <MdOutlineAttachMoney />),
     getItem('Join Us', 'm8', <MdOutlineAddBusiness />),
   ], 'group'),
-];
+]
 
-export default MenuItems;
+export default MenuItems

@@ -1,27 +1,27 @@
 import { telegram, github, discord, twitter } from "../../assets"
 import React from "react"
 
-const ContactIcon = (icon: string):React.ReactNode => {
+const ContactIcon = (icon: string, index: number):React.ReactElement => {
     return (
-        <div className="m-[8px]">
-           <img src={icon} width="25px"/>
+        <div className="m-[8px]" key={index}>
+           <img src={icon} width="25rem"/>
         </div>
-    );
+    )
 } 
 
-const MenuFoot = () => {
+const MenuFoot = ():React.ReactElement => {
     return (
-        <div className="flex flex-col items-center pt-[50px] pb-[10px]">
+        <div className="flex flex-col items-center pt-[3.5rem] pb-[0.7rem]">
             <div className="text-[#1D1B23] font-medium">
                 Culture Without Boundaries
             </div>
             <div className="text-[#717579]">
                 © 2022 All Rights Reserved
             </div>
-            <div className="flex flex-row items-center mt-[10px]">
-                {[telegram, github, twitter, discord ].map((item) => ContactIcon(item))}
+            <div className="flex flex-row items-center mt-[2rem]">
+                {[telegram, github, twitter, discord ].map((item, index) => ContactIcon(item, index))}
             </div>
         </div>
-    );
+    )
 }
 export default MenuFoot
