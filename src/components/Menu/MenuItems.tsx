@@ -9,7 +9,7 @@ import {
   MdOutlineAddBusiness
 } from 'react-icons/md'
 import type { MenuProps } from 'antd'
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 type MenuItem = Required<MenuProps>['items'][number]
 const getItem = (
   label: React.ReactNode,
@@ -29,7 +29,7 @@ const getItem = (
 
 const MenuItems: MenuItem[] = [
   getItem('Services', 'g1', null, [
-    getItem(<Link to="/market">Market</Link>, 'm1', <MdOutlineShopTwo />),
+    getItem(<Link to='/market'>Market</Link>, 'm1', <MdOutlineShopTwo />),
     getItem('Dashboard', 'm2', <MdOutlineDashboard />),
     getItem('Application', 'm3', <MdOutlineAssignment />),
     getItem('Contribution', 'm4', <MdOutlineUploadFile />),

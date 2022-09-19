@@ -1,11 +1,11 @@
-import { Routes, Route } from "react-router-dom"
-import {Market} from "../pages"
-import React from "react"
+import { Routes, Route } from 'react-router-dom'
+import {Market} from '../pages'
+import React from 'react'
 
 const AllRoutes = (): React.ReactElement => {
     return (
         <Routes>
-            <Route path="market" element={<Market/>}/>
+            <Route path='market' element={<Market/>}/>
         </Routes>
     )
 }

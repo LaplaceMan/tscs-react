@@ -1,4 +1,7 @@
-export { default as HeaderTop } from "./Header/index"
-export { default as MenuSider } from "./Menu/index"
-export { default as MarketCarousel } from "./MarketCarousel/index"
-export { default as MarketNotice } from "./MarketNotice/index"
+export { default as HeaderTop } from './Header/index'
+export { default as MenuSider } from './Menu/index'
+export { default as MarketCarousel } from './MarketCarousel/index'
+export { default as MarketNotice } from './MarketNotice/index'
+export { default as DashboardPersonal } from './DashboardPersonal/index'
+export { default as MarketIDCard } from './MarketIDCard/index'
+export { default as MarketPersonal } from './MarketPersonal/index'

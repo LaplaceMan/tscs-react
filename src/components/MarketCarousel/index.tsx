@@ -1,6 +1,6 @@
 import { Carousel } from 'antd';
-import CarouselStyle from "./CarouselStyle"
-import CarouselItems from "./CarouselItems"
+import CarouselStyle from './CarouselStyle'
+import CarouselItems from './CarouselItems'
 import React from 'react';
 
 const CarouselSingle = (link: string, key: React.Key):React.ReactElement => {
@@ -12,7 +12,7 @@ const CarouselSingle = (link: string, key: React.Key):React.ReactElement => {
 }
 
 const MarketCarousel = ():React.ReactElement => (
-  <Carousel autoplay style={CarouselStyle} effect="fade">
+  <Carousel autoplay style={CarouselStyle} effect='fade'>
     { CarouselItems.map((item, index) => CarouselSingle(item.cover, index)) }
   </Carousel>
 );
