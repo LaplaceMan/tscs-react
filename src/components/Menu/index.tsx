@@ -6,8 +6,9 @@ import React from 'react'
 
 const MenuSider = ():React.ReactElement => {
   return (
-    <div>
+    <div className='flex flex-col h-full'>
       <MenuLogo />
+      <div className='flex flex-col h-full justify-between'>
       <Menu
         theme='light'
         mode='inline'
@@ -15,6 +16,7 @@ const MenuSider = ():React.ReactElement => {
         items={MenuItems}
       />
       <MenuFoot />
+      </div>
     </div>
   )
 }

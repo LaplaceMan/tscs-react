@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 .ant-menu-inline {
     border-right: none !important;
 }
@@ -19,14 +20,14 @@
     padding-left: 16px !important;
     min-height: 41px !important;
 }
-.ant-tag{
+/* .ant-tag{
     min-width: 60px !important;
     width: 3.5vw !important;
     text-align: center !important;
     font-size: 12px !important;
     transform: scale(0.8);
     margin-right: 0.5vw !important;
-}
+} */
 .ant-list-sm .ant-list-item{
     padding: 0.2vw 0 !important;
     height: 1.9vw !important;

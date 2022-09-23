@@ -21,7 +21,7 @@ export default defineConfig({
           '@menu-item-vertical-margin': '0px',
           '@layout-header-height': '4.3rem',
           '@avatar-border-radius': '8px',
-          '@tag-line-height': '1.3vw',
+          // '@tag-line-height': '1.3vw',
         },
       }
     }

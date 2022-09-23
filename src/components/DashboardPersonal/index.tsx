@@ -1,5 +1,5 @@
 import React from 'react'
-import DashboardPersonalItems from "./DashboardPersonalItems"
+import DashboardPersonalItems from './DashboardPersonalItems'
 
 const Shape = (data: { info: string, count: string, color: string }): React.ReactElement => {
     return (

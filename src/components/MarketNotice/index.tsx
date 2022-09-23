@@ -1,5 +1,5 @@
 import { List, Tag } from 'antd';
-import NoticeItems from "./NoticeItems"
+import NoticeItems from './NoticeItems'
 import React from 'react';
 
 const StateMapLabel: {[k:string]:string} = {'success': 'Update', 'processing': 'Proposal', 'warning': 'Warn', 'default': 'News'}
