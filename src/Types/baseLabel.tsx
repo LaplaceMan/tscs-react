@@ -1,1 +1,0 @@
-export const ApplyLabel = ['Type', 'Amount', 'Platform', 'Uploads', 'Apply ID']

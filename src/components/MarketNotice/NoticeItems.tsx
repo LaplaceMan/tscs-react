@@ -1,3 +1,0 @@
-const NoticeItems:Array<{info: string, label: string}>=[{info: 'Racing car sprays burning fuel into crowd.', label: 'success'}, {info: 'Japanese princess to wed commoner.', label: 'default'}, {info: 'Japanese princess to wed commoner.', label: 'processing'}, {info: 'Racing car sprays burning fuel into crowd.', label: 'warning'}, {info: 'Racing car sprays burning fuel into crowd.', label: 'success'}, {info: 'Japanese princess to wed commoner.', label: 'default'}, {info: 'Japanese princess to wed commoner.', label: 'processing'}, {info: 'Racing car sprays burning fuel into crowd.', label: 'warning'}, {info: 'Racing car sprays burning fuel into crowd.', label: 'warning'}]
-
-export default NoticeItems

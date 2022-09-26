@@ -13,6 +13,11 @@ export type Application = {
     deadline: number
 }
 
+export type NavbarItem = {
+    title: string,
+    link: string
+}
+
 
 
 

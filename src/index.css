@@ -2,43 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.ant-menu-inline {
-    border-right: none !important;
-}
-
-.ant-layout-sider-light {
-    flex: 0 0 15.5vw !important; 
-    max-width: 15.5vw !important;
-    min-width: 190px !important;
-    max-height: 100vh !important;
-    min-height: 100vh !important;
-    height: 100vh !important;
-    width: 190px !important;
-}
-.ant-menu-item {
-    border-radius: 12px !important;
-    padding-left: 16px !important;
-    min-height: 41px !important;
-}
-/* .ant-tag{
-    min-width: 60px !important;
-    width: 3.5vw !important;
-    text-align: center !important;
-    font-size: 12px !important;
-    transform: scale(0.8);
-    margin-right: 0.5vw !important;
-} */
-.ant-list-sm .ant-list-item{
-    padding: 0.2vw 0 !important;
-    height: 1.9vw !important;
-    min-height: 19px !important;
-    overflow: hidden;
-}
-.ant-list-header{
-    padding-top: 0 !important;
-    padding-bottom: 0.2vw !important;
-}
-
 .white-glassmorphism {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 16px;
@@ -47,7 +10,7 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
-  .eth-card {
+.eth-card {
     background-color: #a099ff;
     background-image: radial-gradient(
         at 83% 67%,
@@ -61,3 +24,20 @@
       radial-gradient(at 74% 89%, hsla(30, 98%, 65%, 1) 0, transparent 51%),
       radial-gradient(at 53% 75%, hsla(174, 94%, 68%, 1) 0, transparent 45%);
   }
+
+.mbg {
+    background-image: url("../src/assets/magellan-gradient-light.webp");
+    background-size: 100% 100%;
+}
+
+ol, ul, dl {
+  margin-bottom: 0 !important;
+}
+
+.log {
+  font-size: 2rem;
+  line-height: 2rem;
+}
+.log:hover {
+  color: #696969
+}

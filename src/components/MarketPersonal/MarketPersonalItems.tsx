@@ -1,2 +1,0 @@
-const MarketPersonalItems = [{info: 'Appliactions', count: 500, label: 'Confirmed:', ed: 50, change: '+15%'}, {info: 'Uploads', count: 50, label: 'Adopted:', ed: 10, change: '+10%'},]
-export default MarketPersonalItems
