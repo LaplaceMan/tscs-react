@@ -42,7 +42,7 @@ const ApplicationItems: Application[] = [
     deadline: 1664558800,
   },
   {
-    vidoId: 50,
+    vidoId: 5000,
     videoName: "Lulu",
     applyId: 5,
     platformName: "Youtube",
@@ -89,7 +89,7 @@ const Applications = (): React.ReactElement => {
         <div className="text-3xl md:text-5xl font-bold text-center">
           Culture Without Boundaries
         </div>
-        <div className="flex md:text-base text-sm md:w-2/3 text-center mt-5 font-medium">
+        <div className="flex md:text-base text-sm w-2/3 text-center mt-5 font-medium">
           Connect video creators, subtitle producers, viewers and artists in an
           interesting ecosystem.
         </div>

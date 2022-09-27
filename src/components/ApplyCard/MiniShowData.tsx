@@ -46,7 +46,7 @@ export const MiniShowData1 = (
   suffix: string
 ) => {
   return (
-    <div className="flex flex-col items-center min-w-[68px]">
+    <div className="flex flex-col items-center min-w-[75px]">
       <div className="flex text-sm text-[#696969]">{label}</div>
       <div className="flex w-full items-center justify-center text-base font-semibold bg-gray-100 rounded-md p-1">
         {`${prefix}` + `${data}` + `${suffix}`}

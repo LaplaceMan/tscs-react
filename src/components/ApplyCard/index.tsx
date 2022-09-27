@@ -6,7 +6,7 @@ import { TimeRemainPercentage } from "../../utils/tools";
 
 const UploadButton = (): React.ReactElement => {
   return (
-    <div className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-3 py-3 cursor-pointer hover:bg-[#48a8ff] hover:shadow-md hover:brightness-110">
+    <div className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-3 py-3 cursor-pointer hover:bg-[#48a8ff]  hover:brightness-110">
       Upload
     </div>
   );
@@ -14,11 +14,11 @@ const UploadButton = (): React.ReactElement => {
 const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
   return (
     <div
-      className="flex flex-row bg-[white] p-4 m-5 rounded-md  items-center shadow"
+      className="flex flex-row bg-[white] p-4 m-5 rounded-md items-center shadow hover:shadow-xl"
       key={key}
     >
       <div className="flex flex-col items-start">
-        <div className="flex flex-row items-center justify-center w-full">
+        <div className="flex flex-row items-center justify-center w-full min-w-[150px]">
           <div className="flex h-11">
             <CircleFlag countryCode={data.language} />
           </div>
