@@ -15,6 +15,7 @@ export default defineConfig({
           '@link-color': '#000',
           '@link-hover-color': '#696969',
           '@link-active-color': '#696969',
+          '@popover-padding-horizontal': 0,
         },
       }
     }

@@ -46,6 +46,23 @@ ol, ul, dl {
   font-size: 2rem;
   line-height: 2rem;
 }
+
 .log:hover {
   color: #696969
+}
+
+.ant-popover-arrow {
+  display: none !important;
+}
+
+.ant-popover-inner {
+  border-radius: 0.375rem !important;
+}
+
+.ant-modal-content {
+  border-radius: 0.375rem !important;
+}
+
+.ant-modal-body {
+  padding: 0 0 !important;
 }
