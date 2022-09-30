@@ -1,5 +1,5 @@
 import React from "react";
-import { AiFillWallet, AiOutlineClose } from "react-icons/ai";
+import { MdAccountBalanceWallet, MdOutlineClose } from "react-icons/md";
 
 const WalletButtonItems = [
   {
@@ -32,7 +32,7 @@ const ConnectWallet = (hideConnectWalletModel: any): React.ReactElement => {
       <div className="flex items-start justify-between">
         <div className="flex items-center">
           <div className="flex w-[38px] h-[38px] rounded-full bg-[#e8e7e6] items-center justify-center">
-            <AiFillWallet fontSize={20} />
+            <MdAccountBalanceWallet fontSize={22} />
           </div>
           <div className="font-semibold text-lg ml-3">Select a Wallet</div>
         </div>
@@ -40,7 +40,7 @@ const ConnectWallet = (hideConnectWalletModel: any): React.ReactElement => {
           className="flex hover:text-[#48a8ff] items-center justify-center rounded-md cursor-pointer"
           onClick={hideConnectWalletModel}
         >
-          <AiOutlineClose fontSize={16} />
+          <MdOutlineClose fontSize={16} />
         </div>
       </div>
       <div className="flex flex-row items-center justify-between mt-5">

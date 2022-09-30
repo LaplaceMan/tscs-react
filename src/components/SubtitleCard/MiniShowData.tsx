@@ -1,14 +1,14 @@
 import React from "react";
-import { Application } from "../../types/baseTypes";
+import { Subtitle } from "../../types/baseTypes";
 
-const ApplyLabel = ["Type", "Amount", "Platform", "Uploads", "Apply ID"];
+const ApplyLabel = ["Support", "Against", "Platform", "Uploads", "Apply ID"];
 const DividerH = (): React.ReactElement => {
   return <div className="flex h-full w-0.5 bg-gray-100 rounded-full mx-3" />;
 };
 
 export const MiniShowData0 = (
   label: string,
-  data: string,
+  data: number,
   prefix: string,
   suffix: string
 ) => {
@@ -22,19 +22,12 @@ export const MiniShowData0 = (
   );
 };
 
-export const MiniShowData0Package = (data: Application): React.ReactElement => {
-  var suffix = "";
-  var prefix = "";
-  if (data.payType === "OT0" || data.payType === "DR2") {
-    prefix = "$";
-  } else {
-    suffix = "%";
-  }
+export const MiniShowData0Package = (data: Subtitle): React.ReactElement => {
   return (
     <div className="flex flex-row w-full h-full items-center justify-between mt-4">
-      {MiniShowData0(ApplyLabel[0], data.payType, "", "")}
+      {MiniShowData0(ApplyLabel[0], data.support, "", "")}
       <DividerH />
-      {MiniShowData0(ApplyLabel[1], data.payNumber, prefix, suffix)}
+      {MiniShowData0(ApplyLabel[1], data.against, "", "")}
     </div>
   );
 };
@@ -55,7 +48,7 @@ export const MiniShowData1 = (
   );
 };
 
-export const MiniShowData1Package = (data: Application): React.ReactElement => {
+export const MiniShowData1Package = (data: Subtitle): React.ReactElement => {
   return (
     <div className="flex flex-row h-full items-center justify-between">
       {MiniShowData1(ApplyLabel[2], data.platformName, "", "")}

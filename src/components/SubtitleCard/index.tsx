@@ -1,17 +1,17 @@
 import { MiniShowData0Package, MiniShowData1Package } from "./MiniShowData";
 import { Progress } from "antd";
 import { CircleFlag } from "react-circle-flags";
-import { Application } from "../../types/baseTypes";
+import { Subtitle } from "../../types/baseTypes";
 import { TimeRemainPercentage } from "../../utils/tools";
 
-const UploadButton = (): React.ReactElement => {
+const AuditButton = (): React.ReactElement => {
   return (
-    <div className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-3 py-3 cursor-pointer hover:bg-[#48a8ff]  hover:brightness-110">
-      Upload
+    <div className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-[1.1rem] py-3 cursor-pointer hover:bg-[#48a8ff]  hover:brightness-110">
+      Audit
     </div>
   );
 };
-const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
+const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
   return (
     <div
       className="flex flex-row bg-[white] p-4 m-5 rounded-md items-center shadow hover:shadow-xl"
@@ -25,9 +25,11 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
           <div className="flex flex-col items-start ml-3">
             <div className="flex items-end text-lg font-semibold">
               {data.videoName}
-              <div className="text-sm text-[#696969] ml-1">#{data.vidoId}</div>
+              <div className="text-sm text-[#696969] ml-1">
+                #{data.subtitleId}
+              </div>
             </div>
-            <div className="flex text-sm text-[#696969]">{data.applicant}</div>
+            <div className="flex text-sm text-[#696969]">{data.maker}</div>
           </div>
         </div>
         {MiniShowData0Package(data)}
@@ -36,7 +38,7 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
         <div className="flex w-full flex-row items-center justify-between">
           {MiniShowData1Package(data)}
           <div className="flex ml-5">
-            <UploadButton />
+            <AuditButton />
           </div>
         </div>
         <div className="flex w-full mt-5">
@@ -51,4 +53,4 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
   );
 };
 
-export default ApplyCard;
+export default SubtitleCard;

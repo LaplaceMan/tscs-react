@@ -1,4 +1,4 @@
-import { NavbarItem } from "../../Types/baseTypes";
+import { NavbarItem } from "../../types/baseTypes";
 import { Link } from "react-router-dom";
 import { ReactElement } from "react";
 import HeaderLogItems from "./HeaderLog";
@@ -6,7 +6,7 @@ import { useState } from "react";
 import { IoMenuOutline, IoCloseOutline } from "react-icons/io5";
 import { BsCollection, BsGem } from "react-icons/bs";
 const NavbarItems = [
-  { title: "Application", link: "/Applications", icon: <BsCollection /> },
+  { title: "Application", link: "/Application", icon: <BsCollection /> },
   { title: "Government", link: "/Government", icon: <BsGem /> },
 ];
 

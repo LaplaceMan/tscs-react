@@ -34,8 +34,9 @@
   }
 
 .mbg {
-    background-image: url("../src/assets/magellan-gradient-light.webp");
-    background-size: 100% 100%;
+    background-image: url("../src/assets/magellan_gradient.png");
+    background-size: 100% 50%;
+    background-repeat: no-repeat;
 }
 
 ol, ul, dl {
