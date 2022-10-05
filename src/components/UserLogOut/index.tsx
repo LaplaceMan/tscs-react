@@ -29,12 +29,7 @@ const UserLogOut = () => {
       >
         Connect Wallet
       </div>
-      <Modal
-        visible={connectWalletModal}
-        footer={null}
-        closable={false}
-        centered
-      >
+      <Modal open={connectWalletModal} footer={null} closable={false} centered>
         {ConnectWallet(hideConnectWalletModalHandle)}
       </Modal>
     </div>

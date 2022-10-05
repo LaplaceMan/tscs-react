@@ -2,16 +2,17 @@ import { NavbarItem } from "../../types/baseTypes";
 import { Link } from "react-router-dom";
 import { ReactElement } from "react";
 import HeaderLogItems from "./HeaderLog";
-import { useState } from "react";
+import { useContext } from "react";
 import { IoMenuOutline, IoCloseOutline } from "react-icons/io5";
 import { BsCollection, BsGem } from "react-icons/bs";
+import { GlobalContext } from "../../context/GlobalContext";
 const NavbarItems = [
   { title: "Application", link: "/Application", icon: <BsCollection /> },
   { title: "Government", link: "/Government", icon: <BsGem /> },
 ];
 
 const HeaderNavbar = () => {
-  const [toggleMenu, setToggleMenu] = useState(false);
+  const { toggleMenu, setToggleMenu } = useContext(GlobalContext);
   const HeaderNavbarItems = (
     item: NavbarItem,
     key: React.Key

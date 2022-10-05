@@ -1,17 +1,14 @@
 import { HeaderTop } from "./components";
-import { useState } from "react";
+import { useContext } from "react";
 import { Layout, Affix } from "antd";
 import AllRoutes from "./routes";
-import { getScrollTop } from "./utils/tools";
 import { discord, github, telegram, twitter } from "./assets";
+import { GlobalContext } from "./context/GlobalContext";
 
 const { Header, Content, Footer } = Layout;
 const App = () => {
-  const [scrollHeight, setScrollHeight] = useState(0);
-  window.addEventListener("scroll", () => {
-    var height: number = getScrollTop();
-    setScrollHeight(height);
-  });
+  const { scrollHeight } = useContext(GlobalContext);
+
   return (
     <div className="mbg">
       <Layout>

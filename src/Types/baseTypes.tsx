@@ -40,3 +40,19 @@ export type DashboardMiniItem = {
   iconBg: string;
   icon: React.ReactElement;
 };
+
+export type WalletContent = {
+  accountState: {
+    address: string;
+    network: string;
+    type: string;
+  };
+  connectWalletMetaMask: () => void;
+  killSessionWalletConnect: () => void;
+};
+
+export type GlobalContent = {
+  toggleMenu: boolean;
+  setToggleMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  scrollHeight: number;
+};
