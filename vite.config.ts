@@ -16,6 +16,7 @@ export default defineConfig({
           '@link-hover-color': '#696969',
           '@link-active-color': '#696969',
           '@popover-padding-horizontal': 0,
+          '@form-item-margin-bottom': '15px',
         },
       }
     }

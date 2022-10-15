@@ -6,3 +6,4 @@ export { default as UserLogOut } from "./UserLogOut/index";
 export { default as SubtitleCard } from "./SubtitleCard/index";
 export { default as ConnectWallet } from "./ConnectWallet/index";
 export { default as DashboardMini } from "./DashboardMini/index";
+export { default as SubmitApplication } from "./SubmitApplication/index";
