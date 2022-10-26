@@ -1,21 +1,15 @@
-import { Modal  } from "antd";
-import React,{useState} from "react";
+import { Modal } from "antd";
+import React, { useContext } from "react";
 import { application_Illustration } from "../assets/index";
 import { FiArrowUpRight } from "react-icons/fi";
 import { ApplicationItems } from "../utils/testData";
 import { ApplyCard, SubmitApplication } from "../components";
+import { ApplicationContext } from "../context/ApplicationContext";
 
 const Application = (): React.ReactElement => {
-  const [isApplicationModalOpen, setApplicationIsModalOpen] = useState(false);
+  const { isApplicationModalOpen, showApplicationModal, hideApplicationModal } =
+    useContext(ApplicationContext);
 
-  const showApplicationModal = () => {
-    setApplicationIsModalOpen(true);
-  };
-
-  const hideApplicationCancel = () => {
-    setApplicationIsModalOpen(false);
-  };
-  
   return (
     <div className="flex flex-col items-center -mt-5">
       <div className="flex flex-row w-full items-center justify-center sm:-mr-10">
@@ -27,11 +21,19 @@ const Application = (): React.ReactElement => {
             Reduce your risk and burden with multi-payment strategies and
             decentralized audit.
           </div>
-          <div className="flex md:px-12 py-2 text-white font-semibold md:text-lg bg-black text-center rounded-full items-center justify-center hover:bg-[#48a8ff] mt-2 sm:text-base sm:px-10 cursor-pointer" onClick={showApplicationModal}>
+          <div
+            className="flex md:px-12 py-2 text-white font-semibold md:text-lg bg-black text-center rounded-full items-center justify-center hover:bg-[#48a8ff] mt-2 sm:text-base sm:px-10 cursor-pointer"
+            onClick={showApplicationModal}
+          >
             Submit <FiArrowUpRight className="ml-3" />
           </div>
-          <Modal open={isApplicationModalOpen} closable={false} footer={null} centered>
-              {SubmitApplication(hideApplicationCancel)}
+          <Modal
+            open={isApplicationModalOpen}
+            closable={false}
+            footer={null}
+            centered
+          >
+            {SubmitApplication(hideApplicationModal)}
           </Modal>
         </div>
         <div className="flex items-center justify-center md:w-1/3 sm:w-1/2 min-w-[320px]">

@@ -1,14 +1,15 @@
-import { HeaderTop } from "./components";
+import { HeaderTop, UploadSubtitle } from "./components";
 import { useContext } from "react";
-import { Layout, Affix } from "antd";
+import { MdOutlineClose } from "react-icons/md";
+import { Layout, Affix, Modal } from "antd";
 import AllRoutes from "./routes";
 import { discord, github, telegram, twitter } from "./assets";
 import { GlobalContext } from "./context/GlobalContext";
-
+import { ApplicationContext } from "./context/ApplicationContext";
 const { Header, Content, Footer } = Layout;
 const App = () => {
   const { scrollHeight } = useContext(GlobalContext);
-
+  const { isUploadModalOpen, hideUploadModal } = useContext(ApplicationContext);
   return (
     <div className="mbg">
       <Layout>
@@ -22,7 +23,21 @@ const App = () => {
             <HeaderTop />
           </Header>
         </Affix>
-        <Content className="p-10">{AllRoutes()}</Content>
+        <Content className="p-10">
+          {AllRoutes()}
+          <Modal
+            open={isUploadModalOpen}
+            destroyOnClose={true}
+            closeIcon={
+              <MdOutlineClose fontSize="1.25rem" className="mt-[1.65rem]" />
+            }
+            onCancel={hideUploadModal}
+            footer={null}
+            centered
+          >
+            {UploadSubtitle()}
+          </Modal>
+        </Content>
         <Footer>
           <div className="flex flex-col">
             <div className="flex flex-row">

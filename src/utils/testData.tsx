@@ -17,7 +17,7 @@ export const ApplicationItems: Application[] = [
   {
     vidoId: 50,
     videoName: "Lulu",
-    applyId: 5,
+    applyId: 6,
     platformName: "Youtube",
     language: "kr",
     payNumber: "20K",
@@ -30,7 +30,7 @@ export const ApplicationItems: Application[] = [
   {
     vidoId: 50,
     videoName: "Lulu",
-    applyId: 5,
+    applyId: 7,
     platformName: "Youtube",
     language: "cn",
     payNumber: "20K",
@@ -43,7 +43,7 @@ export const ApplicationItems: Application[] = [
   {
     vidoId: 5000,
     videoName: "Lulu",
-    applyId: 5,
+    applyId: 8,
     platformName: "Youtube",
     language: "cn",
     payNumber: "20K",
@@ -56,7 +56,7 @@ export const ApplicationItems: Application[] = [
   {
     vidoId: 50,
     videoName: "Lulu",
-    applyId: 5,
+    applyId: 9,
     platformName: "Bilibili",
     language: "us",
     payNumber: "20K",
@@ -69,7 +69,7 @@ export const ApplicationItems: Application[] = [
   {
     vidoId: 50,
     videoName: "Lulu",
-    applyId: 5,
+    applyId: 10,
     platformName: "Bilibili",
     language: "jp",
     payNumber: "20",
@@ -98,7 +98,7 @@ export const SubtitleItems: Subtitle[] = [
   {
     subtitleId: 50,
     videoName: "Lulu",
-    applyId: 5,
+    applyId: 6,
     platformName: "Youtube",
     language: "kr",
     support: 11,
@@ -111,7 +111,7 @@ export const SubtitleItems: Subtitle[] = [
   {
     subtitleId: 50,
     videoName: "Lulu",
-    applyId: 5,
+    applyId: 7,
     platformName: "Youtube",
     language: "cn",
     support: 22,
@@ -124,7 +124,7 @@ export const SubtitleItems: Subtitle[] = [
   {
     subtitleId: 5000,
     videoName: "Lulu",
-    applyId: 5,
+    applyId: 8,
     platformName: "Youtube",
     language: "cn",
     support: 10,
@@ -137,7 +137,7 @@ export const SubtitleItems: Subtitle[] = [
   {
     subtitleId: 50,
     videoName: "Lulu",
-    applyId: 5,
+    applyId: 9,
     platformName: "Bilibili",
     language: "us",
     support: 50,
@@ -150,7 +150,7 @@ export const SubtitleItems: Subtitle[] = [
   {
     subtitleId: 50,
     videoName: "Lulu",
-    applyId: 5,
+    applyId: 10,
     platformName: "Bilibili",
     language: "jp",
     support: 1,

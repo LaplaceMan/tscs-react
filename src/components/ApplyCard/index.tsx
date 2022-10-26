@@ -1,17 +1,34 @@
 import { MiniShowData0Package, MiniShowData1Package } from "./MiniShowData";
 import { Progress } from "antd";
+import { useContext } from "react";
 import { CircleFlag } from "react-circle-flags";
 import { Application } from "../../types/baseTypes";
 import { TimeRemainPercentage } from "../../utils/tools";
+import { ApplicationContext } from "../../context/ApplicationContext";
 
-const UploadButton = (): React.ReactElement => {
-  return (
-    <div className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-3 py-3 cursor-pointer hover:bg-[#48a8ff]  hover:brightness-110">
-      Upload
-    </div>
-  );
-};
 const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
+  const { updateDefaultUploadSubtitleData, showUploadModal } =
+    useContext(ApplicationContext);
+
+  const uploadSubtitleHandle = (applyId: number, language: string) => {
+    updateDefaultUploadSubtitleData(applyId, language);
+    showUploadModal();
+  };
+
+  const UploadButton = (
+    applyId: number,
+    language: string
+  ): React.ReactElement => {
+    return (
+      <div
+        className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-3 py-3 cursor-pointer hover:bg-[#48a8ff]  hover:brightness-110"
+        onClick={() => uploadSubtitleHandle(applyId, language)}
+      >
+        Upload
+      </div>
+    );
+  };
+
   return (
     <div
       className="flex flex-row bg-[white] p-4 m-5 rounded-md items-center shadow hover:shadow-xl"
@@ -36,7 +53,7 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
         <div className="flex w-full flex-row items-center justify-between">
           {MiniShowData1Package(data)}
           <div className="flex ml-5">
-            <UploadButton />
+            {UploadButton(data.applyId, data.language)}
           </div>
         </div>
         <div className="flex w-full mt-5">

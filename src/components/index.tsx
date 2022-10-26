@@ -7,3 +7,5 @@ export { default as SubtitleCard } from "./SubtitleCard/index";
 export { default as ConnectWallet } from "./ConnectWallet/index";
 export { default as DashboardMini } from "./DashboardMini/index";
 export { default as SubmitApplication } from "./SubmitApplication/index";
+export { default as ModelDataMini } from "./ModelDataMini/index";
+export { default as UploadSubtitle } from "./UploadSubtitle/index";

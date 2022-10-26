@@ -5,13 +5,16 @@ import "antd/dist/antd.less";
 import { BrowserRouter } from "react-router-dom";
 import { WalletProvider } from "./context/WalletContext";
 import { GlobalProvider } from "./context/GlobalContext";
+import { ApplicationProvider } from "./context/ApplicationContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <GlobalProvider>
     <WalletProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <ApplicationProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ApplicationProvider>
     </WalletProvider>
   </GlobalProvider>
 );

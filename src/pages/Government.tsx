@@ -1,9 +1,12 @@
+import React, { useContext } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 import { government_Illustration } from "../assets/index";
 import { SubtitleCard } from "../components";
 import { SubtitleItems } from "../utils/testData";
+import { ApplicationContext } from "../context/ApplicationContext";
+const Government = (): React.ReactElement => {
+  const { showUploadModal, isUploadModalOpen } = useContext(ApplicationContext);
 
-const Government = () => {
   return (
     <div className="flex flex-col items-center -mt-5">
       <div className="flex flex-row w-full items-center justify-center sm:-mr-10">
@@ -15,7 +18,10 @@ const Government = () => {
             Reduce your risk and burden with multi-payment strategies and
             decentralized audit.
           </div>
-          <div className="flex md:px-12 py-2 text-white font-semibold md:text-lg bg-black text-center rounded-full items-center justify-center hover:bg-[#48a8ff] mt-2 sm:text-base sm:px-10 cursor-pointer">
+          <div
+            className="flex md:px-12 py-2 text-white font-semibold md:text-lg bg-black text-center rounded-full items-center justify-center hover:bg-[#48a8ff] mt-2 sm:text-base sm:px-10 cursor-pointer"
+            onClick={showUploadModal}
+          >
             Upload <FiArrowUpRight className="ml-3" />
           </div>
         </div>

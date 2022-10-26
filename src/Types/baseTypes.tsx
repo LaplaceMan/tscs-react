@@ -56,3 +56,14 @@ export type GlobalContent = {
   setToggleMenu: React.Dispatch<React.SetStateAction<boolean>>;
   scrollHeight: number;
 };
+
+export type ApplicationContent = {
+  isUploadModalOpen: boolean;
+  isApplicationModalOpen: boolean;
+  showUploadModal: () => void;
+  hideUploadModal: () => void;
+  showApplicationModal: () => void;
+  hideApplicationModal: () => void;
+  defaultUploadSubtitleData: { applyId: number; language: string };
+  updateDefaultUploadSubtitleData: (applyId: number, language: string) => void;
+};
