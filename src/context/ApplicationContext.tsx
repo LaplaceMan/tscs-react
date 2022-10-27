@@ -18,6 +18,7 @@ export const ApplicationProvider = ({ children }: any) => {
     applyId: 0,
     language: "",
   });
+
   const updateDefaultUploadSubtitleData = (
     applyId: number,
     language: string

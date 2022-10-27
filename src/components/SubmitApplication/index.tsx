@@ -4,19 +4,21 @@ import { GiToken } from "react-icons/gi";
 import { AiFillDollarCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
 import { ModelDataMini } from "../index";
+import { useContext } from "react";
 import type { DatePickerProps } from "antd";
+import { ApplicationContext } from "../../context/ApplicationContext";
 const { Option } = Select;
 const dataChangeHandler: DatePickerProps["onChange"] = (date, dateString) => {
   console.log(date, dateString);
 };
-const SubmitApplication = (hideApplicationModal: any) => {
+const SubmitApplication = () => {
   const [form] = Form.useForm();
+  const { hideApplicationModal } = useContext(ApplicationContext);
   return (
     <div className="flex p-5 w-full">
       <Form
         form={form}
         layout="vertical"
-        // initialValues={{ requiredMarkValue: requiredMark }}
         requiredMark="optional"
         className="w-full"
       >

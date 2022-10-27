@@ -1,14 +1,12 @@
-import { Modal } from "antd";
 import React, { useContext } from "react";
 import { application_Illustration } from "../assets/index";
 import { FiArrowUpRight } from "react-icons/fi";
 import { ApplicationItems } from "../utils/testData";
-import { ApplyCard, SubmitApplication } from "../components";
+import { ApplyCard } from "../components";
 import { ApplicationContext } from "../context/ApplicationContext";
 
 const Application = (): React.ReactElement => {
-  const { isApplicationModalOpen, showApplicationModal, hideApplicationModal } =
-    useContext(ApplicationContext);
+  const { showApplicationModal } = useContext(ApplicationContext);
 
   return (
     <div className="flex flex-col items-center -mt-5">
@@ -27,14 +25,6 @@ const Application = (): React.ReactElement => {
           >
             Submit <FiArrowUpRight className="ml-3" />
           </div>
-          <Modal
-            open={isApplicationModalOpen}
-            closable={false}
-            footer={null}
-            centered
-          >
-            {SubmitApplication(hideApplicationModal)}
-          </Modal>
         </div>
         <div className="flex items-center justify-center md:w-1/3 sm:w-1/2 min-w-[320px]">
           <img src={application_Illustration} />

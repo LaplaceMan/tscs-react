@@ -5,7 +5,12 @@ import { SubtitleCard } from "../components";
 import { SubtitleItems } from "../utils/testData";
 import { ApplicationContext } from "../context/ApplicationContext";
 const Government = (): React.ReactElement => {
-  const { showUploadModal, isUploadModalOpen } = useContext(ApplicationContext);
+  const { showUploadModal, updateDefaultUploadSubtitleData } =
+    useContext(ApplicationContext);
+  const uploadSubtitleHandle = () => {
+    updateDefaultUploadSubtitleData(0, "cn");
+    showUploadModal();
+  };
 
   return (
     <div className="flex flex-col items-center -mt-5">
@@ -15,12 +20,12 @@ const Government = (): React.ReactElement => {
             Make favorite videos known to the world
           </div>
           <div className="flex md:text-base my-5 w-5/6 font-medium sm:text-xs">
-            Reduce your risk and burden with multi-payment strategies and
-            decentralized audit.
+            Not only "Power Generation For Love", you will get rewards from
+            Web3. Join this new and interesting community!
           </div>
           <div
             className="flex md:px-12 py-2 text-white font-semibold md:text-lg bg-black text-center rounded-full items-center justify-center hover:bg-[#48a8ff] mt-2 sm:text-base sm:px-10 cursor-pointer"
-            onClick={showUploadModal}
+            onClick={uploadSubtitleHandle}
           >
             Upload <FiArrowUpRight className="ml-3" />
           </div>

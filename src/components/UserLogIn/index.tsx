@@ -63,8 +63,8 @@ const UserLogIn = (
       <div className="flex w-full items-center justify-center px-4">
         <IDCard />
       </div>
-      <div className="flex items-center justify-center text-[#696969] text-xs w-full mt-3 text-center px-4">
-        Your ID card changes with reputation.
+      <div className="flex items-center justify-center text-[#696969] text-xs w-full mt-1 text-center px-4 scale-75">
+        YOUR ID CARD CHANGS WITH REPUTATION
       </div>
     </div>
   );

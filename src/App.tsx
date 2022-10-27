@@ -1,6 +1,5 @@
-import { HeaderTop, UploadSubtitle } from "./components";
+import { HeaderTop, UploadSubtitle, SubmitApplication } from "./components";
 import { useContext } from "react";
-import { MdOutlineClose } from "react-icons/md";
 import { Layout, Affix, Modal } from "antd";
 import AllRoutes from "./routes";
 import { discord, github, telegram, twitter } from "./assets";
@@ -9,7 +8,8 @@ import { ApplicationContext } from "./context/ApplicationContext";
 const { Header, Content, Footer } = Layout;
 const App = () => {
   const { scrollHeight } = useContext(GlobalContext);
-  const { isUploadModalOpen, hideUploadModal } = useContext(ApplicationContext);
+  const { isUploadModalOpen, isApplicationModalOpen } =
+    useContext(ApplicationContext);
   return (
     <div className="mbg">
       <Layout>
@@ -28,14 +28,20 @@ const App = () => {
           <Modal
             open={isUploadModalOpen}
             destroyOnClose={true}
-            closeIcon={
-              <MdOutlineClose fontSize="1.25rem" className="mt-[1.65rem]" />
-            }
-            onCancel={hideUploadModal}
+            forceRender={true}
+            closable={false}
             footer={null}
             centered
           >
             {UploadSubtitle()}
+          </Modal>
+          <Modal
+            open={isApplicationModalOpen}
+            closable={false}
+            footer={null}
+            centered
+          >
+            {SubmitApplication()}
           </Modal>
         </Content>
         <Footer>

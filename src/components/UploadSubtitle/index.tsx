@@ -1,31 +1,30 @@
 import { Select, Form, Input, InputNumber } from "antd";
-import { MdOutlineClose } from "react-icons/md";
 import { GiToken } from "react-icons/gi";
 import { AiFillDollarCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
+import { MdOutlineClose } from "react-icons/md";
 import { ModelDataMini } from "../index";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { ApplicationContext } from "../../context/ApplicationContext";
 const { Option } = Select;
 
 const UploadSubtitle = (): React.ReactElement => {
   const [form] = Form.useForm();
-  const { hideUploadModal, defaultUploadSubtitleData } =
+  const { defaultUploadSubtitleData, hideUploadModal } =
     useContext(ApplicationContext);
+  useEffect(() => {
+    if (defaultUploadSubtitleData.applyId) {
+      form.setFieldsValue({ ...defaultUploadSubtitleData });
+    } else {
+      form.setFieldsValue(null);
+    }
+  });
   return (
     <div className="flex p-5 w-full">
       <Form
         form={form}
         layout="vertical"
         preserve={false}
-        initialValues={{
-          applyId: defaultUploadSubtitleData.applyId
-            ? defaultUploadSubtitleData.applyId
-            : null,
-          language: defaultUploadSubtitleData.language.length
-            ? defaultUploadSubtitleData.language
-            : "cn",
-        }}
         requiredMark="optional"
         className="w-full"
       >
@@ -33,12 +32,12 @@ const UploadSubtitle = (): React.ReactElement => {
           <div className="text-xl font-bold">
             Upload subtitles for the video you support
           </div>
-          {/* <div
+          <div
             className="flex hover:text-[#48a8ff] hover:bg-gray-100 items-center justify-center cursor-pointer mt-1 rounded-full p-0.5"
             onClick={hideUploadModal}
           >
             <MdOutlineClose fontSize="1.25rem" />
-          </div> */}
+          </div>
         </div>
         <Form.Item>
           <div className="flex bg-gray-100 rounded-md p-2 items-center justify-between">
@@ -57,21 +56,32 @@ const UploadSubtitle = (): React.ReactElement => {
             placeholder="Please ensure that the subtitle match the application."
             min={1}
             style={{ width: "100%" }}
+            disabled={
+              defaultUploadSubtitleData && defaultUploadSubtitleData.applyId
+                ? true
+                : false
+            }
           />
         </Form.Item>
         <Form.Item
           name="language"
           label="Language"
-          tooltip="It should be consistent with the application (Subtitle language)"
+          tooltip="It should be consistent with the application."
           required
         >
           <Select
             showSearch
             optionFilterProp="children"
+            placeholder="Language of the subtitle"
             filterOption={(input, option) =>
               (option!.children as unknown as string)
                 .toLowerCase()
                 .includes(input.toLowerCase())
+            }
+            disabled={
+              defaultUploadSubtitleData && defaultUploadSubtitleData.applyId
+                ? true
+                : false
             }
           >
             <Option value="cn">Chinese</Option>
