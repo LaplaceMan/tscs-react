@@ -60,10 +60,13 @@ export type GlobalContent = {
 export type ApplicationContent = {
   isUploadModalOpen: boolean;
   isApplicationModalOpen: boolean;
+  isAuditModalOpen: boolean;
   showUploadModal: () => void;
   hideUploadModal: () => void;
   showApplicationModal: () => void;
   hideApplicationModal: () => void;
+  showAuditModal: () => void;
+  hideAuditModal: () => void;
   defaultUploadSubtitleData: { applyId: number; language: string };
   updateDefaultUploadSubtitleData: (applyId: number, language: string) => void;
 };

@@ -1,4 +1,9 @@
-import { HeaderTop, UploadSubtitle, SubmitApplication } from "./components";
+import {
+  HeaderTop,
+  UploadSubtitle,
+  SubmitApplication,
+  AuditSubtitle,
+} from "./components";
 import { useContext } from "react";
 import { Layout, Affix, Modal } from "antd";
 import AllRoutes from "./routes";
@@ -8,7 +13,7 @@ import { ApplicationContext } from "./context/ApplicationContext";
 const { Header, Content, Footer } = Layout;
 const App = () => {
   const { scrollHeight } = useContext(GlobalContext);
-  const { isUploadModalOpen, isApplicationModalOpen } =
+  const { isUploadModalOpen, isApplicationModalOpen, isAuditModalOpen } =
     useContext(ApplicationContext);
   return (
     <div className="mbg">
@@ -37,11 +42,23 @@ const App = () => {
           </Modal>
           <Modal
             open={isApplicationModalOpen}
+            destroyOnClose={true}
+            forceRender={true}
             closable={false}
             footer={null}
             centered
           >
             {SubmitApplication()}
+          </Modal>
+          <Modal
+            open={isAuditModalOpen}
+            destroyOnClose={true}
+            forceRender={true}
+            closable={false}
+            footer={null}
+            centered
+          >
+            {AuditSubtitle()}
           </Modal>
         </Content>
         <Footer>

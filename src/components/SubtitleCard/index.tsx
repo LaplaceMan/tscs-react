@@ -1,17 +1,25 @@
 import { MiniShowData0Package, MiniShowData1Package } from "./MiniShowData";
 import { Progress } from "antd";
+import { useContext } from "react";
 import { CircleFlag } from "react-circle-flags";
 import { Subtitle } from "../../types/baseTypes";
 import { TimeRemainPercentage } from "../../utils/tools";
+import { ApplicationContext } from "../../context/ApplicationContext";
 
-const AuditButton = (): React.ReactElement => {
-  return (
-    <div className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-[1.1rem] py-3 cursor-pointer hover:bg-[#48a8ff]  hover:brightness-110">
-      Audit
-    </div>
-  );
-};
 const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
+  const { showAuditModal } = useContext(ApplicationContext);
+
+  const AuditButton = (): React.ReactElement => {
+    return (
+      <div
+        className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-[1.1rem] py-3 cursor-pointer hover:bg-[#48a8ff] hover:brightness-110"
+        onClick={showAuditModal}
+      >
+        Audit
+      </div>
+    );
+  };
+
   return (
     <div
       className="flex flex-row bg-[white] p-4 m-5 rounded-md items-center shadow hover:shadow-xl"
