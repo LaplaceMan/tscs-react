@@ -21,7 +21,7 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
   ): React.ReactElement => {
     return (
       <div
-        className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-3 py-3 cursor-pointer hover:bg-[#48a8ff]  hover:brightness-110"
+        className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-3 py-3 cursor-pointer hover:bg-gradient-to-r hover:from-purple-400 hover:to-blue-400"
         onClick={() => uploadSubtitleHandle(applyId, language)}
       >
         Upload

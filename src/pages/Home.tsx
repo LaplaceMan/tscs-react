@@ -44,13 +44,13 @@ const DashboardMiniItems: DashboardMiniItem[] = [
 ];
 const Home = (): React.ReactElement => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center mt-10">
       <div className="flex flex-col items-center">
         <div className="text-3xl md:text-5xl font-bold text-center">
           Culture Without Boundaries
         </div>
         <div className="flex md:text-base text-sm w-2/3 text-center mt-5 font-medium">
-          Connect video creators, subtitle producers, viewers and artists in an
+          Connect video creators, subtitle makers, viewers and artists in an
           interesting ecosystem.
         </div>
       </div>
@@ -59,8 +59,9 @@ const Home = (): React.ReactElement => {
       </div>
       <div className="flex flex-col mt-10">
         <Link to="./Application">
-          <div className="flex items-center justify-center mt-3 mb-2 text-lg font-semibold text-[#696969] hover:text-blue-400 cursor-pointer">
-            <MdAllInbox className="mt-0.5 mr-3" /> Applications
+          <div className="flex items-center justify-center mt-3 mb-2 text-lg font-semibold text-[#696969] hover:text-purple-400 cursor-pointer">
+            <MdAllInbox className="mt-0.5 mr-3" />
+            Applications
           </div>
         </Link>
         <div className="w-full h-0.5 bg-gray-50 rounded-md mb-3" />
@@ -69,7 +70,7 @@ const Home = (): React.ReactElement => {
         </div>
         <Link to="./Government">
           <div className="flex items-center justify-center mt-6 mb-2 text-lg font-semibold text-[#696969] hover:text-blue-400 cursor-pointer">
-            <MdAllInbox className="mt-0.5 mr-3" /> Subtitles
+            <MdOutlineSubtitles className="mt-0.5 mr-3" /> Subtitles
           </div>
         </Link>
         <div className="w-full h-0.5 bg-gray-50 rounded-md mb-3" />

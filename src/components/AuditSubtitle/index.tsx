@@ -1,6 +1,8 @@
+import { Tag } from "antd";
 import { useContext } from "react";
 import { CircleFlag } from "react-circle-flags";
 import { MdOutlineClose } from "react-icons/md";
+import { RiSecurePaymentLine, RiStarSmileLine } from "react-icons/ri";
 import { ApplicationContext } from "../../context/ApplicationContext";
 const AuditSubtitle = () => {
   const { hideAuditModal } = useContext(ApplicationContext);
@@ -11,7 +13,7 @@ const AuditSubtitle = () => {
           Participate in audit after using subtitle
         </div>
         <div
-          className="flex hover:text-[#48a8ff] hover:bg-gray-100 items-center justify-center cursor-pointer mt-1 rounded-full p-0.5"
+          className="flex hover:text-white hover:bg-black items-center justify-center cursor-pointer mt-1 rounded-full p-0.5"
           onClick={hideAuditModal}
         >
           <MdOutlineClose fontSize="1.25rem" />
@@ -19,7 +21,7 @@ const AuditSubtitle = () => {
       </div>
       <div className="flex flex-row p-3 justify-between">
         <div className="flex flex-col w-1/2 mr-1">
-          <div className="flex flex-row items-center">
+          <div className="flex flex-row items-center justify-center">
             <div className="flex h-11">
               <CircleFlag countryCode="cn" />
             </div>
@@ -30,6 +32,17 @@ const AuditSubtitle = () => {
               </div>
               <div className="text-sm text-[#696969]">0x666...666</div>
             </div>
+          </div>
+          <div className="flex flex-row mt-2 items-center justify-center">
+            <Tag color="purple">Subtitle</Tag>
+            <Tag color="purple">2022-10-27</Tag>
+            <Tag
+              color="purple"
+              className="flex items-center"
+              icon={<RiSecurePaymentLine style={{ marginRight: "3px" }} />}
+            >
+              OT0
+            </Tag>
           </div>
           <div className="flex flex-col my-2">
             <div className="flex items-center justify-center text-[#696969]">
@@ -50,7 +63,7 @@ const AuditSubtitle = () => {
         </div>
         {/* <div className="flex w-1 bg-gray-100 rounded-full h-full" /> */}
         <div className="flex flex-col w-1/2 ml-1">
-          <div className="flex flex-row items-center">
+          <div className="flex flex-row items-center justify-center">
             <div className="flex h-11">
               <img
                 src="http://api.btstu.cn/sjtx/api.php?lx=c1&format=images"
@@ -64,6 +77,17 @@ const AuditSubtitle = () => {
               </div>
               <div className="text-sm text-[#696969]">0x666...666</div>
             </div>
+          </div>
+          <div className="flex flex-row mt-2 items-center justify-center">
+            <Tag color="blue">Maker</Tag>
+            <Tag color="blue">2022-10-27</Tag>
+            <Tag
+              color="blue"
+              className="flex items-center"
+              icon={<RiStarSmileLine style={{ marginRight: "3px" }} />}
+            >
+              10
+            </Tag>
           </div>
           <div className="flex flex-col my-2">
             <div className="flex items-center justify-center text-[#696969]">
@@ -84,10 +108,10 @@ const AuditSubtitle = () => {
         </div>
       </div>
       <div className="flex items-center w-full text-white font-semibold text-base mt-2">
-        <div className="flex items-center justify-center rounded-l-full bg-gradient-to-r from-purple-400 to-purple-200 w-1/2 py-2 cursor-pointer hover:bg-gradient-to-r hover:from-purple-400 hover:to-purple-400">
+        <div className="flex items-center justify-center rounded-l-full bg-gradient-to-r from-purple-400 to-purple-200 w-1/2 py-2 cursor-pointer hover:bg-purple-400">
           Adopt
         </div>
-        <div className="flex items-center justify-center rounded-r-full bg-gradient-to-r from-blue-200 to-blue-400 w-1/2 py-2 cursor-pointer hover:bg-gradient-to-r hover:from-blue-400 hover:to-blue-400">
+        <div className="flex items-center justify-center rounded-r-full bg-gradient-to-r from-blue-200 to-blue-400 w-1/2 py-2 cursor-pointer hover:bg-blue-400">
           Report
         </div>
       </div>

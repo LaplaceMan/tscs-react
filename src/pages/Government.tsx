@@ -24,7 +24,7 @@ const Government = (): React.ReactElement => {
             Web3. Join this new and interesting community!
           </div>
           <div
-            className="flex md:px-12 py-2 text-white font-semibold md:text-lg bg-black text-center rounded-full items-center justify-center hover:bg-[#48a8ff] mt-2 sm:text-base sm:px-10 cursor-pointer"
+            className="flex md:px-12 py-2 text-white font-semibold md:text-lg bg-black text-center rounded-full items-center justify-center hover:bg-gradient-to-r hover:from-purple-400 hover:to-blue-400 mt-2 sm:text-base sm:px-10 cursor-pointer"
             onClick={uploadSubtitleHandle}
           >
             Upload <FiArrowUpRight className="ml-3" />

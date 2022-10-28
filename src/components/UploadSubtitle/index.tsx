@@ -33,7 +33,7 @@ const UploadSubtitle = (): React.ReactElement => {
             Upload subtitles for the video you support
           </div>
           <div
-            className="flex hover:text-[#48a8ff] hover:bg-gray-100 items-center justify-center cursor-pointer mt-1 rounded-full p-0.5"
+            className="flex hover:text-white hover:bg-black items-center justify-center cursor-pointer mt-1 rounded-full p-0.5"
             onClick={hideUploadModal}
           >
             <MdOutlineClose fontSize="1.25rem" />
@@ -104,7 +104,7 @@ const UploadSubtitle = (): React.ReactElement => {
         >
           <Input placeholder="Subtitle storage link, as the tokenURI." />
         </Form.Item>
-        <div className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-[1.1rem] py-2.5 cursor-pointer hover:bg-[#48a8ff]  hover:brightness-110">
+        <div className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-[1.1rem] py-2.5 cursor-pointer hover:bg-gradient-to-r hover:from-purple-400 hover:to-blue-400">
           Upload
         </div>
       </Form>

@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Home, Application, Government } from "../pages";
+import { Home, Application, Government, Personal } from "../pages";
 import React from "react";
 
 const AllRoutes = (): React.ReactElement => {
@@ -8,6 +8,7 @@ const AllRoutes = (): React.ReactElement => {
       <Route path="/" element={<Home />} />
       <Route path="/Application" element={<Application />} />
       <Route path="/Government" element={<Government />} />
+      <Route path="/Personal" element={<Personal />} />
     </Routes>
   );
 };

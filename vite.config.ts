@@ -17,6 +17,10 @@ export default defineConfig({
           '@link-active-color': '#696969',
           '@popover-padding-horizontal': 0,
           '@form-item-margin-bottom': '15px',
+          '@layout-footer-padding': '24px 60px',
+          '@tabs-hover-color': '#000',
+          '@tabs-highlight-color': '#000',
+          '@tabs-ink-bar-color' :'#000',
         },
       }
     }

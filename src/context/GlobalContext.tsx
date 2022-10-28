@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { GlobalContent } from "../types/baseTypes";
 import { getScrollTop } from "../utils/tools";
-
 export const GlobalContext = React.createContext<GlobalContent>({
   toggleMenu: false,
   setToggleMenu: () => {},

@@ -10,6 +10,7 @@ import AllRoutes from "./routes";
 import { discord, github, telegram, twitter } from "./assets";
 import { GlobalContext } from "./context/GlobalContext";
 import { ApplicationContext } from "./context/ApplicationContext";
+
 const { Header, Content, Footer } = Layout;
 const App = () => {
   const { scrollHeight } = useContext(GlobalContext);
@@ -28,7 +29,7 @@ const App = () => {
             <HeaderTop />
           </Header>
         </Affix>
-        <Content className="p-10">
+        <Content className="px-[60px]">
           {AllRoutes()}
           <Modal
             open={isUploadModalOpen}

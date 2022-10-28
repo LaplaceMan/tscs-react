@@ -54,7 +54,7 @@ const UserLogIn = (
           </div>
         </div>
         <div
-          className="flex px-3 py-1 text-base border-dashed border-y-2 items-center justify-center text-[#696969] cursor-pointer hover:text-[#48a8ff] hover:border-[#48a8ff]"
+          className="flex px-3 py-1 text-base border-dashed border-y-2 items-center justify-center text-[#696969] cursor-pointer hover:text-white hover:bg-gradient-to-r hover:from-purple-400 hover:to-blue-400 hover:font-semibold"
           onClick={killSessionWalletConnect}
         >
           Disconnect

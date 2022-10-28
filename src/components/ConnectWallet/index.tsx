@@ -43,7 +43,7 @@ const ConnectWallet = (hideConnectWalletModel: any): React.ReactElement => {
           <div className="font-semibold text-lg ml-3">Select a Wallet</div>
         </div>
         <div
-          className="flex hover:text-[#48a8ff] items-center justify-center rounded-md cursor-pointer"
+          className="flex hover:text-white hover:bg-black items-center justify-center rounded-full cursor-pointer p-0.5"
           onClick={hideConnectWalletModel}
         >
           <MdOutlineClose fontSize={16} />

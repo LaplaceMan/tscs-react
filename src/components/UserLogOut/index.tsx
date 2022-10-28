@@ -24,7 +24,7 @@ const UserLogOut = () => {
         </div>
       </div>
       <div
-        className="flex w-full items-center justify-center py-3 rounded-md bg-[#696969] hover:bg-[#48a8ff] text-white font-medium cursor-pointer"
+        className="flex w-full items-center justify-center py-3 rounded-md bg-[#696969] hover:bg-gradient-to-r hover:from-purple-400 hover:to-blue-400 text-white font-medium cursor-pointer"
         onClick={showConnectWalletHandle}
       >
         Connect Wallet

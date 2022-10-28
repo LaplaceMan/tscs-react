@@ -47,7 +47,7 @@ export const WalletProvider = ({ children }: any) => {
             network: networkId,
             type: "Metamask",
           });
-          console.log(accountState);
+          // console.log(accountState);
         }
       });
     }
@@ -78,7 +78,7 @@ export const WalletProvider = ({ children }: any) => {
           network: networkId,
           type: "Metamask",
         });
-        console.log(accountState);
+        // console.log(accountState);
       } else {
         console.log("No account found.");
       }

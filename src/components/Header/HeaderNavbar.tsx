@@ -7,8 +7,12 @@ import { IoMenuOutline, IoCloseOutline } from "react-icons/io5";
 import { BsCollection, BsGem } from "react-icons/bs";
 import { GlobalContext } from "../../context/GlobalContext";
 const NavbarItems = [
-  { title: "Application", link: "/Application", icon: <BsCollection /> },
-  { title: "Government", link: "/Government", icon: <BsGem /> },
+  {
+    title: "Application",
+    link: "/Application",
+    icon: <BsCollection fontSize="1rem" />,
+  },
+  { title: "Government", link: "/Government", icon: <BsGem fontSize="1rem" /> },
 ];
 
 const HeaderNavbar = () => {
