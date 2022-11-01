@@ -104,7 +104,7 @@ const UploadSubtitle = (): React.ReactElement => {
         >
           <Input placeholder="Subtitle storage link, as the tokenURI." />
         </Form.Item>
-        <div className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-[1.1rem] py-2.5 cursor-pointer hover:bg-gradient-to-r hover:from-purple-400 hover:to-blue-400">
+        <div className="flex items-center justify-center rounded-md text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110">
           Upload
         </div>
       </Form>

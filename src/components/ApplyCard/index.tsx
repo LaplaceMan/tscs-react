@@ -21,7 +21,7 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
   ): React.ReactElement => {
     return (
       <div
-        className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-3 py-3 cursor-pointer hover:bg-gradient-to-r hover:from-purple-400 hover:to-blue-400"
+        className="flex items-center justify-center rounded-md text-white font-medium px-3 py-3 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
         onClick={() => uploadSubtitleHandle(applyId, language)}
       >
         Upload
@@ -31,7 +31,7 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
 
   return (
     <div
-      className="flex flex-row bg-[white] p-4 m-5 rounded-md items-center shadow hover:shadow-xl"
+      className="flex flex-row bg-[white] p-4 my-5 rounded-md items-center shadow hover:shadow-xl"
       key={key}
     >
       <div className="flex flex-col items-start">

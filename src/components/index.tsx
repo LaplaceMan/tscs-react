@@ -10,3 +10,4 @@ export { default as SubmitApplication } from "./SubmitApplication/index";
 export { default as ModelDataMini } from "./ModelDataMini/index";
 export { default as UploadSubtitle } from "./UploadSubtitle/index";
 export { default as AuditSubtitle } from "./AuditSubtitle/index";
+export { default as DefaultFooter } from "./Footer/index";

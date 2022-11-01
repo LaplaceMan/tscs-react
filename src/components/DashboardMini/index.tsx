@@ -5,7 +5,7 @@ import { DashboardMiniItem } from "../../types/baseTypes";
 const DashboardMini = (item: DashboardMiniItem, key: React.Key) => {
   return (
     <div
-      className="flex flex-rows items-center rounded-md px-5 py-3 min-w-[257px] mx-3 my-3 md:mx-5 md:my-0 2xl:mx-10"
+      className="flex flex-rows items-center rounded-md px-5 py-3 min-w-[257px] my-3 sm:mx-3 md:mx-0"
       key={key}
       style={{ background: item.bg }}
     >

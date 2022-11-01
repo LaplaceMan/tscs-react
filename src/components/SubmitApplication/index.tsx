@@ -103,7 +103,7 @@ const SubmitApplication = () => {
             placeholder="The default is to extend by 365 days."
           />
         </Form.Item>
-        <div className="flex items-center justify-center rounded-md text-white font-medium bg-[#696969] px-[1.1rem] py-2.5 cursor-pointer hover:bg-gradient-to-r hover:from-purple-400 hover:to-blue-400">
+        <div className="flex items-center justify-center rounded-md text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110">
           Submit
         </div>
       </Form>
