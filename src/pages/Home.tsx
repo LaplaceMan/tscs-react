@@ -1,7 +1,7 @@
 import { ApplyCard, DashboardMini, SubtitleCard } from "../components";
 import { DashboardMiniItem } from "../types/baseTypes";
 import {
-  MdOutlineLanguage,
+  MdPeopleAlt,
   MdAllInbox,
   MdOutlineSubtitles,
   MdOutlineVideoLibrary,
@@ -23,7 +23,7 @@ const DashboardMiniItems: DashboardMiniItem[] = [
     change: 2,
     bg: "#FDF5E6",
     iconBg: "#FF8C00",
-    icon: <MdOutlineLanguage color="#fff" fontSize={25} />,
+    icon: <MdPeopleAlt color="#fff" fontSize={25} />,
   },
   {
     label: "All Subtitles",
@@ -34,7 +34,7 @@ const DashboardMiniItems: DashboardMiniItem[] = [
     icon: <MdOutlineSubtitles color="#fff" fontSize={25} />,
   },
   {
-    label: "All Videos",
+    label: "All Platforms",
     number: 3333,
     change: 111,
     bg: "#E6E6FA",
