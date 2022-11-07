@@ -1,7 +1,7 @@
 import { IDCard } from "../";
 import { BsAwardFill } from "react-icons/bs";
 import { BiWalletAlt, BiGlobe } from "react-icons/bi";
-import { NetWork } from "../../utils/constants";
+import { Network } from "../../utils/constants";
 import { shortenAddress } from "../../utils/tools";
 const UserLogIn = (
   {
@@ -24,7 +24,7 @@ const UserLogIn = (
         />
         <div className="flex w-full flex-col ml-3 justify-center">
           <div className="flex text-base font-medium items-center ">
-            ENS <div className="flex text-xs ml-2 text-[#696969]">#1024</div>
+            ENS
           </div>
           <div className="flex text-[#696969] text-sm mt-0.5">
             {shortenAddress(address)}
@@ -50,7 +50,7 @@ const UserLogIn = (
           <div>Network</div>
           <div className="flex flex-row items-center justify-center">
             <BiGlobe className="mr-2 text-[#696969] mt-0.5" />
-            {NetWork[network]}
+            {Network[network]}
           </div>
         </div>
       </div>

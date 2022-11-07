@@ -34,10 +34,7 @@ const AuditSubtitle = () => {
                 <CircleFlag countryCode={defaultAuditSubtitleData.language} />
               </div>
               <div className="flex flex-col items-start ml-3">
-                <div className="flex items-end">
-                  <div className="text-lg font-medium">{defaultAuditSubtitleData.videoName}</div>
-                  <div className="text-sm text-[#696969] ml-2">#{defaultAuditSubtitleData.applyId}</div>
-                </div>
+                <div className="text-lg font-medium">{defaultAuditSubtitleData.videoName}</div>
                 <div className="text-sm text-[#696969]">{defaultAuditSubtitleData.maker}</div>
               </div>
             </div>
@@ -49,7 +46,7 @@ const AuditSubtitle = () => {
                 className="flex items-center"
                 icon={<RiSecurePaymentLine style={{ marginRight: "3px" }} />}
               >
-                OT0
+                {defaultAuditSubtitleData.payType}
               </Tag>
             </div>
             <div className="flex flex-col my-2">
@@ -79,10 +76,7 @@ const AuditSubtitle = () => {
                 />
               </div>
               <div className="flex flex-col items-start ml-3">
-                <div className="flex items-end">
-                  <div className="text-lg font-medium">Lulu</div>
-                  <div className="text-sm text-[#696969] ml-2">#50</div>
-                </div>
+                <div className="text-lg font-medium">Lulu</div>
                 <div className="text-sm text-[#696969]">0x666...666</div>
               </div>
             </div>

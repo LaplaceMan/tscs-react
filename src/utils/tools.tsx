@@ -19,7 +19,7 @@ export const getScrollTop = (): number => {
 
 export const shortenAddress = (address: string): string => {
   if (address.length) {
-    return `${address.slice(0, 5)}...${address.slice(address.length - 4)}`;
+    return `${address.slice(0, 6)}...${address.slice(address.length - 4)}`;
   } else {
     return "";
   }

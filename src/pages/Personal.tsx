@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Tabs, Empty } from "antd";
 import { SiEthereum } from "react-icons/si";
-
+import { WalletContext } from "../context/WalletContext";
+import { shortenAddress } from "../utils/tools"
 const NoItems = () => {
   return (
     <div className="flex flex-col mx-auto my-10">
@@ -16,6 +17,7 @@ const NoItems = () => {
   );
 };
 const Personal = (): React.ReactElement => {
+  const { accountState } = useContext(WalletContext)
   return (
     <div className="flex flex-col w-full">
       <div
@@ -37,7 +39,7 @@ const Personal = (): React.ReactElement => {
         <div className="text-3xl font-bold">Lulu</div>
         <div className="flex text-base font-medium text-[#696969] items-center">
           <SiEthereum className="mr-1 mt-0.5" />
-          0x3f20...9374
+          {accountState.address ? shortenAddress(accountState.address) : '0x0000...0000'}
         </div>
       </div>
       <Tabs
