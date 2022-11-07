@@ -1,29 +1,35 @@
+import { Submit, Upload, Audit } from "./formTypes";
+
 export type Application = {
+  applicant: string;
   vidoId: number;
   videoName: string;
-  applyId: number;
   platformName: string;
+  applyId: number;
   language: string;
-  payNumber: string;
+  amount: string;
   payType: string;
-  applicant: string;
   uploads: number;
-  duration: number;
+  start: number;
   deadline: number;
+  source: string;
 };
 
 export type Subtitle = {
-  subtitleId: number;
   videoName: string;
   applyId: number;
+  payType: string;
   platformName: string;
+  subtitleId: number;
   language: string;
   support: number;
   against: number;
   maker: string;
   uploads: number;
-  duration: number;
+  start: number;
   deadline: number;
+  fingerprint: string;
+  cid: string;
 };
 
 export type NavbarItem = {
@@ -58,6 +64,7 @@ export type GlobalContent = {
 };
 
 export type ApplicationContent = {
+  isLoading: boolean;
   isUploadModalOpen: boolean;
   isApplicationModalOpen: boolean;
   isAuditModalOpen: boolean;
@@ -69,4 +76,27 @@ export type ApplicationContent = {
   hideAuditModal: () => void;
   defaultUploadSubtitleData: { applyId: number; language: string };
   updateDefaultUploadSubtitleData: (applyId: number, language: string) => void;
+  defaultAuditSubtitleData: Subtitle;
+  updateDefaultAuditSubtitleData: (subtitle: Subtitle) => void;
+  submitApplication: (params: Submit) => void;
+  uploadSubtitle: (params: Upload) => void;
+  auditSubtitle: (params: Audit) => void;
 };
+
+
+export let defaultSubtitle: Subtitle = {
+  subtitleId: 0,
+  videoName: "",
+  payType: "",
+  applyId: 0,
+  platformName: "",
+  language: "",
+  support: 0,
+  against: 0,
+  maker: "",
+  uploads: 0,
+  start: 0,
+  deadline: 0,
+  fingerprint: "",
+  cid: ""
+}

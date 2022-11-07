@@ -7,13 +7,18 @@ import { TimeRemainPercentage } from "../../utils/tools";
 import { ApplicationContext } from "../../context/ApplicationContext";
 
 const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
-  const { showAuditModal } = useContext(ApplicationContext);
+  const { showAuditModal, updateDefaultAuditSubtitleData } = useContext(ApplicationContext);
+
+  const auditSubtitleHandle = (subtitle: Subtitle) => {
+    updateDefaultAuditSubtitleData(subtitle);
+    showAuditModal();
+  };
 
   const AuditButton = (): React.ReactElement => {
     return (
       <div
         className="flex items-center justify-center rounded-md text-white font-medium px-[1.1rem] py-3 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
-        onClick={showAuditModal}
+        onClick={() => auditSubtitleHandle(data)}
       >
         Audit
       </div>
@@ -51,7 +56,7 @@ const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
         </div>
         <div className="flex w-full mt-5">
           <Progress
-            percent={TimeRemainPercentage(data.deadline, data.duration)}
+            percent={TimeRemainPercentage(data.start, data.deadline)}
             strokeColor="#696969"
             showInfo={false}
           />

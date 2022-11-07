@@ -72,3 +72,6 @@ ol, ul, dl {
   color: #696969 !important
 }
 
+.ant-spin-nested-loading > div > .ant-spin {
+  max-height:none !important
+}

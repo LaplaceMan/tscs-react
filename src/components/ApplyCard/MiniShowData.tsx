@@ -34,7 +34,7 @@ export const MiniShowData0Package = (data: Application): React.ReactElement => {
     <div className="flex flex-row w-full h-full items-center justify-between mt-4">
       {MiniShowData0(ApplyLabel[0], data.payType, "", "")}
       <DividerH />
-      {MiniShowData0(ApplyLabel[1], data.payNumber, prefix, suffix)}
+      {MiniShowData0(ApplyLabel[1], data.amount, prefix, suffix)}
     </div>
   );
 };

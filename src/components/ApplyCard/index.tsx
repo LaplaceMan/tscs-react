@@ -58,7 +58,7 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
         </div>
         <div className="flex w-full mt-5">
           <Progress
-            percent={TimeRemainPercentage(data.deadline, data.duration)}
+            percent={TimeRemainPercentage(data.start, data.deadline)}
             strokeColor="#696969"
             showInfo={false}
           />

@@ -11,14 +11,14 @@ import { ApplicationContext } from "./context/ApplicationContext";
 
 const { Content, Footer } = Layout;
 const App = () => {
-  const { isUploadModalOpen, isApplicationModalOpen, isAuditModalOpen } =
+  const { isUploadModalOpen, isApplicationModalOpen, isAuditModalOpen, isLoading } =
     useContext(ApplicationContext);
   return (
     <div className="mbg">
       <Layout>
         <Affix offsetTop={0}>{HeaderRoutes()}</Affix>
         <div className="flex w-full items-center justify-center">
-          <Content className="max-w-[1400px]">
+          <Content className="max-w-[1400px] md:mx-10">
             {AllRoutes()}
             <Modal
               open={isUploadModalOpen}
@@ -40,6 +40,7 @@ const App = () => {
             >
               {SubmitApplication()}
             </Modal>
+
             <Modal
               open={isAuditModalOpen}
               destroyOnClose={true}

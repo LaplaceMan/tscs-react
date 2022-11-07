@@ -12,7 +12,6 @@ const ApplyCard = (apply: Application, key: React.Key): React.ReactElement => {
         className="flex text-[white] font-base font-medium h-[30px]  w-full items-center rounded-t-[12px] justify-center"
         style={{ background: "#48a8ff" }}
       >
-        {" "}
         Apply ID: {apply.applyId}
       </div>
       <div className="flex flex-row w-full p-[10px] items-center h-[135px]">
@@ -25,18 +24,18 @@ const ApplyCard = (apply: Application, key: React.Key): React.ReactElement => {
             <div className="text-base text-gray-400">#{apply.vidoId}</div>
           </div>
           <div className="flex">
-            Plarform:{" "}
+            Plarform:
             <div className="font-medium ml-[5px]">{apply.platformName}</div>
           </div>
           <div className="flex">
-            Amount:{" "}
-            <div className="font-medium ml-[5px]">{apply.payNumber}</div>
+            Amount:
+            <div className="font-medium ml-[5px]">{apply.amount}</div>
           </div>
           <div className="flex">
             Type: <div className="font-medium ml-[5px]">{apply.payType}</div>
           </div>
           <div className="flex">
-            Applicant:{" "}
+            Applicant:
             <div className="font-medium ml-[5px]">{apply.applicant}</div>
           </div>
         </div>

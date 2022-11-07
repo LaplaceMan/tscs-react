@@ -1,8 +1,8 @@
 export const TimeRemainPercentage = (
-  deadline: number,
-  duration: number
+  start: number,
+  end: number
 ): number => {
-  return ((deadline - new Date().getTime() / 1000) / duration) * 100;
+  return ((end - new Date().getTime() / 1000) / (end - start)) * 100;
 };
 
 export const getScrollTop = (): number => {
@@ -24,3 +24,11 @@ export const shortenAddress = (address: string): string => {
     return "";
   }
 };
+
+export const timestampToDate = (time: number) => {
+  let date = new Date(time * 1000)
+  let year = date.getFullYear()
+  let mounth = date.getMonth()
+  let day = date.getDay()
+  return (year + '-' + mounth + '-' + day)
+}

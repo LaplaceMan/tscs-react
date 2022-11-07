@@ -46,7 +46,7 @@ const Home = (): React.ReactElement => {
   return (
     <div className="flex flex-col items-center mt-10">
       <div className="flex flex-col items-center">
-        <div className="text-4xl md:text-6xl font-bold text-center">
+        <div className="text-4xl md:text-5xl font-bold text-center">
           Culture Without Boundaries
         </div>
         <div className="flex md:text-lg text-base w-2/3 text-center mt-5 font-medium">
