@@ -11,3 +11,4 @@ export { default as ModelDataMini } from "./ModelDataMini/index";
 export { default as UploadSubtitle } from "./UploadSubtitle/index";
 export { default as AuditSubtitle } from "./AuditSubtitle/index";
 export { default as DefaultFooter } from "./Footer/index";
+export { default as TokenCard } from "./TokenCard/index";

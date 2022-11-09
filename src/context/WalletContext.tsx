@@ -8,8 +8,8 @@ export const WalletContext = React.createContext<WalletContent>({
     network: "",
     type: "",
   },
-  connectWalletMetaMask: () => {},
-  killSessionWalletConnect: () => {},
+  connectWalletMetaMask: () => { },
+  killSessionWalletConnect: () => { },
 });
 export const WalletProvider = ({ children }: any) => {
   const [accountState, setAccountState] = useState({
@@ -41,7 +41,7 @@ export const WalletProvider = ({ children }: any) => {
       ethereum.on("accountsChanged", (accounts: string[]) => {
         if (accounts.length > 0) {
           const address = accounts[0];
-          const networkId = ethereum.networkVersion;
+          const networkId = ethereum.chainId;
           setAccountState({
             address: address,
             network: networkId,
@@ -72,7 +72,7 @@ export const WalletProvider = ({ children }: any) => {
       const accounts = await ethereum.request({ method: "eth_accounts" });
       if (accounts.length) {
         const address = accounts[0];
-        const networkId = ethereum.networkVersion;
+        const networkId = ethereum.chainId;
         setAccountState({
           address: address,
           network: networkId,

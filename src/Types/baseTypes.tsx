@@ -1,4 +1,4 @@
-import { Submit, Upload, Audit } from "./formTypes";
+import { Submit, Upload, Audit, ApproveTransaction } from "./formTypes";
 
 export type Application = {
   applicant: string;
@@ -40,7 +40,7 @@ export type NavbarItem = {
 
 export type DashboardMiniItem = {
   label: string;
-  number: number;
+  number: string;
   change: number;
   bg: string;
   iconBg: string;
@@ -63,6 +63,14 @@ export type GlobalContent = {
   scrollHeight: number;
 };
 
+export type Token = {
+  name: string;
+  balance: string;
+  type: string;
+  issuser: string;
+  address: string;
+};
+
 export type ApplicationContent = {
   isLoading: boolean;
   isUploadModalOpen: boolean;
@@ -74,13 +82,14 @@ export type ApplicationContent = {
   hideApplicationModal: () => void;
   showAuditModal: () => void;
   hideAuditModal: () => void;
-  defaultUploadSubtitleData: { applyId: number; language: string };
-  updateDefaultUploadSubtitleData: (applyId: number, language: string) => void;
+  defaultUploadSubtitleData: { applyId: number; language: number };
+  updateDefaultUploadSubtitleData: (applyId: number, language: number) => void;
   defaultAuditSubtitleData: Subtitle;
   updateDefaultAuditSubtitleData: (subtitle: Subtitle) => void;
   submitApplication: (params: Submit) => void;
   uploadSubtitle: (params: Upload) => void;
   auditSubtitle: (params: Audit) => void;
+  tokenApprove: (params: ApproveTransaction) => void
 };
 
 

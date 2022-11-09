@@ -20,3 +20,11 @@ export type Audit = {
     attitude: number;
     auditor: string;
 };
+
+export type ApproveTransaction = {
+    type: string;
+    address: string;
+    to: string;
+    tokenId: number;
+    number: number;
+}

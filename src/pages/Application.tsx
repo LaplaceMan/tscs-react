@@ -1,13 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client'
 import { application_Illustration } from "../assets/index";
 import { FiArrowUpRight } from "react-icons/fi";
 import { ApplicationItems } from "../utils/testData";
 import { ApplyCard } from "../components";
 import { ApplicationContext } from "../context/ApplicationContext";
+import { GRAPHQL_API } from "../utils/constants"
+import { QueryDashboard } from "../utils/graphql/graphqls"
 
 const Application = (): React.ReactElement => {
   const { showApplicationModal } = useContext(ApplicationContext);
-
   return (
     <div className="flex flex-col items-center">
       <div className="flex flex-row w-full items-center md:justify-between sm:-mr-10 sm:justify-center">

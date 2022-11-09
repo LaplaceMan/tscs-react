@@ -1,0 +1,2 @@
+import { SUBTITLE_SYSTEM } from "../contracts"
+export const QueryDashboard = `query { dashboard(id: \"0xFAD53972470A332657bc9aA64B725f2dDd28cCe8\") { applicationCount languageCount platformCount subtitleCount}}`

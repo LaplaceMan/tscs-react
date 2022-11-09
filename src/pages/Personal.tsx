@@ -3,6 +3,9 @@ import { Tabs, Empty } from "antd";
 import { SiEthereum } from "react-icons/si";
 import { WalletContext } from "../context/WalletContext";
 import { shortenAddress } from "../utils/tools"
+import { TokenCard } from "../components"
+import { ZIMU_TOKEN } from "../utils/contracts"
+
 const NoItems = () => {
   return (
     <div className="flex flex-col mx-auto my-10">
@@ -16,8 +19,18 @@ const NoItems = () => {
     </div>
   );
 };
+
 const Personal = (): React.ReactElement => {
   const { accountState } = useContext(WalletContext)
+
+  const Tokens = () => {
+    return (
+      <div className="flex flex-wrap items-center justify-around md:justify-between">
+        {TokenCard({ name: 'Zimu', balance: '20K', type: 'ERC20', issuser: 'TSCS', address: ZIMU_TOKEN[accountState.network] })}
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col w-full">
       <div
@@ -28,9 +41,9 @@ const Personal = (): React.ReactElement => {
       >
         <div className="mt-40 flex justify-center mx-[60px] align-bottom">
           <img
-            className="shrink-0 w-32 h-32 md:w-36 md:h-36 rounded-xl"
+            className="shrink-0 w-32 h-32 md:w-36 md:h-36 rounded-xl shadow"
             src={
-              "https://tse2-mm.cn.bing.net/th/id/OIP-C.JPaFw0vH2f6Qy44aUfZ4jgAAAA?pid=ImgDet&rs=1"
+              "http://api.btstu.cn/sjtx/api.php?lx=c1&format=images"
             }
           />
         </div>
@@ -59,9 +72,14 @@ const Personal = (): React.ReactElement => {
             children: `Content of Tab Pane 2`,
           },
           {
-            label: <div className="font-semibold text-lg">Assets</div>,
+            label: <div className="font-semibold text-lg">Audited</div>,
             key: "3",
-            children: `Content of Tab Pane 3`,
+            children: `Content of Tab Pane 2`,
+          },
+          {
+            label: <div className="font-semibold text-lg">Assets</div>,
+            key: "4",
+            children: Tokens(),
           },
         ]}
       />

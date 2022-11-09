@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ApplicationContent, Subtitle, defaultSubtitle } from "../types/baseTypes";
-import { Submit, Upload, Audit } from "../types/formTypes";
+import { Submit, Upload, Audit, ApproveTransaction } from "../types/formTypes";
 import { ethers } from "ethers";
-import { SUBTITLE_SYSTEM, SUBTITLE_SYSTEM_ABI } from "../utils/contracts"
+import { SUBTITLE_SYSTEM, SUBTITLE_SYSTEM_ABI, ERC20_ABI } from "../utils/contracts"
 const { ethereum } = window as any;
 
 const getContract = (address: string, abi: any): ethers.Contract => {
@@ -23,13 +23,14 @@ export const ApplicationContext = React.createContext<ApplicationContent>({
   hideApplicationModal: () => { },
   showAuditModal: () => { },
   hideAuditModal: () => { },
-  defaultUploadSubtitleData: { applyId: 0, language: "" },
+  defaultUploadSubtitleData: { applyId: 0, language: 1 },
   updateDefaultUploadSubtitleData: () => { },
   defaultAuditSubtitleData: defaultSubtitle,
   updateDefaultAuditSubtitleData: () => { },
   submitApplication: () => { },
   uploadSubtitle: () => { },
-  auditSubtitle: () => { }
+  auditSubtitle: () => { },
+  tokenApprove: () => { },
 });
 
 export const ApplicationProvider = ({ children }: any) => {
@@ -39,7 +40,7 @@ export const ApplicationProvider = ({ children }: any) => {
   const [isAuditModalOpen, setAuditIsModalOpen] = useState(false);
   const [defaultUploadSubtitleData, setDefaultUploadSubtitleData] = useState({
     applyId: 0,
-    language: "",
+    language: 1,
   });
   const [defaultAuditSubtitleData, setDefaultAuditSubtitleData] = useState(defaultSubtitle);
 
@@ -49,7 +50,7 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const updateDefaultUploadSubtitleData = (
     applyId: number,
-    language: string
+    language: number
   ) => {
     setDefaultUploadSubtitleData({
       applyId: applyId,
@@ -83,7 +84,7 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const submitApplication = async (params: Submit) => {
     if (!ethereum) return alert("Please install wallet.");
-    const networkId = ethereum.networkVersion
+    const networkId = ethereum.chainId
     const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
     let transaction = await tscs.submitApplication(params.platform, params.videoId, params.strategy, params.amount, params.language, params.deadline, params.source);
     setIsLoading(true);
@@ -94,7 +95,7 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const uploadSubtitle = async (params: Upload) => {
     if (!ethereum) return alert("Please install wallet.");
-    const networkId = ethereum.networkVersion
+    const networkId = ethereum.chainId
     const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
     let transaction = await tscs.uploadSubtitle(params.applyId, params.cid, params.language, params.fingerprint);
     setIsLoading(true);
@@ -105,13 +106,25 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const auditSubtitle = async (params: Audit) => {
     if (!ethereum) return alert("Please install wallet.");
-    const networkId = ethereum.networkVersion
+    const networkId = ethereum.chainId
     const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
     let transaction = await tscs.evaluateSubtitle(params.subtitleId, params.attitude)
     setIsLoading(true);
     await transaction.wait()
     console.log('Success:', transaction.hash);
     setIsLoading(false);
+  }
+
+  const tokenApprove = async (params: ApproveTransaction) => {
+    if (!ethereum) return alert("Please install wallet.");
+    let token;
+    let transaction;
+    if (params.type == 'ERC20') {
+      token = getContract(params.address, ERC20_ABI);
+      transaction = await token.approve(params.to, params.number);
+      await transaction.wait()
+      console.log('Success:', transaction.hash);
+    }
   }
 
   useEffect(() => {
@@ -140,6 +153,7 @@ export const ApplicationProvider = ({ children }: any) => {
         submitApplication,
         uploadSubtitle,
         auditSubtitle,
+        tokenApprove,
       }}
     >
       {children}

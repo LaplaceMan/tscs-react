@@ -29,7 +29,7 @@ const SubmitApplication = () => {
           requiredMark="optional"
           className="w-full"
           onFinish={onFinish}
-          initialValues={{ strategy: 0, language: 0, platform: ZERO_ADDRESS }}
+          initialValues={{ strategy: 0, language: 1, platform: ZERO_ADDRESS }}
         >
           <div className="flex items-center justify-between mb-3">
             <div className="text-xl font-bold">
@@ -119,9 +119,8 @@ const SubmitApplication = () => {
                   .includes(input.toLowerCase())
               }
             >
-              <Option value={0}>Chinese</Option>
-              <Option value={1}>English</Option>
-              <Option value={2}>Korean</Option>
+              <Option value={1}>Chinese</Option>
+              <Option value={2}>English</Option>
               <Option value={3}>Japanese</Option>
             </Select>
           </Form.Item>

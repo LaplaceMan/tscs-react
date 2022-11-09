@@ -34,7 +34,7 @@ const UploadSubtitle = (): React.ReactElement => {
           layout="vertical"
           preserve={false}
           requiredMark="optional"
-          initialValues={{ language: 0 }}
+          initialValues={{ language: 1 }}
           onFinish={onFinish}
           className="w-full"
         >
@@ -94,10 +94,10 @@ const UploadSubtitle = (): React.ReactElement => {
                   : false
               }
             >
-              <Option value={0}>Chinese</Option>
-              <Option value={1}>English</Option>
-              <Option value={2}>Korean</Option>
-              <Option value={3}>Japanese</Option>
+              <Option value={1}>Chinese</Option>
+              <Option value={2}>English</Option>
+              <Option value={3}>Korean</Option>
+              <Option value={4}>Japanese</Option>
             </Select>
           </Form.Item>
           <Form.Item
