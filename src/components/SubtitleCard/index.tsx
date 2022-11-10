@@ -5,6 +5,7 @@ import { CircleFlag } from "react-circle-flags";
 import { Subtitle } from "../../types/baseTypes";
 import { TimeRemainPercentage } from "../../utils/tools";
 import { ApplicationContext } from "../../context/ApplicationContext";
+import { shortenAddress } from "../../utils/tools";
 
 const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
   const { showAuditModal, updateDefaultAuditSubtitleData } = useContext(ApplicationContext);
@@ -37,12 +38,12 @@ const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
           </div>
           <div className="flex flex-col items-start ml-3">
             <div className="flex items-end text-lg font-semibold">
-              {data.videoName}
+              Source
               <div className="text-sm text-[#696969] ml-1">
                 #{data.subtitleId}
               </div>
             </div>
-            <div className="flex text-sm text-[#696969]">{data.maker}</div>
+            <div className="flex text-sm text-[#696969]">{shortenAddress(data.maker)}</div>
           </div>
         </div>
         {MiniShowData0Package(data)}

@@ -1,8 +1,8 @@
-import { IDCard } from "../";
 import { BsAwardFill } from "react-icons/bs";
 import { BiWalletAlt, BiGlobe } from "react-icons/bi";
 import { Network } from "../../utils/constants";
 import { shortenAddress } from "../../utils/tools";
+
 const UserLogIn = (
   {
     address,
@@ -13,8 +13,16 @@ const UserLogIn = (
     network: string;
     type: string;
   },
+  {
+    reputation,
+    deposit
+  }: {
+    reputation: string;
+    deposit: string;
+  },
   killSessionWalletConnect: () => void
 ): React.ReactElement => {
+
   return (
     <div className="flex flex-col rounded-md bg-white items-center max-w-[232px]">
       <div className="flex flex-row mb-3 justify-start items-center px-4">
@@ -34,7 +42,7 @@ const UserLogIn = (
               className="mr-1"
               style={{ lineHeight: "13", fontSize: "13" }}
             />
-            100.0
+            {reputation}
           </div>
         </div>
       </div>
@@ -54,12 +62,6 @@ const UserLogIn = (
           </div>
         </div>
       </div>
-      {/* <div className="flex w-full items-center justify-center px-4">
-        <IDCard />
-      </div> */}
-      {/* <div className="flex items-center justify-center text-[#696969] text-xs w-full mt-1 text-center px-4 scale-75">
-        YOUR ID CARD CHANGS WITH REPUTATION
-      </div> */}
       <div
         className="flex w-11/12 py-1.5 text-base items-center justify-center text-white bg-[#f02525] rounded-md hover:shadow-md font-medium cursor-pointer hover:brightness-110"
         onClick={killSessionWalletConnect}

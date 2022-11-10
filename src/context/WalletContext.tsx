@@ -24,7 +24,7 @@ export const WalletProvider = ({ children }: any) => {
         method: "eth_requestAccounts",
       });
       const address = accounts[0];
-      const networkId = ethereum.networkVersion;
+      const networkId = ethereum.chainId;
       setAccountState({
         address: address,
         network: networkId,

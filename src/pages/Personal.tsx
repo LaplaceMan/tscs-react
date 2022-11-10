@@ -3,7 +3,7 @@ import { Tabs, Empty } from "antd";
 import { SiEthereum } from "react-icons/si";
 import { WalletContext } from "../context/WalletContext";
 import { shortenAddress } from "../utils/tools"
-import { TokenCard } from "../components"
+import { OwnAssetCard, OwnApplicationCard, OwnSubtitleCard, OwnAuditCard } from "../components"
 import { ZIMU_TOKEN } from "../utils/contracts"
 
 const NoItems = () => {
@@ -23,12 +23,37 @@ const NoItems = () => {
 const Personal = (): React.ReactElement => {
   const { accountState } = useContext(WalletContext)
 
-  const Tokens = () => {
+  const Assets = () => {
     return (
-      <div className="flex flex-wrap items-center justify-around md:justify-between">
-        {TokenCard({ name: 'Zimu', balance: '20K', type: 'ERC20', issuser: 'TSCS', address: ZIMU_TOKEN[accountState.network] })}
+      <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
+        {OwnAssetCard({ name: 'Zimu', balance: '20K', type: 'ERC20', issuser: 'TSCS', address: ZIMU_TOKEN[accountState.network] })}
+        {OwnAssetCard({ name: 'DefaultVT', balance: '20K', type: 'ERC1155', issuser: 'TSCS', address: ZIMU_TOKEN[accountState.network] })}
       </div>
     );
+  }
+
+  const Applications = () => {
+    return (
+      <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
+        {OwnApplicationCard({ name: 'None', type: 'OT0', price: '20.37K', state: '0', source: 'test.com', videoId: '1', applyId: '1', language: 'cn' })}
+      </div>
+    )
+  }
+
+  const Subtitles = () => {
+    return (
+      <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
+        {OwnSubtitleCard({ subtitleId: '10', cid: 'Qmasfsdfdsfsd', support: '50', oppose: '5', state: 'Normal', applyId: '1', language: 'cn' })}
+      </div>
+    )
+  }
+
+  const Audits = () => {
+    return (
+      <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
+        {OwnAuditCard({ subtitleId: '10', cid: 'Qmasfsdfdsfsd', state: 'Normal', applyId: '1', language: 'cn', attitude: 'Support' })}
+      </div>
+    )
   }
 
   return (
@@ -64,22 +89,22 @@ const Personal = (): React.ReactElement => {
           {
             label: <div className="font-semibold text-lg ">Applications</div>,
             key: "1",
-            children: <NoItems />,
+            children: Applications(),
           },
           {
             label: <div className="font-semibold text-lg">Subtitles</div>,
             key: "2",
-            children: `Content of Tab Pane 2`,
+            children: Subtitles(),
           },
           {
             label: <div className="font-semibold text-lg">Audited</div>,
             key: "3",
-            children: `Content of Tab Pane 2`,
+            children: Audits(),
           },
           {
             label: <div className="font-semibold text-lg">Assets</div>,
             key: "4",
-            children: Tokens(),
+            children: Assets(),
           },
         ]}
       />

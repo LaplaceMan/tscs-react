@@ -1,5 +1,4 @@
 export { default as HeaderTop } from "./Header/index";
-export { default as IDCard } from "./IDCard/index";
 export { default as ApplyCard } from "./ApplyCard/index";
 export { default as UserLogIn } from "./UserLogIn/index";
 export { default as UserLogOut } from "./UserLogOut/index";
@@ -11,4 +10,7 @@ export { default as ModelDataMini } from "./ModelDataMini/index";
 export { default as UploadSubtitle } from "./UploadSubtitle/index";
 export { default as AuditSubtitle } from "./AuditSubtitle/index";
 export { default as DefaultFooter } from "./Footer/index";
-export { default as TokenCard } from "./TokenCard/index";
+export { default as OwnAssetCard } from "./OwnAssetCard/index";
+export { default as OwnAuditCard } from "./OwnAuditCard/index";
+export { default as OwnSubtitleCard } from "./OwnSubtitleCard/index";
+export { default as OwnApplicationCard } from "./OwnApplicationCard/index";

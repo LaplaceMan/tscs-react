@@ -8,7 +8,7 @@ const Government = (): React.ReactElement => {
   const { showUploadModal, updateDefaultUploadSubtitleData } =
     useContext(ApplicationContext);
   const uploadSubtitleHandle = () => {
-    updateDefaultUploadSubtitleData(0, "cn");
+    updateDefaultUploadSubtitleData('0', 1);
     showUploadModal();
   };
 

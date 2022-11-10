@@ -34,7 +34,7 @@ const AuditSubtitle = () => {
                 <CircleFlag countryCode={defaultAuditSubtitleData.language} />
               </div>
               <div className="flex flex-col items-start ml-3">
-                <div className="text-lg font-medium">{defaultAuditSubtitleData.videoName}</div>
+                <div className="text-lg font-medium">Source</div>
                 <div className="text-sm text-[#696969]">{defaultAuditSubtitleData.maker}</div>
               </div>
             </div>

@@ -8,7 +8,7 @@ const DividerH = (): React.ReactElement => {
 
 export const MiniShowData0 = (
   label: string,
-  data: number,
+  data: string,
   prefix: string,
   suffix: string
 ) => {
@@ -27,7 +27,7 @@ export const MiniShowData0Package = (data: Subtitle): React.ReactElement => {
     <div className="flex flex-row w-full h-full items-center justify-between mt-4">
       {MiniShowData0(ApplyLabel[0], data.support, "", "")}
       <DividerH />
-      {MiniShowData0(ApplyLabel[1], data.against, "", "")}
+      {MiniShowData0(ApplyLabel[1], data.oppose, "", "")}
     </div>
   );
 };

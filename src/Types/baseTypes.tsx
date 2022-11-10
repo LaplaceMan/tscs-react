@@ -2,35 +2,63 @@ import { Submit, Upload, Audit, ApproveTransaction } from "./formTypes";
 
 export type Application = {
   applicant: string;
-  vidoId: number;
-  videoName: string;
+  vidoId: string;
   platformName: string;
-  applyId: number;
+  applyId: string;
   language: string;
   amount: string;
   payType: string;
-  uploads: number;
+  uploads: string;
   start: number;
   deadline: number;
   source: string;
 };
 
+export let defaultApplication: Application = {
+  applicant: '',
+  vidoId: '',
+  platformName: '',
+  applyId: '',
+  language: '',
+  amount: '',
+  payType: '',
+  uploads: '',
+  start: 0,
+  deadline: 0,
+  source: ''
+}
+
 export type Subtitle = {
-  videoName: string;
-  applyId: number;
+  applyId: string;
   payType: string;
   platformName: string;
-  subtitleId: number;
+  subtitleId: string;
   language: string;
-  support: number;
-  against: number;
+  support: string;
+  oppose: string;
   maker: string;
-  uploads: number;
+  uploads: string;
   start: number;
   deadline: number;
   fingerprint: string;
   cid: string;
 };
+
+export let defaultSubtitle: Subtitle = {
+  applyId: '',
+  payType: '',
+  platformName: '',
+  subtitleId: '',
+  language: '',
+  support: '',
+  oppose: '',
+  maker: '',
+  uploads: '',
+  start: 0,
+  deadline: 0,
+  fingerprint: '',
+  cid: ''
+}
 
 export type NavbarItem = {
   title: string;
@@ -63,7 +91,7 @@ export type GlobalContent = {
   scrollHeight: number;
 };
 
-export type Token = {
+export type OwnToken = {
   name: string;
   balance: string;
   type: string;
@@ -71,7 +99,38 @@ export type Token = {
   address: string;
 };
 
+export type OwnApplication = {
+  name: string;
+  type: string;
+  price: string;
+  state: string;
+  source: string;
+  videoId: string;
+  applyId: string;
+  language: string;
+}
+
+export type OwnSubtitle = {
+  subtitleId: string;
+  cid: string;
+  support: string;
+  oppose: string;
+  state: string;
+  applyId: string;
+  language: string;
+}
+
+export type OwnAudit = {
+  cid: string;
+  state: string;
+  applyId: string;
+  language: string;
+  attitude: string;
+  subtitleId: string;
+}
+
 export type ApplicationContent = {
+  userDID: { reputation: string, deposit: string };
   isLoading: boolean;
   isUploadModalOpen: boolean;
   isApplicationModalOpen: boolean;
@@ -82,8 +141,8 @@ export type ApplicationContent = {
   hideApplicationModal: () => void;
   showAuditModal: () => void;
   hideAuditModal: () => void;
-  defaultUploadSubtitleData: { applyId: number; language: number };
-  updateDefaultUploadSubtitleData: (applyId: number, language: number) => void;
+  defaultUploadSubtitleData: { applyId: string; language: number };
+  updateDefaultUploadSubtitleData: (applyId: string, language: number) => void;
   defaultAuditSubtitleData: Subtitle;
   updateDefaultAuditSubtitleData: (subtitle: Subtitle) => void;
   submitApplication: (params: Submit) => void;
@@ -93,19 +152,3 @@ export type ApplicationContent = {
 };
 
 
-export let defaultSubtitle: Subtitle = {
-  subtitleId: 0,
-  videoName: "",
-  payType: "",
-  applyId: 0,
-  platformName: "",
-  language: "",
-  support: 0,
-  against: 0,
-  maker: "",
-  uploads: 0,
-  start: 0,
-  deadline: 0,
-  fingerprint: "",
-  cid: ""
-}

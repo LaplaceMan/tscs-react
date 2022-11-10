@@ -1,2 +1,5 @@
-import { SUBTITLE_SYSTEM } from "../contracts"
-export const QueryDashboard = `query { dashboard(id: \"0xFAD53972470A332657bc9aA64B725f2dDd28cCe8\") { applicationCount languageCount platformCount subtitleCount}}`
+export const QueryHome = "query($id: String, $first: Int) { dashboard(id: $id) { applicationCount languageCount platformCount subtitleCount}  applications(first: $first, orderBy: start, orderDirection: asc) { id applicant {id} video { realId orderId platform {name}} language {notes} amount strategy{notes} subtitleCount start deadline source} subtitles(first: $first, orderBy: time, orderDirection: asc) {id application{id subtitleCount start deadline strategy{notes} video{platform{name}}} language{notes} supporterCount dissenterCount maker{id} fingerprint cid }}"
+
+export const QueryApplication = "query($first: Int, $skip: Int) {applications(first: $first, skip: $skip, orderBy: start, orderDirection: asc) { id applicant {id} video { realId orderId platform {name}} language {notes} amount strategy{notes} subtitleCount start deadline source}}"
+
+export const QuerySubtitle = "query($first: Int, $skip: Int) {subtitles(first: $first, skip: $skip, orderBy: time, orderDirection: asc) {id application{id subtitleCount start deadline strategy{notes} video{platform{name}}} language{notes} supporterCount dissenterCount maker{id} fingerprint cid }}"

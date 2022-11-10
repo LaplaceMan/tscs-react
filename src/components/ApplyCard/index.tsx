@@ -3,7 +3,7 @@ import { Progress } from "antd";
 import { useContext } from "react";
 import { CircleFlag } from "react-circle-flags";
 import { Application } from "../../types/baseTypes";
-import { TimeRemainPercentage } from "../../utils/tools";
+import { TimeRemainPercentage, shortenAddress } from "../../utils/tools";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { Languages } from "../../utils/constants"
 
@@ -11,13 +11,13 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
   const { updateDefaultUploadSubtitleData, showUploadModal } =
     useContext(ApplicationContext);
 
-  const uploadSubtitleHandle = (applyId: number, language: number) => {
+  const uploadSubtitleHandle = (applyId: string, language: number) => {
     updateDefaultUploadSubtitleData(applyId, language);
     showUploadModal();
   };
 
   const UploadButton = (
-    applyId: number,
+    applyId: string,
     language: number
   ): React.ReactElement => {
     return (
@@ -42,10 +42,10 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
           </div>
           <div className="flex flex-col items-start ml-3">
             <div className="flex items-end text-lg font-semibold">
-              {data.videoName}
+              Source
               <div className="text-sm text-[#696969] ml-1">#{data.vidoId}</div>
             </div>
-            <div className="flex text-sm text-[#696969]">{data.applicant}</div>
+            <div className="flex text-sm text-[#696969]">{shortenAddress(data.applicant)}</div>
           </div>
         </div>
         {MiniShowData0Package(data)}

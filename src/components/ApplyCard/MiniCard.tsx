@@ -20,7 +20,7 @@ const ApplyCard = (apply: Application, key: React.Key): React.ReactElement => {
         </div>
         <div className="flex flex-col items-start justify-between ml-[15px] w-[180px]">
           <div className="flex w-full font-medium font-base items-end justify-between text-xl">
-            {apply.videoName}
+            Source
             <div className="text-base text-gray-400">#{apply.vidoId}</div>
           </div>
           <div className="flex">

@@ -16,7 +16,7 @@ export type Upload = {
 };
 
 export type Audit = {
-    subtitleId: number;
+    subtitleId: string;
     attitude: number;
     auditor: string;
 };

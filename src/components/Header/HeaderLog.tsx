@@ -4,15 +4,18 @@ import { Popover } from "antd";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { WalletContext } from "../../context/WalletContext";
+import { ApplicationContext } from "../../context/ApplicationContext";
 const UserLogInfo = (): React.ReactElement => {
   const { accountState, killSessionWalletConnect } = useContext(WalletContext);
+  const { userDID } = useContext(ApplicationContext);
+
   const address: string = accountState.address;
   return (
     <Popover
       placement="bottomRight"
       content={
         address != ""
-          ? UserLogIn(accountState, killSessionWalletConnect)
+          ? UserLogIn(accountState, userDID, killSessionWalletConnect)
           : UserLogOut
       }
     >
