@@ -1,15 +1,18 @@
 import { Tag, Spin } from "antd";
 import { useContext } from "react";
+import { BigNumber } from "bignumber.js"
 import { CircleFlag } from "react-circle-flags";
 import { MdOutlineClose } from "react-icons/md";
 import { RiSecurePaymentLine, RiStarSmileLine } from "react-icons/ri";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { WalletContext } from "../../context/WalletContext";
-import { timestampToDate } from "../../utils/tools"
+import { DataContext } from "../../context/DataContext";
+import { timestampToDate, shortenAddress } from "../../utils/tools"
 import { Audit } from "../../types/formTypes";
 const AuditSubtitle = () => {
   const { hideAuditModal, isLoading, defaultAuditSubtitleData, auditSubtitle } = useContext(ApplicationContext);
   const { accountState } = useContext(WalletContext)
+  const { defaultAuditSubtitleMaker } = useContext(DataContext)
   const txParams = (attitude: number): Audit => {
     return { subtitleId: defaultAuditSubtitleData.subtitleId, attitude: attitude, auditor: accountState.address }
   }
@@ -35,7 +38,7 @@ const AuditSubtitle = () => {
               </div>
               <div className="flex flex-col items-start ml-3">
                 <div className="text-lg font-medium">Source</div>
-                <div className="text-sm text-[#696969]">{defaultAuditSubtitleData.maker}</div>
+                <div className="text-sm text-[#696969]">{'#' + defaultAuditSubtitleData.subtitleId}</div>
               </div>
             </div>
             <div className="flex flex-row mt-2 items-center justify-center">
@@ -54,7 +57,7 @@ const AuditSubtitle = () => {
                 Simhash Fingerprint
               </div>
               <div className="flex p-2 bg-gray-100 break-all rounded-md font-medium items-center justify-center">
-                {defaultAuditSubtitleData.fingerprint}
+                {BigNumber(defaultAuditSubtitleData.fingerprint).toString(16)}
               </div>
             </div>
             <div className="flex flex-col">
@@ -76,19 +79,19 @@ const AuditSubtitle = () => {
                 />
               </div>
               <div className="flex flex-col items-start ml-3">
-                <div className="text-lg font-medium">Lulu</div>
-                <div className="text-sm text-[#696969]">0x666...666</div>
+                <div className="text-lg font-medium">ENS</div>
+                <div className="text-sm text-[#696969]">{shortenAddress(defaultAuditSubtitleData.maker)}</div>
               </div>
             </div>
             <div className="flex flex-row mt-2 items-center justify-center">
               <Tag color="blue">Maker</Tag>
-              <Tag color="blue">2022-10-27</Tag>
+              <Tag color="blue">{timestampToDate(defaultAuditSubtitleMaker.join)}</Tag>
               <Tag
                 color="blue"
                 className="flex items-center"
                 icon={<RiStarSmileLine style={{ marginRight: "3px" }} />}
               >
-                10
+                {defaultAuditSubtitleMaker.adopted}
               </Tag>
             </div>
             <div className="flex flex-col my-2">
@@ -96,15 +99,15 @@ const AuditSubtitle = () => {
                 Reputation
               </div>
               <div className="flex p-2 bg-gray-100 break-all rounded-md font-medium items-center justify-center">
-                0xa54698dac6
+                {BigNumber(defaultAuditSubtitleMaker.reputation).div(10).toString()}
               </div>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col h-full">
               <div className="flex items-center justify-center text-[#696969] ">
-                Soulbound Token
+                Despoit Token
               </div>
-              <div className="flex p-2 bg-gray-100 break-all font-medium rounded-md items-center justify-center">
-                QmXVPFgeQH7BgSRv6eDATU8i6oaLmmUM9WQB99wCgg87or
+              <div className="flex p-2 bg-gray-100 break-all font-medium rounded-md items-center justify-center h-full">
+                {defaultAuditSubtitleMaker.deposit}
               </div>
             </div>
           </div>

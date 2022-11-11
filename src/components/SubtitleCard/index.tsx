@@ -5,13 +5,15 @@ import { CircleFlag } from "react-circle-flags";
 import { Subtitle } from "../../types/baseTypes";
 import { TimeRemainPercentage } from "../../utils/tools";
 import { ApplicationContext } from "../../context/ApplicationContext";
+import { DataContext } from "../../context/DataContext";
 import { shortenAddress } from "../../utils/tools";
 
 const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
   const { showAuditModal, updateDefaultAuditSubtitleData } = useContext(ApplicationContext);
-
-  const auditSubtitleHandle = (subtitle: Subtitle) => {
-    updateDefaultAuditSubtitleData(subtitle);
+  const { queryUserData } = useContext(DataContext)
+  const auditSubtitleHandle = () => {
+    updateDefaultAuditSubtitleData(data);
+    queryUserData(data.maker)
     showAuditModal();
   };
 
@@ -19,7 +21,7 @@ const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
     return (
       <div
         className="flex items-center justify-center rounded-md text-white font-medium px-[1.1rem] py-3 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
-        onClick={() => auditSubtitleHandle(data)}
+        onClick={() => auditSubtitleHandle()}
       >
         Audit
       </div>
@@ -39,9 +41,6 @@ const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
           <div className="flex flex-col items-start ml-3">
             <div className="flex items-end text-lg font-semibold">
               Source
-              <div className="text-sm text-[#696969] ml-1">
-                #{data.subtitleId}
-              </div>
             </div>
             <div className="flex text-sm text-[#696969]">{shortenAddress(data.maker)}</div>
           </div>

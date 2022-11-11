@@ -1,7 +1,7 @@
 import React from "react";
 import { Subtitle } from "../../types/baseTypes";
 
-const ApplyLabel = ["Support", "Against", "Platform", "Uploads", "Apply ID"];
+const ApplyLabel = ["Support", "Against", "Platform", "Subtitle ID", "Apply ID"];
 const DividerH = (): React.ReactElement => {
   return <div className="flex h-full w-0.5 bg-gray-100 rounded-full mx-3" />;
 };
@@ -53,9 +53,9 @@ export const MiniShowData1Package = (data: Subtitle): React.ReactElement => {
     <div className="flex flex-row h-full items-center justify-between">
       {MiniShowData1(ApplyLabel[2], data.platformName, "", "")}
       <DividerH />
-      {MiniShowData1(ApplyLabel[3], data.uploads.toString(), "", "")}
+      {MiniShowData1(ApplyLabel[3], data.uploads, "", "")}
       <DividerH />
-      {MiniShowData1(ApplyLabel[4], data.applyId.toString(), "", "")}
+      {MiniShowData1(ApplyLabel[4], data.subtitleId, "", "")}
     </div>
   );
 };

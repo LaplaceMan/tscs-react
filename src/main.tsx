@@ -6,14 +6,16 @@ import { BrowserRouter } from "react-router-dom";
 import { WalletProvider } from "./context/WalletContext";
 import { GlobalProvider } from "./context/GlobalContext";
 import { ApplicationProvider } from "./context/ApplicationContext";
-
+import { DataProvider } from "./context/DataContext"
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <GlobalProvider>
     <WalletProvider>
       <ApplicationProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <DataProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </DataProvider>
       </ApplicationProvider>
     </WalletProvider>
   </GlobalProvider>

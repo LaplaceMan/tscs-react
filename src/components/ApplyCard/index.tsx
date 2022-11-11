@@ -43,7 +43,6 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
           <div className="flex flex-col items-start ml-3">
             <div className="flex items-end text-lg font-semibold">
               Source
-              <div className="text-sm text-[#696969] ml-1">#{data.vidoId}</div>
             </div>
             <div className="flex text-sm text-[#696969]">{shortenAddress(data.applicant)}</div>
           </div>

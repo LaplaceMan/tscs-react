@@ -60,6 +60,44 @@ export let defaultSubtitle: Subtitle = {
   cid: ''
 }
 
+export type Dashboard = {
+  applicationCount: string;
+  userCount: string;
+  subtitleCount: string;
+  platformCount: string;
+  applicationInc: string;
+  userInc: string;
+  platformInc: string;
+  subtitleInc: string;
+}
+
+export let defaultDashboard = {
+  applicationCount: "0",
+  userCount: "0",
+  subtitleCount: "0",
+  platformCount: "0",
+  applicationInc: "0",
+  userInc: "0",
+  platformInc: "0",
+  subtitleInc: "0"
+}
+
+export type User = {
+  id: string;
+  reputation: string;
+  deposit: string;
+  adopted: string;
+  join: number;
+}
+
+export let defaultUser = {
+  id: '',
+  reputation: '0',
+  deposit: '0',
+  adopted: '0',
+  join: 0
+}
+
 export type NavbarItem = {
   title: string;
   link: string;
@@ -69,7 +107,7 @@ export type NavbarItem = {
 export type DashboardMiniItem = {
   label: string;
   number: string;
-  change: number;
+  change: string;
   bg: string;
   iconBg: string;
   icon: React.ReactElement;
@@ -110,6 +148,17 @@ export type OwnApplication = {
   language: string;
 }
 
+export let defaultOwnApplication = {
+  name: "",
+  type: "",
+  price: "0",
+  state: "",
+  source: "",
+  videoId: "0",
+  applyId: "0",
+  language: "0"
+}
+
 export type OwnSubtitle = {
   subtitleId: string;
   cid: string;
@@ -120,6 +169,16 @@ export type OwnSubtitle = {
   language: string;
 }
 
+export let defaultOwnSubtitle = {
+  subtitleId: "0",
+  cid: "",
+  support: "0",
+  oppose: "0",
+  state: "",
+  applyId: "0",
+  language: ""
+}
+
 export type OwnAudit = {
   cid: string;
   state: string;
@@ -127,6 +186,27 @@ export type OwnAudit = {
   language: string;
   attitude: string;
   subtitleId: string;
+}
+
+export let defaultOwnAudit = {
+  cid: "",
+  state: "",
+  applyId: "0",
+  language: "",
+  attitude: "",
+  subtitleId: "0"
+}
+
+export type UserOwn = {
+  applications: OwnApplication[],
+  subtitles: OwnSubtitle[],
+  audits: OwnAudit[]
+}
+
+export let defaultUserOwn = {
+  applications: [defaultOwnApplication],
+  subtitles: [defaultOwnSubtitle],
+  audits: [defaultOwnAudit]
 }
 
 export type ApplicationContent = {
@@ -151,4 +231,16 @@ export type ApplicationContent = {
   tokenApprove: (params: ApproveTransaction) => void
 };
 
+export type DataContent = {
+  applications: Application[],
+  subtitles: Subtitle[],
+  queryApplicationData: () => void,
+  dashboard: Dashboard,
+  queryHomeData: () => void,
+  querySubtitleData: () => void,
+  defaultAuditSubtitleMaker: User,
+  queryUserData: (id: string) => void,
+  userOwnData: UserOwn,
+  queryUserOwnData: () => void
+}
 

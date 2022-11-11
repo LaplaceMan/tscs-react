@@ -2249,6 +2249,11 @@
   "resolved" "https://registry.npmmirror.com/bech32/-/bech32-1.1.4.tgz"
   "version" "1.1.4"
 
+"bignumber.js@^9.1.0":
+  "integrity" "sha512-4LwHK4nfDOraBCtst+wOWIHbu1vhvAPJK8g8nROd4iuc3PSEjWif/qwbkh8jwCJz6yDBvtU4KPynETgrfh7y3A=="
+  "resolved" "https://registry.npmmirror.com/bignumber.js/-/bignumber.js-9.1.0.tgz"
+  "version" "9.1.0"
+
 "bin-links@^4.0.1":
   "version" "4.0.1"
   dependencies:

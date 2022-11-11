@@ -19,7 +19,7 @@ const UploadSubtitle = (): React.ReactElement => {
   }
 
   useEffect(() => {
-    if (defaultUploadSubtitleData.applyId) {
+    if (defaultUploadSubtitleData.applyId != '0') {
       form.setFieldsValue({ ...defaultUploadSubtitleData });
     } else {
       form.setFieldsValue(null);
@@ -67,7 +67,7 @@ const UploadSubtitle = (): React.ReactElement => {
               min={1}
               style={{ width: "100%" }}
               disabled={
-                defaultUploadSubtitleData && defaultUploadSubtitleData.applyId
+                defaultUploadSubtitleData && defaultUploadSubtitleData.applyId != '0'
                   ? true
                   : false
               }
@@ -89,7 +89,7 @@ const UploadSubtitle = (): React.ReactElement => {
                   .includes(input.toLowerCase())
               }
               disabled={
-                defaultUploadSubtitleData && defaultUploadSubtitleData.applyId
+                defaultUploadSubtitleData && defaultUploadSubtitleData.applyId != '0'
                   ? true
                   : false
               }

@@ -95,7 +95,7 @@ export const ApplicationProvider = ({ children }: any) => {
     const address = accounts[0];
     if (address) {
       let result = await tscs.getUserBaseInfo(address);
-      setUserDID({ reputation: BigNumber.from(result[0]).toString(), deposit: BigNumber.from(result[1]).toString() })
+      setUserDID({ reputation: BigNumber.from(result[0]).div(10).toString(), deposit: BigNumber.from(result[1]).toString() })
     }
   }
 

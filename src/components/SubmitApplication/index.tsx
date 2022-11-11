@@ -53,6 +53,7 @@ const SubmitApplication = () => {
             name="platform"
             label="Platform"
             tooltip="The platform to which the video belongs."
+            required
           >
             <Select style={{ width: "100%" }}
               placeholder="Select a platform" optionFilterProp="children"
@@ -70,6 +71,7 @@ const SubmitApplication = () => {
             name="videoId"
             label="Video ID"
             tooltip="After the platform opens the service for video, the video gets the unique ID in the platform."
+            required
           >
             <InputNumber
               placeholder="If the service is not started, the ID is 0."

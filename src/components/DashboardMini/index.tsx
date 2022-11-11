@@ -13,12 +13,12 @@ const DashboardMini = (item: DashboardMiniItem, key: React.Key) => {
         <div className="text-[#696969] text-sm font-medium">{item.label}</div>
         <div className="text-2xl font-bold my-1">{item.number}</div>
         <div className="flex flex-row items-center justify-center text-sm">
-          {item.change > 0 ? (
+          {item.change != "0" ? (
             <BiTrendingUp color="green" className="mr-2" />
           ) : (
             <BiTrendingDown color="red" className="mr-2" />
           )}
-          {item.change > 0
+          {item.change != "0"
             ? `Increase by ${item.change} today`
             : `Reduced by ${item.change} today`}
         </div>
