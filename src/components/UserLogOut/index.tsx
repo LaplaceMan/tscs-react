@@ -1,16 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Modal } from "antd";
 import { AiOutlineUser } from "react-icons/ai";
 import { ConnectWallet } from "../";
+import { GlobalContext } from "../../context/GlobalContext";
 const UserLogOut = () => {
-  const [connectWalletModal, setConnectWalletModal] = useState(false);
-  const showConnectWalletHandle = () => {
-    setConnectWalletModal(true);
-  };
-
-  const hideConnectWalletModalHandle = (): any => {
-    setConnectWalletModal(false);
-  };
+  const { showConnectWalletModal, hideConnectWalletModal, isConnectWalletModalOpen } = useContext(GlobalContext)
 
   return (
     <div className="flex flex-col rounded-md bg-white items-center px-4 min-w-[232px]">
@@ -25,14 +19,14 @@ const UserLogOut = () => {
       </div>
       <div
         className="flex w-full items-center justify-center py-[4px] px-[4px]  text-base font-medium cursor-pointer rounded-full bg-gradient-to-br from-purple-400 to-blue-400 text-blue-400"
-        onClick={showConnectWalletHandle}
+        onClick={showConnectWalletModal}
       >
         <div className="flex items-center justify-center py-1.5 bg-white rounded-full w-full hover:bg-gradient-to-br from-purple-400 to-blue-400 hover:text-white transition duration-500 ease-in-out">
           Connect Wallet
         </div>
       </div>
-      <Modal open={connectWalletModal} footer={null} closable={false} centered>
-        {ConnectWallet(hideConnectWalletModalHandle)}
+      <Modal open={isConnectWalletModalOpen} footer={null} closable={false} centered>
+        {ConnectWallet(hideConnectWalletModal)}
       </Modal>
     </div>
   );

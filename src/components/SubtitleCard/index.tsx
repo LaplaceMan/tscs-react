@@ -6,11 +6,13 @@ import { Subtitle } from "../../types/baseTypes";
 import { TimeRemainPercentage } from "../../utils/tools";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { DataContext } from "../../context/DataContext";
+import { GlobalContext } from "../../context/GlobalContext";
 import { shortenAddress } from "../../utils/tools";
 
 const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
-  const { showAuditModal, updateDefaultAuditSubtitleData } = useContext(ApplicationContext);
+  const { updateDefaultAuditSubtitleData } = useContext(ApplicationContext);
   const { queryUserData } = useContext(DataContext)
+  const { showAuditModal } = useContext(GlobalContext)
   const auditSubtitleHandle = () => {
     updateDefaultAuditSubtitleData(data);
     queryUserData(data.maker)

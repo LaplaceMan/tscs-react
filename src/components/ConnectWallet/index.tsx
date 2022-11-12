@@ -19,7 +19,7 @@ const WalletButton = (
     </div>
   );
 };
-const ConnectWallet = (hideConnectWalletModel: any): React.ReactElement => {
+const ConnectWallet = (hideConnectWalletModal: any): React.ReactElement => {
   const { connectWalletMetaMask } = useContext(WalletContext);
   const WalletButtonItems = [
     {
@@ -30,7 +30,7 @@ const ConnectWallet = (hideConnectWalletModel: any): React.ReactElement => {
     {
       icon: "https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPngc7fbb15391340f1f3a9c3b77059561036d185a3e6a21b0a78d960cf95f1e4834",
       label: "WalletConnect",
-      func: () => {},
+      func: () => { },
     },
   ];
   return (
@@ -44,7 +44,7 @@ const ConnectWallet = (hideConnectWalletModel: any): React.ReactElement => {
         </div>
         <div
           className="flex hover:text-white hover:bg-black items-center justify-center rounded-full cursor-pointer p-0.5"
-          onClick={hideConnectWalletModel}
+          onClick={hideConnectWalletModal}
         >
           <MdOutlineClose fontSize={16} />
         </div>

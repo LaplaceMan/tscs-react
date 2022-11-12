@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Layout } from "antd";
 import { GlobalContext } from "../context/GlobalContext";
-import { Home, Application, Government, Personal } from "../pages";
+import { Home, Application, Government, Personal, UserNotFound } from "../pages";
 import { HeaderTop } from "../components";
 import React, { useContext } from "react";
 const { Header } = Layout;
@@ -11,7 +11,8 @@ export const AllRoutes = (): React.ReactElement => {
       <Route path="/" element={<Home />} />
       <Route path="/Application" element={<Application />} />
       <Route path="/Government" element={<Government />} />
-      <Route path="/Personal" element={<Personal />} />
+      <Route path="/Personal/:id" element={<Personal />} />
+      <Route path="/Personal/" element={<UserNotFound />} />
     </Routes>
   );
 };
@@ -21,7 +22,7 @@ export const HeaderRoutes = (): React.ReactElement => {
   return (
     <Routes>
       <Route
-        path="/Personal"
+        path="/Personal/:id"
         element={
           <Header
             className="flex items-center bg-white shadow-sm"
@@ -35,9 +36,8 @@ export const HeaderRoutes = (): React.ReactElement => {
         path="/*"
         element={
           <Header
-            className={`flex items-center  ${
-              scrollHeight > 0 ? "bg-white shadow-sm" : ""
-            }`}
+            className={`flex items-center  ${scrollHeight > 0 ? "bg-white shadow-sm" : ""
+              }`}
             style={{ padding: 0 }}
           >
             <HeaderTop />

@@ -7,12 +7,12 @@ import {
 import { useContext } from "react";
 import { Layout, Affix, Modal } from "antd";
 import { AllRoutes, HeaderRoutes } from "./routes";
-import { ApplicationContext } from "./context/ApplicationContext";
+import { GlobalContext } from "./context/GlobalContext";
 
 const { Content, Footer } = Layout;
 const App = () => {
-  const { isUploadModalOpen, isApplicationModalOpen, isAuditModalOpen, isLoading } =
-    useContext(ApplicationContext);
+  const { isUploadModalOpen, isApplicationModalOpen, isAuditModalOpen } =
+    useContext(GlobalContext);
   return (
     <div className="mbg">
       <Layout>

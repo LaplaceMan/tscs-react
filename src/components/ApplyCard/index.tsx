@@ -5,12 +5,13 @@ import { CircleFlag } from "react-circle-flags";
 import { Application } from "../../types/baseTypes";
 import { TimeRemainPercentage, shortenAddress } from "../../utils/tools";
 import { ApplicationContext } from "../../context/ApplicationContext";
+import { GlobalContext } from "../../context/GlobalContext";
 import { Languages } from "../../utils/constants"
 
 const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
-  const { updateDefaultUploadSubtitleData, showUploadModal } =
+  const { updateDefaultUploadSubtitleData } =
     useContext(ApplicationContext);
-
+  const { showUploadModal } = useContext(GlobalContext)
   const uploadSubtitleHandle = (applyId: string, language: number) => {
     updateDefaultUploadSubtitleData(applyId, language);
     showUploadModal();

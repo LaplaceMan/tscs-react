@@ -124,9 +124,23 @@ export type WalletContent = {
 };
 
 export type GlobalContent = {
+  isLoading: boolean;
+  isUploadModalOpen: boolean;
+  isApplicationModalOpen: boolean;
+  isAuditModalOpen: boolean;
+  isConnectWalletModalOpen: boolean;
+  showUploadModal: () => void;
+  hideUploadModal: () => void;
+  showApplicationModal: () => void;
+  hideApplicationModal: () => void;
+  showAuditModal: () => void;
+  hideAuditModal: () => void;
   toggleMenu: boolean;
   setToggleMenu: React.Dispatch<React.SetStateAction<boolean>>;
   scrollHeight: number;
+  setLoadingState: (state: boolean) => void;
+  showConnectWalletModal: () => void;
+  hideConnectWalletModal: () => void;
 };
 
 export type OwnToken = {
@@ -211,16 +225,6 @@ export let defaultUserOwn = {
 
 export type ApplicationContent = {
   userDID: { reputation: string, deposit: string };
-  isLoading: boolean;
-  isUploadModalOpen: boolean;
-  isApplicationModalOpen: boolean;
-  isAuditModalOpen: boolean;
-  showUploadModal: () => void;
-  hideUploadModal: () => void;
-  showApplicationModal: () => void;
-  hideApplicationModal: () => void;
-  showAuditModal: () => void;
-  hideAuditModal: () => void;
   defaultUploadSubtitleData: { applyId: string; language: number };
   updateDefaultUploadSubtitleData: (applyId: string, language: number) => void;
   defaultAuditSubtitleData: Subtitle;
@@ -239,8 +243,10 @@ export type DataContent = {
   queryHomeData: () => void,
   querySubtitleData: () => void,
   defaultAuditSubtitleMaker: User,
-  queryUserData: (id: string) => void,
   userOwnData: UserOwn,
-  queryUserOwnData: () => void
+  queryUserOwnApplicationData: (address: string) => void,
+  queryUserOwnSubtitleData: (address: string) => void,
+  queryUserOwnAuditData: (address: string) => void,
+  queryUserData: (address: string) => void
 }
 

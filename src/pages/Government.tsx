@@ -5,9 +5,11 @@ import { SubtitleCard } from "../components";
 import { SubtitleItems } from "../utils/testData";
 import { ApplicationContext } from "../context/ApplicationContext";
 import { DataContext } from "../context/DataContext";
+import { GlobalContext } from "../context/GlobalContext";
 const Government = (): React.ReactElement => {
-  const { showUploadModal, updateDefaultUploadSubtitleData } =
+  const { updateDefaultUploadSubtitleData } =
     useContext(ApplicationContext);
+  const { showUploadModal } = useContext(GlobalContext)
   const { subtitles, querySubtitleData } = useContext(DataContext);
 
   useEffect(() => {

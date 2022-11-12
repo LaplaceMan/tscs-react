@@ -6,13 +6,14 @@ import { SiEthereum } from "react-icons/si";
 import { ModelDataMini } from "../index";
 import { useContext } from "react";
 import { ApplicationContext } from "../../context/ApplicationContext";
+import { GlobalContext } from "../../context/GlobalContext";
 import { ZERO_ADDRESS } from "../../utils/constants"
 const { Option } = Select;
 
 const SubmitApplication = () => {
   const [form] = Form.useForm();
-  const { hideApplicationModal, submitApplication, isLoading } = useContext(ApplicationContext);
-
+  const { submitApplication } = useContext(ApplicationContext);
+  const { hideApplicationModal, isLoading } = useContext(GlobalContext)
   const onFinish = () => {
     let values = form.getFieldsValue()
     let date = values?.deadline?.valueOf()

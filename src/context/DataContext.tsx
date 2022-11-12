@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { DataContent, User, defaultUser, UserOwn, OwnApplication, OwnSubtitle, OwnAudit, defaultUserOwn } from "../types/baseTypes";
 import { Application, Subtitle, Dashboard, defaultDashboard } from "../types/baseTypes";
 import { SUBTITLE_SYSTEM } from "../utils/contracts"
-import { QueryHome, QueryApplication, QuerySubtitle, QueryUser, QueryUserOwn } from "../utils/graphql/graphqls"
+import { QueryHome, QueryApplication, QuerySubtitle, QueryUser, QueryUserOwnApplication, QueryUserOwnSubtitle, QueryUserOwnAudit } from "../utils/graphql/graphqls"
 import { GRAPHQL_API } from "../utils/constants"
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client'
 import { WalletContext } from "../context/WalletContext"
@@ -15,9 +15,11 @@ export const DataContext = React.createContext<DataContent>({
     queryHomeData: () => { },
     querySubtitleData: () => { },
     defaultAuditSubtitleMaker: defaultUser,
-    queryUserData: () => { },
     userOwnData: defaultUserOwn,
-    queryUserOwnData: () => { },
+    queryUserOwnApplicationData: () => { },
+    queryUserOwnSubtitleData: () => { },
+    queryUserOwnAuditData: () => { },
+    queryUserData: () => { }
 });
 
 export const DataProvider = ({ children }: any) => {
@@ -189,22 +191,75 @@ export const DataProvider = ({ children }: any) => {
             })
     }
 
-    const queryUserOwnData = () => {
+    // const queryUserOwnData = () => {
+    //     accountState.address &&
+    //         client
+    //             .query({
+    //                 query: gql(QueryUserOwn),
+    //                 variables: {
+    //                     id: accountState.address
+    //                 }
+    //             })
+    //             .then((data) => {
+    //                 let getApplications = data.data.applications
+    //                 let getSubtitles = data.data.subtitlesOwner
+    //                 let getAudits = data.data.audits
+    //                 let applicationArray = new Array<OwnApplication>()
+    //                 let subtitleArray = new Array<OwnSubtitle>()
+    //                 let auditArray = new Array<OwnAudit>()
+    //                 getApplications.map((item: any) => {
+    //                     applicationArray.push({
+    //                         name: item.video.platform.name,
+    //                         type: item.strategy.notes,
+    //                         price: item.amount,
+    //                         state: item.adopted.id ? item.adopted.id : "0",
+    //                         source: item.source,
+    //                         videoId: item.video.id,
+    //                         applyId: item.id,
+    //                         language: item.language.notes
+    //                     })
+    //                 })
+    //                 getSubtitles.map((item: any) => {
+    //                     subtitleArray.push({
+    //                         subtitleId: item.id,
+    //                         cid: item.cid,
+    //                         support: item.supporterCount,
+    //                         oppose: item.dissenterCount,
+    //                         state: item.state,
+    //                         applyId: item.application.id,
+    //                         language: item.language.notes
+    //                     })
+    //                 })
+    //                 getAudits.map((item: any) => {
+    //                     auditArray.push({
+    //                         cid: item.subtitle.cid,
+    //                         state: item.subtitle.state,
+    //                         applyId: item.subtitle.application.id,
+    //                         language: item.subtitle.language.notes,
+    //                         attitude: item.attitude,
+    //                         subtitleId: item.subtitle.id
+    //                     })
+    //                 })
+    //                 setUserOwnData({ applications: applicationArray, subtitles: subtitleArray, audits: auditArray })
+    //             })
+    //             .catch((err) => {
+    //                 console.log('Error fetching data: ', err)
+    //             })
+    // }
+
+    const queryUserOwnApplicationData = (user: string) => {
         accountState.address &&
             client
                 .query({
-                    query: gql(QueryUserOwn),
+                    query: gql(QueryUserOwnApplication),
                     variables: {
-                        id: accountState.address
+                        id: user
                     }
                 })
                 .then((data) => {
+                    console.log(data)
                     let getApplications = data.data.applications
-                    let getSubtitles = data.data.subtitlesOwner
-                    let getAudits = data.data.audits
                     let applicationArray = new Array<OwnApplication>()
-                    let subtitleArray = new Array<OwnSubtitle>()
-                    let auditArray = new Array<OwnAudit>()
                     getApplications.map((item: any) => {
                         applicationArray.push({
                             name: item.video.platform.name,
@@ -217,6 +272,26 @@ export const DataProvider = ({ children }: any) => {
                             language: item.language.notes
                         })
                     })
+                    setUserOwnData({ ...userOwnData, applications: applicationArray })
+                })
+                .catch((err) => {
+                    console.log('Error fetching data: ', err)
+                })
+    }
+
+    const queryUserOwnSubtitleData = (user: string) => {
+        accountState.address &&
+            client
+                .query({
+                    query: gql(QueryUserOwnSubtitle),
+                    variables: {
+                        id: user
+                    }
+                })
+                .then((data) => {
+                    console.log(data)
+                    let getSubtitles = data.data.subtitlesOwner
+                    let subtitleArray = new Array<OwnSubtitle>()
                     getSubtitles.map((item: any) => {
                         subtitleArray.push({
                             subtitleId: item.id,
@@ -228,6 +303,29 @@ export const DataProvider = ({ children }: any) => {
                             language: item.language.notes
                         })
                     })
+
+                    setUserOwnData({ ...userOwnData, subtitles: subtitleArray })
+                })
+                .catch((err) => {
+                    console.log('Error fetching data: ', err)
+                })
+
+
+    }
+
+    const queryUserOwnAuditData = (user: string) => {
+        accountState.address &&
+            client
+                .query({
+                    query: gql(QueryUserOwnAudit),
+                    variables: {
+                        id: user
+                    }
+                })
+                .then((data) => {
+                    console.log(data)
+                    let getAudits = data.data.audits
+                    let auditArray = new Array<OwnAudit>()
                     getAudits.map((item: any) => {
                         auditArray.push({
                             cid: item.subtitle.cid,
@@ -238,7 +336,7 @@ export const DataProvider = ({ children }: any) => {
                             subtitleId: item.subtitle.id
                         })
                     })
-                    setUserOwnData({ applications: applicationArray, subtitles: subtitleArray, audits: auditArray })
+                    setUserOwnData({ ...userOwnData, audits: auditArray })
                 })
                 .catch((err) => {
                     console.log('Error fetching data: ', err)
@@ -246,7 +344,7 @@ export const DataProvider = ({ children }: any) => {
     }
 
     return (
-        <DataContext.Provider value={{ dashboard, queryHomeData, applications, queryApplicationData, subtitles, querySubtitleData, defaultAuditSubtitleMaker, queryUserData, userOwnData, queryUserOwnData }}>
+        <DataContext.Provider value={{ dashboard, queryHomeData, applications, queryApplicationData, subtitles, querySubtitleData, defaultAuditSubtitleMaker, userOwnData, queryUserOwnApplicationData, queryUserOwnSubtitleData, queryUserOwnAuditData, queryUserData }}>
             {children}
         </DataContext.Provider>
     );

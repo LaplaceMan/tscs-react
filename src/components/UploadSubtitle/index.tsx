@@ -6,13 +6,14 @@ import { MdOutlineClose } from "react-icons/md";
 import { ModelDataMini } from "../index";
 import React, { useContext, useEffect } from "react";
 import { ApplicationContext } from "../../context/ApplicationContext";
+import { GlobalContext } from "../../context/GlobalContext"
 const { Option } = Select;
 
 const UploadSubtitle = (): React.ReactElement => {
   const [form] = Form.useForm();
-  const { defaultUploadSubtitleData, hideUploadModal, uploadSubtitle, isLoading } =
+  const { defaultUploadSubtitleData, uploadSubtitle } =
     useContext(ApplicationContext);
-
+  const { isLoading, hideUploadModal } = useContext(GlobalContext)
   const onFinish = () => {
     let values = form.getFieldsValue()
     uploadSubtitle(values)

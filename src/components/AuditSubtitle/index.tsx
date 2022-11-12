@@ -7,10 +7,12 @@ import { RiSecurePaymentLine, RiStarSmileLine } from "react-icons/ri";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { WalletContext } from "../../context/WalletContext";
 import { DataContext } from "../../context/DataContext";
+import { GlobalContext } from "../../context/GlobalContext";
 import { timestampToDate, shortenAddress } from "../../utils/tools"
 import { Audit } from "../../types/formTypes";
 const AuditSubtitle = () => {
-  const { hideAuditModal, isLoading, defaultAuditSubtitleData, auditSubtitle } = useContext(ApplicationContext);
+  const { defaultAuditSubtitleData, auditSubtitle } = useContext(ApplicationContext);
+  const { hideAuditModal, isLoading } = useContext(GlobalContext)
   const { accountState } = useContext(WalletContext)
   const { defaultAuditSubtitleMaker } = useContext(DataContext)
   const txParams = (attitude: number): Audit => {

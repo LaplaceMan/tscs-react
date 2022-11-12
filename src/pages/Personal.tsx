@@ -1,10 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Tabs, Empty } from "antd";
 import { SiEthereum } from "react-icons/si";
 import { WalletContext } from "../context/WalletContext";
+import { DataContext } from "../context/DataContext";
 import { shortenAddress } from "../utils/tools"
 import { OwnAssetCard, OwnApplicationCard, OwnSubtitleCard, OwnAuditCard } from "../components"
 import { ZIMU_TOKEN } from "../utils/contracts"
+
+const user = window.location.pathname?.slice(10)
 
 const NoItems = () => {
   return (
@@ -22,6 +25,7 @@ const NoItems = () => {
 
 const Personal = (): React.ReactElement => {
   const { accountState } = useContext(WalletContext)
+  const { userOwnData, queryUserOwnApplicationData, queryUserOwnSubtitleData, queryUserOwnAuditData } = useContext(DataContext)
 
   const Assets = () => {
     return (
@@ -33,25 +37,40 @@ const Personal = (): React.ReactElement => {
   }
 
   const Applications = () => {
+
+    useEffect(() => {
+      queryUserOwnApplicationData(user)
+    }, [])
+
     return (
       <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
-        {OwnApplicationCard({ name: 'None', type: 'OT0', price: '20.37K', state: '0', source: 'test.com', videoId: '1', applyId: '1', language: 'cn' })}
+        {userOwnData.applications[0].applyId != "0" ? OwnApplicationCard({ name: 'None', type: 'OT0', price: '20.37K', state: '0', source: 'test.com', videoId: '1', applyId: '1', language: 'cn' }) : NoItems()}
       </div>
     )
   }
 
   const Subtitles = () => {
+
+    useEffect(() => {
+      queryUserOwnSubtitleData(user)
+    }, [])
+
     return (
       <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
-        {OwnSubtitleCard({ subtitleId: '10', cid: 'Qmasfsdfdsfsd', support: '50', oppose: '5', state: 'Normal', applyId: '1', language: 'cn' })}
+        {userOwnData.subtitles[0].applyId != "0" ? OwnSubtitleCard({ subtitleId: '10', cid: 'Qmasfsdfdsfsd', support: '50', oppose: '5', state: 'Normal', applyId: '1', language: 'cn' }) : NoItems()}
       </div>
     )
   }
 
   const Audits = () => {
+
+    useEffect(() => {
+      queryUserOwnAuditData(user)
+    }, [])
+
     return (
       <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
-        {OwnAuditCard({ subtitleId: '10', cid: 'Qmasfsdfdsfsd', state: 'Normal', applyId: '1', language: 'cn', attitude: 'Support' })}
+        {userOwnData.audits[0].applyId != "0" ? OwnAuditCard({ subtitleId: '10', cid: 'Qmasfsdfdsfsd', state: 'Normal', applyId: '1', language: 'cn', attitude: 'Support' }) : NoItems()}
       </div>
     )
   }
@@ -74,10 +93,10 @@ const Personal = (): React.ReactElement => {
         </div>
       </div>
       <div className="flex flex-col items-center mt-11 mb-3 md:mt-10">
-        <div className="text-3xl font-bold">Lulu</div>
+        <div className="text-3xl font-bold">ENS</div>
         <div className="flex text-base font-medium text-[#696969] items-center">
           <SiEthereum className="mr-1 mt-0.5" />
-          {accountState.address ? shortenAddress(accountState.address) : '0x0000...0000'}
+          {shortenAddress(user)}
         </div>
       </div>
       <Tabs

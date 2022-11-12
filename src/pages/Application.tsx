@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { application_Illustration } from "../assets/index";
 import { FiArrowUpRight } from "react-icons/fi";
 import { ApplicationItems } from "../utils/testData";
 import { ApplyCard } from "../components";
-import { ApplicationContext } from "../context/ApplicationContext";
+import { GlobalContext } from "../context/GlobalContext";
 import { DataContext } from "../context/DataContext";
 const ApplicationPage = (): React.ReactElement => {
-  const { showApplicationModal } = useContext(ApplicationContext);
+  const { showApplicationModal } = useContext(GlobalContext);
   const { applications, queryApplicationData } = useContext(DataContext);
 
   useEffect(() => {

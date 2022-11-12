@@ -19,7 +19,7 @@ const UserLogInfo = (): React.ReactElement => {
           : UserLogOut
       }
     >
-      <Link to="/Personal">
+      <Link to={`/Personal/${accountState.address}`}>
         <li className="mx-4 cursor-pointer log">
           {accountState.address ? (
             <img
