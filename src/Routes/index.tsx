@@ -1,7 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 import { Layout } from "antd";
 import { GlobalContext } from "../context/GlobalContext";
-import { Home, Application, Government, Personal, UserNotFound } from "../pages";
+import {
+  Home,
+  Application,
+  Government,
+  Personal,
+  UserNotFound,
+} from "../pages";
 import { HeaderTop } from "../components";
 import React, { useContext } from "react";
 const { Header } = Layout;
@@ -36,8 +42,9 @@ export const HeaderRoutes = (): React.ReactElement => {
         path="/*"
         element={
           <Header
-            className={`flex items-center  ${scrollHeight > 0 ? "bg-white shadow-sm" : ""
-              }`}
+            className={`flex items-center  ${
+              scrollHeight > 0 ? "bg-white shadow-sm" : ""
+            }`}
             style={{ padding: 0 }}
           >
             <HeaderTop />

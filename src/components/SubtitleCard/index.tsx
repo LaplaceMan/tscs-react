@@ -11,11 +11,11 @@ import { shortenAddress } from "../../utils/tools";
 
 const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
   const { updateDefaultAuditSubtitleData } = useContext(ApplicationContext);
-  const { queryUserData } = useContext(DataContext)
-  const { showAuditModal } = useContext(GlobalContext)
+  const { queryUserData } = useContext(DataContext);
+  const { showAuditModal } = useContext(GlobalContext);
   const auditSubtitleHandle = () => {
     updateDefaultAuditSubtitleData(data);
-    queryUserData(data.maker)
+    queryUserData(data.maker);
     showAuditModal();
   };
 
@@ -41,10 +41,10 @@ const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
             <CircleFlag countryCode={data.language} />
           </div>
           <div className="flex flex-col items-start ml-3">
-            <div className="flex items-end text-lg font-semibold">
-              Source
+            <div className="flex items-end text-lg font-semibold">Source</div>
+            <div className="flex text-sm text-[#696969]">
+              {shortenAddress(data.maker)}
             </div>
-            <div className="flex text-sm text-[#696969]">{shortenAddress(data.maker)}</div>
           </div>
         </div>
         {MiniShowData0Package(data)}

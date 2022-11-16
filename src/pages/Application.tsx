@@ -10,9 +10,9 @@ const ApplicationPage = (): React.ReactElement => {
   const { applications, queryApplicationData } = useContext(DataContext);
 
   useEffect(() => {
-    queryApplicationData()
-    setInterval(queryApplicationData, 300000)
-  }, [])
+    queryApplicationData();
+    setInterval(queryApplicationData, 300000);
+  }, []);
 
   return (
     <div className="flex flex-col items-center">
@@ -37,7 +37,9 @@ const ApplicationPage = (): React.ReactElement => {
         </div>
       </div>
       <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
-        {applications.map((item, index) => (item.applyId != '') && ApplyCard(item, index))}
+        {applications.map(
+          (item, index) => item.applyId != "" && ApplyCard(item, index)
+        )}
         {ApplicationItems.map((item, index) => ApplyCard(item, index))}
       </div>
     </div>

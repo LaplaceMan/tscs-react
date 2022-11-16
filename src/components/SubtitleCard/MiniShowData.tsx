@@ -1,7 +1,13 @@
 import React from "react";
 import { Subtitle } from "../../types/baseTypes";
 
-const ApplyLabel = ["Support", "Against", "Platform", "Subtitle ID", "Apply ID"];
+const ApplyLabel = [
+  "Support",
+  "Against",
+  "Platform",
+  "Subtitle ID",
+  "Apply ID",
+];
 const DividerH = (): React.ReactElement => {
   return <div className="flex h-full w-0.5 bg-gray-100 rounded-full mx-3" />;
 };

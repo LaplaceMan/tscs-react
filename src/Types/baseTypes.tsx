@@ -1,4 +1,10 @@
-import { Submit, Upload, Audit, ApproveTransaction } from "./formTypes";
+import {
+  Submit,
+  Upload,
+  Audit,
+  TokenTransaction,
+  UpdateApplication,
+} from "./formTypes";
 
 export type Application = {
   applicant: string;
@@ -15,18 +21,18 @@ export type Application = {
 };
 
 export let defaultApplication: Application = {
-  applicant: '',
-  vidoId: '',
-  platformName: '',
-  applyId: '',
-  language: '',
-  amount: '',
-  payType: '',
-  uploads: '',
+  applicant: "",
+  vidoId: "",
+  platformName: "",
+  applyId: "",
+  language: "",
+  amount: "",
+  payType: "",
+  uploads: "",
   start: 0,
   deadline: 0,
-  source: ''
-}
+  source: "",
+};
 
 export type Subtitle = {
   applyId: string;
@@ -45,20 +51,20 @@ export type Subtitle = {
 };
 
 export let defaultSubtitle: Subtitle = {
-  applyId: '',
-  payType: '',
-  platformName: '',
-  subtitleId: '',
-  language: '',
-  support: '',
-  oppose: '',
-  maker: '',
-  uploads: '',
+  applyId: "",
+  payType: "",
+  platformName: "",
+  subtitleId: "",
+  language: "",
+  support: "",
+  oppose: "",
+  maker: "",
+  uploads: "",
   start: 0,
   deadline: 0,
-  fingerprint: '',
-  cid: ''
-}
+  fingerprint: "",
+  cid: "",
+};
 
 export type Dashboard = {
   applicationCount: string;
@@ -69,7 +75,7 @@ export type Dashboard = {
   userInc: string;
   platformInc: string;
   subtitleInc: string;
-}
+};
 
 export let defaultDashboard = {
   applicationCount: "0",
@@ -79,8 +85,8 @@ export let defaultDashboard = {
   applicationInc: "0",
   userInc: "0",
   platformInc: "0",
-  subtitleInc: "0"
-}
+  subtitleInc: "0",
+};
 
 export type User = {
   id: string;
@@ -88,15 +94,15 @@ export type User = {
   deposit: string;
   adopted: string;
   join: number;
-}
+};
 
 export let defaultUser = {
-  id: '',
-  reputation: '0',
-  deposit: '0',
-  adopted: '0',
-  join: 0
-}
+  id: "",
+  reputation: "0",
+  deposit: "0",
+  adopted: "0",
+  join: 0,
+};
 
 export type NavbarItem = {
   title: string;
@@ -121,6 +127,7 @@ export type WalletContent = {
   };
   connectWalletMetaMask: () => void;
   killSessionWalletConnect: () => void;
+  gasPrice: string;
 };
 
 export type GlobalContent = {
@@ -141,14 +148,26 @@ export type GlobalContent = {
   setLoadingState: (state: boolean) => void;
   showConnectWalletModal: () => void;
   hideConnectWalletModal: () => void;
+  isTokenTransactionModalOpen: boolean;
+  showTokenTransactionModal: () => void;
+  hideTokenTransactionModal: () => void;
+  showUpdateApplicationModal: () => void;
+  hideUpdateApplicationModal: () => void;
+  isUpdateApplicationModalOpen: boolean;
+  showWithdrawRewardModal: () => void;
+  hideWithdrawRewardModal: () => void;
+  isWithdrawRewardModalOpen: boolean;
 };
 
 export type OwnToken = {
   name: string;
+  symbol: string;
+  decimals: number;
   balance: string;
   type: string;
   issuser: string;
   address: string;
+  tokenId: string;
 };
 
 export type OwnApplication = {
@@ -160,7 +179,8 @@ export type OwnApplication = {
   videoId: string;
   applyId: string;
   language: string;
-}
+  deadline: string;
+};
 
 export let defaultOwnApplication = {
   name: "",
@@ -170,8 +190,9 @@ export let defaultOwnApplication = {
   source: "",
   videoId: "0",
   applyId: "0",
-  language: "0"
-}
+  language: "0",
+  deadline: "",
+};
 
 export type OwnSubtitle = {
   subtitleId: string;
@@ -181,7 +202,9 @@ export type OwnSubtitle = {
   state: string;
   applyId: string;
   language: string;
-}
+  type: string;
+  platform: string;
+};
 
 export let defaultOwnSubtitle = {
   subtitleId: "0",
@@ -190,8 +213,10 @@ export let defaultOwnSubtitle = {
   oppose: "0",
   state: "",
   applyId: "0",
-  language: ""
-}
+  language: "",
+  type: "",
+  platform: "",
+};
 
 export type OwnAudit = {
   cid: string;
@@ -200,7 +225,9 @@ export type OwnAudit = {
   language: string;
   attitude: string;
   subtitleId: string;
-}
+  type: string;
+  platform: string;
+};
 
 export let defaultOwnAudit = {
   cid: "",
@@ -208,23 +235,25 @@ export let defaultOwnAudit = {
   applyId: "0",
   language: "",
   attitude: "",
-  subtitleId: "0"
-}
+  subtitleId: "0",
+  type: "",
+  platform: "",
+};
 
 export type UserOwn = {
-  applications: OwnApplication[],
-  subtitles: OwnSubtitle[],
-  audits: OwnAudit[]
-}
+  applications: OwnApplication[];
+  subtitles: OwnSubtitle[];
+  audits: OwnAudit[];
+};
 
 export let defaultUserOwn = {
   applications: [defaultOwnApplication],
   subtitles: [defaultOwnSubtitle],
-  audits: [defaultOwnAudit]
-}
+  audits: [defaultOwnAudit],
+};
 
 export type ApplicationContent = {
-  userDID: { reputation: string, deposit: string };
+  userDID: { reputation: string; deposit: string };
   defaultUploadSubtitleData: { applyId: string; language: number };
   updateDefaultUploadSubtitleData: (applyId: string, language: number) => void;
   defaultAuditSubtitleData: Subtitle;
@@ -232,21 +261,35 @@ export type ApplicationContent = {
   submitApplication: (params: Submit) => void;
   uploadSubtitle: (params: Upload) => void;
   auditSubtitle: (params: Audit) => void;
-  tokenApprove: (params: ApproveTransaction) => void
+  tokenTransaction: (params: any) => void;
+  defaultTokenTransactionData: TokenTransaction;
+  updateDefaultTokenTransaction: (params: TokenTransaction) => void;
+  preSettlement: (type: string, applyId: string) => void;
+  cancelApplication: (applyId: string) => void;
+  updateDefaultUpdateApplication: (params: UpdateApplication) => void;
+  defaultUpdateApplicationData: UpdateApplication;
+  updateDefaultWithdrawReward: (platform: string) => void;
+  defaultWithdrawRewardData: string;
+  updateApplication: (params: any) => void;
+  withdrawReward: (params: any) => void;
 };
 
 export type DataContent = {
-  applications: Application[],
-  subtitles: Subtitle[],
-  queryApplicationData: () => void,
-  dashboard: Dashboard,
-  queryHomeData: () => void,
-  querySubtitleData: () => void,
-  defaultAuditSubtitleMaker: User,
-  userOwnData: UserOwn,
-  queryUserOwnApplicationData: (address: string) => void,
-  queryUserOwnSubtitleData: (address: string) => void,
-  queryUserOwnAuditData: (address: string) => void,
-  queryUserData: (address: string) => void
-}
-
+  applications: Application[];
+  subtitles: Subtitle[];
+  queryApplicationData: () => void;
+  dashboard: Dashboard;
+  queryHomeData: () => void;
+  querySubtitleData: () => void;
+  defaultAuditSubtitleMaker: User;
+  userOwnData: UserOwn;
+  // queryUserOwnApplicationData: (address: string) => void,
+  // queryUserOwnSubtitleData: (address: string) => void,
+  // queryUserOwnAuditData: (address: string) => void,
+  queryUserOwnData: (address: string) => void;
+  queryUserData: (address: string) => void;
+  queryUserLockedToken: (platform: string, day: number) => void;
+  userDayLocakedToken: string;
+  regiserLanguages: { id: string; notes: string }[];
+  regiserPlatforms: { id: string; name: string }[];
+};

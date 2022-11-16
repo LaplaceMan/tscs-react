@@ -3,11 +3,14 @@ import { Tabs, Empty } from "antd";
 import { SiEthereum } from "react-icons/si";
 import { WalletContext } from "../context/WalletContext";
 import { DataContext } from "../context/DataContext";
-import { shortenAddress } from "../utils/tools"
-import { OwnAssetCard, OwnApplicationCard, OwnSubtitleCard, OwnAuditCard } from "../components"
-import { ZIMU_TOKEN } from "../utils/contracts"
-
-const user = window.location.pathname?.slice(10)
+import { shortenAddress } from "../utils/tools";
+import {
+  OwnAssetCard,
+  OwnApplicationCard,
+  OwnSubtitleCard,
+  OwnAuditCard,
+} from "../components";
+import { ZIMU_TOKEN, VIDEO_TOKEN } from "../utils/contracts";
 
 const NoItems = () => {
   return (
@@ -24,56 +27,127 @@ const NoItems = () => {
 };
 
 const Personal = (): React.ReactElement => {
-  const { accountState } = useContext(WalletContext)
-  const { userOwnData, queryUserOwnApplicationData, queryUserOwnSubtitleData, queryUserOwnAuditData } = useContext(DataContext)
+  const { accountState } = useContext(WalletContext);
+  const { userOwnData, queryUserOwnData } = useContext(DataContext);
+  const user = window.location.pathname.slice(10);
+
+  useEffect(() => {
+    queryUserOwnData(user);
+    let timer = setInterval(() => queryUserOwnData(user), 60000);
+    return () => clearInterval(timer);
+  }, []);
 
   const Assets = () => {
     return (
       <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
-        {OwnAssetCard({ name: 'Zimu', balance: '20K', type: 'ERC20', issuser: 'TSCS', address: ZIMU_TOKEN[accountState.network] })}
-        {OwnAssetCard({ name: 'DefaultVT', balance: '20K', type: 'ERC1155', issuser: 'TSCS', address: ZIMU_TOKEN[accountState.network] })}
+        {OwnAssetCard({
+          name: "Zimu",
+          balance: "20K",
+          type: "ERC-20",
+          issuser: "TSCS",
+          address: ZIMU_TOKEN[accountState.network],
+          symbol: "Zimu",
+          tokenId: "0",
+          decimals: 18,
+        })}
+        {OwnAssetCard({
+          name: "VideoToken-0",
+          balance: "20K",
+          type: "ERC-1155",
+          issuser: "TSCS",
+          address: VIDEO_TOKEN[accountState.network],
+          symbol: "VT",
+          tokenId: "0",
+          decimals: 6,
+        })}
       </div>
     );
-  }
+  };
 
   const Applications = () => {
-
-    useEffect(() => {
-      queryUserOwnApplicationData(user)
-    }, [])
-
     return (
       <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
-        {userOwnData.applications[0].applyId != "0" ? OwnApplicationCard({ name: 'None', type: 'OT0', price: '20.37K', state: '0', source: 'test.com', videoId: '1', applyId: '1', language: 'cn' }) : NoItems()}
+        {userOwnData.applications[0] &&
+          userOwnData.applications[0].applyId != "0" &&
+          userOwnData.applications.map((item, index) =>
+            OwnApplicationCard(
+              {
+                name: item.name,
+                type: item.type,
+                price: item.price,
+                state: item.state,
+                source: item.source,
+                videoId: item.videoId,
+                applyId: item.applyId,
+                language: item.language,
+                deadline: item.deadline,
+              },
+              index
+            )
+          )}
+        {(!userOwnData.applications[0] ||
+          (userOwnData.applications[0] &&
+            userOwnData.applications[0].applyId == "0")) &&
+          NoItems()}
       </div>
-    )
-  }
+    );
+  };
 
   const Subtitles = () => {
-
-    useEffect(() => {
-      queryUserOwnSubtitleData(user)
-    }, [])
-
     return (
       <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
-        {userOwnData.subtitles[0].applyId != "0" ? OwnSubtitleCard({ subtitleId: '10', cid: 'Qmasfsdfdsfsd', support: '50', oppose: '5', state: 'Normal', applyId: '1', language: 'cn' }) : NoItems()}
+        {userOwnData.subtitles[0] &&
+          userOwnData.subtitles[0].applyId != "0" &&
+          userOwnData.subtitles.map((item, index) =>
+            OwnSubtitleCard(
+              {
+                subtitleId: item.subtitleId,
+                cid: item.cid,
+                support: item.support,
+                oppose: item.oppose,
+                state: item.state,
+                applyId: item.applyId,
+                language: item.language,
+                type: item.type,
+                platform: item.platform,
+              },
+              index
+            )
+          )}
+        {(!userOwnData.subtitles[0] ||
+          (userOwnData.subtitles[0] &&
+            userOwnData.subtitles[0].subtitleId == "0")) &&
+          NoItems()}
       </div>
-    )
-  }
+    );
+  };
 
   const Audits = () => {
-
-    useEffect(() => {
-      queryUserOwnAuditData(user)
-    }, [])
-
     return (
       <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
-        {userOwnData.audits[0].applyId != "0" ? OwnAuditCard({ subtitleId: '10', cid: 'Qmasfsdfdsfsd', state: 'Normal', applyId: '1', language: 'cn', attitude: 'Support' }) : NoItems()}
+        {userOwnData.audits[0] &&
+          userOwnData.audits[0].applyId != "0" &&
+          userOwnData.audits.map((item, index) =>
+            OwnAuditCard(
+              {
+                subtitleId: item.subtitleId,
+                cid: item.cid,
+                state: item.state,
+                applyId: item.applyId,
+                language: item.language,
+                attitude: item.attitude,
+                type: item.type,
+                platform: item.platform,
+              },
+              index
+            )
+          )}
+        {(!userOwnData.audits[0] ||
+          (userOwnData.audits[0] && userOwnData.audits[0].subtitleId == "0")) &&
+          NoItems()}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="flex flex-col w-full">
@@ -86,9 +160,7 @@ const Personal = (): React.ReactElement => {
         <div className="mt-40 flex justify-center mx-[60px] align-bottom">
           <img
             className="shrink-0 w-32 h-32 md:w-36 md:h-36 rounded-xl shadow"
-            src={
-              "http://api.btstu.cn/sjtx/api.php?lx=c1&format=images"
-            }
+            src={"http://api.btstu.cn/sjtx/api.php?lx=c1&format=images"}
           />
         </div>
       </div>

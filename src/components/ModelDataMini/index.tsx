@@ -2,18 +2,18 @@ const Label = (label: string) => {
   return <div className="text-sm font-medium text-[#696969] mb-1">{label}</div>;
 };
 
-const Content = (icon: React.ReactElement, number: number) => {
+const Content = (icon: React.ReactElement | null, number: number | string) => {
   return (
     <div className="flex text-black text-lg font-semibold items-center">
-      <div className="flex mx-2">{icon}</div>
+      {icon && <div className="flex mr-2">{icon}</div>}
       {number}
     </div>
   );
 };
 const ModelDataMini = (
   label: string,
-  icon: React.ReactElement,
-  number: number
+  icon: React.ReactElement | null,
+  number: number | string
 ) => {
   return (
     <div className="flex bg-gray-100 rounded-md p-2">

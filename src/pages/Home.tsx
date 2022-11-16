@@ -11,12 +11,13 @@ import { Link } from "react-router-dom";
 import { useEffect, useContext } from "react";
 import { DataContext } from "../context/DataContext";
 const Home = (): React.ReactElement => {
-  const { dashboard, applications, subtitles, queryHomeData } = useContext(DataContext);
-
+  const { dashboard, applications, subtitles, queryHomeData } =
+    useContext(DataContext);
   useEffect(() => {
-    queryHomeData()
-    setInterval(queryHomeData, 300000)
-  }, [])
+    queryHomeData();
+    let timer = setInterval(() => queryHomeData(), 60000);
+    return () => clearInterval(timer);
+  }, []);
 
   const DashboardMiniItems: DashboardMiniItem[] = [
     {
@@ -75,7 +76,9 @@ const Home = (): React.ReactElement => {
           </div>
         </Link>
         <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
-          {applications.map((item, index) => (item.applyId != '') && ApplyCard(item, index))}
+          {applications.map(
+            (item, index) => item.applyId != "" && ApplyCard(item, index)
+          )}
           {ApplicationItems.map((item, index) => ApplyCard(item, index))}
         </div>
         <Link to="./Government">
@@ -84,7 +87,9 @@ const Home = (): React.ReactElement => {
           </div>
         </Link>
         <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
-          {subtitles.map((item, index) => (item.applyId != '') && SubtitleCard(item, index))}
+          {subtitles.map(
+            (item, index) => item.applyId != "" && SubtitleCard(item, index)
+          )}
           {SubtitleItems.map((item, index) => SubtitleCard(item, index))}
         </div>
       </div>

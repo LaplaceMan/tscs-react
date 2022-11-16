@@ -1,7 +1,4 @@
-export const TimeRemainPercentage = (
-  start: number,
-  end: number
-): number => {
+export const TimeRemainPercentage = (start: number, end: number): number => {
   return ((end - new Date().getTime() / 1000) / (end - start)) * 100;
 };
 
@@ -25,10 +22,18 @@ export const shortenAddress = (address: string): string => {
   }
 };
 
+export const shortenText = (text: string): string => {
+  if (text.length) {
+    return `${text.slice(0, 6)}...${text.slice(text.length - 6)}`;
+  } else {
+    return "";
+  }
+};
+
 export const timestampToDate = (time: number) => {
-  let date = new Date(time * 1000)
-  let year = date.getFullYear()
-  let mounth = date.getMonth()
-  let day = date.getDay()
-  return (year + '-' + mounth + '-' + day)
-}
+  let date = new Date(time * 1000);
+  let year = date.getFullYear();
+  let mounth = date.getMonth() + 1;
+  let day = date.getDay();
+  return year + "-" + mounth + "-" + day;
+};

@@ -6,21 +6,25 @@ import { MdOutlineClose } from "react-icons/md";
 import { ModelDataMini } from "../index";
 import React, { useContext, useEffect } from "react";
 import { ApplicationContext } from "../../context/ApplicationContext";
-import { GlobalContext } from "../../context/GlobalContext"
+import { GlobalContext } from "../../context/GlobalContext";
+import { WalletContext } from "../../context/WalletContext";
+
 const { Option } = Select;
 
 const UploadSubtitle = (): React.ReactElement => {
   const [form] = Form.useForm();
   const { defaultUploadSubtitleData, uploadSubtitle } =
     useContext(ApplicationContext);
-  const { isLoading, hideUploadModal } = useContext(GlobalContext)
+  const { isLoading, hideUploadModal } = useContext(GlobalContext);
+  const { gasPrice } = useContext(WalletContext);
+
   const onFinish = () => {
-    let values = form.getFieldsValue()
-    uploadSubtitle(values)
-  }
+    let values = form.getFieldsValue();
+    uploadSubtitle(values);
+  };
 
   useEffect(() => {
-    if (defaultUploadSubtitleData.applyId != '0') {
+    if (defaultUploadSubtitleData.applyId != "0") {
       form.setFieldsValue({ ...defaultUploadSubtitleData });
     } else {
       form.setFieldsValue(null);
@@ -54,7 +58,7 @@ const UploadSubtitle = (): React.ReactElement => {
             <div className="flex bg-gray-100 rounded-md p-2 items-center justify-between">
               {ModelDataMini("ZIMUs Available", <GiToken />, 0.1)}
               {ModelDataMini("Current Value", <AiFillDollarCircle />, 1.1)}
-              {ModelDataMini("Transaction Fee", <SiEthereum />, 0.11)}
+              {ModelDataMini("Gas Price", <SiEthereum />, gasPrice)}
             </div>
           </Form.Item>
           <Form.Item
@@ -68,7 +72,8 @@ const UploadSubtitle = (): React.ReactElement => {
               min={1}
               style={{ width: "100%" }}
               disabled={
-                defaultUploadSubtitleData && defaultUploadSubtitleData.applyId != '0'
+                defaultUploadSubtitleData &&
+                defaultUploadSubtitleData.applyId != "0"
                   ? true
                   : false
               }
@@ -90,7 +95,8 @@ const UploadSubtitle = (): React.ReactElement => {
                   .includes(input.toLowerCase())
               }
               disabled={
-                defaultUploadSubtitleData && defaultUploadSubtitleData.applyId != '0'
+                defaultUploadSubtitleData &&
+                defaultUploadSubtitleData.applyId != "0"
                   ? true
                   : false
               }
@@ -117,7 +123,10 @@ const UploadSubtitle = (): React.ReactElement => {
           >
             <Input placeholder="Subtitle storage link, as the tokenURI." />
           </Form.Item>
-          <div className="flex items-center justify-center rounded-md text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110" onClick={onFinish}>
+          <div
+            className="flex items-center justify-center rounded-md text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
+            onClick={onFinish}
+          >
             Upload
           </div>
         </Form>

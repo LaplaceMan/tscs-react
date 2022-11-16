@@ -6,12 +6,11 @@ import { Application } from "../../types/baseTypes";
 import { TimeRemainPercentage, shortenAddress } from "../../utils/tools";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
-import { Languages } from "../../utils/constants"
+import { Languages } from "../../utils/constants";
 
 const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
-  const { updateDefaultUploadSubtitleData } =
-    useContext(ApplicationContext);
-  const { showUploadModal } = useContext(GlobalContext)
+  const { updateDefaultUploadSubtitleData } = useContext(ApplicationContext);
+  const { showUploadModal } = useContext(GlobalContext);
   const uploadSubtitleHandle = (applyId: string, language: number) => {
     updateDefaultUploadSubtitleData(applyId, language);
     showUploadModal();
@@ -42,10 +41,10 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
             <CircleFlag countryCode={data.language} />
           </div>
           <div className="flex flex-col items-start ml-3">
-            <div className="flex items-end text-lg font-semibold">
-              Source
+            <div className="flex items-end text-lg font-semibold">Source</div>
+            <div className="flex text-sm text-[#696969]">
+              {shortenAddress(data.applicant)}
             </div>
-            <div className="flex text-sm text-[#696969]">{shortenAddress(data.applicant)}</div>
           </div>
         </div>
         {MiniShowData0Package(data)}

@@ -1,10 +1,14 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { Modal } from "antd";
 import { AiOutlineUser } from "react-icons/ai";
-import { ConnectWallet } from "../";
+import { ConnectWallet } from "..";
 import { GlobalContext } from "../../context/GlobalContext";
 const UserLogOut = () => {
-  const { showConnectWalletModal, hideConnectWalletModal, isConnectWalletModalOpen } = useContext(GlobalContext)
+  const {
+    showConnectWalletModal,
+    hideConnectWalletModal,
+    isConnectWalletModalOpen,
+  } = useContext(GlobalContext);
 
   return (
     <div className="flex flex-col rounded-md bg-white items-center px-4 min-w-[232px]">
@@ -25,7 +29,12 @@ const UserLogOut = () => {
           Connect Wallet
         </div>
       </div>
-      <Modal open={isConnectWalletModalOpen} footer={null} closable={false} centered>
+      <Modal
+        open={isConnectWalletModalOpen}
+        footer={null}
+        closable={false}
+        centered
+      >
         {ConnectWallet(hideConnectWalletModal)}
       </Modal>
     </div>

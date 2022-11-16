@@ -7,18 +7,17 @@ import { ApplicationContext } from "../context/ApplicationContext";
 import { DataContext } from "../context/DataContext";
 import { GlobalContext } from "../context/GlobalContext";
 const Government = (): React.ReactElement => {
-  const { updateDefaultUploadSubtitleData } =
-    useContext(ApplicationContext);
-  const { showUploadModal } = useContext(GlobalContext)
+  const { updateDefaultUploadSubtitleData } = useContext(ApplicationContext);
+  const { showUploadModal } = useContext(GlobalContext);
   const { subtitles, querySubtitleData } = useContext(DataContext);
 
   useEffect(() => {
-    querySubtitleData()
-    setInterval(querySubtitleData, 300000)
-  }, [])
+    querySubtitleData();
+    setInterval(querySubtitleData, 300000);
+  }, []);
 
   const uploadSubtitleHandle = () => {
-    updateDefaultUploadSubtitleData('0', 1);
+    updateDefaultUploadSubtitleData("0", 1);
     showUploadModal();
   };
 
@@ -45,7 +44,9 @@ const Government = (): React.ReactElement => {
         </div>
       </div>
       <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
-        {subtitles.map((item, index) => (item.applyId != '0') && SubtitleCard(item, index))}
+        {subtitles.map(
+          (item, index) => item.applyId != "0" && SubtitleCard(item, index)
+        )}
         {SubtitleItems.map((item, index) => SubtitleCard(item, index))}
       </div>
     </div>

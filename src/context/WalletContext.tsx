@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { WalletContent } from "../types/baseTypes";
+import { ethers } from "ethers";
 const { ethereum } = window as any;
+const provider = new ethers.providers.Web3Provider(ethereum);
 
 export const WalletContext = React.createContext<WalletContent>({
   accountState: {
@@ -8,8 +10,9 @@ export const WalletContext = React.createContext<WalletContent>({
     network: "",
     type: "",
   },
-  connectWalletMetaMask: () => { },
-  killSessionWalletConnect: () => { },
+  connectWalletMetaMask: () => {},
+  killSessionWalletConnect: () => {},
+  gasPrice: "",
 });
 export const WalletProvider = ({ children }: any) => {
   const [accountState, setAccountState] = useState({
@@ -17,6 +20,13 @@ export const WalletProvider = ({ children }: any) => {
     network: "",
     type: "",
   });
+  const [gasPrice, setGasPrice] = useState("");
+
+  const updateGasPrice = async () => {
+    let gasUnit = await provider.getGasPrice();
+    setGasPrice(ethers.utils.formatUnits(gasUnit, "gwei"));
+  };
+
   const connectWalletMetaMask = async () => {
     try {
       if (!ethereum) return alert("Please install Metamask");
@@ -90,10 +100,18 @@ export const WalletProvider = ({ children }: any) => {
   useEffect(() => {
     addWalletListener();
     checkIfWalletsIsConnected();
+    let timer = setInterval(() => updateGasPrice(), 5000);
+    return () => clearInterval(timer);
   }, []);
+
   return (
     <WalletContext.Provider
-      value={{ accountState, connectWalletMetaMask, killSessionWalletConnect }}
+      value={{
+        accountState,
+        connectWalletMetaMask,
+        killSessionWalletConnect,
+        gasPrice,
+      }}
     >
       {children}
     </WalletContext.Provider>

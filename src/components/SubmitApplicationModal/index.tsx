@@ -6,20 +6,25 @@ import { SiEthereum } from "react-icons/si";
 import { ModelDataMini } from "../index";
 import { useContext } from "react";
 import { ApplicationContext } from "../../context/ApplicationContext";
+import { WalletContext } from "../../context/WalletContext";
 import { GlobalContext } from "../../context/GlobalContext";
-import { ZERO_ADDRESS } from "../../utils/constants"
+import { DataContext } from "../../context/DataContext";
+import { ZERO_ADDRESS } from "../../utils/constants";
 const { Option } = Select;
 
 const SubmitApplication = () => {
   const [form] = Form.useForm();
-  const { submitApplication } = useContext(ApplicationContext);
-  const { hideApplicationModal, isLoading } = useContext(GlobalContext)
+  const { submitApplication, userDID } = useContext(ApplicationContext);
+  const { hideApplicationModal, isLoading } = useContext(GlobalContext);
+  const { gasPrice } = useContext(WalletContext);
+  const { regiserLanguages } = useContext(DataContext);
+
   const onFinish = () => {
-    let values = form.getFieldsValue()
-    let date = values?.deadline?.valueOf()
-    values.deadline = parseInt((date / 1000).toString())
-    submitApplication(values)
-  }
+    let values = form.getFieldsValue();
+    let date = values.deadline.valueOf();
+    values.deadline = parseInt((date / 1000).toString());
+    submitApplication(values);
+  };
 
   return (
     <Spin spinning={isLoading} size="large">
@@ -30,7 +35,7 @@ const SubmitApplication = () => {
           requiredMark="optional"
           className="w-full"
           onFinish={onFinish}
-          initialValues={{ strategy: 0, language: 1, platform: ZERO_ADDRESS }}
+          initialValues={{ strategy: 0, language: "1", platform: ZERO_ADDRESS }}
         >
           <div className="flex items-center justify-between mb-3">
             <div className="text-xl font-bold">
@@ -45,9 +50,9 @@ const SubmitApplication = () => {
           </div>
           <Form.Item>
             <div className="flex bg-gray-100 rounded-md p-2 items-center justify-between">
-              {ModelDataMini("DVTs Available", <GiToken />, 0.1)}
+              {ModelDataMini("DVTs Available", <GiToken />, userDID.reputation)}
               {ModelDataMini("Current Value", <AiFillDollarCircle />, 1.1)}
-              {ModelDataMini("Transaction Fee", <SiEthereum />, 0.11)}
+              {ModelDataMini("Gas Price", <SiEthereum />, gasPrice)}
             </div>
           </Form.Item>
           <Form.Item
@@ -56,13 +61,16 @@ const SubmitApplication = () => {
             tooltip="The platform to which the video belongs."
             required
           >
-            <Select style={{ width: "100%" }}
-              placeholder="Select a platform" optionFilterProp="children"
+            <Select
+              style={{ width: "100%" }}
+              placeholder="Select a platform"
+              optionFilterProp="children"
               filterOption={(input, option) =>
                 (option!.children as unknown as string)
                   .toLowerCase()
                   .includes(input.toLowerCase())
-              }>
+              }
+            >
               <Option value={ZERO_ADDRESS}>Default</Option>
               <Option value="1">Youtube</Option>
               <Option value="2">Bilibili</Option>
@@ -86,10 +94,7 @@ const SubmitApplication = () => {
             tooltip="In order to accurately locate the video, it is recommended to provide a source link."
             required
           >
-            <Input
-              placeholder="Video source link."
-              style={{ width: "100%" }}
-            />
+            <Input placeholder="Video source link." style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item name="strategy" label="Payment strategy" required>
             <Select style={{ width: "100%" }}>
@@ -108,7 +113,7 @@ const SubmitApplication = () => {
               placeholder="Payment amount or proportion."
               min={1}
               style={{ width: "100%" }}
-              decimalSeparator="18"
+              // decimalSeparator="18"
             />
           </Form.Item>
           <Form.Item name="language" label="Language" required>
@@ -122,9 +127,11 @@ const SubmitApplication = () => {
                   .includes(input.toLowerCase())
               }
             >
-              <Option value={1}>Chinese</Option>
-              <Option value={2}>English</Option>
-              <Option value={3}>Japanese</Option>
+              {regiserLanguages.map((item, index) => (
+                <Option value={item.id} key={index}>
+                  {item.notes}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
@@ -137,7 +144,10 @@ const SubmitApplication = () => {
               placeholder="The default is to extend by 365 days."
             />
           </Form.Item>
-          <div className="flex items-center justify-center rounded-md text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110" onClick={onFinish}>
+          <div
+            className="flex items-center justify-center rounded-md text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
+            onClick={onFinish}
+          >
             Submit
           </div>
         </Form>

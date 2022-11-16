@@ -15,14 +15,13 @@ const UserLogIn = (
   },
   {
     reputation,
-    deposit
+    deposit,
   }: {
     reputation: string;
     deposit: string;
   },
   killSessionWalletConnect: () => void
 ): React.ReactElement => {
-
   return (
     <div className="flex flex-col rounded-md bg-white items-center max-w-[232px]">
       <div className="flex flex-row mb-3 justify-start items-center px-4">
@@ -31,9 +30,7 @@ const UserLogIn = (
           className="flex rounded-full w-[30%]"
         />
         <div className="flex w-full flex-col ml-3 justify-center">
-          <div className="flex text-base font-medium items-center ">
-            ENS
-          </div>
+          <div className="flex text-base font-medium items-center ">ENS</div>
           <div className="flex text-[#696969] text-sm mt-0.5">
             {shortenAddress(address)}
           </div>
