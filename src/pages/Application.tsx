@@ -6,8 +6,8 @@ import { ApplyCard } from "../components";
 import { GlobalContext } from "../context/GlobalContext";
 import { DataContext } from "../context/DataContext";
 const ApplicationPage = (): React.ReactElement => {
-  const { showApplicationModal } = useContext(GlobalContext);
   const { applications, queryApplicationData } = useContext(DataContext);
+  const { showApplicationModal } = useContext(GlobalContext);
 
   useEffect(() => {
     queryApplicationData();

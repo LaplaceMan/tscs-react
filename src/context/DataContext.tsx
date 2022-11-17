@@ -255,68 +255,67 @@ export const DataProvider = ({ children }: any) => {
       uri: GRAPHQL_API,
       cache: new InMemoryCache(),
     });
-    accountState.address &&
-      client
-        .query({
-          query: gql(QueryUserOwn),
-          variables: {
-            id: address,
-          },
-        })
-        .then((data) => {
-          let getApplications = data.data.user.applications;
-          let getSubtitles = data.data.user.subtitlesOwner;
-          let getAudits = data.data.user.audits;
-          let applicationArray = new Array<OwnApplication>();
-          let subtitleArray = new Array<OwnSubtitle>();
-          let auditArray = new Array<OwnAudit>();
-          getApplications.map((item: any) => {
-            applicationArray.push({
-              name: item.video.platform.name,
-              type: item.strategy.notes,
-              price: item.amount,
-              state: item.adopted ? item.adopted.id : "0",
-              source: item.source,
-              videoId: item.video.id,
-              applyId: item.id,
-              language: item.language.notes,
-              deadline: item.deadline,
-            });
+    client
+      .query({
+        query: gql(QueryUserOwn),
+        variables: {
+          id: address,
+        },
+      })
+      .then((data) => {
+        let getApplications = data.data.user.applications;
+        let getSubtitles = data.data.user.subtitlesOwner;
+        let getAudits = data.data.user.audits;
+        let applicationArray = new Array<OwnApplication>();
+        let subtitleArray = new Array<OwnSubtitle>();
+        let auditArray = new Array<OwnAudit>();
+        getApplications.map((item: any) => {
+          applicationArray.push({
+            name: item.video.platform.name,
+            type: item.strategy.notes,
+            price: item.amount,
+            state: item.adopted ? item.adopted.id : "0",
+            source: item.source,
+            videoId: item.video.id,
+            applyId: item.id,
+            language: item.language.notes,
+            deadline: item.deadline,
           });
-          getSubtitles.map((item: any) => {
-            subtitleArray.push({
-              subtitleId: item.id,
-              cid: item.cid,
-              support: item.supporterCount,
-              oppose: item.dissenterCount,
-              state: item.state,
-              applyId: item.application.id,
-              language: item.language.notes,
-              type: item.application.strategy.notes,
-              platform: item.application.video.platform.id,
-            });
-          });
-          getAudits.map((item: any) => {
-            auditArray.push({
-              cid: item.subtitle.cid,
-              state: item.subtitle.state,
-              applyId: item.subtitle.application.id,
-              language: item.subtitle.language.notes,
-              attitude: item.attitude,
-              subtitleId: item.subtitle.id,
-              type: item.subtitle.application.strategy.notes,
-              platform: item.subtitle.application.video.platform.id,
-            });
-          });
-          setUserOwnData({
-            applications: applicationArray,
-            subtitles: subtitleArray,
-            audits: auditArray,
-          });
-        })
-        .catch((err) => {
-          console.log("Error fetching data: ", err);
         });
+        getSubtitles.map((item: any) => {
+          subtitleArray.push({
+            subtitleId: item.id,
+            cid: item.cid,
+            support: item.supporterCount,
+            oppose: item.dissenterCount,
+            state: item.state,
+            applyId: item.application.id,
+            language: item.language.notes,
+            type: item.application.strategy.notes,
+            platform: item.application.video.platform.id,
+          });
+        });
+        getAudits.map((item: any) => {
+          auditArray.push({
+            cid: item.subtitle.cid,
+            state: item.subtitle.state,
+            applyId: item.subtitle.application.id,
+            language: item.subtitle.language.notes,
+            attitude: item.attitude,
+            subtitleId: item.subtitle.id,
+            type: item.subtitle.application.strategy.notes,
+            platform: item.subtitle.application.video.platform.id,
+          });
+        });
+        setUserOwnData({
+          applications: applicationArray,
+          subtitles: subtitleArray,
+          audits: auditArray,
+        });
+      })
+      .catch((err) => {
+        console.log("Error fetching data: ", err);
+      });
   };
 
   const queryUserOwnApplicationData = (user: string) => {
@@ -461,7 +460,6 @@ export const DataProvider = ({ children }: any) => {
       })
       .then((data) => {
         let languages = data.data.languages;
-        console.log(languages);
         if (languages) {
           let languageArray = new Array<{ id: string; notes: string }>();
           languages.map((item: any) => {

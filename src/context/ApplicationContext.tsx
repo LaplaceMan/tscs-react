@@ -3,6 +3,8 @@ import {
   ApplicationContent,
   Subtitle,
   defaultSubtitle,
+  PersonalPageData,
+  defaultPersonalPageData,
 } from "../types/baseTypes";
 import {
   Submit,
@@ -20,8 +22,14 @@ import {
   ERC20_ABI,
   ERC1155_ABI,
   ERC721_ABI,
+  ZIMU_TOKEN,
+  ZIMU_TOKEN_ABI,
+  VIDEO_TOKEN,
+  ACCESS_STRATEGY,
+  ACCESS_ABI,
 } from "../utils/contracts";
 import { GlobalContext } from "./GlobalContext";
+import { DataContext } from "./DataContext";
 const { ethereum } = window as any;
 
 const getContract = (address: string, abi: any): ethers.Contract => {
@@ -33,7 +41,7 @@ const getContract = (address: string, abi: any): ethers.Contract => {
 
 export const ApplicationContext = React.createContext<ApplicationContent>({
   userDID: { reputation: "0", deposit: "0" },
-  defaultUploadSubtitleData: { applyId: "0", language: 1 },
+  defaultUploadSubtitleData: { applyId: "0", language: "0" },
   updateDefaultUploadSubtitleData: () => {},
   defaultAuditSubtitleData: defaultSubtitle,
   updateDefaultAuditSubtitleData: () => {},
@@ -47,18 +55,25 @@ export const ApplicationContext = React.createContext<ApplicationContent>({
   cancelApplication: () => {},
   updateDefaultUpdateApplication: () => {},
   defaultUpdateApplicationData: defaultUpdateApplication,
-  updateDefaultWithdrawReward: () => {},
-  defaultWithdrawRewardData: "",
+  updateDefaultWithdrawOrDespoit: () => {},
+  defaultWithdrawOrDespoitData: { platform: "", manage: "" },
   updateApplication: () => {},
   withdrawReward: () => {},
+  depoitZimuManage: () => {},
+  personalDID: defaultPersonalPageData,
+  getPersonalPageData: () => {},
 });
 
 export const ApplicationProvider = ({ children }: any) => {
   const { setLoadingState } = useContext(GlobalContext);
+  const { regiserLanguages } = useContext(DataContext);
   const [userDID, setUserDID] = useState({ reputation: "0", deposit: "0" });
+  const [personalDID, setPersonalDID] = useState<PersonalPageData>(
+    defaultPersonalPageData
+  );
   const [defaultUploadSubtitleData, setDefaultUploadSubtitleData] = useState({
     applyId: "0",
-    language: 1,
+    language: "0",
   });
   const [defaultAuditSubtitleData, setDefaultAuditSubtitleData] =
     useState(defaultSubtitle);
@@ -66,8 +81,8 @@ export const ApplicationProvider = ({ children }: any) => {
     useState<TokenTransaction>(defaultTokenTransaction);
   const [defaultUpdateApplicationData, setDefaultUpdateApplication] =
     useState<UpdateApplication>(defaultUpdateApplication);
-  const [defaultWithdrawRewardData, setDefaultWithdrawRewardData] =
-    useState("");
+  const [defaultWithdrawOrDespoitData, setDefaultWithdrawOrDespoitData] =
+    useState({ platform: "", manage: "" });
 
   const updateDefaultAuditSubtitleData = (subtitle: Subtitle) => {
     setDefaultAuditSubtitleData(subtitle);
@@ -75,16 +90,22 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const updateDefaultUploadSubtitleData = (
     applyId: string,
-    language: number
+    language: string
   ) => {
+    let id: string = "0";
+    regiserLanguages.map((item) => {
+      if (item.notes == language) {
+        id = item.id;
+      }
+    });
     setDefaultUploadSubtitleData({
       applyId: applyId,
-      language: language,
+      language: id,
     });
   };
 
-  const updateDefaultWithdrawReward = (platform: string) => {
-    setDefaultWithdrawRewardData(platform);
+  const updateDefaultWithdrawOrDespoit = (platform: string, manage: string) => {
+    setDefaultWithdrawOrDespoitData({ platform, manage });
   };
 
   const updateDefaultTokenTransaction = (tx: TokenTransaction) => {
@@ -110,6 +131,32 @@ export const ApplicationProvider = ({ children }: any) => {
         deposit: BigNumber.from(result[1]).toString(),
       });
     }
+  };
+
+  const getPersonalPageData = async (address: string) => {
+    if (!ethereum) return alert("Please install wallet.");
+    const networkId = ethereum.chainId;
+    const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
+    const zimu = getContract(ZIMU_TOKEN[networkId], ZIMU_TOKEN_ABI);
+    const vt = getContract(VIDEO_TOKEN[networkId], ERC1155_ABI);
+    const access = getContract(ACCESS_STRATEGY[networkId], ACCESS_ABI);
+    let base = await tscs.getUserBaseInfo(address);
+    let reputation = BigNumber.from(base[0]).toString();
+    let despoit = BigNumber.from(base[1]).toString();
+    let zimuBalance = await zimu.balanceOf(address);
+    let vtBalance = await vt.balanceOf(address, 0);
+    let needed = await access.deposit(reputation);
+    setPersonalDID({
+      reputation: BigNumber.from(reputation).div(10).toString(),
+      despoit: BigNumber.from(despoit).div("1000000000000000000").toString(),
+      zimu: BigNumber.from(zimuBalance)
+        .div(BigNumber.from("1000000000000000000"))
+        .toString(),
+      vt0: BigNumber.from(vtBalance).div("1000000").toString(),
+      needed: BigNumber.from(needed)
+        .div(BigNumber.from("1000000000000000000"))
+        .toString(),
+    });
   };
 
   const submitApplication = async (params: Submit) => {
@@ -255,6 +302,23 @@ export const ApplicationProvider = ({ children }: any) => {
     setLoadingState(false);
   };
 
+  const depoitZimuManage = async (address: string, amount: string) => {
+    if (!ethereum) return alert("Please install wallet.");
+    const networkId = ethereum.chainId;
+    const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
+    let transaction;
+    if (defaultWithdrawOrDespoitData.manage == "DESPOIT") {
+      transaction = await tscs.userJoin(address, amount);
+    }
+    if (defaultWithdrawOrDespoitData.manage == "WITHDRAW") {
+      transaction = await tscs.withdrawDeposit(amount);
+    }
+    setLoadingState(true);
+    await transaction.wait();
+    console.log("Success:", transaction.hash);
+    setLoadingState(false);
+  };
+
   useEffect(() => {
     getUserDID();
   }, []);
@@ -277,10 +341,13 @@ export const ApplicationProvider = ({ children }: any) => {
         cancelApplication,
         updateDefaultUpdateApplication,
         defaultUpdateApplicationData,
-        updateDefaultWithdrawReward,
-        defaultWithdrawRewardData,
+        updateDefaultWithdrawOrDespoit,
+        defaultWithdrawOrDespoitData,
         updateApplication,
         withdrawReward,
+        depoitZimuManage,
+        personalDID,
+        getPersonalPageData,
       }}
     >
       {children}

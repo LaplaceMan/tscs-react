@@ -10,6 +10,8 @@ import { WalletContext } from "../../context/WalletContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { DataContext } from "../../context/DataContext";
 import { ZERO_ADDRESS } from "../../utils/constants";
+import { countryLanguageMap } from "../../utils/constants";
+
 const { Option } = Select;
 
 const SubmitApplication = () => {
@@ -17,7 +19,7 @@ const SubmitApplication = () => {
   const { submitApplication, userDID } = useContext(ApplicationContext);
   const { hideApplicationModal, isLoading } = useContext(GlobalContext);
   const { gasPrice } = useContext(WalletContext);
-  const { regiserLanguages } = useContext(DataContext);
+  const { regiserLanguages, regiserPlatforms } = useContext(DataContext);
 
   const onFinish = () => {
     let values = form.getFieldsValue();
@@ -71,9 +73,13 @@ const SubmitApplication = () => {
                   .includes(input.toLowerCase())
               }
             >
-              <Option value={ZERO_ADDRESS}>Default</Option>
-              <Option value="1">Youtube</Option>
-              <Option value="2">Bilibili</Option>
+              {regiserPlatforms.map((item, index) => {
+                return (
+                  <Option value={item.id} key={index}>
+                    {item.name}
+                  </Option>
+                );
+              })}
             </Select>
           </Form.Item>
           <Form.Item
@@ -129,7 +135,9 @@ const SubmitApplication = () => {
             >
               {regiserLanguages.map((item, index) => (
                 <Option value={item.id} key={index}>
-                  {item.notes}
+                  {countryLanguageMap[item.notes]
+                    ? countryLanguageMap[item.notes]
+                    : item.notes}
                 </Option>
               ))}
             </Select>

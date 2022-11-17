@@ -4,10 +4,22 @@ export const Network: { [key: string]: string } = {
   "0x539": "Test",
 };
 
-export const Languages: { [key: string]: number } = {
-  cn: 1,
-  us: 2,
-  jp: 3,
+export const countryLanguageMap: { [key: string]: string } = {
+  cn: "Chinese",
+  us: "English(US)",
+  jp: "Japanese",
+  kr: "Korean",
+  de: "German",
+  fr: "French",
+  in: "Hindi",
+  gb: "English(UK)",
+  ru: "Russian",
+  es: "Spanish",
+  my: "Malay",
+  pt: "Portuguese",
+  th: "Thai",
+  bd: "Bengali",
+  sa: "Arabic",
 };
 
 export const Settlement = ["OT0", "DR1", "OT2"];

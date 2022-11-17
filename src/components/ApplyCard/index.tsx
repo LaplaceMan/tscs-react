@@ -6,19 +6,18 @@ import { Application } from "../../types/baseTypes";
 import { TimeRemainPercentage, shortenAddress } from "../../utils/tools";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
-import { Languages } from "../../utils/constants";
 
 const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
   const { updateDefaultUploadSubtitleData } = useContext(ApplicationContext);
   const { showUploadModal } = useContext(GlobalContext);
-  const uploadSubtitleHandle = (applyId: string, language: number) => {
+  const uploadSubtitleHandle = (applyId: string, language: string) => {
     updateDefaultUploadSubtitleData(applyId, language);
     showUploadModal();
   };
 
   const UploadButton = (
     applyId: string,
-    language: number
+    language: string
   ): React.ReactElement => {
     return (
       <div
@@ -53,7 +52,7 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
         <div className="flex w-full flex-row items-center justify-between">
           {MiniShowData1Package(data)}
           <div className="flex ml-5">
-            {UploadButton(data.applyId, Languages[data.language])}
+            {UploadButton(data.applyId, data.language)}
           </div>
         </div>
         <div className="flex w-full mt-5">

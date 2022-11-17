@@ -15,12 +15,12 @@ const subtitleCardItem = (label: string, info: string) => {
 };
 
 const OwnSubtitleCard = (subtitle: OwnSubtitle, index: React.Key) => {
-  const { preSettlement, updateDefaultWithdrawReward } =
+  const { preSettlement, updateDefaultWithdrawOrDespoit } =
     useContext(ApplicationContext);
   const { showWithdrawRewardModal } = useContext(GlobalContext);
 
   const withdrawRewardHandle = (platform: string) => {
-    updateDefaultWithdrawReward(platform);
+    updateDefaultWithdrawOrDespoit(platform, "");
     showWithdrawRewardModal();
   };
 

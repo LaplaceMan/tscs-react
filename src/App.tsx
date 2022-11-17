@@ -6,6 +6,7 @@ import {
   TokenTransaction,
   UpdateApplication,
   WithdrawReward,
+  DepositAssetManageModal,
 } from "./components";
 import { useContext } from "react";
 import { Layout, Affix, Modal } from "antd";
@@ -21,6 +22,7 @@ const App = () => {
     isTokenTransactionModalOpen,
     isUpdateApplicationModalOpen,
     isWithdrawRewardModalOpen,
+    isDespoitAssetModalOpen,
   } = useContext(GlobalContext);
   return (
     <div className="mbg">
@@ -89,6 +91,16 @@ const App = () => {
               centered
             >
               {WithdrawReward()}
+            </Modal>
+            <Modal
+              open={isDespoitAssetModalOpen}
+              destroyOnClose={true}
+              forceRender={true}
+              closable={false}
+              footer={null}
+              centered
+            >
+              {DepositAssetManageModal()}
             </Modal>
           </Content>
         </div>

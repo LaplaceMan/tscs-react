@@ -28,6 +28,9 @@ export const GlobalContext = React.createContext<GlobalContent>({
   showWithdrawRewardModal: () => {},
   hideWithdrawRewardModal: () => {},
   isWithdrawRewardModalOpen: false,
+  showDespoitAssetModal: () => {},
+  hideDespoitAssetModal: () => {},
+  isDespoitAssetModalOpen: false,
 });
 
 export const GlobalProvider = ({ children }: any) => {
@@ -43,9 +46,18 @@ export const GlobalProvider = ({ children }: any) => {
     useState(false);
   const [isWithdrawRewardModalOpen, setIsWithdrawRewardModalOpen] =
     useState(false);
+  const [isDespoitAssetModalOpen, setIsDespoitAssetModalOpen] = useState(false);
 
   const [toggleMenu, setToggleMenu] = useState(false);
   const [scrollHeight, setScrollHeight] = useState(0);
+
+  const showDespoitAssetModal = () => {
+    setIsDespoitAssetModalOpen(true);
+  };
+
+  const hideDespoitAssetModal = () => {
+    setIsDespoitAssetModalOpen(false);
+  };
 
   const showWithdrawRewardModal = () => {
     setIsWithdrawRewardModalOpen(true);
@@ -143,6 +155,9 @@ export const GlobalProvider = ({ children }: any) => {
         showWithdrawRewardModal,
         hideWithdrawRewardModal,
         isWithdrawRewardModalOpen,
+        showDespoitAssetModal,
+        hideDespoitAssetModal,
+        isDespoitAssetModalOpen,
       }}
     >
       {children}

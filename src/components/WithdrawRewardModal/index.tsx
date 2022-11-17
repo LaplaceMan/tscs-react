@@ -12,7 +12,7 @@ const { Option } = Select;
 const WithdrawReward = () => {
   const [form] = Form.useForm();
   const { isLoading, hideWithdrawRewardModal } = useContext(GlobalContext);
-  const { withdrawReward, defaultWithdrawRewardData } =
+  const { withdrawReward, defaultWithdrawOrDespoitData } =
     useContext(ApplicationContext);
   const { queryUserLockedToken, userDayLocakedToken } = useContext(DataContext);
 
@@ -22,8 +22,8 @@ const WithdrawReward = () => {
   };
 
   useEffect(() => {
-    if (defaultWithdrawRewardData != "") {
-      form.setFieldsValue({ platform: defaultWithdrawRewardData });
+    if (defaultWithdrawOrDespoitData.platform != "") {
+      form.setFieldsValue({ platform: defaultWithdrawOrDespoitData.platform });
     } else {
       form.setFieldsValue(null);
     }
@@ -69,7 +69,9 @@ const WithdrawReward = () => {
                   .toLowerCase()
                   .includes(input.toLowerCase())
               }
-              disabled={defaultWithdrawRewardData != "" ? true : false}
+              disabled={
+                defaultWithdrawOrDespoitData.platform != "" ? true : false
+              }
             >
               <Option value={ZERO_ADDRESS}>Default</Option>
             </Select>
@@ -86,7 +88,10 @@ const WithdrawReward = () => {
                 let base = date?.valueOf();
                 if (base) {
                   base = parseInt((base / 1000).toString());
-                  queryUserLockedToken(defaultWithdrawRewardData, base);
+                  queryUserLockedToken(
+                    defaultWithdrawOrDespoitData.platform,
+                    base
+                  );
                 }
               }}
             />

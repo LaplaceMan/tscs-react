@@ -157,6 +157,9 @@ export type GlobalContent = {
   showWithdrawRewardModal: () => void;
   hideWithdrawRewardModal: () => void;
   isWithdrawRewardModalOpen: boolean;
+  showDespoitAssetModal: () => void;
+  hideDespoitAssetModal: () => void;
+  isDespoitAssetModalOpen: boolean;
 };
 
 export type OwnToken = {
@@ -254,8 +257,8 @@ export let defaultUserOwn = {
 
 export type ApplicationContent = {
   userDID: { reputation: string; deposit: string };
-  defaultUploadSubtitleData: { applyId: string; language: number };
-  updateDefaultUploadSubtitleData: (applyId: string, language: number) => void;
+  defaultUploadSubtitleData: { applyId: string; language: string };
+  updateDefaultUploadSubtitleData: (applyId: string, language: string) => void;
   defaultAuditSubtitleData: Subtitle;
   updateDefaultAuditSubtitleData: (subtitle: Subtitle) => void;
   submitApplication: (params: Submit) => void;
@@ -268,10 +271,13 @@ export type ApplicationContent = {
   cancelApplication: (applyId: string) => void;
   updateDefaultUpdateApplication: (params: UpdateApplication) => void;
   defaultUpdateApplicationData: UpdateApplication;
-  updateDefaultWithdrawReward: (platform: string) => void;
-  defaultWithdrawRewardData: string;
+  updateDefaultWithdrawOrDespoit: (platform: string, manage: string) => void;
+  defaultWithdrawOrDespoitData: { platform: string; manage: string };
   updateApplication: (params: any) => void;
   withdrawReward: (params: any) => void;
+  depoitZimuManage: (address: string, amount: string) => void;
+  personalDID: PersonalPageData;
+  getPersonalPageData: (address: string) => void;
 };
 
 export type DataContent = {
@@ -292,4 +298,20 @@ export type DataContent = {
   userDayLocakedToken: string;
   regiserLanguages: { id: string; notes: string }[];
   regiserPlatforms: { id: string; name: string }[];
+};
+
+export type PersonalPageData = {
+  reputation: string;
+  despoit: string;
+  zimu: string;
+  vt0: string;
+  needed: string;
+};
+
+export let defaultPersonalPageData = {
+  reputation: "0",
+  despoit: "0",
+  zimu: "0",
+  vt0: "0",
+  needed: "0",
 };

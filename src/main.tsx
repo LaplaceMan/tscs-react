@@ -10,13 +10,13 @@ import { DataProvider } from "./context/DataContext";
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <GlobalProvider>
     <WalletProvider>
-      <ApplicationProvider>
-        <DataProvider>
+      <DataProvider>
+        <ApplicationProvider>
           <BrowserRouter>
             <App />
           </BrowserRouter>
-        </DataProvider>
-      </ApplicationProvider>
+        </ApplicationProvider>
+      </DataProvider>
     </WalletProvider>
   </GlobalProvider>
 );

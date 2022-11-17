@@ -3,12 +3,14 @@ import { Tabs, Empty } from "antd";
 import { SiEthereum } from "react-icons/si";
 import { WalletContext } from "../context/WalletContext";
 import { DataContext } from "../context/DataContext";
+import { ApplicationContext } from "../context/ApplicationContext";
 import { shortenAddress } from "../utils/tools";
 import {
   OwnAssetCard,
   OwnApplicationCard,
   OwnSubtitleCard,
   OwnAuditCard,
+  DepositAssetCard,
 } from "../components";
 import { ZIMU_TOKEN, VIDEO_TOKEN } from "../utils/contracts";
 
@@ -29,10 +31,12 @@ const NoItems = () => {
 const Personal = (): React.ReactElement => {
   const { accountState } = useContext(WalletContext);
   const { userOwnData, queryUserOwnData } = useContext(DataContext);
+  const { personalDID, getPersonalPageData } = useContext(ApplicationContext);
   const user = window.location.pathname.slice(10);
 
   useEffect(() => {
     queryUserOwnData(user);
+    getPersonalPageData(user);
     let timer = setInterval(() => queryUserOwnData(user), 60000);
     return () => clearInterval(timer);
   }, []);
@@ -40,9 +44,10 @@ const Personal = (): React.ReactElement => {
   const Assets = () => {
     return (
       <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
+        {DepositAssetCard()}
         {OwnAssetCard({
           name: "Zimu",
-          balance: "20K",
+          balance: personalDID.zimu,
           type: "ERC-20",
           issuser: "TSCS",
           address: ZIMU_TOKEN[accountState.network],
@@ -52,7 +57,7 @@ const Personal = (): React.ReactElement => {
         })}
         {OwnAssetCard({
           name: "VideoToken-0",
-          balance: "20K",
+          balance: personalDID.vt0,
           type: "ERC-1155",
           issuser: "TSCS",
           address: VIDEO_TOKEN[accountState.network],

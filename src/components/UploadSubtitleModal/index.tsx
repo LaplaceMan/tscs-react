@@ -8,6 +8,8 @@ import React, { useContext, useEffect } from "react";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { WalletContext } from "../../context/WalletContext";
+import { DataContext } from "../../context/DataContext";
+import { countryLanguageMap } from "../../utils/constants";
 
 const { Option } = Select;
 
@@ -17,7 +19,7 @@ const UploadSubtitle = (): React.ReactElement => {
     useContext(ApplicationContext);
   const { isLoading, hideUploadModal } = useContext(GlobalContext);
   const { gasPrice } = useContext(WalletContext);
-
+  const { regiserLanguages } = useContext(DataContext);
   const onFinish = () => {
     let values = form.getFieldsValue();
     uploadSubtitle(values);
@@ -39,7 +41,7 @@ const UploadSubtitle = (): React.ReactElement => {
           layout="vertical"
           preserve={false}
           requiredMark="optional"
-          initialValues={{ language: 1 }}
+          initialValues={{ language: "1" }}
           onFinish={onFinish}
           className="w-full"
         >
@@ -56,7 +58,7 @@ const UploadSubtitle = (): React.ReactElement => {
           </div>
           <Form.Item>
             <div className="flex bg-gray-100 rounded-md p-2 items-center justify-between">
-              {ModelDataMini("ZIMUs Available", <GiToken />, 0.1)}
+              {ModelDataMini("ZIMUs Available", <GiToken />, 0.01)}
               {ModelDataMini("Current Value", <AiFillDollarCircle />, 1.1)}
               {ModelDataMini("Gas Price", <SiEthereum />, gasPrice)}
             </div>
@@ -101,10 +103,13 @@ const UploadSubtitle = (): React.ReactElement => {
                   : false
               }
             >
-              <Option value={1}>Chinese</Option>
-              <Option value={2}>English</Option>
-              <Option value={3}>Korean</Option>
-              <Option value={4}>Japanese</Option>
+              {regiserLanguages.map((item, index) => (
+                <Option value={item.id} key={index}>
+                  {countryLanguageMap[item.notes]
+                    ? countryLanguageMap[item.notes]
+                    : item.notes}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
