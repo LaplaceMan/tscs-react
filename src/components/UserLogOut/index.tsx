@@ -22,10 +22,10 @@ const UserLogOut = () => {
         </div>
       </div>
       <div
-        className="flex w-full items-center justify-center py-[4px] px-[4px]  text-base font-medium cursor-pointer rounded-full bg-gradient-to-br from-purple-400 to-blue-400 text-blue-400"
+        className="flex w-full items-center justify-center py-[4px] px-[4px]  text-base font-medium cursor-pointer rounded-full bg-gradient-to-br from-purple-400 to-blue-400 text-[#8f95fb]"
         onClick={showConnectWalletModal}
       >
-        <div className="flex items-center justify-center py-1.5 bg-white rounded-full w-full hover:bg-gradient-to-br from-purple-400 to-blue-400 hover:text-white transition duration-500 ease-in-out">
+        <div className="flex items-center justify-center py-1 bg-white rounded-full w-full hover:bg-gradient-to-br from-purple-400 to-blue-400 hover:text-white transition duration-500 ease-in-out">
           Connect Wallet
         </div>
       </div>

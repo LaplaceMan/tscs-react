@@ -28,3 +28,5 @@ export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 export const GRAPHQL_API =
   "http://10.201.1.236:8000/subgraphs/name/tscs-subgrpah";
+
+export const DEFAULT_PAGE_SIZE = 10;

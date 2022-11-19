@@ -19,7 +19,9 @@ import { SUBTITLE_SYSTEM } from "../utils/contracts";
 import {
   QueryHome,
   QueryApplication,
+  QueryApplicationWithLanguage,
   QuerySubtitle,
+  QuerySubtitleWithLanguage,
   QueryUser,
   QueryUserOwnApplication,
   QueryUserOwnSubtitle,
@@ -63,7 +65,7 @@ export const DataProvider = ({ children }: any) => {
   const [userOwnData, setUserOwnData] = useState<UserOwn>(defaultUserOwn);
   const [userDayLocakedToken, setUserDayLocakedToken] = useState("*");
   const [regiserLanguages, setRegiserLanguages] = useState([
-    { id: "", notes: "" },
+    { id: "0", notes: "" },
   ]);
   const [regiserPlatforms, setRegiserPlatforms] = useState([
     { id: "", name: "" },
@@ -143,18 +145,24 @@ export const DataProvider = ({ children }: any) => {
       });
   };
 
-  const queryApplicationData = () => {
+  const queryApplicationData = (
+    first: number,
+    skip: number,
+    language: string
+  ) => {
     const client = new ApolloClient({
       uri: GRAPHQL_API,
       cache: new InMemoryCache(),
     });
     client
       .query({
-        query: gql(QueryApplication),
+        query: gql(
+          language == "0" ? QueryApplication : QueryApplicationWithLanguage
+        ),
         variables: {
-          id: SUBTITLE_SYSTEM["0x539"],
-          first: 8,
-          skip: 0,
+          first: first,
+          skip: skip,
+          languageId: language,
         },
       })
       .then((data) => {
@@ -182,18 +190,20 @@ export const DataProvider = ({ children }: any) => {
       });
   };
 
-  const querySubtitleData = () => {
+  const querySubtitleData = (first: number, skip: number, language: string) => {
     const client = new ApolloClient({
       uri: GRAPHQL_API,
       cache: new InMemoryCache(),
     });
     client
       .query({
-        query: gql(QuerySubtitle),
+        query: gql(
+          language == "0" ? QuerySubtitle : QueryApplicationWithLanguage
+        ),
         variables: {
-          id: SUBTITLE_SYSTEM["0x539"],
-          first: 8,
-          skip: 0,
+          first: first,
+          skip: skip,
+          languageId: language,
         },
       })
       .then((data) => {
@@ -504,12 +514,14 @@ export const DataProvider = ({ children }: any) => {
   };
 
   useEffect(() => {
+    queryHomeData();
     queryRegiserLanugages();
     queryRegiserPlatforms();
     let timer = setInterval(() => {
       queryRegiserLanugages();
       queryRegiserPlatforms();
-    }, 6000000);
+      queryHomeData();
+    }, 600000);
     return () => clearInterval(timer);
   }, []);
 

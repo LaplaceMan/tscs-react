@@ -4,7 +4,7 @@ import { ReactElement } from "react";
 import HeaderLogItems from "./HeaderLog";
 import { useContext } from "react";
 import { IoMenuOutline, IoCloseOutline } from "react-icons/io5";
-import { BsCollection, BsGem } from "react-icons/bs";
+import { BsCollection, BsGem, BsFileText } from "react-icons/bs";
 import { GlobalContext } from "../../context/GlobalContext";
 const NavbarItems = [
   {
@@ -25,19 +25,38 @@ const HeaderNavbar = () => {
       <Link to={item.link} key={key}>
         <li
           className={`mx-4 cursor-pointer text-lg font-medium flex items-center justify-center ${
-            toggleMenu ? "my-3 mx-1" : ""
+            toggleMenu ? "my-3" : ""
           }`}
         >
-          <div className={`${toggleMenu ? "mr-8" : "hidden"}`}>{item.icon}</div>
+          <div className={`${toggleMenu ? "mr-5" : "hidden"}`}>{item.icon}</div>
           {item.title}
         </li>
       </Link>
     );
   };
+
+  const DocumentationItem = (): ReactElement => {
+    return (
+      <a href="http://www.baidu.com/" target="_blank" rel="noreferrer noopener">
+        <li
+          className={`mx-4 cursor-pointer text-lg font-medium flex items-center justify-center ${
+            toggleMenu ? "my-3" : ""
+          }`}
+        >
+          <div className={`${toggleMenu ? "mr-5" : "hidden"}`}>
+            <BsFileText fontSize="1rem" />
+          </div>
+          Documentation
+        </li>
+      </a>
+    );
+  };
+
   return (
     <div className="flex flex-row">
       <ul className="md:flex hidden list-none flex-row justify-between items-center flex-initial">
         {NavbarItems.map((item, index) => HeaderNavbarItems(item, index))}
+        <DocumentationItem />
         <HeaderLogItems />
       </ul>
       <div className="flex relative">
@@ -57,6 +76,7 @@ const HeaderNavbar = () => {
               <IoCloseOutline onClick={() => setToggleMenu(false)} />
             </li>
             {NavbarItems.map((item, index) => HeaderNavbarItems(item, index))}
+            <DocumentationItem />
           </ul>
         )}
       </div>

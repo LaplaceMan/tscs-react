@@ -73,13 +73,14 @@ const SubmitApplication = () => {
                   .includes(input.toLowerCase())
               }
             >
-              {regiserPlatforms.map((item, index) => {
-                return (
-                  <Option value={item.id} key={index}>
-                    {item.name}
-                  </Option>
-                );
-              })}
+              {regiserPlatforms[0].id != "" &&
+                regiserPlatforms.map((item, index) => {
+                  return (
+                    <Option value={item.id} key={index}>
+                      {item.name}
+                    </Option>
+                  );
+                })}
             </Select>
           </Form.Item>
           <Form.Item
@@ -133,13 +134,14 @@ const SubmitApplication = () => {
                   .includes(input.toLowerCase())
               }
             >
-              {regiserLanguages.map((item, index) => (
-                <Option value={item.id} key={index}>
-                  {countryLanguageMap[item.notes]
-                    ? countryLanguageMap[item.notes]
-                    : item.notes}
-                </Option>
-              ))}
+              {regiserLanguages[0].id != "0" &&
+                regiserLanguages.map((item, index) => (
+                  <Option value={item.id} key={index}>
+                    {countryLanguageMap[item.notes]
+                      ? countryLanguageMap[item.notes]
+                      : item.notes}
+                  </Option>
+                ))}
             </Select>
           </Form.Item>
           <Form.Item

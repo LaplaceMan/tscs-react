@@ -283,10 +283,10 @@ export type ApplicationContent = {
 export type DataContent = {
   applications: Application[];
   subtitles: Subtitle[];
-  queryApplicationData: () => void;
+  queryApplicationData: (first: number, skip: number, language: string) => void;
   dashboard: Dashboard;
   queryHomeData: () => void;
-  querySubtitleData: () => void;
+  querySubtitleData: (first: number, skip: number, language: string) => void;
   defaultAuditSubtitleMaker: User;
   userOwnData: UserOwn;
   // queryUserOwnApplicationData: (address: string) => void,

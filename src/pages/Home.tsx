@@ -8,16 +8,10 @@ import {
 } from "react-icons/md";
 import { ApplicationItems, SubtitleItems } from "../utils/testData";
 import { Link } from "react-router-dom";
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { DataContext } from "../context/DataContext";
 const Home = (): React.ReactElement => {
-  const { dashboard, applications, subtitles, queryHomeData } =
-    useContext(DataContext);
-  useEffect(() => {
-    queryHomeData();
-    let timer = setInterval(() => queryHomeData(), 60000);
-    return () => clearInterval(timer);
-  }, []);
+  const { dashboard, applications, subtitles } = useContext(DataContext);
 
   const DashboardMiniItems: DashboardMiniItem[] = [
     {
@@ -70,7 +64,7 @@ const Home = (): React.ReactElement => {
       </div>
       <div className="flex flex-col mt-10">
         <Link to="./Application">
-          <div className="flex items-center justify-center mt-3 mb-2 text-lg font-semibold text-[#696969] hover:text-black cursor-pointer">
+          <div className="flex items-center justify-center mt-3 mb-2 text-lg font-semibold text-black hover:text-[#696969] cursor-pointer">
             <MdAllInbox className="mt-0.5 mr-3" />
             Applications
           </div>
@@ -82,7 +76,7 @@ const Home = (): React.ReactElement => {
           {ApplicationItems.map((item, index) => ApplyCard(item, index))}
         </div>
         <Link to="./Government">
-          <div className="flex items-center justify-center mt-6 mb-2 text-lg font-semibold text-[#696969] hover:text-black cursor-pointer">
+          <div className="flex items-center justify-center mt-6 mb-2 text-lg font-semibold text-black hover:text-[#696969] cursor-pointer">
             <MdOutlineSubtitles className="mt-0.5 mr-3" /> Subtitles
           </div>
         </Link>

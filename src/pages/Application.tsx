@@ -1,18 +1,32 @@
-import React, { useContext, useEffect } from "react";
+import { Pagination, Select } from "antd";
+import React, { useContext, useEffect, useState } from "react";
 import { application_Illustration } from "../assets/index";
 import { FiArrowUpRight } from "react-icons/fi";
 import { ApplicationItems } from "../utils/testData";
 import { ApplyCard } from "../components";
 import { GlobalContext } from "../context/GlobalContext";
 import { DataContext } from "../context/DataContext";
+import { DEFAULT_PAGE_SIZE } from "../utils/constants";
+import { countryLanguageMap } from "../utils/constants";
+const { Option } = Select;
 const ApplicationPage = (): React.ReactElement => {
-  const { applications, queryApplicationData } = useContext(DataContext);
+  const { applications, queryApplicationData, dashboard, regiserLanguages } =
+    useContext(DataContext);
   const { showApplicationModal } = useContext(GlobalContext);
-
+  const [currentPage, setCurrentPage] = useState({ page: 1, language: "0" });
   useEffect(() => {
-    queryApplicationData();
-    setInterval(queryApplicationData, 300000);
+    queryApplicationData(DEFAULT_PAGE_SIZE, 0, "0");
   }, []);
+
+  const pageChangeHandle = (page: number, pageSize: number) => {
+    let skip = page == 1 ? 0 : (page - 1) * pageSize;
+    queryApplicationData(pageSize, skip, currentPage.language);
+  };
+
+  const languageChangeHandle = (language: string) => {
+    setCurrentPage({ page: 1, language: language });
+    queryApplicationData(DEFAULT_PAGE_SIZE, 0, language);
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -41,6 +55,30 @@ const ApplicationPage = (): React.ReactElement => {
           (item, index) => item.applyId != "" && ApplyCard(item, index)
         )}
         {ApplicationItems.map((item, index) => ApplyCard(item, index))}
+      </div>
+      <div className="flex my-5 items-center justify-center">
+        <Pagination
+          current={currentPage.page}
+          defaultPageSize={DEFAULT_PAGE_SIZE}
+          total={Number(dashboard.applicationCount)}
+          responsive={true}
+          onChange={(page, pageSize) => pageChangeHandle(page, pageSize)}
+        />
+        <Select
+          placement="topLeft"
+          placeholder="Language"
+          onChange={(value) => languageChangeHandle(value)}
+        >
+          <Option value="0">All</Option>
+          {regiserLanguages[0].id != "0" &&
+            regiserLanguages.map((item, index) => (
+              <Option value={item.id} key={index}>
+                {countryLanguageMap[item.notes]
+                  ? countryLanguageMap[item.notes]
+                  : item.notes}
+              </Option>
+            ))}
+        </Select>
       </div>
     </div>
   );

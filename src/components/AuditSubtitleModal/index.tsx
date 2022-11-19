@@ -131,13 +131,13 @@ const AuditSubtitle = () => {
         </div>
         <div className="flex items-center w-full text-white font-semibold text-base mt-2">
           <div
-            className="flex items-center justify-center rounded-l-full bg-gradient-to-r w-1/2 py-2 cursor-pointer from-purple-400 to-purple-200 mr-1 hover:brightness-110"
+            className="flex items-center justify-center rounded-md bg-gradient-to-r w-1/2 py-2 cursor-pointer from-purple-400 to-purple-200 mr-1 hover:brightness-110"
             onClick={() => auditSubtitle(txParams(0))}
           >
             Adopt
           </div>
           <div
-            className="flex items-center justify-center rounded-r-full bg-gradient-to-r w-1/2 py-2 cursor-pointer from-blue-200 to-blue-400 ml-1 hover:brightness-110"
+            className="flex items-center justify-center rounded-md bg-gradient-to-r w-1/2 py-2 cursor-pointer from-blue-200 to-blue-400 ml-1 hover:brightness-110"
             onClick={() => auditSubtitle(txParams(1))}
           >
             Report

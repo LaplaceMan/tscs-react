@@ -1,24 +1,32 @@
-import React, { useContext, useEffect } from "react";
+import { Pagination, Select } from "antd";
+import React, { useContext, useEffect, useState } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 import { government_Illustration } from "../assets/index";
 import { SubtitleCard } from "../components";
 import { SubtitleItems } from "../utils/testData";
-import { ApplicationContext } from "../context/ApplicationContext";
 import { DataContext } from "../context/DataContext";
 import { GlobalContext } from "../context/GlobalContext";
+import { DEFAULT_PAGE_SIZE } from "../utils/constants";
+import { countryLanguageMap } from "../utils/constants";
+const { Option } = Select;
 const Government = (): React.ReactElement => {
-  const { updateDefaultUploadSubtitleData } = useContext(ApplicationContext);
   const { showUploadModal } = useContext(GlobalContext);
-  const { subtitles, querySubtitleData } = useContext(DataContext);
+  const { subtitles, querySubtitleData, dashboard, regiserLanguages } =
+    useContext(DataContext);
+  const [currentPage, setCurrentPage] = useState({ page: 1, language: "0" });
 
   useEffect(() => {
-    querySubtitleData();
-    setInterval(querySubtitleData, 300000);
+    querySubtitleData(DEFAULT_PAGE_SIZE, 0, "0");
   }, []);
 
-  const uploadSubtitleHandle = () => {
-    updateDefaultUploadSubtitleData("0", 1);
-    showUploadModal();
+  const pageChangeHandle = (page: number, pageSize: number) => {
+    let skip = page == 1 ? 0 : (page - 1) * pageSize;
+    querySubtitleData(pageSize, skip, currentPage.language);
+  };
+
+  const languageChangeHandle = (language: string) => {
+    setCurrentPage({ page: 1, language: language });
+    querySubtitleData(DEFAULT_PAGE_SIZE, 0, language);
   };
 
   return (
@@ -34,7 +42,7 @@ const Government = (): React.ReactElement => {
           </div>
           <div
             className="flex md:px-12 py-2 text-white font-semibold md:text-lg  text-center rounded-full items-center justify-center bg-gradient-to-r from-purple-400 to-blue-400 mt-2 sm:text-base sm:px-10 cursor-pointer hover:brightness-110"
-            onClick={uploadSubtitleHandle}
+            onClick={showUploadModal}
           >
             Upload <FiArrowUpRight className="ml-3" />
           </div>
@@ -48,6 +56,30 @@ const Government = (): React.ReactElement => {
           (item, index) => item.applyId != "0" && SubtitleCard(item, index)
         )}
         {SubtitleItems.map((item, index) => SubtitleCard(item, index))}
+      </div>
+      <div className="flex my-5 items-center justify-center">
+        <Pagination
+          current={currentPage.page}
+          defaultPageSize={DEFAULT_PAGE_SIZE}
+          total={Number(dashboard.applicationCount)}
+          responsive={true}
+          onChange={(page, pageSize) => pageChangeHandle(page, pageSize)}
+        />
+        <Select
+          placement="topLeft"
+          placeholder="Language"
+          onChange={(value) => languageChangeHandle(value)}
+        >
+          <Option value="0">All</Option>
+          {regiserLanguages[0].id != "0" &&
+            regiserLanguages.map((item, index) => (
+              <Option value={item.id} key={index}>
+                {countryLanguageMap[item.notes]
+                  ? countryLanguageMap[item.notes]
+                  : item.notes}
+              </Option>
+            ))}
+        </Select>
       </div>
     </div>
   );

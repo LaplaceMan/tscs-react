@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Empty } from "antd";
 import { GlobalContext } from "../../context/GlobalContext";
 import { WalletContext } from "../../context/WalletContext";
+import { personal_404 } from "../../assets";
 const UserNotFound = () => {
   const { showConnectWalletModal } = useContext(GlobalContext);
   const { accountState } = useContext(WalletContext);
@@ -14,7 +15,7 @@ const UserNotFound = () => {
             <div>or does not exist.</div>
           </div>
         }
-        image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+        image={personal_404}
         imageStyle={{
           height: 220,
         }}
