@@ -1,5 +1,8 @@
 import React from "react";
 import { Application } from "../../types/baseTypes";
+import { shortenId, shortenAmount } from "../../utils/tools";
+import { BASE_RATE } from "../../utils/constants";
+import BigNumber from "bignumber.js";
 
 const ApplyLabel = ["Type", "Amount", "Platform", "Uploads", "Apply ID"];
 const DividerH = (): React.ReactElement => {
@@ -23,18 +26,22 @@ export const MiniShowData0 = (
 };
 
 export const MiniShowData0Package = (data: Application): React.ReactElement => {
-  var suffix = "";
-  var prefix = "";
+  let suffix = "";
+  let prefix = "";
+  let amount = data.amount;
   if (data.payType === "OT0" || data.payType === "DR2") {
     prefix = "$";
+    amount = BigNumber(amount).div("1000000000000000000").toFixed(2);
+    amount = shortenAmount(amount);
   } else {
     suffix = "%";
+    amount = ((Number(amount) * 100) / BASE_RATE).toFixed(2).toString();
   }
   return (
     <div className="flex flex-row w-full h-full items-center justify-between mt-4">
       {MiniShowData0(ApplyLabel[0], data.payType, "", "")}
       <DividerH />
-      {MiniShowData0(ApplyLabel[1], data.amount, prefix, suffix)}
+      {MiniShowData0(ApplyLabel[1], amount, prefix, suffix)}
     </div>
   );
 };
@@ -60,9 +67,9 @@ export const MiniShowData1Package = (data: Application): React.ReactElement => {
     <div className="flex flex-row h-full items-center justify-between">
       {MiniShowData1(ApplyLabel[2], data.platformName, "", "")}
       <DividerH />
-      {MiniShowData1(ApplyLabel[3], data.uploads.toString(), "", "")}
+      {MiniShowData1(ApplyLabel[3], data.uploads, "", "")}
       <DividerH />
-      {MiniShowData1(ApplyLabel[4], data.applyId.toString(), "", "")}
+      {MiniShowData1(ApplyLabel[4], shortenId(data.applyId), "", "")}
     </div>
   );
 };

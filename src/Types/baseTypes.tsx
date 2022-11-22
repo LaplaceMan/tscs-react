@@ -36,6 +36,7 @@ export let defaultApplication: Application = {
 
 export type Subtitle = {
   applyId: string;
+  applySource: string;
   payType: string;
   platformName: string;
   subtitleId: string;
@@ -43,7 +44,6 @@ export type Subtitle = {
   support: string;
   oppose: string;
   maker: string;
-  uploads: string;
   start: number;
   deadline: number;
   fingerprint: string;
@@ -52,6 +52,7 @@ export type Subtitle = {
 
 export let defaultSubtitle: Subtitle = {
   applyId: "",
+  applySource: "",
   payType: "",
   platformName: "",
   subtitleId: "",
@@ -59,7 +60,6 @@ export let defaultSubtitle: Subtitle = {
   support: "",
   oppose: "",
   maker: "",
-  uploads: "",
   start: 0,
   deadline: 0,
   fingerprint: "",

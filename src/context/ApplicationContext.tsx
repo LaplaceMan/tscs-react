@@ -15,7 +15,7 @@ import {
   defaultUpdateApplication,
   UpdateApplication,
 } from "../types/formTypes";
-import { ethers, BigNumber } from "ethers";
+import { ethers } from "ethers";
 import {
   SUBTITLE_SYSTEM,
   SUBTITLE_SYSTEM_ABI,
@@ -30,6 +30,8 @@ import {
 } from "../utils/contracts";
 import { GlobalContext } from "./GlobalContext";
 import { DataContext } from "./DataContext";
+import { DECIMALS_18, DECIMALS_6 } from "../utils/constants";
+import { bignumberConvert } from "../utils/tools";
 const { ethereum } = window as any;
 
 const getContract = (address: string, abi: any): ethers.Contract => {
@@ -127,8 +129,8 @@ export const ApplicationProvider = ({ children }: any) => {
     if (address) {
       let result = await tscs.getUserBaseInfo(address);
       setUserDID({
-        reputation: BigNumber.from(result[0]).div(10).toString(),
-        deposit: BigNumber.from(result[1]).toString(),
+        reputation: bignumberConvert(result[0], "0", 1),
+        deposit: bignumberConvert(result[1], DECIMALS_18, 2),
       });
     }
   };
@@ -141,21 +143,17 @@ export const ApplicationProvider = ({ children }: any) => {
     const vt = getContract(VIDEO_TOKEN[networkId], ERC1155_ABI);
     const access = getContract(ACCESS_STRATEGY[networkId], ACCESS_ABI);
     let base = await tscs.getUserBaseInfo(address);
-    let reputation = BigNumber.from(base[0]).toString();
-    let despoit = BigNumber.from(base[1]).toString();
+    let reputation = bignumberConvert(base[0], "0", 1);
+    let despoit = bignumberConvert(base[1], DECIMALS_18, 2);
     let zimuBalance = await zimu.balanceOf(address);
     let vtBalance = await vt.balanceOf(address, 0);
     let needed = await access.deposit(reputation);
     setPersonalDID({
-      reputation: BigNumber.from(reputation).div(10).toString(),
-      despoit: BigNumber.from(despoit).div("1000000000000000000").toString(),
-      zimu: BigNumber.from(zimuBalance)
-        .div(BigNumber.from("1000000000000000000"))
-        .toString(),
-      vt0: BigNumber.from(vtBalance).div("1000000").toString(),
-      needed: BigNumber.from(needed)
-        .div(BigNumber.from("1000000000000000000"))
-        .toString(),
+      reputation: bignumberConvert(reputation, "0", 1),
+      despoit: bignumberConvert(despoit, DECIMALS_18, 2),
+      zimu: bignumberConvert(zimuBalance, DECIMALS_18, 2),
+      vt0: bignumberConvert(vtBalance, DECIMALS_6, 2),
+      needed: bignumberConvert(needed, DECIMALS_18, 2),
     });
   };
 

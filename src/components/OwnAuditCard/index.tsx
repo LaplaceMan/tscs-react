@@ -1,5 +1,5 @@
 import { OwnAudit } from "../../types/baseTypes";
-import { shortenText } from "../../utils/tools";
+import { shortenCID } from "../../utils/tools";
 import { CircleFlag } from "react-circle-flags";
 import React, { useContext } from "react";
 import { ApplicationContext } from "../../context/ApplicationContext";
@@ -39,7 +39,7 @@ const OwnAuditCard = (audit: OwnAudit, key: React.Key) => {
             #{audit.subtitleId}
           </div>
           <div className="flex test-sm bg-gray-100 px-2 rounded-md text-[#696969]">
-            {audit.cid ? shortenText(audit.cid) : ""}
+            {audit.cid ? shortenCID(audit.cid, "peronal") : ""}
           </div>
         </div>
       </div>

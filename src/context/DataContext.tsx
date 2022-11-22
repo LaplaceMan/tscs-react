@@ -113,6 +113,7 @@ export const DataProvider = ({ children }: any) => {
         getSubtitles.map((item: any) => {
           subtitleArray.push({
             applyId: item.application.id,
+            applySource: item.application.source,
             payType: item.application.strategy.notes,
             platformName: item.application.video.platform.name,
             subtitleId: item.id,
@@ -120,7 +121,6 @@ export const DataProvider = ({ children }: any) => {
             support: item.supporterCount,
             oppose: item.dissenterCount,
             maker: item.maker.id,
-            uploads: item.application.subtitleCount,
             start: item.application.start,
             deadline: Number(item.application.deadline),
             fingerprint: item.fingerprint,
@@ -212,6 +212,7 @@ export const DataProvider = ({ children }: any) => {
         getSubtitles.map((item: any) => {
           subtitleArray.push({
             applyId: item.application.id,
+            applySource: item.application.source,
             payType: item.application.strategy.notes,
             platformName: item.application.video.platform.name,
             subtitleId: item.id,
@@ -219,7 +220,6 @@ export const DataProvider = ({ children }: any) => {
             support: item.supporterCount,
             oppose: item.dissenterCount,
             maker: item.maker.id,
-            uploads: item.application.subtitleCount,
             start: item.application.start,
             deadline: Number(item.application.deadline),
             fingerprint: item.fingerprint,

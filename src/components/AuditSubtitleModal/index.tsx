@@ -8,7 +8,7 @@ import { ApplicationContext } from "../../context/ApplicationContext";
 import { WalletContext } from "../../context/WalletContext";
 import { DataContext } from "../../context/DataContext";
 import { GlobalContext } from "../../context/GlobalContext";
-import { timestampToDate, shortenAddress } from "../../utils/tools";
+import { timestampToDate, shortenAddress, shortenCID } from "../../utils/tools";
 import { Audit } from "../../types/formTypes";
 const AuditSubtitle = () => {
   const { defaultAuditSubtitleData, auditSubtitle } =
@@ -44,7 +44,9 @@ const AuditSubtitle = () => {
                 <CircleFlag countryCode={defaultAuditSubtitleData.language} />
               </div>
               <div className="flex flex-col items-start ml-3">
-                <div className="text-lg font-medium">Source</div>
+                <div className="text-lg font-medium">
+                  <a href={defaultAuditSubtitleData.cid}>Source</a>
+                </div>
                 <div className="text-sm text-[#696969]">
                   {"#" + defaultAuditSubtitleData.subtitleId}
                 </div>
@@ -76,7 +78,7 @@ const AuditSubtitle = () => {
                 IPFS CID
               </div>
               <div className="flex p-2 bg-gray-100 break-all font-medium rounded-md items-center justify-center">
-                {defaultAuditSubtitleData.cid}
+                {shortenCID(defaultAuditSubtitleData.cid, "audit")}
               </div>
             </div>
           </div>

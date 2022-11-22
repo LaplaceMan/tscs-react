@@ -8,10 +8,10 @@ export const QueryApplicationWithLanguage =
   "query($first: Int, $skip: Int, $languageId: String) {applications(first: $first, skip: $skip, orderBy: start, orderDirection: desc, where: {language_: {id: $languageId}}) { id applicant {id} video { realId orderId platform {name}} language{notes} amount strategy{notes} subtitleCount start deadline source}}";
 
 export const QuerySubtitle =
-  "query($first: Int, $skip: Int) {subtitles(first: $first, skip: $skip, orderBy: time, orderDirection: desc) {id application{id subtitleCount start deadline strategy{notes} video{platform{name}}} language{notes} supporterCount dissenterCount maker{id} fingerprint cid }}";
+  "query($first: Int, $skip: Int) {subtitles(first: $first, skip: $skip, orderBy: time, orderDirection: desc) {id application{id start deadline source strategy{notes} video{platform{name}}} language{notes} supporterCount dissenterCount maker{id} fingerprint cid }}";
 
 export const QuerySubtitleWithLanguage =
-  "query($first: Int, $skip: Int, $languageId: String) {subtitles(first: $first, skip: $skip, orderBy: time, orderDirection: desc, where: {language_: {id: $languageId}}) {id application{id subtitleCount start deadline strategy{notes} video{platform{name}}} language{notes} supporterCount dissenterCount maker{id} fingerprint cid }}";
+  "query($first: Int, $skip: Int, $languageId: String) {subtitles(first: $first, skip: $skip, orderBy: time, orderDirection: desc, where: {language_: {id: $languageId}}) {id application{id start source deadline strategy{notes} video{platform{name}}} language{notes} supporterCount dissenterCount maker{id} fingerprint cid }}";
 
 export const QueryUser =
   "query($id: BigInt) {user(id: $id) { id time adoptedCount reputation deposit }}";

@@ -1,5 +1,6 @@
 import React from "react";
 import { Subtitle } from "../../types/baseTypes";
+import { shortenId } from "../../utils/tools";
 
 const ApplyLabel = [
   "Support",
@@ -59,9 +60,11 @@ export const MiniShowData1Package = (data: Subtitle): React.ReactElement => {
     <div className="flex flex-row h-full items-center justify-between">
       {MiniShowData1(ApplyLabel[2], data.platformName, "", "")}
       <DividerH />
-      {MiniShowData1(ApplyLabel[3], data.uploads, "", "")}
+      {MiniShowData1(ApplyLabel[3], shortenId(data.subtitleId), "", "")}
       <DividerH />
-      {MiniShowData1(ApplyLabel[4], data.subtitleId, "", "")}
+      <a href={data.applySource}>
+        {MiniShowData1(ApplyLabel[4], shortenId(data.applyId), "", "")}
+      </a>
     </div>
   );
 };

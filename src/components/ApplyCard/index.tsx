@@ -40,7 +40,9 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
             <CircleFlag countryCode={data.language} />
           </div>
           <div className="flex flex-col items-start ml-3">
-            <div className="flex items-end text-lg font-semibold">Source</div>
+            <div className="flex items-end text-lg font-semibold">
+              <a href={data.source}>Source</a>
+            </div>
             <div className="flex text-sm text-[#696969]">
               {shortenAddress(data.applicant)}
             </div>

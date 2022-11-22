@@ -24,7 +24,8 @@ export const WalletProvider = ({ children }: any) => {
 
   const updateGasPrice = async () => {
     let gasUnit = await provider.getGasPrice();
-    setGasPrice(ethers.utils.formatUnits(gasUnit, "gwei"));
+    let format = ethers.utils.formatUnits(gasUnit, "gwei");
+    setGasPrice(Number(format).toFixed(2).toString());
   };
 
   const connectWalletMetaMask = async () => {
