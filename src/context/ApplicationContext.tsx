@@ -129,7 +129,7 @@ export const ApplicationProvider = ({ children }: any) => {
     if (address) {
       let result = await tscs.getUserBaseInfo(address);
       setUserDID({
-        reputation: bignumberConvert(result[0], "0", 1),
+        reputation: bignumberConvert(result[0], "10", 1),
         deposit: bignumberConvert(result[1], DECIMALS_18, 2),
       });
     }
@@ -143,14 +143,14 @@ export const ApplicationProvider = ({ children }: any) => {
     const vt = getContract(VIDEO_TOKEN[networkId], ERC1155_ABI);
     const access = getContract(ACCESS_STRATEGY[networkId], ACCESS_ABI);
     let base = await tscs.getUserBaseInfo(address);
-    let reputation = bignumberConvert(base[0], "0", 1);
+    let reputation = bignumberConvert(base[0], "10", 1);
     let despoit = bignumberConvert(base[1], DECIMALS_18, 2);
     let zimuBalance = await zimu.balanceOf(address);
     let vtBalance = await vt.balanceOf(address, 0);
-    let needed = await access.deposit(reputation);
+    let needed = await access.deposit(base[0]);
     setPersonalDID({
-      reputation: bignumberConvert(reputation, "0", 1),
-      despoit: bignumberConvert(despoit, DECIMALS_18, 2),
+      reputation: reputation,
+      despoit: despoit,
       zimu: bignumberConvert(zimuBalance, DECIMALS_18, 2),
       vt0: bignumberConvert(vtBalance, DECIMALS_6, 2),
       needed: bignumberConvert(needed, DECIMALS_18, 2),

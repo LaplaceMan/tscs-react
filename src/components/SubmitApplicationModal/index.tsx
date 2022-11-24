@@ -73,7 +73,8 @@ const SubmitApplication = () => {
                   .includes(input.toLowerCase())
               }
             >
-              {regiserPlatforms[0].id != "" &&
+              <Option value={ZERO_ADDRESS}>Default</Option>
+              {regiserPlatforms.length > 0 &&
                 regiserPlatforms.map((item, index) => {
                   return (
                     <Option value={item.id} key={index}>
@@ -134,7 +135,7 @@ const SubmitApplication = () => {
                   .includes(input.toLowerCase())
               }
             >
-              {regiserLanguages[0].id != "0" &&
+              {regiserLanguages.length > 0 &&
                 regiserLanguages.map((item, index) => (
                   <Option value={item.id} key={index}>
                     {countryLanguageMap[item.notes]

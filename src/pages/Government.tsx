@@ -71,9 +71,9 @@ const Government = (): React.ReactElement => {
           onChange={(value) => languageChangeHandle(value)}
         >
           <Option value="0">All</Option>
-          {regiserLanguages[0].id != "0" &&
+          {regiserLanguages.length > 0 &&
             regiserLanguages.map((item, index) => (
-              <Option value={item.id} key={index}>
+              <Option value={item.id} key={item + index.toString()}>
                 {countryLanguageMap[item.notes]
                   ? countryLanguageMap[item.notes]
                   : item.notes}

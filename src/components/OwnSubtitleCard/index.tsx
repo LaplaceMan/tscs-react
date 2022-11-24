@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { CircleFlag } from "react-circle-flags";
 import { OwnSubtitle } from "../../types/baseTypes";
-import { shortenText } from "../../utils/tools";
+import { shortenCID } from "../../utils/tools";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
 
@@ -39,7 +39,7 @@ const OwnSubtitleCard = (subtitle: OwnSubtitle, index: React.Key) => {
             #{subtitle.subtitleId}
           </div>
           <div className="flex test-sm bg-gray-100 px-2 rounded-md text-[#696969]">
-            {subtitle.cid ? shortenText(subtitle.cid) : ""}
+            {subtitle.cid ? shortenCID(subtitle.cid, "peronal") : ""}
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { OwnApplication } from "../../types/baseTypes";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { UpdateApplication } from "../../types/formTypes";
+import { shortenCID } from "../../utils/tools";
 
 const applicationCardItem = (label: string, info: string) => {
   return (
@@ -39,7 +40,9 @@ const OwnApplicationCard = (application: OwnApplication, key: React.Key) => {
             {application.name}
           </div>
           <div className="flex test-sm bg-gray-100 px-2 rounded-md text-[#696969]">
-            {application.source ? application.source : ""}
+            {application.source
+              ? shortenCID(application.source, "personal")
+              : ""}
           </div>
         </div>
       </div>

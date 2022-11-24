@@ -1,7 +1,7 @@
 import React from "react";
 import { Application } from "../../types/baseTypes";
 import { shortenId, shortenAmount } from "../../utils/tools";
-import { BASE_RATE } from "../../utils/constants";
+import { BASE_RATE, DECIMALS_18 } from "../../utils/constants";
 import BigNumber from "bignumber.js";
 
 const ApplyLabel = ["Type", "Amount", "Platform", "Uploads", "Apply ID"];
@@ -31,7 +31,7 @@ export const MiniShowData0Package = (data: Application): React.ReactElement => {
   let amount = data.amount;
   if (data.payType === "OT0" || data.payType === "DR2") {
     prefix = "$";
-    amount = BigNumber(amount).div("1000000000000000000").toFixed(2);
+    amount = BigNumber(amount).div(DECIMALS_18).toFixed(2);
     amount = shortenAmount(amount);
   } else {
     suffix = "%";

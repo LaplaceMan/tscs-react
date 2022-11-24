@@ -8,10 +8,14 @@ import {
 } from "react-icons/md";
 import { ApplicationItems, SubtitleItems } from "../utils/testData";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { DataContext } from "../context/DataContext";
+
 const Home = (): React.ReactElement => {
-  const { dashboard, applications, subtitles } = useContext(DataContext);
+  const { dashboard, applications, subtitles, queryHomeData } =
+    useContext(DataContext);
+
+  useEffect(() => queryHomeData(), []);
 
   const DashboardMiniItems: DashboardMiniItem[] = [
     {

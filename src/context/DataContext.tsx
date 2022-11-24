@@ -64,12 +64,12 @@ export const DataProvider = ({ children }: any) => {
     useState<User>(defaultUser);
   const [userOwnData, setUserOwnData] = useState<UserOwn>(defaultUserOwn);
   const [userDayLocakedToken, setUserDayLocakedToken] = useState("*");
-  const [regiserLanguages, setRegiserLanguages] = useState([
-    { id: "0", notes: "" },
-  ]);
-  const [regiserPlatforms, setRegiserPlatforms] = useState([
-    { id: "", name: "" },
-  ]);
+  const [regiserLanguages, setRegiserLanguages] = useState<
+    { id: string; notes: string }[]
+  >([]);
+  const [regiserPlatforms, setRegiserPlatforms] = useState<
+    { id: string; name: string }[]
+  >([]);
 
   const queryHomeData = () => {
     const day = parseInt(
@@ -166,7 +166,10 @@ export const DataProvider = ({ children }: any) => {
         },
       })
       .then((data) => {
-        let getApplications = data.data.applications;
+        let getApplications =
+          language == "0"
+            ? data.data.applications
+            : data.data.language.applications;
         let applicationArray = new Array<Application>();
         getApplications.map((item: any) => {
           applicationArray.push({
@@ -197,9 +200,7 @@ export const DataProvider = ({ children }: any) => {
     });
     client
       .query({
-        query: gql(
-          language == "0" ? QuerySubtitle : QueryApplicationWithLanguage
-        ),
+        query: gql(language == "0" ? QuerySubtitle : QuerySubtitleWithLanguage),
         variables: {
           first: first,
           skip: skip,
@@ -207,7 +208,8 @@ export const DataProvider = ({ children }: any) => {
         },
       })
       .then((data) => {
-        let getSubtitles = data.data.subtitles;
+        let getSubtitles =
+          language == "0" ? data.data.subtitles : data.data.language.subtitles;
         let subtitleArray = new Array<Subtitle>();
         getSubtitles.map((item: any) => {
           subtitleArray.push({
@@ -517,12 +519,17 @@ export const DataProvider = ({ children }: any) => {
     queryHomeData();
     queryRegiserLanugages();
     queryRegiserPlatforms();
-    let timer = setInterval(() => {
+    let timer1 = setInterval(() => {
       queryRegiserLanugages();
       queryRegiserPlatforms();
-      queryHomeData();
     }, 600000);
-    return () => clearInterval(timer);
+    let timer2 = setInterval(() => {
+      queryHomeData();
+    }, 60000);
+    return () => {
+      clearInterval(timer1);
+      clearInterval(timer2);
+    };
   }, []);
 
   return (
