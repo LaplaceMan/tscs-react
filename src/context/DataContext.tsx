@@ -134,10 +134,10 @@ export const DataProvider = ({ children }: any) => {
           userCount: dashboard.userCount.toString(),
           subtitleCount: dashboard.subtitleCount,
           platformCount: dashboard.platformCount,
-          applicationInc: dayData.applicationCount,
-          userInc: dayData.userCount,
-          platformInc: dayData.platformCount,
-          subtitleInc: dayData.subtitleCount,
+          applicationInc: dayData ? dayData.applicationCount : "0",
+          userInc: dayData ? dayData.userCount : "0",
+          platformInc: dayData ? dayData.platformCount : "0",
+          subtitleInc: dayData ? dayData.subtitleCount : "0",
         });
       })
       .catch((err) => {

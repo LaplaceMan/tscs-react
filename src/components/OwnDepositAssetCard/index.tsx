@@ -1,9 +1,12 @@
-import { shortenAddress } from "../../utils/tools";
+import { useContext } from "react";
+import { Tooltip } from "antd";
+import { shortenAddress, bignumberConvert } from "../../utils/tools";
+import { DECIMALS_18 } from "../../utils/constants";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { WalletContext } from "../../context/WalletContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ZIMU_TOKEN } from "../../utils/contracts";
-import { useContext } from "react";
+
 const tokenCardItem = (label: string, info: string) => {
   return (
     <div className="flex flex-col items-center">
@@ -25,8 +28,7 @@ const DepositAssetCard = () => {
   };
 
   return (
-    <div className="flex flex-col p-3 items-center justify-center rounded-md shadow-md w-[300px] h-[180px] bg-gray-50 mt-5 mx-5">
-      <div className="absolute bottom-[50px] blur-[50px] w-[100px] h-[50px] bg-gradient-to-r from-purple-400 to-blue-400 rounded-full " />
+    <div className="flex flex-col p-3 items-center justify-center rounded-md shadow-md w-[300px] h-[180px] own-card mt-5 mx-5">
       <div className="flex flex-row items-center justify-center">
         <img
           src="http://api.btstu.cn/sjtx/api.php?lx=c1&format=images"
@@ -34,19 +36,31 @@ const DepositAssetCard = () => {
         />
         <div className="flex flex-col items-start ml-3">
           <div className="text-lg font-medium text-black">Deposit-Zimu</div>
-          <div className="flex test-sm bg-gray-100 px-2 rounded-md text-[#696969]">
-            {ZIMU_TOKEN[accountState.network]
-              ? shortenAddress(ZIMU_TOKEN[accountState.network])
-              : ""}
-          </div>
+          <Tooltip title={ZIMU_TOKEN[accountState.network]}>
+            <div className="flex test-sm bg-gray-50 px-2 rounded-md text-[#696969]">
+              {ZIMU_TOKEN[accountState.network]
+                ? shortenAddress(ZIMU_TOKEN[accountState.network])
+                : ""}
+            </div>
+          </Tooltip>
         </div>
       </div>
       <div className="flex w-full flex-row justify-between items-center my-3">
         {tokenCardItem("Reputation", personalDID.reputation)}
         <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />
-        {tokenCardItem("Deposit", personalDID.despoit)}
+        <Tooltip title={bignumberConvert(personalDID.despoit, "0", 0)}>
+          {tokenCardItem(
+            "Deposit",
+            bignumberConvert(personalDID.despoit, DECIMALS_18, 2)
+          )}
+        </Tooltip>
         <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />
-        {tokenCardItem("Needed", personalDID.needed)}
+        <Tooltip title={bignumberConvert(personalDID.needed, "0", 0)}>
+          {tokenCardItem(
+            "Needed",
+            bignumberConvert(personalDID.needed, DECIMALS_18, 2)
+          )}
+        </Tooltip>
       </div>
       <div className="flex w-full justify-between text-white font-semibold text-base">
         <div

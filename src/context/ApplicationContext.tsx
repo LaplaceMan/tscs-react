@@ -30,7 +30,7 @@ import {
 } from "../utils/contracts";
 import { GlobalContext } from "./GlobalContext";
 import { DataContext } from "./DataContext";
-import { DECIMALS_18, DECIMALS_6 } from "../utils/constants";
+import { DECIMALS_18 } from "../utils/constants";
 import { bignumberConvert } from "../utils/tools";
 const { ethereum } = window as any;
 
@@ -144,16 +144,15 @@ export const ApplicationProvider = ({ children }: any) => {
     const access = getContract(ACCESS_STRATEGY[networkId], ACCESS_ABI);
     let base = await tscs.getUserBaseInfo(address);
     let reputation = bignumberConvert(base[0], "10", 1);
-    let despoit = bignumberConvert(base[1], DECIMALS_18, 2);
     let zimuBalance = await zimu.balanceOf(address);
     let vtBalance = await vt.balanceOf(address, 0);
     let needed = await access.deposit(base[0]);
     setPersonalDID({
       reputation: reputation,
-      despoit: despoit,
-      zimu: bignumberConvert(zimuBalance, DECIMALS_18, 2),
-      vt0: bignumberConvert(vtBalance, DECIMALS_6, 2),
-      needed: bignumberConvert(needed, DECIMALS_18, 2),
+      despoit: base[1],
+      zimu: zimuBalance,
+      vt0: vtBalance,
+      needed: needed,
     });
   };
 
@@ -252,7 +251,7 @@ export const ApplicationProvider = ({ children }: any) => {
     const networkId = ethereum.chainId;
     const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
     let transaction;
-    if (type == "OT0") {
+    if (type == '"OT0"') {
       transaction = await tscs.preExtract0(applyId);
     } else {
       transaction = await tscs.preExtractOther(applyId);

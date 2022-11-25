@@ -50,7 +50,7 @@ export const shortenAmount = (amount: string) => {
 };
 
 export const shortenCID = (text: string, type: string): string => {
-  if (text.length) {
+  if (text.length > 0) {
     if (type == "personal") {
       return `${text.slice(0, 6)}...${text.slice(text.length - 6)}`;
     } else if (type == "audit") {
@@ -73,6 +73,11 @@ export const timestampToDate = (time: number) => {
   let mounth = date.getMonth() + 1;
   let day = date.getDay();
   return year + "-" + mounth + "-" + day;
+};
+
+export const timestampToDay = (time: number) => {
+  time = parseInt((time / 86400000).toString());
+  return time;
 };
 
 export const bignumberConvert = (

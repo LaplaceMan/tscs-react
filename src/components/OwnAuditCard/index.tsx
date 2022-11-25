@@ -1,4 +1,5 @@
 import { OwnAudit } from "../../types/baseTypes";
+import { Tooltip } from "antd";
 import { shortenCID } from "../../utils/tools";
 import { CircleFlag } from "react-circle-flags";
 import React, { useContext } from "react";
@@ -26,10 +27,9 @@ const OwnAuditCard = (audit: OwnAudit, key: React.Key) => {
 
   return (
     <div
-      className="flex flex-col p-3 items-center justify-center rounded-md shadow-md w-[300px] h-[180px] bg-gray-50 mt-5 mx-5"
+      className="flex flex-col p-3 items-center justify-center rounded-md shadow-md w-[300px] h-[180px] own-card mt-5 mx-5"
       key={key}
     >
-      <div className="absolute bottom-[50px] blur-[50px] w-[100px] h-[50px] bg-gradient-to-r from-purple-400 to-blue-400 rounded-full " />
       <div className="flex flex-row items-center justify-center">
         <div className="flex h-11 rounded-full shadow-md">
           <CircleFlag countryCode={audit.language} />
@@ -38,12 +38,16 @@ const OwnAuditCard = (audit: OwnAudit, key: React.Key) => {
           <div className="text-lg font-medium text-black">
             #{audit.subtitleId}
           </div>
-          <div className="flex test-sm bg-gray-100 px-2 rounded-md text-[#696969]">
-            {audit.cid ? shortenCID(audit.cid, "peronal") : ""}
-          </div>
+          <Tooltip title={audit.cid ? audit.cid : ""}>
+            <div className="flex test-sm bg-gray-50 px-2 rounded-md text-[#696969]">
+              {audit.cid ? shortenCID(audit.cid, "personal") : ""}
+            </div>
+          </Tooltip>
         </div>
       </div>
       <div className="flex w-full flex-row justify-between items-center my-3">
+        {auditCardItem("Type", audit.type)}
+        <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />
         {auditCardItem("Attitude", audit.attitude)}
         <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />
         {auditCardItem("State", audit.state)}

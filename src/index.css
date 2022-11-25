@@ -8,6 +8,12 @@
     background-repeat: no-repeat;
 }
 
+.own-card {
+  background-image: url("../src/assets/magellan_gradient.png");
+  background-size: 100% 50%;
+  background-repeat: no-repeat;
+}
+
 ol, ul, dl {
   margin-bottom: 0 !important;
 }
@@ -39,4 +45,12 @@ ol, ul, dl {
 
 .ant-pagination-prev .ant-pagination-item-link, .ant-pagination-next .ant-pagination-item-link {
   border: none !important
+}
+
+.white-deep-glassmorphism {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }

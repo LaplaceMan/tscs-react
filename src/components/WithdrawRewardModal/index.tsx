@@ -6,6 +6,7 @@ import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { DataContext } from "../../context/DataContext";
 import { ZERO_ADDRESS } from "../../utils/constants";
+import { timestampToDay } from "../../utils/tools";
 
 const { Option } = Select;
 
@@ -18,7 +19,10 @@ const WithdrawReward = () => {
 
   const onFinish = () => {
     let values = form.getFieldsValue();
-    withdrawReward(values);
+    if (values.day) {
+      values.day = timestampToDay(values.day.valueOf());
+      withdrawReward(values);
+    }
   };
 
   useEffect(() => {
@@ -87,7 +91,7 @@ const WithdrawReward = () => {
               onChange={(date) => {
                 let base = date?.valueOf();
                 if (base) {
-                  base = parseInt((base / 1000).toString());
+                  base = timestampToDay(base);
                   queryUserLockedToken(
                     defaultWithdrawOrDespoitData.platform,
                     base

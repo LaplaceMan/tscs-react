@@ -4,8 +4,10 @@ import { ReactElement } from "react";
 import HeaderLogItems from "./HeaderLog";
 import { useContext } from "react";
 import { IoMenuOutline, IoCloseOutline } from "react-icons/io5";
-import { BsCollection, BsGem, BsFileText } from "react-icons/bs";
+import { BsCollection, BsGem, BsFileText, BsPerson } from "react-icons/bs";
 import { GlobalContext } from "../../context/GlobalContext";
+import { WalletContext } from "../../context/WalletContext";
+
 const NavbarItems = [
   {
     title: "Application",
@@ -17,6 +19,7 @@ const NavbarItems = [
 
 const HeaderNavbar = () => {
   const { toggleMenu, setToggleMenu } = useContext(GlobalContext);
+  const { accountState } = useContext(WalletContext);
   const HeaderNavbarItems = (
     item: NavbarItem,
     key: React.Key
@@ -52,6 +55,19 @@ const HeaderNavbar = () => {
     );
   };
 
+  const PersonalItem = (): ReactElement => {
+    return (
+      <Link to={`/Personal/${accountState.address}`}>
+        <li className="mx-4 cursor-pointer text-lg font-medium flex items-center justify-center my-3">
+          <div className="mr-5">
+            <BsPerson fontSize="1rem" />
+          </div>
+          Personal
+        </li>
+      </Link>
+    );
+  };
+
   return (
     <div className="flex flex-row">
       <ul className="md:flex hidden list-none flex-row justify-between items-center flex-initial">
@@ -77,6 +93,7 @@ const HeaderNavbar = () => {
             </li>
             {NavbarItems.map((item, index) => HeaderNavbarItems(item, index))}
             <DocumentationItem />
+            <PersonalItem />
           </ul>
         )}
       </div>

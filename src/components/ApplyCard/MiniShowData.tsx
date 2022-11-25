@@ -1,4 +1,5 @@
 import React from "react";
+import { Tooltip } from "antd";
 import { Application } from "../../types/baseTypes";
 import { shortenId, shortenAmount } from "../../utils/tools";
 import { BASE_RATE, DECIMALS_18 } from "../../utils/constants";
@@ -41,7 +42,9 @@ export const MiniShowData0Package = (data: Application): React.ReactElement => {
     <div className="flex flex-row w-full h-full items-center justify-between mt-4">
       {MiniShowData0(ApplyLabel[0], data.payType, "", "")}
       <DividerH />
-      {MiniShowData0(ApplyLabel[1], amount, prefix, suffix)}
+      <Tooltip title={data.amount}>
+        {MiniShowData0(ApplyLabel[1], amount, prefix, suffix)}
+      </Tooltip>
     </div>
   );
 };

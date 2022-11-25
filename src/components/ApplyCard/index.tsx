@@ -1,5 +1,5 @@
 import { MiniShowData0Package, MiniShowData1Package } from "./MiniShowData";
-import { Progress } from "antd";
+import { Progress, Tooltip } from "antd";
 import { useContext } from "react";
 import { CircleFlag } from "react-circle-flags";
 import { Application } from "../../types/baseTypes";
@@ -43,9 +43,11 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
             <div className="flex items-end text-lg font-semibold">
               <a href={data.source}>Source</a>
             </div>
-            <div className="flex text-sm text-[#696969]">
-              {shortenAddress(data.applicant)}
-            </div>
+            <Tooltip title={data.applicant ? data.applicant : ""}>
+              <div className="flex text-sm text-[#696969]">
+                {shortenAddress(data.applicant)}
+              </div>
+            </Tooltip>
           </div>
         </div>
         {MiniShowData0Package(data)}

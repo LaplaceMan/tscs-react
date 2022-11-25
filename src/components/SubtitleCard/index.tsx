@@ -1,5 +1,5 @@
 import { MiniShowData0Package, MiniShowData1Package } from "./MiniShowData";
-import { Progress } from "antd";
+import { Progress, Tooltip } from "antd";
 import { useContext } from "react";
 import { CircleFlag } from "react-circle-flags";
 import { Subtitle } from "../../types/baseTypes";
@@ -44,9 +44,11 @@ const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
             <div className="flex items-end text-lg font-semibold">
               <a href={data.cid}>ST Link</a>
             </div>
-            <div className="flex text-sm text-[#696969]">
-              {shortenAddress(data.maker)}
-            </div>
+            <Tooltip title={data.maker ? data.maker : ""}>
+              <div className="flex text-sm text-[#696969]">
+                {shortenAddress(data.maker)}
+              </div>
+            </Tooltip>
           </div>
         </div>
         {MiniShowData0Package(data)}
