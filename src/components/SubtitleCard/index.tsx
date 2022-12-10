@@ -1,3 +1,4 @@
+import React from "react";
 import { MiniShowData0Package, MiniShowData1Package } from "./MiniShowData";
 import { Progress, Tooltip } from "antd";
 import { useContext } from "react";

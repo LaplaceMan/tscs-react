@@ -16,6 +16,7 @@ import {
   UpdateApplication,
 } from "../types/formTypes";
 import { ethers } from "ethers";
+import BigNumber from "bignumber.js";
 import {
   SUBTITLE_SYSTEM,
   SUBTITLE_SYSTEM_ABI,
@@ -30,8 +31,9 @@ import {
 } from "../utils/contracts";
 import { GlobalContext } from "./GlobalContext";
 import { DataContext } from "./DataContext";
-import { DECIMALS_18 } from "../utils/constants";
-import { bignumberConvert } from "../utils/tools";
+import { DECIMALS_18, DECIMALS_6 } from "../utils/constants";
+import { bignumberConvert, timestamp } from "../utils/tools";
+import { message } from "antd";
 const { ethereum } = window as any;
 
 const getContract = (address: string, abi: any): ethers.Contract => {
@@ -41,30 +43,9 @@ const getContract = (address: string, abi: any): ethers.Contract => {
   return contract;
 };
 
-export const ApplicationContext = React.createContext<ApplicationContent>({
-  userDID: { reputation: "0", deposit: "0" },
-  defaultUploadSubtitleData: { applyId: "0", language: "0" },
-  updateDefaultUploadSubtitleData: () => {},
-  defaultAuditSubtitleData: defaultSubtitle,
-  updateDefaultAuditSubtitleData: () => {},
-  submitApplication: () => {},
-  uploadSubtitle: () => {},
-  auditSubtitle: () => {},
-  tokenTransaction: () => {},
-  defaultTokenTransactionData: defaultTokenTransaction,
-  updateDefaultTokenTransaction: () => {},
-  preSettlement: () => {},
-  cancelApplication: () => {},
-  updateDefaultUpdateApplication: () => {},
-  defaultUpdateApplicationData: defaultUpdateApplication,
-  updateDefaultWithdrawOrDespoit: () => {},
-  defaultWithdrawOrDespoitData: { platform: "", manage: "" },
-  updateApplication: () => {},
-  withdrawReward: () => {},
-  depoitZimuManage: () => {},
-  personalDID: defaultPersonalPageData,
-  getPersonalPageData: () => {},
-});
+export const ApplicationContext = React.createContext<ApplicationContent>(
+  {} as any
+);
 
 export const ApplicationProvider = ({ children }: any) => {
   const { setLoadingState } = useContext(GlobalContext);
@@ -94,7 +75,7 @@ export const ApplicationProvider = ({ children }: any) => {
     applyId: string,
     language: string
   ) => {
-    let id: string = "0";
+    let id = "0";
     regiserLanguages.map((item) => {
       if (item.notes == language) {
         id = item.id;
@@ -119,7 +100,7 @@ export const ApplicationProvider = ({ children }: any) => {
   };
 
   const getUserDID = async () => {
-    if (!ethereum) return alert("Please install wallet.");
+    if (!ethereum) return message.warning("Please install wallet.");
     const networkId = ethereum.chainId;
     const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
     const accounts = await ethereum.request({
@@ -127,7 +108,7 @@ export const ApplicationProvider = ({ children }: any) => {
     });
     const address = accounts[0];
     if (address) {
-      let result = await tscs.getUserBaseInfo(address);
+      const result = await tscs.getUserBaseInfo(address);
       setUserDID({
         reputation: bignumberConvert(result[0], "10", 1),
         deposit: bignumberConvert(result[1], DECIMALS_18, 2),
@@ -136,17 +117,17 @@ export const ApplicationProvider = ({ children }: any) => {
   };
 
   const getPersonalPageData = async (address: string) => {
-    if (!ethereum) return alert("Please install wallet.");
+    if (!ethereum) return message.warning("Please install wallet.");
     const networkId = ethereum.chainId;
     const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
     const zimu = getContract(ZIMU_TOKEN[networkId], ZIMU_TOKEN_ABI);
     const vt = getContract(VIDEO_TOKEN[networkId], ERC1155_ABI);
     const access = getContract(ACCESS_STRATEGY[networkId], ACCESS_ABI);
-    let base = await tscs.getUserBaseInfo(address);
-    let reputation = bignumberConvert(base[0], "10", 1);
-    let zimuBalance = await zimu.balanceOf(address);
-    let vtBalance = await vt.balanceOf(address, 0);
-    let needed = await access.deposit(base[0]);
+    const base = await tscs.getUserBaseInfo(address);
+    const reputation = bignumberConvert(base[0], "10", 1);
+    const zimuBalance = await zimu.balanceOf(address);
+    const vtBalance = await vt.balanceOf(address, 0);
+    const needed = await access.deposit(base[0]);
     setPersonalDID({
       reputation: reputation,
       despoit: base[1],
@@ -157,14 +138,20 @@ export const ApplicationProvider = ({ children }: any) => {
   };
 
   const submitApplication = async (params: Submit) => {
-    if (!ethereum) return alert("Please install wallet.");
+    if (!ethereum) message.warning("Please install wallet.");
     const networkId = ethereum.chainId;
     const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    let transaction = await tscs.submitApplication(
+    let amount;
+    if (params.strategy == 0) {
+      amount = BigNumber(DECIMALS_18).times(params.amount).toString();
+    } else {
+      amount = params.amount;
+    }
+    const transaction = await tscs.submitApplication(
       params.platform,
       params.videoId,
       params.strategy,
-      params.amount,
+      amount,
       params.language,
       params.deadline,
       params.source
@@ -172,14 +159,15 @@ export const ApplicationProvider = ({ children }: any) => {
     setLoadingState(true);
     await transaction.wait();
     console.log("Success:", transaction.hash);
+    message.success("Success: " + transaction.hash);
     setLoadingState(false);
   };
 
   const uploadSubtitle = async (params: Upload) => {
-    if (!ethereum) return alert("Please install wallet.");
+    if (!ethereum) return message.warning("Please install wallet.");
     const networkId = ethereum.chainId;
     const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    let transaction = await tscs.uploadSubtitle(
+    const transaction = await tscs.uploadSubtitle(
       params.applyId,
       params.cid,
       params.language,
@@ -188,49 +176,54 @@ export const ApplicationProvider = ({ children }: any) => {
     setLoadingState(true);
     await transaction.wait();
     console.log("Success:", transaction.hash);
+    message.success("Success: " + transaction.hash);
     setLoadingState(false);
   };
 
   const auditSubtitle = async (params: Audit) => {
-    if (!ethereum) return alert("Please install wallet.");
+    if (!ethereum) return message.warning("Please install wallet.");
     const networkId = ethereum.chainId;
     const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    let transaction = await tscs.evaluateSubtitle(
+    const transaction = await tscs.evaluateSubtitle(
       params.subtitleId,
       params.attitude
     );
     setLoadingState(true);
     await transaction.wait();
     console.log("Success:", transaction.hash);
+    message.success("Success: " + transaction.hash);
     setLoadingState(false);
   };
 
   const tokenTransaction = async (params: any) => {
-    if (!ethereum) return alert("Please install wallet.");
+    if (!ethereum) return message.warning("Please install wallet.");
     let token;
     let transaction;
+    let amount;
     if (params.type == "ERC-20") {
+      amount = BigNumber(DECIMALS_18).times(params.amount).toString();
       token = getContract(params.address, ERC20_ABI);
       if (defaultTokenTransactionData.operation == "TRANSFER") {
-        transaction = await token.transfer(params.to, params.amount);
+        transaction = await token.transfer(params.to, amount);
       }
       if (defaultTokenTransactionData.operation == "APPROVE") {
-        transaction = await token.approve(params.to, params.amount);
+        transaction = await token.approve(params.to, amount);
       }
     }
     if (params.type == "ERC-1155") {
+      amount = BigNumber(DECIMALS_6).times(params.amount).toString();
       token = getContract(params.address, ERC1155_ABI);
       if (defaultTokenTransactionData.operation == "TRANSFER") {
         transaction = await token.safeTransferFrom(
           params.from,
           params.to,
           params.tokenId,
-          params.amount,
+          amount,
           ""
         );
       }
       if (defaultTokenTransactionData.operation == "APPROVE") {
-        let isTrue = params.amount > 0 ? "true" : "false";
+        const isTrue = params.amount > 0 ? "true" : "false";
         transaction = await token.setApprovalForAll(params.to, isTrue);
       }
     }
@@ -243,15 +236,16 @@ export const ApplicationProvider = ({ children }: any) => {
     setLoadingState(true);
     await transaction.wait();
     console.log("Success:", transaction.hash);
+    message.success("Success: " + transaction.hash);
     setLoadingState(false);
   };
 
   const preSettlement = async (type: string, applyId: string) => {
-    if (!ethereum) return alert("Please install wallet.");
+    if (!ethereum) return message.warning("Please install wallet.");
     const networkId = ethereum.chainId;
     const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
     let transaction;
-    if (type == '"OT0"') {
+    if (type == "OT0") {
       transaction = await tscs.preExtract0(applyId);
     } else {
       transaction = await tscs.preExtractOther(applyId);
@@ -259,51 +253,58 @@ export const ApplicationProvider = ({ children }: any) => {
     setLoadingState(true);
     await transaction.wait();
     console.log("Success:", transaction.hash);
-    setLoadingState(false);
-  };
-
-  const cancelApplication = async (applyId: string) => {
-    if (!ethereum) return alert("Please install wallet.");
-    const networkId = ethereum.chainId;
-    const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    let transaction = await tscs.cancel(applyId);
-    setLoadingState(true);
-    await transaction.wait();
-    console.log("Success:", transaction.hash);
+    message.success("Success: " + transaction.hash);
     setLoadingState(false);
   };
 
   const updateApplication = async (params: any) => {
-    if (!ethereum) return alert("Please install wallet.");
+    if (!ethereum) return message.warning("Please install wallet.");
     const networkId = ethereum.chainId;
     const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    let transaction = await tscs.recover(
-      params.applyId,
-      params.amount,
-      params.deadline
-    );
+    let transaction;
+    if (params.type == "Recover") {
+      transaction = await tscs.recover(
+        params.applyId,
+        params.amount,
+        params.deadline
+      );
+    } else if (params.type == "Update") {
+      const deadline = params.deadline - timestamp();
+      if (deadline > 0) {
+        transaction = await tscs.updateApplication(
+          params.applyId,
+          params.amount,
+          deadline
+        );
+      } else {
+        message.warning("Invaild Deadline.");
+      }
+    }
     setLoadingState(true);
     await transaction.wait();
     console.log("Success:", transaction.hash);
+    message.success("Success: " + transaction.hash);
     setLoadingState(false);
   };
 
   const withdrawReward = async (params: any) => {
-    if (!ethereum) return alert("Please install wallet.");
+    if (!ethereum) return message.warning("Please install wallet.");
     const networkId = ethereum.chainId;
     const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    let transaction = await tscs.withdraw(params.platform, [params.day]);
+    const transaction = await tscs.withdraw(params.platform, [params.day]);
     setLoadingState(true);
     await transaction.wait();
     console.log("Success:", transaction.hash);
+    message.success("Success: " + transaction.hash);
     setLoadingState(false);
   };
 
   const depoitZimuManage = async (address: string, amount: string) => {
-    if (!ethereum) return alert("Please install wallet.");
+    if (!ethereum) return message.warning("Please install wallet.");
     const networkId = ethereum.chainId;
     const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
     let transaction;
+    amount = BigNumber(DECIMALS_18).times(amount).toString();
     if (defaultWithdrawOrDespoitData.manage == "DESPOIT") {
       transaction = await tscs.userJoin(address, amount);
     }
@@ -313,6 +314,7 @@ export const ApplicationProvider = ({ children }: any) => {
     setLoadingState(true);
     await transaction.wait();
     console.log("Success:", transaction.hash);
+    message.success("Success: " + transaction.hash);
     setLoadingState(false);
   };
 
@@ -335,7 +337,6 @@ export const ApplicationProvider = ({ children }: any) => {
         updateDefaultTokenTransaction,
         tokenTransaction,
         preSettlement,
-        cancelApplication,
         updateDefaultUpdateApplication,
         defaultUpdateApplicationData,
         updateDefaultWithdrawOrDespoit,

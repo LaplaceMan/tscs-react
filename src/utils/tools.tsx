@@ -6,7 +6,7 @@ export const TimeRemainPercentage = (start: number, end: number): number => {
 };
 
 export const getScrollTop = (): number => {
-  var scrollTop = 0;
+  let scrollTop = 0;
 
   if (document.documentElement && document.documentElement.scrollTop) {
     scrollTop = document.documentElement.scrollTop;
@@ -27,7 +27,7 @@ export const shortenAddress = (address: string): string => {
 
 export const shortenId = (id: string): string => {
   if (id.length > 7) {
-    let format = ethers.BigNumber.from(id).div("1000000").toString();
+    const format = ethers.BigNumber.from(id).div("1000000").toString();
     id = parseInt(format).toString() + "M+";
   }
   return id;
@@ -35,7 +35,7 @@ export const shortenId = (id: string): string => {
 
 export const shortenAmount = (amount: string) => {
   let format = "";
-  let amountInt = Number(amount);
+  const amountInt = Number(amount);
   if (amountInt > 1000000) {
     format = (amountInt / 1000000).toString();
     amount = parseInt(format).toString() + "M+";
@@ -68,11 +68,16 @@ export const shortenCID = (text: string, type: string): string => {
 };
 
 export const timestampToDate = (time: number) => {
-  let date = new Date(time * 1000);
-  let year = date.getFullYear();
-  let mounth = date.getMonth() + 1;
-  let day = date.getDay();
+  const date = new Date(time * 1000);
+  const year = date.getFullYear();
+  const mounth = date.getMonth() + 1;
+  const day = date.getDay();
   return year + "-" + mounth + "-" + day;
+};
+
+export const timestamp = (): number => {
+  const now = (new Date().getTime() / 1000).toString();
+  return parseInt(now);
 };
 
 export const timestampToDay = (time: number) => {
@@ -85,7 +90,7 @@ export const bignumberConvert = (
   div: string,
   fixed: number
 ) => {
-  let format = ethers.BigNumber.from(number).toString();
+  const format = ethers.BigNumber.from(number).toString();
   if (format != "0") {
     if (div != "0") {
       return BigNumber(format).div(div).toFixed(fixed);

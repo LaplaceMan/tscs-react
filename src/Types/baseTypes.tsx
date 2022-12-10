@@ -20,7 +20,7 @@ export type Application = {
   source: string;
 };
 
-export let defaultApplication: Application = {
+export const defaultApplication: Application = {
   applicant: "",
   vidoId: "",
   platformName: "",
@@ -50,7 +50,7 @@ export type Subtitle = {
   cid: string;
 };
 
-export let defaultSubtitle: Subtitle = {
+export const defaultSubtitle: Subtitle = {
   applyId: "",
   applySource: "",
   payType: "",
@@ -77,7 +77,7 @@ export type Dashboard = {
   subtitleInc: string;
 };
 
-export let defaultDashboard = {
+export const defaultDashboard = {
   applicationCount: "0",
   userCount: "0",
   subtitleCount: "0",
@@ -96,7 +96,7 @@ export type User = {
   join: number;
 };
 
-export let defaultUser = {
+export const defaultUser = {
   id: "",
   reputation: "0",
   deposit: "0",
@@ -185,7 +185,7 @@ export type OwnApplication = {
   deadline: string;
 };
 
-export let defaultOwnApplication = {
+export const defaultOwnApplication = {
   name: "",
   type: "",
   price: "0",
@@ -209,7 +209,7 @@ export type OwnSubtitle = {
   platform: string;
 };
 
-export let defaultOwnSubtitle = {
+export const defaultOwnSubtitle = {
   subtitleId: "0",
   cid: "",
   support: "0",
@@ -232,7 +232,7 @@ export type OwnAudit = {
   platform: string;
 };
 
-export let defaultOwnAudit = {
+export const defaultOwnAudit = {
   cid: "",
   state: "",
   applyId: "0",
@@ -249,7 +249,7 @@ export type UserOwn = {
   audits: OwnAudit[];
 };
 
-export let defaultUserOwn = {
+export const defaultUserOwn = {
   applications: [defaultOwnApplication],
   subtitles: [defaultOwnSubtitle],
   audits: [defaultOwnAudit],
@@ -268,7 +268,6 @@ export type ApplicationContent = {
   defaultTokenTransactionData: TokenTransaction;
   updateDefaultTokenTransaction: (params: TokenTransaction) => void;
   preSettlement: (type: string, applyId: string) => void;
-  cancelApplication: (applyId: string) => void;
   updateDefaultUpdateApplication: (params: UpdateApplication) => void;
   defaultUpdateApplicationData: UpdateApplication;
   updateDefaultWithdrawOrDespoit: (platform: string, manage: string) => void;
@@ -308,7 +307,7 @@ export type PersonalPageData = {
   needed: string;
 };
 
-export let defaultPersonalPageData = {
+export const defaultPersonalPageData = {
   reputation: "0",
   despoit: "0",
   zimu: "0",

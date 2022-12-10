@@ -1,37 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { GlobalContent } from "../types/baseTypes";
 import { getScrollTop } from "../utils/tools";
-export const GlobalContext = React.createContext<GlobalContent>({
-  isLoading: false,
-  isUploadModalOpen: false,
-  isApplicationModalOpen: false,
-  isAuditModalOpen: false,
-  isConnectWalletModalOpen: false,
-  showUploadModal: () => {},
-  hideUploadModal: () => {},
-  showApplicationModal: () => {},
-  hideApplicationModal: () => {},
-  showAuditModal: () => {},
-  hideAuditModal: () => {},
-  toggleMenu: false,
-  setToggleMenu: () => {},
-  scrollHeight: 0,
-  setLoadingState: () => {},
-  showConnectWalletModal: () => {},
-  hideConnectWalletModal: () => {},
-  isTokenTransactionModalOpen: false,
-  showTokenTransactionModal: () => {},
-  hideTokenTransactionModal: () => {},
-  showUpdateApplicationModal: () => {},
-  hideUpdateApplicationModal: () => {},
-  isUpdateApplicationModalOpen: false,
-  showWithdrawRewardModal: () => {},
-  hideWithdrawRewardModal: () => {},
-  isWithdrawRewardModalOpen: false,
-  showDespoitAssetModal: () => {},
-  hideDespoitAssetModal: () => {},
-  isDespoitAssetModalOpen: false,
-});
+export const GlobalContext = React.createContext<GlobalContent>({} as any);
 
 export const GlobalProvider = ({ children }: any) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -121,7 +91,7 @@ export const GlobalProvider = ({ children }: any) => {
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      var height: number = getScrollTop();
+      const height: number = getScrollTop();
       setScrollHeight(height);
     });
   }, []);

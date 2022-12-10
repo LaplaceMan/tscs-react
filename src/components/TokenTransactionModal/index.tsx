@@ -1,3 +1,4 @@
+import React from "react";
 import { Select, Form, Input, InputNumber, Spin } from "antd";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ApplicationContext } from "../../context/ApplicationContext";
@@ -14,7 +15,7 @@ const TokenTransaction = () => {
   const [form] = Form.useForm();
 
   const onFinish = () => {
-    let values = form.getFieldsValue();
+    const values = form.getFieldsValue();
     tokenTransaction(values);
   };
 
@@ -129,7 +130,7 @@ const TokenTransaction = () => {
           <Form.Item name="amount" label="Transfer amount" required>
             <InputNumber
               placeholder="Amount of token transfer."
-              min={1}
+              min={0}
               style={{ width: "100%" }}
               disabled={
                 defaultTokenTransactionData &&

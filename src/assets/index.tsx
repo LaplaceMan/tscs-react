@@ -3,7 +3,6 @@ export { default as github } from "./github.svg";
 export { default as logo } from "./logo.svg";
 export { default as telegram } from "./telegram.svg";
 export { default as twitter } from "./twitter.svg";
-export { default as logo_single } from "./logo_single.svg";
 export { default as application_Illustration } from "./application_Illustration.png";
 export { default as government_Illustration } from "./government_Illustration.png";
 export { default as magellan_gradient } from "./magellan_gradient.png";

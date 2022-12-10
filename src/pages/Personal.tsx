@@ -37,9 +37,9 @@ const Personal = (): React.ReactElement => {
   useEffect(() => {
     queryUserOwnData(user);
     getPersonalPageData(user);
-    let timer = setInterval(() => queryUserOwnData(user), 60000);
+    const timer = setInterval(() => queryUserOwnData(user), 60000);
     return () => clearInterval(timer);
-  }, []);
+  });
 
   const Assets = () => {
     return (
@@ -49,7 +49,7 @@ const Personal = (): React.ReactElement => {
           name: "Zimu",
           balance: personalDID.zimu,
           type: "ERC-20",
-          issuser: "TSCS",
+          issuser: "Murmes",
           address: ZIMU_TOKEN[accountState.network],
           symbol: "Zimu",
           tokenId: "0",
@@ -59,7 +59,7 @@ const Personal = (): React.ReactElement => {
           name: "VideoToken-0",
           balance: personalDID.vt0,
           type: "ERC-1155",
-          issuser: "TSCS",
+          issuser: "Murmes",
           address: VIDEO_TOKEN[accountState.network],
           symbol: "VT",
           tokenId: "0",

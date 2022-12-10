@@ -1,3 +1,4 @@
+import React from "react";
 const Label = (label: string) => {
   return <div className="text-sm font-medium text-[#696969] mb-1">{label}</div>;
 };

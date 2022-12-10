@@ -23,37 +23,19 @@ import {
   QuerySubtitle,
   QuerySubtitleWithLanguage,
   QueryUser,
-  QueryUserOwnApplication,
-  QueryUserOwnSubtitle,
-  QueryUserOwnAudit,
+  // QueryUserOwnApplication,
+  // QueryUserOwnSubtitle,
+  // QueryUserOwnAudit,
   QueryUserOwn,
   QueryLockedToken,
   QueryLanguages,
   QueryPlatforms,
 } from "../utils/graphql/graphqls";
-import { GRAPHQL_API } from "../utils/constants";
+import { GRAPHQL_SUBGRAPH_GOERLI_ABI } from "../utils/constants";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import { WalletContext } from "../context/WalletContext";
 const { ethereum } = window as any;
-export const DataContext = React.createContext<DataContent>({
-  applications: [],
-  subtitles: [],
-  queryApplicationData: () => {},
-  dashboard: defaultDashboard,
-  queryHomeData: () => {},
-  querySubtitleData: () => {},
-  defaultAuditSubtitleMaker: defaultUser,
-  userOwnData: defaultUserOwn,
-  // queryUserOwnApplicationData: () => { },
-  // queryUserOwnSubtitleData: () => { },
-  // queryUserOwnAuditData: () => { },
-  queryUserData: () => {},
-  queryUserOwnData: () => {},
-  queryUserLockedToken: () => {},
-  userDayLocakedToken: "*",
-  regiserLanguages: [],
-  regiserPlatforms: [],
-});
+export const DataContext = React.createContext<DataContent>({} as any);
 
 export const DataProvider = ({ children }: any) => {
   const { accountState } = useContext(WalletContext);
@@ -76,7 +58,7 @@ export const DataProvider = ({ children }: any) => {
       (new Date().valueOf() / 86400000).toString()
     ).toString();
     const client = new ApolloClient({
-      uri: GRAPHQL_API,
+      uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
       cache: new InMemoryCache(),
     });
     client
@@ -89,12 +71,12 @@ export const DataProvider = ({ children }: any) => {
         },
       })
       .then((data) => {
-        let dashboard = data.data.dashboard;
-        let dayData = data.data.dayData;
-        let getApplications = data.data.applications;
-        let getSubtitles = data.data.subtitles;
-        let applicationArray = new Array<Application>();
-        let subtitleArray = new Array<Subtitle>();
+        const dashboard = data.data.dashboard;
+        const dayData = data.data.dayData;
+        const getApplications = data.data.applications;
+        const getSubtitles = data.data.subtitles;
+        const applicationArray = new Array<Application>();
+        const subtitleArray = new Array<Subtitle>();
         getApplications.map((item: any) => {
           applicationArray.push({
             applicant: item.applicant.id,
@@ -151,7 +133,7 @@ export const DataProvider = ({ children }: any) => {
     language: string
   ) => {
     const client = new ApolloClient({
-      uri: GRAPHQL_API,
+      uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
       cache: new InMemoryCache(),
     });
     client
@@ -166,11 +148,11 @@ export const DataProvider = ({ children }: any) => {
         },
       })
       .then((data) => {
-        let getApplications =
+        const getApplications =
           language == "0"
             ? data.data.applications
             : data.data.language.applications;
-        let applicationArray = new Array<Application>();
+        const applicationArray = new Array<Application>();
         getApplications.map((item: any) => {
           applicationArray.push({
             applicant: item.applicant.id,
@@ -195,7 +177,7 @@ export const DataProvider = ({ children }: any) => {
 
   const querySubtitleData = (first: number, skip: number, language: string) => {
     const client = new ApolloClient({
-      uri: GRAPHQL_API,
+      uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
       cache: new InMemoryCache(),
     });
     client
@@ -208,9 +190,9 @@ export const DataProvider = ({ children }: any) => {
         },
       })
       .then((data) => {
-        let getSubtitles =
+        const getSubtitles =
           language == "0" ? data.data.subtitles : data.data.language.subtitles;
-        let subtitleArray = new Array<Subtitle>();
+        const subtitleArray = new Array<Subtitle>();
         getSubtitles.map((item: any) => {
           subtitleArray.push({
             applyId: item.application.id,
@@ -237,7 +219,7 @@ export const DataProvider = ({ children }: any) => {
 
   const queryUserData = (userId: string) => {
     const client = new ApolloClient({
-      uri: GRAPHQL_API,
+      uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
       cache: new InMemoryCache(),
     });
     client
@@ -248,7 +230,7 @@ export const DataProvider = ({ children }: any) => {
         },
       })
       .then((data) => {
-        let user = data.data.user;
+        const user = data.data.user;
         setDefaultAuditSubtitleMaker({
           id: user.id,
           reputation: user.reputation,
@@ -264,7 +246,7 @@ export const DataProvider = ({ children }: any) => {
 
   const queryUserOwnData = (address: string) => {
     const client = new ApolloClient({
-      uri: GRAPHQL_API,
+      uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
       cache: new InMemoryCache(),
     });
     client
@@ -275,12 +257,12 @@ export const DataProvider = ({ children }: any) => {
         },
       })
       .then((data) => {
-        let getApplications = data.data.user.applications;
-        let getSubtitles = data.data.user.subtitlesOwner;
-        let getAudits = data.data.user.audits;
-        let applicationArray = new Array<OwnApplication>();
-        let subtitleArray = new Array<OwnSubtitle>();
-        let auditArray = new Array<OwnAudit>();
+        const getApplications = data.data.user.applications;
+        const getSubtitles = data.data.user.subtitlesOwner;
+        const getAudits = data.data.user.audits;
+        const applicationArray = new Array<OwnApplication>();
+        const subtitleArray = new Array<OwnSubtitle>();
+        const auditArray = new Array<OwnAudit>();
         getApplications.map((item: any) => {
           applicationArray.push({
             name: item.video.platform.name,
@@ -330,117 +312,117 @@ export const DataProvider = ({ children }: any) => {
       });
   };
 
-  const queryUserOwnApplicationData = (user: string) => {
-    const client = new ApolloClient({
-      uri: GRAPHQL_API,
-      cache: new InMemoryCache(),
-    });
-    user &&
-      client
-        .query({
-          query: gql(QueryUserOwnApplication),
-          variables: {
-            id: user,
-          },
-        })
-        .then((data) => {
-          let getApplications = data.data.user.applications;
-          let applicationArray = new Array<OwnApplication>();
-          getApplications.map((item: any) => {
-            applicationArray.push({
-              name: item.video.platform.name,
-              type: item.strategy.notes,
-              price: item.amount,
-              state: item.adopted ? item.adopted.id : "0",
-              source: item.source,
-              videoId: item.video.id,
-              applyId: item.id,
-              language: item.language.notes,
-              deadline: item.deadline,
-            });
-          });
-          setUserOwnData({ ...userOwnData, applications: applicationArray });
-        })
-        .catch((err) => {
-          console.log("Error fetching data: ", err);
-        });
-  };
+  // const queryUserOwnApplicationData = (user: string) => {
+  //   const client = new ApolloClient({
+  //     uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
+  //     cache: new InMemoryCache(),
+  //   });
+  //   user &&
+  //     client
+  //       .query({
+  //         query: gql(QueryUserOwnApplication),
+  //         variables: {
+  //           id: user,
+  //         },
+  //       })
+  //       .then((data) => {
+  //         const getApplications = data.data.user.applications;
+  //         const applicationArray = new Array<OwnApplication>();
+  //         getApplications.map((item: any) => {
+  //           applicationArray.push({
+  //             name: item.video.platform.name,
+  //             type: item.strategy.notes,
+  //             price: item.amount,
+  //             state: item.adopted ? item.adopted.id : "0",
+  //             source: item.source,
+  //             videoId: item.video.id,
+  //             applyId: item.id,
+  //             language: item.language.notes,
+  //             deadline: item.deadline,
+  //           });
+  //         });
+  //         setUserOwnData({ ...userOwnData, applications: applicationArray });
+  //       })
+  //       .catch((err) => {
+  //         console.log("Error fetching data: ", err);
+  //       });
+  // };
 
-  const queryUserOwnSubtitleData = (user: string) => {
-    const client = new ApolloClient({
-      uri: GRAPHQL_API,
-      cache: new InMemoryCache(),
-    });
-    user &&
-      client
-        .query({
-          query: gql(QueryUserOwnSubtitle),
-          variables: {
-            id: user,
-          },
-        })
-        .then((data) => {
-          let getSubtitles = data.data.user.subtitlesOwner;
-          let subtitleArray = new Array<OwnSubtitle>();
-          getSubtitles.map((item: any) => {
-            subtitleArray.push({
-              subtitleId: item.id,
-              cid: item.cid,
-              support: item.supporterCount,
-              oppose: item.dissenterCount,
-              state: item.state,
-              applyId: item.application.id,
-              language: item.language.notes,
-              type: item.application.strategy.notes,
-              platform: item.application.video.platform.id,
-            });
-          });
+  // const queryUserOwnSubtitleData = (user: string) => {
+  //   const client = new ApolloClient({
+  //     uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
+  //     cache: new InMemoryCache(),
+  //   });
+  //   user &&
+  //     client
+  //       .query({
+  //         query: gql(QueryUserOwnSubtitle),
+  //         variables: {
+  //           id: user,
+  //         },
+  //       })
+  //       .then((data) => {
+  //         const getSubtitles = data.data.user.subtitlesOwner;
+  //         const subtitleArray = new Array<OwnSubtitle>();
+  //         getSubtitles.map((item: any) => {
+  //           subtitleArray.push({
+  //             subtitleId: item.id,
+  //             cid: item.cid,
+  //             support: item.supporterCount,
+  //             oppose: item.dissenterCount,
+  //             state: item.state,
+  //             applyId: item.application.id,
+  //             language: item.language.notes,
+  //             type: item.application.strategy.notes,
+  //             platform: item.application.video.platform.id,
+  //           });
+  //         });
 
-          setUserOwnData({ ...userOwnData, subtitles: subtitleArray });
-        })
-        .catch((err) => {
-          console.log("Error fetching data: ", err);
-        });
-  };
+  //         setUserOwnData({ ...userOwnData, subtitles: subtitleArray });
+  //       })
+  //       .catch((err) => {
+  //         console.log("Error fetching data: ", err);
+  //       });
+  // };
 
-  const queryUserOwnAuditData = (user: string) => {
-    const client = new ApolloClient({
-      uri: GRAPHQL_API,
-      cache: new InMemoryCache(),
-    });
-    user &&
-      client
-        .query({
-          query: gql(QueryUserOwnAudit),
-          variables: {
-            id: user,
-          },
-        })
-        .then((data) => {
-          let getAudits = data.data.user.audits;
-          let auditArray = new Array<OwnAudit>();
-          getAudits.map((item: any) => {
-            auditArray.push({
-              cid: item.subtitle.cid,
-              state: item.subtitle.state,
-              applyId: item.subtitle.application.id,
-              language: item.subtitle.language.notes,
-              attitude: item.attitude,
-              subtitleId: item.subtitle.id,
-              type: item.subtitle.application.strategy.notes,
-              platform: item.subtitle.application.video.platform.id,
-            });
-          });
-          setUserOwnData({ ...userOwnData, audits: auditArray });
-        })
-        .catch((err) => {
-          console.log("Error fetching data: ", err);
-        });
-  };
+  // const queryUserOwnAuditData = (user: string) => {
+  //   const client = new ApolloClient({
+  //     uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
+  //     cache: new InMemoryCache(),
+  //   });
+  //   user &&
+  //     client
+  //       .query({
+  //         query: gql(QueryUserOwnAudit),
+  //         variables: {
+  //           id: user,
+  //         },
+  //       })
+  //       .then((data) => {
+  //         const getAudits = data.data.user.audits;
+  //         const auditArray = new Array<OwnAudit>();
+  //         getAudits.map((item: any) => {
+  //           auditArray.push({
+  //             cid: item.subtitle.cid,
+  //             state: item.subtitle.state,
+  //             applyId: item.subtitle.application.id,
+  //             language: item.subtitle.language.notes,
+  //             attitude: item.attitude,
+  //             subtitleId: item.subtitle.id,
+  //             type: item.subtitle.application.strategy.notes,
+  //             platform: item.subtitle.application.video.platform.id,
+  //           });
+  //         });
+  //         setUserOwnData({ ...userOwnData, audits: auditArray });
+  //       })
+  //       .catch((err) => {
+  //         console.log("Error fetching data: ", err);
+  //       });
+  // };
 
   const queryUserLockedToken = (platform: string, day: number) => {
     const client = new ApolloClient({
-      uri: GRAPHQL_API,
+      uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
       cache: new InMemoryCache(),
     });
     client
@@ -451,7 +433,7 @@ export const DataProvider = ({ children }: any) => {
         },
       })
       .then((data) => {
-        let locked = data.data.reward.locked;
+        const locked = data.data.reward.locked;
         if (locked) {
           setUserDayLocakedToken(locked);
         }
@@ -463,7 +445,7 @@ export const DataProvider = ({ children }: any) => {
 
   const queryRegiserLanugages = () => {
     const client = new ApolloClient({
-      uri: GRAPHQL_API,
+      uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
       cache: new InMemoryCache(),
     });
     client
@@ -471,9 +453,9 @@ export const DataProvider = ({ children }: any) => {
         query: gql(QueryLanguages),
       })
       .then((data) => {
-        let languages = data.data.languages;
+        const languages = data.data.languages;
         if (languages) {
-          let languageArray = new Array<{ id: string; notes: string }>();
+          const languageArray = new Array<{ id: string; notes: string }>();
           languages.map((item: any) => {
             languageArray.push({
               id: item.id,
@@ -490,7 +472,7 @@ export const DataProvider = ({ children }: any) => {
 
   const queryRegiserPlatforms = () => {
     const client = new ApolloClient({
-      uri: GRAPHQL_API,
+      uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
       cache: new InMemoryCache(),
     });
     client
@@ -498,9 +480,9 @@ export const DataProvider = ({ children }: any) => {
         query: gql(QueryPlatforms),
       })
       .then((data) => {
-        let platforms = data.data.platforms;
+        const platforms = data.data.platforms;
         if (platforms) {
-          let platformArray = new Array<{ id: string; name: string }>();
+          const platformArray = new Array<{ id: string; name: string }>();
           platforms.map((item: any) => {
             platformArray.push({
               id: item.id,
@@ -519,11 +501,11 @@ export const DataProvider = ({ children }: any) => {
     queryHomeData();
     queryRegiserLanugages();
     queryRegiserPlatforms();
-    let timer1 = setInterval(() => {
+    const timer1 = setInterval(() => {
       queryRegiserLanugages();
       queryRegiserPlatforms();
     }, 600000);
-    let timer2 = setInterval(() => {
+    const timer2 = setInterval(() => {
       queryHomeData();
     }, 60000);
     return () => {

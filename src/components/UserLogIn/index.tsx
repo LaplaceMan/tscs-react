@@ -1,3 +1,4 @@
+import React from "react";
 import { BsAwardFill } from "react-icons/bs";
 import { BiWalletAlt, BiGlobe } from "react-icons/bi";
 import { Network } from "../../utils/constants";

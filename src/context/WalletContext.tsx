@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { WalletContent } from "../types/baseTypes";
 import { ethers } from "ethers";
+import { message } from "antd";
 const { ethereum } = window as any;
 const provider = new ethers.providers.Web3Provider(ethereum);
 
-export const WalletContext = React.createContext<WalletContent>({
-  accountState: {
-    address: "",
-    network: "",
-    type: "",
-  },
-  connectWalletMetaMask: () => {},
-  killSessionWalletConnect: () => {},
-  gasPrice: "",
-});
+export const WalletContext = React.createContext<WalletContent>({} as any);
 export const WalletProvider = ({ children }: any) => {
   const [accountState, setAccountState] = useState({
     address: "",
@@ -23,14 +15,14 @@ export const WalletProvider = ({ children }: any) => {
   const [gasPrice, setGasPrice] = useState("");
 
   const updateGasPrice = async () => {
-    let gasUnit = await provider.getGasPrice();
-    let format = ethers.utils.formatUnits(gasUnit, "gwei");
+    const gasUnit = await provider.getGasPrice();
+    const format = ethers.utils.formatUnits(gasUnit, "gwei");
     setGasPrice(Number(format).toFixed(2).toString());
   };
 
   const connectWalletMetaMask = async () => {
     try {
-      if (!ethereum) return alert("Please install Metamask");
+      if (!ethereum) return message.warning("Please install wallet.");
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
       });
@@ -79,7 +71,7 @@ export const WalletProvider = ({ children }: any) => {
   };
   const checkIfWalletsIsConnected = async () => {
     try {
-      if (!ethereum) return alert("Please install metamask.");
+      if (!ethereum) return message.warning("Please install wallet.");
       const accounts = await ethereum.request({ method: "eth_accounts" });
       if (accounts.length) {
         const address = accounts[0];
@@ -101,7 +93,7 @@ export const WalletProvider = ({ children }: any) => {
   useEffect(() => {
     addWalletListener();
     checkIfWalletsIsConnected();
-    let timer = setInterval(() => updateGasPrice(), 5000);
+    const timer = setInterval(() => updateGasPrice(), 5000);
     return () => clearInterval(timer);
   }, []);
 

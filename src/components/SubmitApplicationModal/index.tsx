@@ -1,3 +1,4 @@
+import React from "react";
 import { Select, Form, Input, InputNumber, DatePicker, Spin } from "antd";
 import { MdOutlineClose } from "react-icons/md";
 import { GiToken } from "react-icons/gi";
@@ -9,9 +10,9 @@ import { ApplicationContext } from "../../context/ApplicationContext";
 import { WalletContext } from "../../context/WalletContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { DataContext } from "../../context/DataContext";
-import { ZERO_ADDRESS } from "../../utils/constants";
 import { countryLanguageMap } from "../../utils/constants";
-
+import { SUBTITLE_SYSTEM } from "../../utils/contracts";
+const { ethereum } = window as any;
 const { Option } = Select;
 
 const SubmitApplication = () => {
@@ -22,8 +23,8 @@ const SubmitApplication = () => {
   const { regiserLanguages, regiserPlatforms } = useContext(DataContext);
 
   const onFinish = () => {
-    let values = form.getFieldsValue();
-    let date = values.deadline.valueOf();
+    const values = form.getFieldsValue();
+    const date = values.deadline.valueOf();
     values.deadline = parseInt((date / 1000).toString());
     submitApplication(values);
   };
@@ -37,7 +38,11 @@ const SubmitApplication = () => {
           requiredMark="optional"
           className="w-full"
           onFinish={onFinish}
-          initialValues={{ strategy: 0, language: "1", platform: ZERO_ADDRESS }}
+          initialValues={{
+            strategy: 0,
+            language: "1",
+            platform: String(SUBTITLE_SYSTEM[ethereum.chainId]).toLowerCase(),
+          }}
         >
           <div className="flex items-center justify-between mb-3">
             <div className="text-xl font-bold">
@@ -73,7 +78,6 @@ const SubmitApplication = () => {
                   .includes(input.toLowerCase())
               }
             >
-              <Option value={ZERO_ADDRESS}>Default</Option>
               {regiserPlatforms.length > 0 &&
                 regiserPlatforms.map((item, index) => {
                   return (
@@ -119,7 +123,7 @@ const SubmitApplication = () => {
           >
             <InputNumber
               placeholder="Payment amount or proportion."
-              min={1}
+              min={0}
               style={{ width: "100%" }}
               // decimalSeparator="18"
             />

@@ -1,3 +1,4 @@
+import React from "react";
 import { useContext } from "react";
 import { Tooltip } from "antd";
 import { shortenAddress, bignumberConvert } from "../../utils/tools";

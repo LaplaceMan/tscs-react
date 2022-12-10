@@ -16,10 +16,10 @@ const ApplicationPage = (): React.ReactElement => {
   const [currentPage, setCurrentPage] = useState({ page: 1, language: "0" });
   useEffect(() => {
     queryApplicationData(DEFAULT_PAGE_SIZE, 0, "0");
-  }, []);
+  });
 
   const pageChangeHandle = (page: number, pageSize: number) => {
-    let skip = page == 1 ? 0 : (page - 1) * pageSize;
+    const skip = page == 1 ? 0 : (page - 1) * pageSize;
     queryApplicationData(pageSize, skip, currentPage.language);
   };
 

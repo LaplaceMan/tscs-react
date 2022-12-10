@@ -33,7 +33,7 @@ export type TokenTransaction = {
   operation: string;
 };
 
-export let defaultTokenTransaction = {
+export const defaultTokenTransaction = {
   name: "",
   symbol: "",
   decimals: 0,
@@ -55,7 +55,7 @@ export type UpdateApplication = {
   type: string;
 };
 
-export let defaultUpdateApplication = {
+export const defaultUpdateApplication = {
   payType: "",
   oldAmount: "0",
   oldDeadline: "",

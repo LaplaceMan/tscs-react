@@ -1,3 +1,4 @@
+import React from "react";
 import { ApplyCard, DashboardMini, SubtitleCard } from "../components";
 import { DashboardMiniItem } from "../types/baseTypes";
 import {
@@ -15,7 +16,7 @@ const Home = (): React.ReactElement => {
   const { dashboard, applications, subtitles, queryHomeData } =
     useContext(DataContext);
 
-  useEffect(() => queryHomeData(), []);
+  useEffect(() => queryHomeData());
 
   const DashboardMiniItems: DashboardMiniItem[] = [
     {

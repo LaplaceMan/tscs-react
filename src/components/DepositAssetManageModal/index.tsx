@@ -12,7 +12,7 @@ const DepositAssetManageModal = () => {
   const { depoitZimuManage } = useContext(ApplicationContext);
 
   const onFinish = () => {
-    let values = form.getFieldsValue();
+    const values = form.getFieldsValue();
     depoitZimuManage(values.address, values.amount);
   };
 
@@ -55,7 +55,7 @@ const DepositAssetManageModal = () => {
           <Form.Item name="amount" label="Quantity to be changed" required>
             <InputNumber
               placeholder="Pledge enough Zimu tokens to ensure your normal use."
-              min={1}
+              min={0}
               style={{ width: "100%" }}
             />
           </Form.Item>

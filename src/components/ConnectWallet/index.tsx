@@ -30,7 +30,9 @@ const ConnectWallet = (hideConnectWalletModal: any): React.ReactElement => {
     {
       icon: "https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPngc7fbb15391340f1f3a9c3b77059561036d185a3e6a21b0a78d960cf95f1e4834",
       label: "WalletConnect",
-      func: () => {},
+      func: () => {
+        // 目前未实现
+      },
     },
   ];
   return (

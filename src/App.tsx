@@ -8,7 +8,7 @@ import {
   WithdrawReward,
   DepositAssetManageModal,
 } from "./components";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { Layout, Affix, Modal } from "antd";
 import { AllRoutes, HeaderRoutes } from "./routes";
 import { GlobalContext } from "./context/GlobalContext";

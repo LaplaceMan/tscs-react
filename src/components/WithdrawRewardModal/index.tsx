@@ -18,7 +18,7 @@ const WithdrawReward = () => {
   const { queryUserLockedToken, userDayLocakedToken } = useContext(DataContext);
 
   const onFinish = () => {
-    let values = form.getFieldsValue();
+    const values = form.getFieldsValue();
     if (values.day) {
       values.day = timestampToDay(values.day.valueOf());
       withdrawReward(values);

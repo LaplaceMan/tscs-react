@@ -21,7 +21,7 @@ const UploadSubtitle = (): React.ReactElement => {
   const { gasPrice } = useContext(WalletContext);
   const { regiserLanguages } = useContext(DataContext);
   const onFinish = () => {
-    let values = form.getFieldsValue();
+    const values = form.getFieldsValue();
     uploadSubtitle(values);
   };
 

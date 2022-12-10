@@ -17,8 +17,7 @@ const applicationCardItem = (label: string, info: string) => {
 };
 
 const OwnApplicationCard = (application: OwnApplication, key: React.Key) => {
-  const { cancelApplication, updateDefaultUpdateApplication } =
-    useContext(ApplicationContext);
+  const { updateDefaultUpdateApplication } = useContext(ApplicationContext);
   const { showUpdateApplicationModal } = useContext(GlobalContext);
 
   const updateApplicationHandle = (params: UpdateApplication) => {
@@ -60,9 +59,19 @@ const OwnApplicationCard = (application: OwnApplication, key: React.Key) => {
       <div className="flex w-full justify-between text-white font-semibold text-base">
         <div
           className="flex w-1/2 py-1.5 rounded-lg bg-gradient-to-r cursor-pointer from-purple-400 to-purple-200 hover:brightness-110 mr-1 items-center justify-center"
-          onClick={() => cancelApplication(application.applyId)}
+          onClick={() =>
+            updateApplicationHandle({
+              payType: application.type,
+              oldAmount: application.price,
+              oldDeadline: application.deadline,
+              applyId: application.applyId,
+              type: "Update",
+              amount: "",
+              deadline: 0,
+            })
+          }
         >
-          Cancel
+          Update
         </div>
         <div
           className="flex w-1/2 py-1.5 rounded-lg ml-1 items-center justify-center bg-gradient-to-r cursor-pointer from-blue-200 to-blue-400 hover:brightness-110"

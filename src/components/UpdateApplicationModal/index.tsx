@@ -14,7 +14,7 @@ const UpdateApplication = () => {
     useContext(ApplicationContext);
 
   const onFinish = () => {
-    let values = form.getFieldsValue();
+    const values = form.getFieldsValue();
     updateApplication(values);
   };
 

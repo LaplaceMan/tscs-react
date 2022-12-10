@@ -17,10 +17,10 @@ const Government = (): React.ReactElement => {
 
   useEffect(() => {
     querySubtitleData(DEFAULT_PAGE_SIZE, 0, "0");
-  }, []);
+  });
 
   const pageChangeHandle = (page: number, pageSize: number) => {
-    let skip = page == 1 ? 0 : (page - 1) * pageSize;
+    const skip = page == 1 ? 0 : (page - 1) * pageSize;
     querySubtitleData(pageSize, skip, currentPage.language);
   };
 
@@ -37,8 +37,8 @@ const Government = (): React.ReactElement => {
             Make favorite videos known to the world
           </div>
           <div className="flex md:text-base my-5 w-5/6 font-medium sm:text-xs">
-            Not only "Power Generation For Love", you will get rewards from
-            Web3. Join this new and interesting community!
+            Not only &quot; Power Generation For Love &quot;, you will get
+            rewards from Web3. Join this new and interesting community!
           </div>
           <div
             className="flex md:px-12 py-2 text-white font-semibold md:text-lg  text-center rounded-full items-center justify-center bg-gradient-to-r from-purple-400 to-blue-400 mt-2 sm:text-base sm:px-10 cursor-pointer hover:brightness-110"

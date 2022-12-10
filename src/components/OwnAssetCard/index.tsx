@@ -1,3 +1,4 @@
+import React from "react";
 import { OwnToken } from "../../types/baseTypes";
 import { Tooltip } from "antd";
 import { shortenAddress, bignumberConvert } from "../../utils/tools";
