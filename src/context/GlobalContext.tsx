@@ -8,8 +8,6 @@ export const GlobalProvider = ({ children }: any) => {
   const [isUploadModalOpen, setUploadIsModalOpen] = useState(false);
   const [isApplicationModalOpen, setApplicationIsModalOpen] = useState(false);
   const [isAuditModalOpen, setAuditIsModalOpen] = useState(false);
-  const [isConnectWalletModalOpen, setIsConnectWalletModalOpen] =
-    useState(false);
   const [isTokenTransactionModalOpen, setIsTokenTransactionModalOpen] =
     useState(false);
   const [isUpdateApplicationModalOpen, setIsUpdateApplicationModalOpen] =
@@ -20,6 +18,13 @@ export const GlobalProvider = ({ children }: any) => {
 
   const [toggleMenu, setToggleMenu] = useState(false);
   const [scrollHeight, setScrollHeight] = useState(0);
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      const height: number = getScrollTop();
+      setScrollHeight(height);
+    });
+  }, []);
 
   const showDespoitAssetModal = () => {
     setIsDespoitAssetModalOpen(true);
@@ -77,24 +82,9 @@ export const GlobalProvider = ({ children }: any) => {
     setAuditIsModalOpen(false);
   };
 
-  const showConnectWalletModal = () => {
-    setIsConnectWalletModalOpen(true);
-  };
-
-  const hideConnectWalletModal = () => {
-    setIsConnectWalletModalOpen(false);
-  };
-
   const setLoadingState = (state: boolean) => {
     setIsLoading(state);
   };
-
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      const height: number = getScrollTop();
-      setScrollHeight(height);
-    });
-  }, []);
 
   return (
     <GlobalContext.Provider
@@ -113,9 +103,6 @@ export const GlobalProvider = ({ children }: any) => {
         showAuditModal,
         hideAuditModal,
         setLoadingState,
-        isConnectWalletModalOpen,
-        showConnectWalletModal,
-        hideConnectWalletModal,
         isTokenTransactionModalOpen,
         showTokenTransactionModal,
         hideTokenTransactionModal,

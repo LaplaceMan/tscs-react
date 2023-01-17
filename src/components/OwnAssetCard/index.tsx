@@ -2,10 +2,14 @@ import React from "react";
 import { OwnToken } from "../../types/baseTypes";
 import { Tooltip } from "antd";
 import { shortenAddress, bignumberConvert } from "../../utils/tools";
-import { DECIMALS_18, DECIMALS_6 } from "../../utils/constants";
+import {
+  DECIMALS_18,
+  DECIMALS_6,
+  RANDOM_AVATAR_API,
+} from "../../utils/constants";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
-import { WalletContext } from "../../context/WalletContext";
+import { useAccount } from "wagmi";
 import { useContext } from "react";
 const tokenCardItem = (label: string, info: string) => {
   return (
@@ -19,14 +23,14 @@ const tokenCardItem = (label: string, info: string) => {
 const TokenCard = (token: OwnToken) => {
   const { updateDefaultTokenTransaction } = useContext(ApplicationContext);
   const { showTokenTransactionModal } = useContext(GlobalContext);
-  const { accountState } = useContext(WalletContext);
+  const { address } = useAccount();
 
   const tokenTransactionHandle = (
     name: string,
     symbol: string,
     decimals: number,
     type: string,
-    address: string,
+    address_: string,
     tokenId: string,
     operation: string
   ) => {
@@ -35,9 +39,9 @@ const TokenCard = (token: OwnToken) => {
       symbol: symbol,
       decimals: decimals,
       type: type,
-      address: address,
+      address: address_,
       tokenId: tokenId,
-      from: accountState.address,
+      from: address!,
       amount: "",
       operation: operation,
     });
@@ -48,13 +52,13 @@ const TokenCard = (token: OwnToken) => {
     <div className="flex flex-col p-3 items-center justify-center rounded-md shadow-md w-[300px] h-[180px] own-card mt-5 mx-5">
       <div className="flex flex-row items-center justify-center">
         <img
-          src="http://api.btstu.cn/sjtx/api.php?lx=c1&format=images"
+          src={RANDOM_AVATAR_API}
           className="flex rounded-full w-[50px] shadow"
         />
         <div className="flex flex-col items-start ml-3">
           <div className="text-lg font-medium text-black">{token.name}</div>
           <Tooltip title={token.address}>
-            <div className="flex test-sm bg-gray-50 px-2 rounded-md text-[#696969]">
+            <div className="flex test-sm rounded-md text-[#696969]">
               {token.address ? shortenAddress(token.address) : ""}
             </div>
           </Tooltip>

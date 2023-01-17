@@ -39,7 +39,7 @@ const OwnApplicationCard = (application: OwnApplication, key: React.Key) => {
             {application.name}
           </div>
           <Tooltip title={application.source ? application.source : ""}>
-            <div className="flex test-sm bg-gray-50 px-2 rounded-md text-[#696969]">
+            <div className="flex test-sm rounded-md text-[#696969]">
               {application.source
                 ? shortenCID(application.source, "personal")
                 : ""}

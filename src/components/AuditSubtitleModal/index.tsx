@@ -6,22 +6,25 @@ import { CircleFlag } from "react-circle-flags";
 import { MdOutlineClose } from "react-icons/md";
 import { RiSecurePaymentLine, RiStarSmileLine } from "react-icons/ri";
 import { ApplicationContext } from "../../context/ApplicationContext";
-import { WalletContext } from "../../context/WalletContext";
+import { useAccount } from "wagmi";
 import { DataContext } from "../../context/DataContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { timestampToDate, shortenAddress, shortenCID } from "../../utils/tools";
 import { Audit } from "../../types/formTypes";
+import { RANDOM_AVATAR_API } from "../../utils/constants";
+
 const AuditSubtitle = () => {
+  const { address, isConnected } = useAccount();
   const { defaultAuditSubtitleData, auditSubtitle } =
     useContext(ApplicationContext);
   const { hideAuditModal, isLoading } = useContext(GlobalContext);
-  const { accountState } = useContext(WalletContext);
+
   const { defaultAuditSubtitleMaker } = useContext(DataContext);
   const txParams = (attitude: number): Audit => {
     return {
       subtitleId: defaultAuditSubtitleData.subtitleId,
       attitude: attitude,
-      auditor: accountState.address,
+      auditor: isConnected ? address! : "",
     };
   };
   return (
@@ -87,10 +90,7 @@ const AuditSubtitle = () => {
           <div className="flex flex-col w-1/2 ml-1">
             <div className="flex flex-row items-center justify-center">
               <div className="flex h-11">
-                <img
-                  src="http://api.btstu.cn/sjtx/api.php?lx=c1&format=images"
-                  className="flex rounded-full"
-                />
+                <img src={RANDOM_AVATAR_API} className="flex rounded-full" />
               </div>
               <div className="flex flex-col items-start ml-3">
                 <div className="text-lg font-medium">ENS</div>

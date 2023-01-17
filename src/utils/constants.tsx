@@ -32,6 +32,9 @@ export const GRAPHQL_API =
 export const GRAPHQL_SUBGRAPH_GOERLI_ABI =
   "https://api.thegraph.com/subgraphs/name/laplaceman/murmes-goerli";
 
+export const RANDOM_AVATAR_API =
+  "https://api.dicebear.com/5.x/adventurer-neutral/svg";
+
 export const DEFAULT_PAGE_SIZE = 10;
 
 export const BASE_RATE = 65535;

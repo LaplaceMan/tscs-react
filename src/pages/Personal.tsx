@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from "react";
-import { Tabs, Empty } from "antd";
+import { Tabs, Empty, Spin } from "antd";
 import { SiEthereum } from "react-icons/si";
-import { WalletContext } from "../context/WalletContext";
 import { DataContext } from "../context/DataContext";
 import { ApplicationContext } from "../context/ApplicationContext";
 import { shortenAddress } from "../utils/tools";
+import { RANDOM_AVATAR_API } from "../utils/constants";
 import {
   OwnAssetCard,
   OwnApplicationCard,
@@ -13,6 +13,8 @@ import {
   DepositAssetCard,
 } from "../components";
 import { ZIMU_TOKEN, VIDEO_TOKEN } from "../utils/contracts";
+import { useAccount, useEnsName, useEnsAvatar } from "wagmi";
+import { getNetwork } from "@wagmi/core";
 
 const NoItems = () => {
   return (
@@ -29,28 +31,36 @@ const NoItems = () => {
 };
 
 const Personal = (): React.ReactElement => {
-  const { accountState } = useContext(WalletContext);
-  const { userOwnData, queryUserOwnData } = useContext(DataContext);
+  const { isConnected } = useAccount();
+  const { chain } = getNetwork();
+  const { userOwnData, queryUserOwnData, isGetDataLoading } =
+    useContext(DataContext);
   const { personalDID, getPersonalPageData } = useContext(ApplicationContext);
   const user = window.location.pathname.slice(10);
+  const ensAvatar = useEnsAvatar({
+    address: `0x${user.slice(2)}`,
+  });
+  const ensName = useEnsName({
+    address: `0x${user.slice(2)}`,
+  });
 
   useEffect(() => {
     queryUserOwnData(user);
     getPersonalPageData(user);
-    const timer = setInterval(() => queryUserOwnData(user), 60000);
+    const timer = setInterval(() => queryUserOwnData(user), 600000);
     return () => clearInterval(timer);
-  });
+  }, []);
 
   const Assets = () => {
     return (
-      <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
+      <div className="flex flex-wrap items-center justify-around md:justify-start">
         {DepositAssetCard()}
         {OwnAssetCard({
           name: "Zimu",
           balance: personalDID.zimu,
           type: "ERC-20",
           issuser: "Murmes",
-          address: ZIMU_TOKEN[accountState.network],
+          address: ZIMU_TOKEN[isConnected ? chain!.id : 5],
           symbol: "Zimu",
           tokenId: "0",
           decimals: 18,
@@ -60,7 +70,7 @@ const Personal = (): React.ReactElement => {
           balance: personalDID.vt0,
           type: "ERC-1155",
           issuser: "Murmes",
-          address: VIDEO_TOKEN[accountState.network],
+          address: VIDEO_TOKEN[isConnected ? chain!.id : 5],
           symbol: "VT",
           tokenId: "0",
           decimals: 6,
@@ -70,8 +80,12 @@ const Personal = (): React.ReactElement => {
   };
 
   const Applications = () => {
-    return (
-      <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
+    return isGetDataLoading ? (
+      <div className="flex w-full items-center justify-center h-32">
+        <Spin />
+      </div>
+    ) : (
+      <div className="flex flex-wrap items-center justify-around md:justify-start">
         {userOwnData.applications[0] &&
           userOwnData.applications[0].applyId != "0" &&
           userOwnData.applications.map((item, index) =>
@@ -99,8 +113,12 @@ const Personal = (): React.ReactElement => {
   };
 
   const Subtitles = () => {
-    return (
-      <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
+    return isGetDataLoading ? (
+      <div className="flex w-full items-center justify-center h-32">
+        <Spin />
+      </div>
+    ) : (
+      <div className="flex flex-wrap items-center justify-around md:justify-start">
         {userOwnData.subtitles[0] &&
           userOwnData.subtitles[0].applyId != "0" &&
           userOwnData.subtitles.map((item, index) =>
@@ -128,8 +146,12 @@ const Personal = (): React.ReactElement => {
   };
 
   const Audits = () => {
-    return (
-      <div className="flex flex-wrap items-center sm:justify-around md:justify-start">
+    return isGetDataLoading ? (
+      <div className="flex w-full items-center justify-center h-32">
+        <Spin />
+      </div>
+    ) : (
+      <div className="flex flex-wrap items-center justify-around md:justify-start">
         {userOwnData.audits[0] &&
           userOwnData.audits[0].applyId != "0" &&
           userOwnData.audits.map((item, index) =>
@@ -165,12 +187,20 @@ const Personal = (): React.ReactElement => {
         <div className="mt-40 flex justify-center mx-[60px] align-bottom">
           <img
             className="shrink-0 w-32 h-32 md:w-36 md:h-36 rounded-xl shadow"
-            src={"http://api.btstu.cn/sjtx/api.php?lx=c1&format=images"}
+            src={
+              ensAvatar.isLoading && !ensAvatar.isError && ensAvatar.data
+                ? ensAvatar.data
+                : RANDOM_AVATAR_API
+            }
           />
         </div>
       </div>
       <div className="flex flex-col items-center mt-11 mb-3 md:mt-10">
-        <div className="text-3xl font-bold">ENS</div>
+        <div className="text-3xl font-bold">
+          {ensName.isLoading && !ensName.isError && ensName.data
+            ? ensName.data
+            : "ENS"}
+        </div>
         <div className="flex text-base font-medium text-[#696969] items-center">
           <SiEthereum className="mr-1 mt-0.5" />
           {shortenAddress(user)}

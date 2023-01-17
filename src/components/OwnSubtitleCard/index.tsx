@@ -39,7 +39,7 @@ const OwnSubtitleCard = (subtitle: OwnSubtitle, index: React.Key) => {
             #{subtitle.subtitleId}
           </div>
           <Tooltip title={subtitle.cid ? subtitle.cid : ""}>
-            <div className="flex test-sm bg-gray-50 px-2 rounded-md text-[#696969]">
+            <div className="flex test-sm rounded-md text-[#696969]">
               {subtitle.cid ? shortenCID(subtitle.cid, "personal") : ""}
             </div>
           </Tooltip>

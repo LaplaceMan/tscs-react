@@ -1,4 +1,4 @@
-import { Pagination, Select } from "antd";
+import { Pagination, Select, Spin } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 import { government_Illustration } from "../assets/index";
@@ -11,13 +11,18 @@ import { countryLanguageMap } from "../utils/constants";
 const { Option } = Select;
 const Government = (): React.ReactElement => {
   const { showUploadModal } = useContext(GlobalContext);
-  const { subtitles, querySubtitleData, dashboard, regiserLanguages } =
-    useContext(DataContext);
+  const {
+    subtitles,
+    querySubtitleData,
+    dashboard,
+    regiserLanguages,
+    isGetDataLoading,
+  } = useContext(DataContext);
   const [currentPage, setCurrentPage] = useState({ page: 1, language: "0" });
 
   useEffect(() => {
     querySubtitleData(DEFAULT_PAGE_SIZE, 0, "0");
-  });
+  }, []);
 
   const pageChangeHandle = (page: number, pageSize: number) => {
     const skip = page == 1 ? 0 : (page - 1) * pageSize;
@@ -31,17 +36,17 @@ const Government = (): React.ReactElement => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex flex-row w-full items-center md:justify-between sm:justify-center sm:-mr-10">
-        <div className="flex flex-col items-start md:w-[40rem] sm:w-[20rem] md:mr-14 min-w-[320px] sm:mr-[-14px]">
-          <div className="flex md:text-5xl font-bold sm:text-2xl">
+      <div className="flex flex-row w-full items-center md:justify-between justify-center -mr-10">
+        <div className="flex flex-col items-start md:w-[40rem] w-[20rem] md:mr-14 min-w-[320px] mr-[-14px]">
+          <div className="flex md:text-5xl font-bold text-2xl">
             Make favorite videos known to the world
           </div>
-          <div className="flex md:text-base my-5 w-5/6 font-medium sm:text-xs">
+          <div className="flex md:text-base my-5 w-5/6 font-medium text-xs">
             Not only &quot; Power Generation For Love &quot;, you will get
             rewards from Web3. Join this new and interesting community!
           </div>
           <div
-            className="flex md:px-12 py-2 text-white font-semibold md:text-lg  text-center rounded-full items-center justify-center bg-gradient-to-r from-purple-400 to-blue-400 mt-2 sm:text-base sm:px-10 cursor-pointer hover:brightness-110"
+            className="flex md:px-12 py-2 text-white font-semibold md:text-lg  text-center rounded-full items-center justify-center bg-gradient-to-r from-purple-400 to-blue-400 mt-2 text-base px-10 cursor-pointer hover:brightness-110"
             onClick={showUploadModal}
           >
             Upload <FiArrowUpRight className="ml-3" />
@@ -51,12 +56,19 @@ const Government = (): React.ReactElement => {
           <img src={government_Illustration} />
         </div>
       </div>
-      <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
-        {subtitles.map(
-          (item, index) => item.applyId != "0" && SubtitleCard(item, index)
-        )}
-        {SubtitleItems.map((item, index) => SubtitleCard(item, index))}
-      </div>
+      {isGetDataLoading ? (
+        <div className="flex w-full items-center justify-center h-32">
+          <Spin />
+        </div>
+      ) : (
+        <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
+          {subtitles.map(
+            (item, index) => item.applyId != "0" && SubtitleCard(item, index)
+          )}
+          {SubtitleItems.map((item, index) => SubtitleCard(item, index))}
+        </div>
+      )}
+
       <div className="flex my-5 items-center justify-center">
         <Pagination
           current={currentPage.page}

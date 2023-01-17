@@ -101,3 +101,7 @@ export const bignumberConvert = (
     return format;
   }
 };
+
+export const getGasPriceFixed = (gas: string): string => {
+  return Number(gas).toFixed(2).toString();
+};

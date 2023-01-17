@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DataContent,
   User,
@@ -23,22 +23,23 @@ import {
   QuerySubtitle,
   QuerySubtitleWithLanguage,
   QueryUser,
-  // QueryUserOwnApplication,
-  // QueryUserOwnSubtitle,
-  // QueryUserOwnAudit,
   QueryUserOwn,
   QueryLockedToken,
   QueryLanguages,
   QueryPlatforms,
 } from "../utils/graphql/graphqls";
+import { gql } from "@apollo/client";
+import { useAccount } from "wagmi";
+import { getNetwork } from "@wagmi/core";
 import { GRAPHQL_SUBGRAPH_GOERLI_ABI } from "../utils/constants";
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import { WalletContext } from "../context/WalletContext";
-const { ethereum } = window as any;
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+
 export const DataContext = React.createContext<DataContent>({} as any);
 
 export const DataProvider = ({ children }: any) => {
-  const { accountState } = useContext(WalletContext);
+  const { address, isConnected } = useAccount();
+  const { chain } = getNetwork();
+  const [isGetDataLoading, setIsGetDataLoading] = useState<boolean>(false);
   const [dashboard, setDashboard] = useState<Dashboard>(defaultDashboard);
   const [applications, setApplications] = useState<Application[]>([]);
   const [subtitles, setSubtitles] = useState<Subtitle[]>([]);
@@ -53,7 +54,20 @@ export const DataProvider = ({ children }: any) => {
     { id: string; name: string }[]
   >([]);
 
-  const queryHomeData = () => {
+  useEffect(() => {
+    queryRegiserLanugages();
+    queryRegiserPlatforms();
+    const timer1 = setInterval(() => {
+      queryRegiserLanugages();
+      queryRegiserPlatforms();
+    }, 600000);
+    return () => {
+      clearInterval(timer1);
+    };
+  }, []);
+
+  const queryHomeData = async () => {
+    setIsGetDataLoading(true);
     const day = parseInt(
       (new Date().valueOf() / 86400000).toString()
     ).toString();
@@ -65,7 +79,7 @@ export const DataProvider = ({ children }: any) => {
       .query({
         query: gql(QueryHome),
         variables: {
-          id: SUBTITLE_SYSTEM[ethereum.chainId],
+          id: SUBTITLE_SYSTEM[isConnected ? chain!.id : 5],
           first: 8,
           date: day,
         },
@@ -121,9 +135,11 @@ export const DataProvider = ({ children }: any) => {
           platformInc: dayData ? dayData.platformCount : "0",
           subtitleInc: dayData ? dayData.subtitleCount : "0",
         });
+        setIsGetDataLoading(false);
       })
       .catch((err) => {
         console.log("Error fetching data: ", err);
+        setIsGetDataLoading(false);
       });
   };
 
@@ -132,6 +148,7 @@ export const DataProvider = ({ children }: any) => {
     skip: number,
     language: string
   ) => {
+    setIsGetDataLoading(true);
     const client = new ApolloClient({
       uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
       cache: new InMemoryCache(),
@@ -169,13 +186,16 @@ export const DataProvider = ({ children }: any) => {
           });
         });
         setApplications(applicationArray);
+        setIsGetDataLoading(false);
       })
       .catch((err) => {
         console.log("Error fetching data: ", err);
+        setIsGetDataLoading(false);
       });
   };
 
   const querySubtitleData = (first: number, skip: number, language: string) => {
+    setIsGetDataLoading(true);
     const client = new ApolloClient({
       uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
       cache: new InMemoryCache(),
@@ -211,13 +231,16 @@ export const DataProvider = ({ children }: any) => {
           });
         });
         setSubtitles(subtitleArray);
+        setIsGetDataLoading(false);
       })
       .catch((err) => {
         console.log("Error fetching data: ", err);
+        setIsGetDataLoading(false);
       });
   };
 
   const queryUserData = (userId: string) => {
+    setIsGetDataLoading(true);
     const client = new ApolloClient({
       uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
       cache: new InMemoryCache(),
@@ -238,13 +261,16 @@ export const DataProvider = ({ children }: any) => {
           adopted: user.adoptedCount,
           join: user.time,
         });
+        setIsGetDataLoading(false);
       })
       .catch((err) => {
         console.log("Error fetching data: ", err);
+        setIsGetDataLoading(false);
       });
   };
 
   const queryUserOwnData = (address: string) => {
+    setIsGetDataLoading(true);
     const client = new ApolloClient({
       uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
       cache: new InMemoryCache(),
@@ -253,174 +279,70 @@ export const DataProvider = ({ children }: any) => {
       .query({
         query: gql(QueryUserOwn),
         variables: {
-          id: address,
+          id: address.toLocaleLowerCase(),
         },
       })
       .then((data) => {
-        const getApplications = data.data.user.applications;
-        const getSubtitles = data.data.user.subtitlesOwner;
-        const getAudits = data.data.user.audits;
+        const userData = data.data.user;
         const applicationArray = new Array<OwnApplication>();
         const subtitleArray = new Array<OwnSubtitle>();
         const auditArray = new Array<OwnAudit>();
-        getApplications.map((item: any) => {
-          applicationArray.push({
-            name: item.video.platform.name,
-            type: item.strategy.notes,
-            price: item.amount,
-            state: item.adopted ? item.adopted.id : "0",
-            source: item.source,
-            videoId: item.video.id,
-            applyId: item.id,
-            language: item.language.notes,
-            deadline: item.deadline,
+        userData.applications &&
+          userData.applications.map((item: any) => {
+            applicationArray.push({
+              name: item.video.platform.name,
+              type: item.strategy.notes,
+              price: item.amount,
+              state: item.adopted ? item.adopted.id : "0",
+              source: item.source,
+              videoId: item.video.id,
+              applyId: item.id,
+              language: item.language.notes,
+              deadline: item.deadline,
+            });
           });
-        });
-        getSubtitles.map((item: any) => {
-          subtitleArray.push({
-            subtitleId: item.id,
-            cid: item.cid,
-            support: item.supporterCount,
-            oppose: item.dissenterCount,
-            state: item.state,
-            applyId: item.application.id,
-            language: item.language.notes,
-            type: item.application.strategy.notes,
-            platform: item.application.video.platform.id,
+        userData.subtitlesOwner &&
+          userData.subtitlesOwner.map((item: any) => {
+            subtitleArray.push({
+              subtitleId: item.id,
+              cid: item.cid,
+              support: item.supporterCount,
+              oppose: item.dissenterCount,
+              state: item.state,
+              applyId: item.application.id,
+              language: item.language.notes,
+              type: item.application.strategy.notes,
+              platform: item.application.video.platform.id,
+            });
           });
-        });
-        getAudits.map((item: any) => {
-          auditArray.push({
-            cid: item.subtitle.cid,
-            state: item.subtitle.state,
-            applyId: item.subtitle.application.id,
-            language: item.subtitle.language.notes,
-            attitude: item.attitude,
-            subtitleId: item.subtitle.id,
-            type: item.subtitle.application.strategy.notes,
-            platform: item.subtitle.application.video.platform.id,
+        userData.audits &&
+          userData.audits.map((item: any) => {
+            auditArray.push({
+              cid: item.subtitle.cid,
+              state: item.subtitle.state,
+              applyId: item.subtitle.application.id,
+              language: item.subtitle.language.notes,
+              attitude: item.attitude,
+              subtitleId: item.subtitle.id,
+              type: item.subtitle.application.strategy.notes,
+              platform: item.subtitle.application.video.platform.id,
+            });
           });
-        });
         setUserOwnData({
           applications: applicationArray,
           subtitles: subtitleArray,
           audits: auditArray,
         });
+        setIsGetDataLoading(false);
       })
       .catch((err) => {
         console.log("Error fetching data: ", err);
+        setIsGetDataLoading(false);
       });
   };
 
-  // const queryUserOwnApplicationData = (user: string) => {
-  //   const client = new ApolloClient({
-  //     uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
-  //     cache: new InMemoryCache(),
-  //   });
-  //   user &&
-  //     client
-  //       .query({
-  //         query: gql(QueryUserOwnApplication),
-  //         variables: {
-  //           id: user,
-  //         },
-  //       })
-  //       .then((data) => {
-  //         const getApplications = data.data.user.applications;
-  //         const applicationArray = new Array<OwnApplication>();
-  //         getApplications.map((item: any) => {
-  //           applicationArray.push({
-  //             name: item.video.platform.name,
-  //             type: item.strategy.notes,
-  //             price: item.amount,
-  //             state: item.adopted ? item.adopted.id : "0",
-  //             source: item.source,
-  //             videoId: item.video.id,
-  //             applyId: item.id,
-  //             language: item.language.notes,
-  //             deadline: item.deadline,
-  //           });
-  //         });
-  //         setUserOwnData({ ...userOwnData, applications: applicationArray });
-  //       })
-  //       .catch((err) => {
-  //         console.log("Error fetching data: ", err);
-  //       });
-  // };
-
-  // const queryUserOwnSubtitleData = (user: string) => {
-  //   const client = new ApolloClient({
-  //     uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
-  //     cache: new InMemoryCache(),
-  //   });
-  //   user &&
-  //     client
-  //       .query({
-  //         query: gql(QueryUserOwnSubtitle),
-  //         variables: {
-  //           id: user,
-  //         },
-  //       })
-  //       .then((data) => {
-  //         const getSubtitles = data.data.user.subtitlesOwner;
-  //         const subtitleArray = new Array<OwnSubtitle>();
-  //         getSubtitles.map((item: any) => {
-  //           subtitleArray.push({
-  //             subtitleId: item.id,
-  //             cid: item.cid,
-  //             support: item.supporterCount,
-  //             oppose: item.dissenterCount,
-  //             state: item.state,
-  //             applyId: item.application.id,
-  //             language: item.language.notes,
-  //             type: item.application.strategy.notes,
-  //             platform: item.application.video.platform.id,
-  //           });
-  //         });
-
-  //         setUserOwnData({ ...userOwnData, subtitles: subtitleArray });
-  //       })
-  //       .catch((err) => {
-  //         console.log("Error fetching data: ", err);
-  //       });
-  // };
-
-  // const queryUserOwnAuditData = (user: string) => {
-  //   const client = new ApolloClient({
-  //     uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
-  //     cache: new InMemoryCache(),
-  //   });
-  //   user &&
-  //     client
-  //       .query({
-  //         query: gql(QueryUserOwnAudit),
-  //         variables: {
-  //           id: user,
-  //         },
-  //       })
-  //       .then((data) => {
-  //         const getAudits = data.data.user.audits;
-  //         const auditArray = new Array<OwnAudit>();
-  //         getAudits.map((item: any) => {
-  //           auditArray.push({
-  //             cid: item.subtitle.cid,
-  //             state: item.subtitle.state,
-  //             applyId: item.subtitle.application.id,
-  //             language: item.subtitle.language.notes,
-  //             attitude: item.attitude,
-  //             subtitleId: item.subtitle.id,
-  //             type: item.subtitle.application.strategy.notes,
-  //             platform: item.subtitle.application.video.platform.id,
-  //           });
-  //         });
-  //         setUserOwnData({ ...userOwnData, audits: auditArray });
-  //       })
-  //       .catch((err) => {
-  //         console.log("Error fetching data: ", err);
-  //       });
-  // };
-
   const queryUserLockedToken = (platform: string, day: number) => {
+    setIsGetDataLoading(true);
     const client = new ApolloClient({
       uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
       cache: new InMemoryCache(),
@@ -429,7 +351,12 @@ export const DataProvider = ({ children }: any) => {
       .query({
         query: gql(QueryLockedToken),
         variables: {
-          id: accountState.address + "-" + platform + "-" + day.toString(),
+          id:
+            address!.toLocaleLowerCase() +
+            "-" +
+            platform +
+            "-" +
+            day.toString(),
         },
       })
       .then((data) => {
@@ -437,9 +364,11 @@ export const DataProvider = ({ children }: any) => {
         if (locked) {
           setUserDayLocakedToken(locked);
         }
+        setIsGetDataLoading(false);
       })
       .catch((err) => {
         console.log("Error fetching data: ", err);
+        setIsGetDataLoading(false);
       });
   };
 
@@ -497,23 +426,6 @@ export const DataProvider = ({ children }: any) => {
       });
   };
 
-  useEffect(() => {
-    queryHomeData();
-    queryRegiserLanugages();
-    queryRegiserPlatforms();
-    const timer1 = setInterval(() => {
-      queryRegiserLanugages();
-      queryRegiserPlatforms();
-    }, 600000);
-    const timer2 = setInterval(() => {
-      queryHomeData();
-    }, 60000);
-    return () => {
-      clearInterval(timer1);
-      clearInterval(timer2);
-    };
-  }, []);
-
   return (
     <DataContext.Provider
       value={{
@@ -531,6 +443,7 @@ export const DataProvider = ({ children }: any) => {
         userDayLocakedToken,
         regiserLanguages,
         regiserPlatforms,
+        isGetDataLoading,
       }}
     >
       {children}

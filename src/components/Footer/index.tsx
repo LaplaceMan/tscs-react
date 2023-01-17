@@ -17,7 +17,7 @@ const iconItem = [
 
 const DefaultFooter = () => {
   return (
-    <div className="flex flex-col w-full md:px-[60px] sm:px-[20px]">
+    <div className="flex flex-col w-full md:px-[60px] px-[20px]">
       <div className="flex flex-row">
         {iconItem.map((item, index) =>
           footerLinkIcon(item.src, item.link, index)

@@ -135,7 +135,6 @@ export type GlobalContent = {
   isUploadModalOpen: boolean;
   isApplicationModalOpen: boolean;
   isAuditModalOpen: boolean;
-  isConnectWalletModalOpen: boolean;
   showUploadModal: () => void;
   hideUploadModal: () => void;
   showApplicationModal: () => void;
@@ -146,8 +145,6 @@ export type GlobalContent = {
   setToggleMenu: React.Dispatch<React.SetStateAction<boolean>>;
   scrollHeight: number;
   setLoadingState: (state: boolean) => void;
-  showConnectWalletModal: () => void;
-  hideConnectWalletModal: () => void;
   isTokenTransactionModalOpen: boolean;
   showTokenTransactionModal: () => void;
   hideTokenTransactionModal: () => void;
@@ -288,15 +285,13 @@ export type DataContent = {
   querySubtitleData: (first: number, skip: number, language: string) => void;
   defaultAuditSubtitleMaker: User;
   userOwnData: UserOwn;
-  // queryUserOwnApplicationData: (address: string) => void,
-  // queryUserOwnSubtitleData: (address: string) => void,
-  // queryUserOwnAuditData: (address: string) => void,
   queryUserOwnData: (address: string) => void;
   queryUserData: (address: string) => void;
   queryUserLockedToken: (platform: string, day: number) => void;
   userDayLocakedToken: string;
   regiserLanguages: { id: string; notes: string }[];
   regiserPlatforms: { id: string; name: string }[];
+  isGetDataLoading: boolean;
 };
 
 export type PersonalPageData = {

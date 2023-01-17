@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Select, Form, Input, InputNumber, DatePicker, Spin } from "antd";
 import { MdOutlineClose } from "react-icons/md";
 import { GiToken } from "react-icons/gi";
@@ -7,21 +7,39 @@ import { SiEthereum } from "react-icons/si";
 import { ModelDataMini } from "../index";
 import { useContext } from "react";
 import { ApplicationContext } from "../../context/ApplicationContext";
-import { WalletContext } from "../../context/WalletContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { DataContext } from "../../context/DataContext";
 import { countryLanguageMap } from "../../utils/constants";
 import { SUBTITLE_SYSTEM } from "../../utils/contracts";
-const { ethereum } = window as any;
+import { fetchFeeData } from "@wagmi/core";
+import { useAccount } from "wagmi";
+import { getNetwork } from "@wagmi/core";
+import { getGasPriceFixed } from "../../utils/tools";
+
 const { Option } = Select;
 
 const SubmitApplication = () => {
   const [form] = Form.useForm();
+  const { isConnected } = useAccount();
+  const { chain } = getNetwork();
+  const [gasPrice, setGasPrice] = useState("");
   const { submitApplication, userDID } = useContext(ApplicationContext);
   const { hideApplicationModal, isLoading } = useContext(GlobalContext);
-  const { gasPrice } = useContext(WalletContext);
   const { regiserLanguages, regiserPlatforms } = useContext(DataContext);
 
+  useEffect(() => {
+    try {
+      fetchFeeData({ formatUnits: "gwei" }).then((feeData) => {
+        setGasPrice(
+          feeData.formatted.maxFeePerGas
+            ? getGasPriceFixed(feeData.formatted.maxFeePerGas)
+            : "0.00"
+        );
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   const onFinish = () => {
     const values = form.getFieldsValue();
     const date = values.deadline.valueOf();
@@ -41,7 +59,7 @@ const SubmitApplication = () => {
           initialValues={{
             strategy: 0,
             language: "1",
-            platform: String(SUBTITLE_SYSTEM[ethereum.chainId]).toLowerCase(),
+            platform: String(SUBTITLE_SYSTEM[5]).toLowerCase(),
           }}
         >
           <div className="flex items-center justify-between mb-3">

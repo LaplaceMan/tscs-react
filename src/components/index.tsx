@@ -1,9 +1,6 @@
 export { default as HeaderTop } from "./Header/index";
 export { default as ApplyCard } from "./ApplyCard/index";
-export { default as UserLogIn } from "./UserLogIn/index";
-export { default as UserLogOut } from "./UserLogOut/index";
 export { default as SubtitleCard } from "./SubtitleCard/index";
-export { default as ConnectWallet } from "./ConnectWallet/index";
 export { default as DashboardMini } from "./DashboardMini/index";
 export { default as SubmitApplication } from "./SubmitApplicationModal/index";
 export { default as ModelDataMini } from "./ModelDataMini/index";

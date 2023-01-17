@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ApplyCard, DashboardMini, SubtitleCard } from "../components";
 import { DashboardMiniItem } from "../types/baseTypes";
 import {
@@ -9,15 +9,28 @@ import {
 } from "react-icons/md";
 import { ApplicationItems, SubtitleItems } from "../utils/testData";
 import { Link } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { DataContext } from "../context/DataContext";
+import { Spin } from "antd";
 
 const Home = (): React.ReactElement => {
-  const { dashboard, applications, subtitles, queryHomeData } =
-    useContext(DataContext);
+  const {
+    dashboard,
+    applications,
+    subtitles,
+    queryHomeData,
+    isGetDataLoading,
+  } = useContext(DataContext);
 
-  useEffect(() => queryHomeData());
-
+  useEffect(() => {
+    queryHomeData();
+    const timer = setInterval(() => {
+      queryHomeData();
+    }, 60000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
   const DashboardMiniItems: DashboardMiniItem[] = [
     {
       label: "All Applications",
@@ -54,7 +67,7 @@ const Home = (): React.ReactElement => {
   ];
 
   return (
-    <div className="flex flex-col items-center mt-10">
+    <div className="flex flex-col items-center mt-12">
       <div className="flex flex-col items-center">
         <div className="text-4xl md:text-5xl font-bold text-center">
           Culture Without Boundaries
@@ -64,7 +77,7 @@ const Home = (): React.ReactElement => {
           interesting ecosystem.
         </div>
       </div>
-      <div className="flex w-full flex-wrap items-center md:justify-between sm:justify-center mt-10">
+      <div className="flex w-full flex-wrap items-center md:justify-between justify-center mt-10">
         {DashboardMiniItems.map((item, index) => DashboardMini(item, index))}
       </div>
       <div className="flex flex-col mt-10">
@@ -74,23 +87,35 @@ const Home = (): React.ReactElement => {
             Applications
           </div>
         </Link>
-        <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
-          {applications.map(
-            (item, index) => item.applyId != "" && ApplyCard(item, index)
-          )}
-          {ApplicationItems.map((item, index) => ApplyCard(item, index))}
-        </div>
+        {isGetDataLoading ? (
+          <div className="flex w-full items-center justify-center h-32">
+            <Spin />
+          </div>
+        ) : (
+          <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
+            {applications.map(
+              (item, index) => item.applyId != "" && ApplyCard(item, index)
+            )}
+            {ApplicationItems.map((item, index) => ApplyCard(item, index))}
+          </div>
+        )}
         <Link to="./Government">
           <div className="flex items-center justify-center mt-6 mb-2 text-lg font-semibold text-black hover:text-[#696969] cursor-pointer">
             <MdOutlineSubtitles className="mt-0.5 mr-3" /> Subtitles
           </div>
         </Link>
-        <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
-          {subtitles.map(
-            (item, index) => item.applyId != "" && SubtitleCard(item, index)
-          )}
-          {SubtitleItems.map((item, index) => SubtitleCard(item, index))}
-        </div>
+        {isGetDataLoading ? (
+          <div className="flex w-full items-center justify-center h-32">
+            <Spin />
+          </div>
+        ) : (
+          <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
+            {subtitles.map(
+              (item, index) => item.applyId != "" && SubtitleCard(item, index)
+            )}
+            {SubtitleItems.map((item, index) => SubtitleCard(item, index))}
+          </div>
+        )}
       </div>
     </div>
   );

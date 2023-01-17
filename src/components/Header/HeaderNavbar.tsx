@@ -2,13 +2,14 @@ import React from "react";
 import { NavbarItem } from "../../types/baseTypes";
 import { Link } from "react-router-dom";
 import { ReactElement } from "react";
-import HeaderLogItems from "./HeaderLog";
 import { useContext } from "react";
 import { IoMenuOutline, IoCloseOutline } from "react-icons/io5";
+import { BiUserCircle } from "react-icons/bi";
 import { BsCollection, BsGem, BsFileText, BsPerson } from "react-icons/bs";
 import { GlobalContext } from "../../context/GlobalContext";
-import { WalletContext } from "../../context/WalletContext";
-
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount, useEnsAvatar } from "wagmi";
+import { RANDOM_AVATAR_API } from "../../utils/constants";
 const NavbarItems = [
   {
     title: "Application",
@@ -20,7 +21,8 @@ const NavbarItems = [
 
 const HeaderNavbar = () => {
   const { toggleMenu, setToggleMenu } = useContext(GlobalContext);
-  const { accountState } = useContext(WalletContext);
+  const { address, isConnected } = useAccount();
+  const { data: ensAvatar } = useEnsAvatar({ address });
   const HeaderNavbarItems = (
     item: NavbarItem,
     key: React.Key
@@ -41,7 +43,11 @@ const HeaderNavbar = () => {
 
   const DocumentationItem = (): ReactElement => {
     return (
-      <a href="http://www.baidu.com/" target="_blank" rel="noreferrer noopener">
+      <a
+        href="https://murmes.gitbook.io/murmes-protocol/"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
         <li
           className={`mx-4 cursor-pointer text-lg font-medium flex items-center justify-center ${
             toggleMenu ? "my-3" : ""
@@ -58,7 +64,7 @@ const HeaderNavbar = () => {
 
   const PersonalItem = (): ReactElement => {
     return (
-      <Link to={`/Personal/${accountState.address}`}>
+      <Link to={`/Personal/${address}`}>
         <li className="mx-4 cursor-pointer text-lg font-medium flex items-center justify-center my-3">
           <div className="mr-5">
             <BsPerson fontSize="1rem" />
@@ -69,12 +75,30 @@ const HeaderNavbar = () => {
     );
   };
 
+  const AvatarItem = () => {
+    return (
+      <Link to={`/Personal/${address}`}>
+        <li className="mx-4 cursor-pointer log">
+          {isConnected ? (
+            <img
+              src={ensAvatar ? ensAvatar : RANDOM_AVATAR_API}
+              className="flex rounded-full w-[2rem]"
+              alt="ENS Avatar"
+            />
+          ) : (
+            <BiUserCircle />
+          )}
+        </li>
+      </Link>
+    );
+  };
   return (
     <div className="flex flex-row">
       <ul className="md:flex hidden list-none flex-row justify-between items-center flex-initial">
         {NavbarItems.map((item, index) => HeaderNavbarItems(item, index))}
         <DocumentationItem />
-        <HeaderLogItems />
+        <ConnectButton accountStatus="address" />
+        {isConnected && <AvatarItem />}
       </ul>
       <div className="flex relative">
         {!toggleMenu && (

@@ -2,9 +2,10 @@ import React from "react";
 import { useContext } from "react";
 import { Tooltip } from "antd";
 import { shortenAddress, bignumberConvert } from "../../utils/tools";
-import { DECIMALS_18 } from "../../utils/constants";
+import { DECIMALS_18, RANDOM_AVATAR_API } from "../../utils/constants";
 import { ApplicationContext } from "../../context/ApplicationContext";
-import { WalletContext } from "../../context/WalletContext";
+import { useAccount } from "wagmi";
+import { getNetwork } from "@wagmi/core";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ZIMU_TOKEN } from "../../utils/contracts";
 
@@ -18,7 +19,8 @@ const tokenCardItem = (label: string, info: string) => {
 };
 
 const DepositAssetCard = () => {
-  const { accountState } = useContext(WalletContext);
+  const { isConnected } = useAccount();
+  const { chain } = getNetwork();
   const { showDespoitAssetModal } = useContext(GlobalContext);
   const { updateDefaultWithdrawOrDespoit, personalDID } =
     useContext(ApplicationContext);
@@ -32,15 +34,15 @@ const DepositAssetCard = () => {
     <div className="flex flex-col p-3 items-center justify-center rounded-md shadow-md w-[300px] h-[180px] own-card mt-5 mx-5">
       <div className="flex flex-row items-center justify-center">
         <img
-          src="http://api.btstu.cn/sjtx/api.php?lx=c1&format=images"
+          src={RANDOM_AVATAR_API}
           className="flex rounded-full w-[50px] shadow"
         />
         <div className="flex flex-col items-start ml-3">
           <div className="text-lg font-medium text-black">Deposit-Zimu</div>
-          <Tooltip title={ZIMU_TOKEN[accountState.network]}>
-            <div className="flex test-sm bg-gray-50 px-2 rounded-md text-[#696969]">
-              {ZIMU_TOKEN[accountState.network]
-                ? shortenAddress(ZIMU_TOKEN[accountState.network])
+          <Tooltip title={ZIMU_TOKEN[isConnected ? chain!.id : 5]}>
+            <div className="flex test-sm rounded-md text-[#696969]">
+              {ZIMU_TOKEN[isConnected ? chain!.id : 5]
+                ? shortenAddress(ZIMU_TOKEN[isConnected ? chain!.id : 5])
                 : ""}
             </div>
           </Tooltip>

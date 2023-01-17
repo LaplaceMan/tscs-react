@@ -67,6 +67,10 @@ export const ApplicationProvider = ({ children }: any) => {
   const [defaultWithdrawOrDespoitData, setDefaultWithdrawOrDespoitData] =
     useState({ platform: "", manage: "" });
 
+  useEffect(() => {
+    getUserDID();
+  }, []);
+
   const updateDefaultAuditSubtitleData = (subtitle: Subtitle) => {
     setDefaultAuditSubtitleData(subtitle);
   };
@@ -317,10 +321,6 @@ export const ApplicationProvider = ({ children }: any) => {
     message.success("Success: " + transaction.hash);
     setLoadingState(false);
   };
-
-  useEffect(() => {
-    getUserDID();
-  }, []);
 
   return (
     <ApplicationContext.Provider

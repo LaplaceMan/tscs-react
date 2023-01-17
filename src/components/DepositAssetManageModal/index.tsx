@@ -1,14 +1,13 @@
 import { Form, Spin, InputNumber, Input } from "antd";
 import { GlobalContext } from "../../context/GlobalContext";
-import { WalletContext } from "../../context/WalletContext";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import React, { useContext, useEffect } from "react";
 import { MdOutlineClose } from "react-icons/md";
-
+import { useAccount } from "wagmi";
 const DepositAssetManageModal = () => {
   const [form] = Form.useForm();
+  const { address, isConnected } = useAccount();
   const { isLoading, hideDespoitAssetModal } = useContext(GlobalContext);
-  const { accountState } = useContext(WalletContext);
   const { depoitZimuManage } = useContext(ApplicationContext);
 
   const onFinish = () => {
@@ -17,8 +16,8 @@ const DepositAssetManageModal = () => {
   };
 
   useEffect(() => {
-    if (accountState.address != "") {
-      form.setFieldsValue({ address: accountState.address });
+    if (isConnected) {
+      form.setFieldsValue({ address: address });
     } else {
       form.setFieldsValue(null);
     }
@@ -49,7 +48,7 @@ const DepositAssetManageModal = () => {
             <Input
               placeholder="Update user address of pledged Zimu tokens."
               style={{ width: "100%" }}
-              disabled={accountState.address != "" ? true : false}
+              disabled={isConnected ? true : false}
             />
           </Form.Item>
           <Form.Item name="amount" label="Quantity to be changed" required>
