@@ -13,9 +13,9 @@ import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { wagmiClient, chains } from "./client/wagmi";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <GlobalProvider>
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
+  <WagmiConfig client={wagmiClient}>
+    <RainbowKitProvider chains={chains}>
+      <GlobalProvider>
         <DataProvider>
           <ApplicationProvider>
             <BrowserRouter>
@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             </BrowserRouter>
           </ApplicationProvider>
         </DataProvider>
-      </RainbowKitProvider>
-    </WagmiConfig>
-  </GlobalProvider>
+      </GlobalProvider>
+    </RainbowKitProvider>
+  </WagmiConfig>
 );
