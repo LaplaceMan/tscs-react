@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Tabs, Empty, Spin } from "antd";
 import { SiEthereum } from "react-icons/si";
 import { DataContext } from "../context/DataContext";
 import { ApplicationContext } from "../context/ApplicationContext";
+import { GlobalContext } from "../context/GlobalContext";
 import { shortenAddress } from "../utils/tools";
-import { RANDOM_AVATAR_API } from "../utils/constants";
+import { RANDOM_AVATAR_API, SUPPORT_NETWORK } from "../utils/constants";
 import {
   OwnAssetCard,
   OwnApplicationCard,
@@ -13,8 +14,12 @@ import {
   DepositAssetCard,
 } from "../components";
 import { ZIMU_TOKEN, VIDEO_TOKEN } from "../utils/contracts";
-import { useAccount, useEnsName, useEnsAvatar } from "wagmi";
-import { getNetwork } from "@wagmi/core";
+import {
+  getNetwork,
+  getProvider,
+  fetchEnsAvatar,
+  fetchEnsName,
+} from "@wagmi/core";
 
 const NoItems = () => {
   return (
@@ -31,25 +36,33 @@ const NoItems = () => {
 };
 
 const Personal = (): React.ReactElement => {
-  const { isConnected } = useAccount();
-  const { chain } = getNetwork();
+  const user = window.location.pathname.slice(10);
   const { userOwnData, queryUserOwnData, isGetDataLoading } =
     useContext(DataContext);
   const { personalDID, getPersonalPageData } = useContext(ApplicationContext);
-  const user = window.location.pathname.slice(10);
-  const ensAvatar = useEnsAvatar({
-    address: `0x${user.slice(2)}`,
-  });
-  const ensName = useEnsName({
-    address: `0x${user.slice(2)}`,
-  });
+  const { chainId } = useContext(GlobalContext);
+  const [avatarAndName, setAvatarAndName] = useState({ avatar: "", name: "" });
+  const { chain } = getNetwork();
+  const provider = getProvider();
 
   useEffect(() => {
+    if (provider) {
+      fetchEnsAvatar({ address: user as `0x${string}` }).then((ens) => {
+        if (ens) {
+          setAvatarAndName({ ...avatarAndName, avatar: ens });
+        }
+      });
+      fetchEnsName({ address: user as `0x${string}` }).then((ens) => {
+        if (ens) {
+          setAvatarAndName({ ...avatarAndName, name: ens });
+        }
+      });
+    }
     queryUserOwnData(user);
     getPersonalPageData(user);
     const timer = setInterval(() => queryUserOwnData(user), 600000);
     return () => clearInterval(timer);
-  }, []);
+  }, [chainId]);
 
   const Assets = () => {
     return (
@@ -60,7 +73,10 @@ const Personal = (): React.ReactElement => {
           balance: personalDID.zimu,
           type: "ERC-20",
           issuser: "Murmes",
-          address: ZIMU_TOKEN[isConnected ? chain!.id : 5],
+          address:
+            chain && SUPPORT_NETWORK.includes(chain.id)
+              ? ZIMU_TOKEN[chain.id]
+              : "",
           symbol: "Zimu",
           tokenId: "0",
           decimals: 18,
@@ -70,7 +86,10 @@ const Personal = (): React.ReactElement => {
           balance: personalDID.vt0,
           type: "ERC-1155",
           issuser: "Murmes",
-          address: VIDEO_TOKEN[isConnected ? chain!.id : 5],
+          address:
+            chain && SUPPORT_NETWORK.includes(chain.id)
+              ? VIDEO_TOKEN[chain.id]
+              : "",
           symbol: "VT",
           tokenId: "0",
           decimals: 6,
@@ -188,8 +207,8 @@ const Personal = (): React.ReactElement => {
           <img
             className="shrink-0 w-32 h-32 md:w-36 md:h-36 rounded-xl shadow"
             src={
-              ensAvatar.isLoading && !ensAvatar.isError && ensAvatar.data
-                ? ensAvatar.data
+              avatarAndName.avatar != ""
+                ? avatarAndName.avatar
                 : RANDOM_AVATAR_API
             }
           />
@@ -197,9 +216,7 @@ const Personal = (): React.ReactElement => {
       </div>
       <div className="flex flex-col items-center mt-11 mb-3 md:mt-10">
         <div className="text-3xl font-bold">
-          {ensName.isLoading && !ensName.isError && ensName.data
-            ? ensName.data
-            : "ENS"}
+          {avatarAndName.name != "" ? avatarAndName.name : "ENS"}
         </div>
         <div className="flex text-base font-medium text-[#696969] items-center">
           <SiEthereum className="mr-1 mt-0.5" />

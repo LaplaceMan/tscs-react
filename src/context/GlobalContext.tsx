@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { GlobalContent } from "../types/baseTypes";
 import { getScrollTop } from "../utils/tools";
-export const GlobalContext = React.createContext<GlobalContent>({} as any);
+import { watchNetwork } from "@wagmi/core";
+export const GlobalContext = React.createContext<GlobalContent>(
+  {} as GlobalContent
+);
 
 export const GlobalProvider = ({ children }: any) => {
+  const [chainId, setChainId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isUploadModalOpen, setUploadIsModalOpen] = useState(false);
   const [isApplicationModalOpen, setApplicationIsModalOpen] = useState(false);
@@ -19,12 +23,17 @@ export const GlobalProvider = ({ children }: any) => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [scrollHeight, setScrollHeight] = useState(0);
 
+  const unwatch = watchNetwork((network) => {
+    network.chain && setChainId(network.chain.id);
+  });
+
   useEffect(() => {
     window.addEventListener("scroll", () => {
       const height: number = getScrollTop();
       setScrollHeight(height);
     });
-  }, []);
+    unwatch;
+  }, [unwatch]);
 
   const showDespoitAssetModal = () => {
     setIsDespoitAssetModalOpen(true);
@@ -89,6 +98,7 @@ export const GlobalProvider = ({ children }: any) => {
   return (
     <GlobalContext.Provider
       value={{
+        chainId,
         toggleMenu,
         setToggleMenu,
         scrollHeight,

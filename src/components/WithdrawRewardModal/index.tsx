@@ -7,6 +7,7 @@ import { GlobalContext } from "../../context/GlobalContext";
 import { DataContext } from "../../context/DataContext";
 import { ZERO_ADDRESS } from "../../utils/constants";
 import { timestampToDay } from "../../utils/tools";
+import { RealWithdrawRewardTransaction } from "../../types/formTypes";
 
 const { Option } = Select;
 
@@ -21,7 +22,7 @@ const WithdrawReward = () => {
     const values = form.getFieldsValue();
     if (values.day) {
       values.day = timestampToDay(values.day.valueOf());
-      withdrawReward(values);
+      withdrawReward(values as RealWithdrawRewardTransaction);
     }
   };
 

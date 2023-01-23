@@ -1,10 +1,13 @@
-import { Select, Form, InputNumber, Spin, DatePicker } from "antd";
+import { Select, Form, Input, InputNumber, Spin, DatePicker } from "antd";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import React, { useContext, useEffect } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import { ModelDataMini } from "../index";
 import { timestampToDate } from "../../utils/tools";
+import { BASE_RATE } from "../../utils/constants";
+import { ethers } from "ethers";
+import { RealUpdateApplictaionTransaction } from "../../types/formTypes";
 
 const { Option } = Select;
 const UpdateApplication = () => {
@@ -15,7 +18,9 @@ const UpdateApplication = () => {
 
   const onFinish = () => {
     const values = form.getFieldsValue();
-    updateApplication(values);
+    const date = values.deadline.valueOf();
+    values.deadline = parseInt((date / 1000).toString());
+    updateApplication(values as RealUpdateApplictaionTransaction);
   };
 
   useEffect(() => {
@@ -57,7 +62,15 @@ const UpdateApplication = () => {
               {ModelDataMini(
                 "Old Amount",
                 null,
-                defaultUpdateApplicationData.oldAmount
+                defaultUpdateApplicationData.payType == "OT0"
+                  ? "$ " +
+                      ethers.utils.formatUnits(
+                        defaultUpdateApplicationData.oldAmount,
+                        18
+                      )
+                  : (parseInt(defaultUpdateApplicationData.oldAmount) * 100) /
+                      BASE_RATE +
+                      " %"
               )}
               {ModelDataMini(
                 "Old deadline",
@@ -74,7 +87,7 @@ const UpdateApplication = () => {
             tooltip="Each application has a unique ID obtained according to the order."
             required
           >
-            <InputNumber
+            <Input
               placeholder="ID of the application to be updated."
               min={1}
               style={{ width: "100%" }}
@@ -91,7 +104,7 @@ const UpdateApplication = () => {
           >
             <InputNumber
               placeholder="Payment amount or proportion."
-              min={1}
+              min={0}
               style={{ width: "100%" }}
             />
           </Form.Item>

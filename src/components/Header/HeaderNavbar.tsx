@@ -1,8 +1,6 @@
-import React from "react";
 import { NavbarItem } from "../../types/baseTypes";
 import { Link } from "react-router-dom";
-import { ReactElement } from "react";
-import { useContext } from "react";
+import React, { ReactElement, useContext } from "react";
 import { IoMenuOutline, IoCloseOutline } from "react-icons/io5";
 import { BiUserCircle } from "react-icons/bi";
 import { BsCollection, BsGem, BsFileText, BsPerson } from "react-icons/bs";

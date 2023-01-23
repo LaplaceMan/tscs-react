@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { OwnToken } from "../../types/baseTypes";
 import { Tooltip } from "antd";
 import { shortenAddress, bignumberConvert } from "../../utils/tools";
@@ -10,7 +10,7 @@ import {
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { useAccount } from "wagmi";
-import { useContext } from "react";
+
 const tokenCardItem = (label: string, info: string) => {
   return (
     <div className="flex flex-col items-center">
@@ -23,7 +23,7 @@ const tokenCardItem = (label: string, info: string) => {
 const TokenCard = (token: OwnToken) => {
   const { updateDefaultTokenTransaction } = useContext(ApplicationContext);
   const { showTokenTransactionModal } = useContext(GlobalContext);
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
 
   const tokenTransactionHandle = (
     name: string,
@@ -34,6 +34,7 @@ const TokenCard = (token: OwnToken) => {
     tokenId: string,
     operation: string
   ) => {
+    const user = window.location.pathname.slice(10);
     updateDefaultTokenTransaction({
       name: name,
       symbol: symbol,
@@ -41,7 +42,7 @@ const TokenCard = (token: OwnToken) => {
       type: type,
       address: address_,
       tokenId: tokenId,
-      from: address!,
+      from: isConnected ? address! : user,
       amount: "",
       operation: operation,
     });

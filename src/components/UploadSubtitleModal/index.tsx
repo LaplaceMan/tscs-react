@@ -1,4 +1,4 @@
-import { Select, Form, Input, InputNumber, Spin, Drawer } from "antd";
+import { Select, Form, Input, Spin, Drawer } from "antd";
 import { GiToken } from "react-icons/gi";
 import { AiFillDollarCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
@@ -69,7 +69,7 @@ const UploadSubtitle = (): React.ReactElement => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [defaultUploadSubtitleData, form]);
 
   return (
     <Spin spinning={isLoading} size="large">
@@ -107,7 +107,7 @@ const UploadSubtitle = (): React.ReactElement => {
             tooltip="Each application has a unique ID obtained according to the order."
             required
           >
-            <InputNumber
+            <Input
               placeholder="Please ensure that the subtitle match the application."
               min={1}
               style={{ width: "100%" }}
@@ -141,13 +141,14 @@ const UploadSubtitle = (): React.ReactElement => {
                   : false
               }
             >
-              {regiserLanguages.map((item, index) => (
-                <Option value={item.id} key={index}>
-                  {countryLanguageMap[item.notes]
-                    ? countryLanguageMap[item.notes]
-                    : item.notes}
-                </Option>
-              ))}
+              {regiserLanguages &&
+                regiserLanguages.map((item, index) => (
+                  <Option value={item.id} key={index}>
+                    {countryLanguageMap[item.notes]
+                      ? countryLanguageMap[item.notes]
+                      : item.notes}
+                  </Option>
+                ))}
             </Select>
           </Form.Item>
           <Form.Item

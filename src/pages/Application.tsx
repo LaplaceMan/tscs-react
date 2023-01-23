@@ -6,8 +6,8 @@ import { ApplicationItems } from "../utils/testData";
 import { ApplyCard } from "../components";
 import { GlobalContext } from "../context/GlobalContext";
 import { DataContext } from "../context/DataContext";
-import { DEFAULT_PAGE_SIZE } from "../utils/constants";
-import { countryLanguageMap } from "../utils/constants";
+import { DEFAULT_PAGE_SIZE, countryLanguageMap } from "../utils/constants";
+
 const { Option } = Select;
 const ApplicationPage = (): React.ReactElement => {
   const {
@@ -17,12 +17,12 @@ const ApplicationPage = (): React.ReactElement => {
     regiserLanguages,
     isGetDataLoading,
   } = useContext(DataContext);
-  const { showApplicationModal } = useContext(GlobalContext);
+  const { showApplicationModal, chainId } = useContext(GlobalContext);
   const [currentPage, setCurrentPage] = useState({ page: 1, language: "0" });
 
   useEffect(() => {
     queryApplicationData(DEFAULT_PAGE_SIZE, 0, "0");
-  }, []);
+  }, [chainId]);
 
   const pageChangeHandle = (page: number, pageSize: number) => {
     const skip = page == 1 ? 0 : (page - 1) * pageSize;
@@ -62,9 +62,10 @@ const ApplicationPage = (): React.ReactElement => {
         </div>
       ) : (
         <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
-          {applications.map(
-            (item, index) => item.applyId != "" && ApplyCard(item, index)
-          )}
+          {applications &&
+            applications.map(
+              (item, index) => item.applyId != "" && ApplyCard(item, index)
+            )}
           {ApplicationItems.map((item, index) => ApplyCard(item, index))}
         </div>
       )}
@@ -73,7 +74,7 @@ const ApplicationPage = (): React.ReactElement => {
         <Pagination
           current={currentPage.page}
           defaultPageSize={DEFAULT_PAGE_SIZE}
-          total={Number(dashboard.applicationCount)}
+          total={Number(dashboard && dashboard.applicationCount)}
           responsive={true}
           onChange={(page, pageSize) => pageChangeHandle(page, pageSize)}
         />

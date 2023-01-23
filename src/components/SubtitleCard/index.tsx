@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { MiniShowData0Package, MiniShowData1Package } from "./MiniShowData";
 import { Progress, Tooltip } from "antd";
-import { useContext } from "react";
 import { CircleFlag } from "react-circle-flags";
 import { Subtitle } from "../../types/baseTypes";
-import { TimeRemainPercentage } from "../../utils/tools";
+import { TimeRemainPercentage, shortenAddress } from "../../utils/tools";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { DataContext } from "../../context/DataContext";
 import { GlobalContext } from "../../context/GlobalContext";
-import { shortenAddress } from "../../utils/tools";
 
 const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
   const { updateDefaultAuditSubtitleData } = useContext(ApplicationContext);

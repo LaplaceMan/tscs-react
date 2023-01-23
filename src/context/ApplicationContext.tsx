@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   ApplicationContent,
   Subtitle,
@@ -14,9 +14,11 @@ import {
   defaultTokenTransaction,
   defaultUpdateApplication,
   UpdateApplication,
+  RealUpdateApplictaionTransaction,
+  RealWithdrawRewardTransaction,
+  RealTokenTransaction,
 } from "../types/formTypes";
 import { ethers } from "ethers";
-import BigNumber from "bignumber.js";
 import {
   SUBTITLE_SYSTEM,
   SUBTITLE_SYSTEM_ABI,
@@ -31,26 +33,24 @@ import {
 } from "../utils/contracts";
 import { GlobalContext } from "./GlobalContext";
 import { DataContext } from "./DataContext";
-import { DECIMALS_18, DECIMALS_6 } from "../utils/constants";
+import { SUPPORT_NETWORK } from "../utils/constants";
 import { bignumberConvert, timestamp } from "../utils/tools";
 import { message } from "antd";
-const { ethereum } = window as any;
-
-const getContract = (address: string, abi: any): ethers.Contract => {
-  const provider = new ethers.providers.Web3Provider(ethereum);
-  const signer = provider.getSigner();
-  const contract = new ethers.Contract(address, abi, signer);
-  return contract;
-};
+import {
+  getNetwork,
+  readContract,
+  getProvider,
+  prepareWriteContract,
+  writeContract,
+} from "@wagmi/core";
 
 export const ApplicationContext = React.createContext<ApplicationContent>(
-  {} as any
+  {} as ApplicationContent
 );
 
 export const ApplicationProvider = ({ children }: any) => {
   const { setLoadingState } = useContext(GlobalContext);
   const { regiserLanguages } = useContext(DataContext);
-  const [userDID, setUserDID] = useState({ reputation: "0", deposit: "0" });
   const [personalDID, setPersonalDID] = useState<PersonalPageData>(
     defaultPersonalPageData
   );
@@ -59,7 +59,7 @@ export const ApplicationProvider = ({ children }: any) => {
     language: "0",
   });
   const [defaultAuditSubtitleData, setDefaultAuditSubtitleData] =
-    useState(defaultSubtitle);
+    useState<Subtitle>(defaultSubtitle);
   const [defaultTokenTransactionData, setDefaultTokenTransactionData] =
     useState<TokenTransaction>(defaultTokenTransaction);
   const [defaultUpdateApplicationData, setDefaultUpdateApplication] =
@@ -67,9 +67,8 @@ export const ApplicationProvider = ({ children }: any) => {
   const [defaultWithdrawOrDespoitData, setDefaultWithdrawOrDespoitData] =
     useState({ platform: "", manage: "" });
 
-  useEffect(() => {
-    getUserDID();
-  }, []);
+  const { chain } = getNetwork();
+  const provider = getProvider();
 
   const updateDefaultAuditSubtitleData = (subtitle: Subtitle) => {
     setDefaultAuditSubtitleData(subtitle);
@@ -103,229 +102,345 @@ export const ApplicationProvider = ({ children }: any) => {
     setDefaultUpdateApplication(update);
   };
 
-  const getUserDID = async () => {
-    if (!ethereum) return message.warning("Please install wallet.");
-    const networkId = ethereum.chainId;
-    const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    const accounts = await ethereum.request({
-      method: "eth_requestAccounts",
-    });
-    const address = accounts[0];
-    if (address) {
-      const result = await tscs.getUserBaseInfo(address);
-      setUserDID({
-        reputation: bignumberConvert(result[0], "10", 1),
-        deposit: bignumberConvert(result[1], DECIMALS_18, 2),
-      });
-    }
-  };
-
   const getPersonalPageData = async (address: string) => {
-    if (!ethereum) return message.warning("Please install wallet.");
-    const networkId = ethereum.chainId;
-    const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    const zimu = getContract(ZIMU_TOKEN[networkId], ZIMU_TOKEN_ABI);
-    const vt = getContract(VIDEO_TOKEN[networkId], ERC1155_ABI);
-    const access = getContract(ACCESS_STRATEGY[networkId], ACCESS_ABI);
-    const base = await tscs.getUserBaseInfo(address);
-    const reputation = bignumberConvert(base[0], "10", 1);
-    const zimuBalance = await zimu.balanceOf(address);
-    const vtBalance = await vt.balanceOf(address, 0);
-    const needed = await access.deposit(base[0]);
-    setPersonalDID({
-      reputation: reputation,
-      despoit: base[1],
-      zimu: zimuBalance,
-      vt0: vtBalance,
-      needed: needed,
-    });
+    if (provider) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+        const userBaseData = (await readContract({
+          address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+          abi: SUBTITLE_SYSTEM_ABI,
+          functionName: "getUserBaseInfo",
+          args: [address],
+        })) as Array<ethers.BigNumber>;
+        const zimuBalance = (await readContract({
+          address: ZIMU_TOKEN[chain.id] as `0x${string}`,
+          abi: ZIMU_TOKEN_ABI,
+          functionName: "balanceOf",
+          args: [address],
+        })) as ethers.BigNumber;
+        const vtBalance = (await readContract({
+          address: VIDEO_TOKEN[chain.id] as `0x${string}`,
+          abi: ERC1155_ABI,
+          functionName: "balanceOf",
+          args: [address, 0],
+        })) as ethers.BigNumber;
+        const neededDepositZimu = (await readContract({
+          address: ACCESS_STRATEGY[chain.id] as `0x${string}`,
+          abi: ACCESS_ABI,
+          functionName: "deposit",
+          args: [userBaseData[0]],
+        })) as ethers.BigNumber;
+        const reputation = bignumberConvert(userBaseData[0], "10", 1);
+        setPersonalDID({
+          reputation: reputation,
+          despoit: userBaseData[1],
+          zimu: zimuBalance,
+          vt0: vtBalance,
+          needed: neededDepositZimu,
+        });
+      }
+    }
   };
 
   const submitApplication = async (params: Submit) => {
-    if (!ethereum) message.warning("Please install wallet.");
-    const networkId = ethereum.chainId;
-    const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    let amount;
-    if (params.strategy == 0) {
-      amount = BigNumber(DECIMALS_18).times(params.amount).toString();
-    } else {
-      amount = params.amount;
+    if (provider) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+        let amount;
+        if (params.strategy == 0) {
+          amount = ethers.utils.parseUnits(params.amount.toString(), 18);
+        } else {
+          amount = params.amount;
+        }
+        const config = await prepareWriteContract({
+          address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+          abi: SUBTITLE_SYSTEM_ABI,
+          functionName: "submitApplication",
+          args: [
+            params.platform,
+            params.videoId,
+            params.strategy,
+            amount,
+            params.language,
+            params.deadline,
+            params.source,
+          ],
+        });
+        setLoadingState(true);
+        writeContract(config)
+          .then(async ({ hash, wait }) => {
+            await wait();
+            message.success("Success: " + hash);
+            setLoadingState(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoadingState(false);
+          });
+      }
     }
-    const transaction = await tscs.submitApplication(
-      params.platform,
-      params.videoId,
-      params.strategy,
-      amount,
-      params.language,
-      params.deadline,
-      params.source
-    );
-    setLoadingState(true);
-    await transaction.wait();
-    console.log("Success:", transaction.hash);
-    message.success("Success: " + transaction.hash);
-    setLoadingState(false);
   };
 
   const uploadSubtitle = async (params: Upload) => {
-    if (!ethereum) return message.warning("Please install wallet.");
-    const networkId = ethereum.chainId;
-    const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    const transaction = await tscs.uploadSubtitle(
-      params.applyId,
-      params.cid,
-      params.language,
-      params.fingerprint
-    );
-    setLoadingState(true);
-    await transaction.wait();
-    console.log("Success:", transaction.hash);
-    message.success("Success: " + transaction.hash);
-    setLoadingState(false);
+    if (provider) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+        const config = await prepareWriteContract({
+          address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+          abi: SUBTITLE_SYSTEM_ABI,
+          functionName: "uploadSubtitle",
+          args: [
+            params.applyId,
+            params.cid,
+            params.language,
+            params.fingerprint,
+          ],
+        });
+        setLoadingState(true);
+        writeContract(config)
+          .then(async ({ hash, wait }) => {
+            await wait();
+            message.success("Success: " + hash);
+            setLoadingState(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoadingState(false);
+          });
+      }
+    }
   };
 
   const auditSubtitle = async (params: Audit) => {
-    if (!ethereum) return message.warning("Please install wallet.");
-    const networkId = ethereum.chainId;
-    const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    const transaction = await tscs.evaluateSubtitle(
-      params.subtitleId,
-      params.attitude
-    );
-    setLoadingState(true);
-    await transaction.wait();
-    console.log("Success:", transaction.hash);
-    message.success("Success: " + transaction.hash);
-    setLoadingState(false);
+    if (provider) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+        const config = await prepareWriteContract({
+          address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+          abi: SUBTITLE_SYSTEM_ABI,
+          functionName: "evaluateSubtitle",
+          args: [params.subtitleId, params.attitude],
+        });
+        setLoadingState(true);
+        writeContract(config)
+          .then(async ({ hash, wait }) => {
+            await wait();
+            message.success("Success: " + hash);
+            setLoadingState(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoadingState(false);
+          });
+      }
+    }
   };
 
-  const tokenTransaction = async (params: any) => {
-    if (!ethereum) return message.warning("Please install wallet.");
-    let token;
-    let transaction;
-    let amount;
-    if (params.type == "ERC-20") {
-      amount = BigNumber(DECIMALS_18).times(params.amount).toString();
-      token = getContract(params.address, ERC20_ABI);
-      if (defaultTokenTransactionData.operation == "TRANSFER") {
-        transaction = await token.transfer(params.to, amount);
-      }
-      if (defaultTokenTransactionData.operation == "APPROVE") {
-        transaction = await token.approve(params.to, amount);
+  const tokenTransaction = async (params: RealTokenTransaction) => {
+    if (provider) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+        let config;
+        if (params.type == "ERC-20") {
+          const amount = ethers.utils.parseUnits(params.amount.toString(), 18);
+          if (defaultTokenTransactionData.operation == "TRANSFER") {
+            config = await prepareWriteContract({
+              address: params.address as `0x${string}`,
+              abi: ERC20_ABI,
+              functionName: "transfer",
+              args: [params.to, amount],
+            });
+          } else {
+            // defaultTokenTransactionData.operation == "APPROVE"
+            config = await prepareWriteContract({
+              address: params.address as `0x${string}`,
+              abi: ERC20_ABI,
+              functionName: "approve",
+              args: [params.to, amount],
+            });
+          }
+        } else if (params.type == "ERC-1155") {
+          const amount = ethers.utils.parseUnits(params.amount.toString(), 6);
+          if (defaultTokenTransactionData.operation == "TRANSFER") {
+            config = await prepareWriteContract({
+              address: params.address as `0x${string}`,
+              abi: ERC1155_ABI,
+              functionName: "safeTransferFrom",
+              args: [params.from, params.to, params.tokenId, amount, ""],
+            });
+          } else {
+            // defaultTokenTransactionData.operation == "APPROVE"
+            const isTrue = params.amount > 0 ? "true" : "false";
+            config = await prepareWriteContract({
+              address: params.address as `0x${string}`,
+              abi: ERC1155_ABI,
+              functionName: "setApprovalForAll",
+              args: [params.to, isTrue],
+            });
+          }
+        } else {
+          // ERC-721
+          // defaultTokenTransactionData.operation == "TRANSFER"
+          config = await prepareWriteContract({
+            address: params.address as `0x${string}`,
+            abi: ERC721_ABI,
+            functionName: "transferFrom",
+            args: [params.from, params.to, params.tokenId],
+          });
+        }
+        setLoadingState(true);
+        writeContract(config)
+          .then(async ({ hash, wait }) => {
+            await wait();
+            message.success("Success: " + hash);
+            setLoadingState(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoadingState(false);
+          });
       }
     }
-    if (params.type == "ERC-1155") {
-      amount = BigNumber(DECIMALS_6).times(params.amount).toString();
-      token = getContract(params.address, ERC1155_ABI);
-      if (defaultTokenTransactionData.operation == "TRANSFER") {
-        transaction = await token.safeTransferFrom(
-          params.from,
-          params.to,
-          params.tokenId,
-          amount,
-          ""
-        );
-      }
-      if (defaultTokenTransactionData.operation == "APPROVE") {
-        const isTrue = params.amount > 0 ? "true" : "false";
-        transaction = await token.setApprovalForAll(params.to, isTrue);
-      }
-    }
-    if (params.type == "ERC-721") {
-      token = getContract(params.address, ERC721_ABI);
-      if (defaultTokenTransactionData.operation == "TRANSFER") {
-        token.transferFrom(params.from, params.to, params.tokenId);
-      }
-    }
-    setLoadingState(true);
-    await transaction.wait();
-    console.log("Success:", transaction.hash);
-    message.success("Success: " + transaction.hash);
-    setLoadingState(false);
   };
 
   const preSettlement = async (type: string, applyId: string) => {
-    if (!ethereum) return message.warning("Please install wallet.");
-    const networkId = ethereum.chainId;
-    const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    let transaction;
-    if (type == "OT0") {
-      transaction = await tscs.preExtract0(applyId);
-    } else {
-      transaction = await tscs.preExtractOther(applyId);
-    }
-    setLoadingState(true);
-    await transaction.wait();
-    console.log("Success:", transaction.hash);
-    message.success("Success: " + transaction.hash);
-    setLoadingState(false);
-  };
-
-  const updateApplication = async (params: any) => {
-    if (!ethereum) return message.warning("Please install wallet.");
-    const networkId = ethereum.chainId;
-    const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    let transaction;
-    if (params.type == "Recover") {
-      transaction = await tscs.recover(
-        params.applyId,
-        params.amount,
-        params.deadline
-      );
-    } else if (params.type == "Update") {
-      const deadline = params.deadline - timestamp();
-      if (deadline > 0) {
-        transaction = await tscs.updateApplication(
-          params.applyId,
-          params.amount,
-          deadline
-        );
-      } else {
-        message.warning("Invaild Deadline.");
+    if (provider) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+        let config;
+        if (type == "OT0") {
+          config = await prepareWriteContract({
+            address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+            abi: SUBTITLE_SYSTEM_ABI,
+            functionName: "preExtract0",
+            args: [applyId],
+          });
+        } else {
+          config = await prepareWriteContract({
+            address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+            abi: SUBTITLE_SYSTEM_ABI,
+            functionName: "preExtractOther",
+            args: [applyId],
+          });
+        }
+        setLoadingState(true);
+        writeContract(config)
+          .then(async ({ hash, wait }) => {
+            await wait();
+            message.success("Success: " + hash);
+            setLoadingState(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoadingState(false);
+          });
       }
     }
-    setLoadingState(true);
-    await transaction.wait();
-    console.log("Success:", transaction.hash);
-    message.success("Success: " + transaction.hash);
-    setLoadingState(false);
   };
 
-  const withdrawReward = async (params: any) => {
-    if (!ethereum) return message.warning("Please install wallet.");
-    const networkId = ethereum.chainId;
-    const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    const transaction = await tscs.withdraw(params.platform, [params.day]);
-    setLoadingState(true);
-    await transaction.wait();
-    console.log("Success:", transaction.hash);
-    message.success("Success: " + transaction.hash);
-    setLoadingState(false);
+  const updateApplication = async (
+    params: RealUpdateApplictaionTransaction
+  ) => {
+    if (provider) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+        let config, amount;
+        if (defaultUpdateApplicationData.payType == "OT0") {
+          amount = ethers.utils.parseUnits(params.amount.toString(), 18);
+        } else {
+          amount = ethers.utils.parseUnits(params.amount.toString(), 6);
+        }
+        if (params.type == "Recover") {
+          config = await prepareWriteContract({
+            address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+            abi: SUBTITLE_SYSTEM_ABI,
+            functionName: "recover",
+            args: [params.applyId, amount, params.deadline],
+          });
+        } else {
+          // params.type == "Update"
+          let deadline = params.deadline - timestamp();
+          if (deadline < 0) {
+            deadline = timestamp() + 864000;
+          }
+          config = await prepareWriteContract({
+            address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+            abi: SUBTITLE_SYSTEM_ABI,
+            functionName: "updateApplication",
+            args: [params.applyId, amount, deadline],
+          });
+        }
+        setLoadingState(true);
+        writeContract(config)
+          .then(async ({ hash, wait }) => {
+            await wait();
+            message.success("Success: " + hash);
+            setLoadingState(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoadingState(false);
+          });
+      }
+    }
   };
 
-  const depoitZimuManage = async (address: string, amount: string) => {
-    if (!ethereum) return message.warning("Please install wallet.");
-    const networkId = ethereum.chainId;
-    const tscs = getContract(SUBTITLE_SYSTEM[networkId], SUBTITLE_SYSTEM_ABI);
-    let transaction;
-    amount = BigNumber(DECIMALS_18).times(amount).toString();
-    if (defaultWithdrawOrDespoitData.manage == "DESPOIT") {
-      transaction = await tscs.userJoin(address, amount);
+  const withdrawReward = async (params: RealWithdrawRewardTransaction) => {
+    if (provider) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+        const config = await prepareWriteContract({
+          address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+          abi: SUBTITLE_SYSTEM_ABI,
+          functionName: "withdraw",
+          args: [params.platform, [params.day]],
+        });
+        setLoadingState(true);
+        writeContract(config)
+          .then(async ({ hash, wait }) => {
+            await wait();
+            message.success("Success: " + hash);
+            setLoadingState(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoadingState(false);
+          });
+      }
     }
-    if (defaultWithdrawOrDespoitData.manage == "WITHDRAW") {
-      transaction = await tscs.withdrawDeposit(amount);
+  };
+
+  const depoitZimuManage = async (address: string, amount: number) => {
+    if (provider) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+        let config;
+        const realAmount = ethers.utils.parseUnits(amount.toString(), 18);
+        if (defaultWithdrawOrDespoitData.manage == "DESPOIT") {
+          config = await prepareWriteContract({
+            address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+            abi: SUBTITLE_SYSTEM_ABI,
+            functionName: "userJoin",
+            args: [address, realAmount],
+          });
+        } else {
+          // defaultWithdrawOrDespoitData.manage == "WITHDRAW"
+          config = await prepareWriteContract({
+            address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+            abi: SUBTITLE_SYSTEM_ABI,
+            functionName: "withdrawDeposit",
+            args: [realAmount],
+          });
+        }
+        setLoadingState(true);
+        writeContract(config)
+          .then(async ({ hash, wait }) => {
+            await wait();
+            message.success("Success: " + hash);
+            setLoadingState(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoadingState(false);
+          });
+      }
     }
-    setLoadingState(true);
-    await transaction.wait();
-    console.log("Success:", transaction.hash);
-    message.success("Success: " + transaction.hash);
-    setLoadingState(false);
   };
 
   return (
     <ApplicationContext.Provider
       value={{
-        userDID,
         defaultUploadSubtitleData,
         updateDefaultUploadSubtitleData,
         defaultAuditSubtitleData,

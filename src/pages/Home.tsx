@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import { ApplyCard, DashboardMini, SubtitleCard } from "../components";
 import { DashboardMiniItem } from "../types/baseTypes";
 import {
@@ -9,8 +9,8 @@ import {
 } from "react-icons/md";
 import { ApplicationItems, SubtitleItems } from "../utils/testData";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
 import { DataContext } from "../context/DataContext";
+import { GlobalContext } from "../context/GlobalContext";
 import { Spin } from "antd";
 
 const Home = (): React.ReactElement => {
@@ -21,6 +21,7 @@ const Home = (): React.ReactElement => {
     queryHomeData,
     isGetDataLoading,
   } = useContext(DataContext);
+  const { chainId } = useContext(GlobalContext);
 
   useEffect(() => {
     queryHomeData();
@@ -30,36 +31,37 @@ const Home = (): React.ReactElement => {
     return () => {
       clearInterval(timer);
     };
-  }, []);
+  }, [chainId]);
+
   const DashboardMiniItems: DashboardMiniItem[] = [
     {
       label: "All Applications",
-      number: dashboard.applicationCount,
-      change: dashboard.applicationInc,
+      number: dashboard ? dashboard.applicationCount : "0",
+      change: dashboard ? dashboard.applicationInc : "0",
       bg: "#ecf8ef",
       iconBg: "#00CD00",
       icon: <MdAllInbox color="#fff" fontSize={25} />,
     },
     {
       label: "All Users",
-      number: dashboard.userCount,
-      change: dashboard.userInc,
+      number: dashboard ? dashboard.userCount : "0",
+      change: dashboard ? dashboard.userInc : "0",
       bg: "#FDF5E6",
       iconBg: "#FF8C00",
       icon: <MdPeopleAlt color="#fff" fontSize={25} />,
     },
     {
       label: "All Subtitles",
-      number: dashboard.subtitleCount,
-      change: dashboard.subtitleInc,
+      number: dashboard ? dashboard.subtitleCount : "0",
+      change: dashboard ? dashboard.subtitleInc : "0",
       bg: "#B0EFFF",
       iconBg: "#1E90FF",
       icon: <MdOutlineSubtitles color="#fff" fontSize={25} />,
     },
     {
       label: "All Platforms",
-      number: dashboard.platformCount,
-      change: dashboard.platformInc,
+      number: dashboard ? dashboard.platformCount : "0",
+      change: dashboard ? dashboard.platformInc : "0",
       bg: "#E6E6FA",
       iconBg: "#9932CC",
       icon: <MdOutlineVideoLibrary color="#fff" fontSize={25} />,
@@ -93,9 +95,10 @@ const Home = (): React.ReactElement => {
           </div>
         ) : (
           <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
-            {applications.map(
-              (item, index) => item.applyId != "" && ApplyCard(item, index)
-            )}
+            {applications &&
+              applications.map(
+                (item, index) => item.applyId != "" && ApplyCard(item, index)
+              )}
             {ApplicationItems.map((item, index) => ApplyCard(item, index))}
           </div>
         )}
@@ -110,9 +113,10 @@ const Home = (): React.ReactElement => {
           </div>
         ) : (
           <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
-            {subtitles.map(
-              (item, index) => item.applyId != "" && SubtitleCard(item, index)
-            )}
+            {subtitles &&
+              subtitles.map(
+                (item, index) => item.applyId != "" && SubtitleCard(item, index)
+              )}
             {SubtitleItems.map((item, index) => SubtitleCard(item, index))}
           </div>
         )}

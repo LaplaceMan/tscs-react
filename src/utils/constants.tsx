@@ -1,8 +1,4 @@
-export const Network: { [key: string]: string } = {
-  "0x1": "Mainnet",
-  "0x5": "Goerli",
-  "0x539": "Test",
-};
+export const SUPPORT_NETWORK = [5];
 
 export const countryLanguageMap: { [key: string]: string } = {
   cn: "Chinese",

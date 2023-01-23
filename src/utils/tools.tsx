@@ -86,11 +86,11 @@ export const timestampToDay = (time: number) => {
 };
 
 export const bignumberConvert = (
-  number: string,
-  div: string,
+  number: ethers.BigNumber | string,
+  div: string | number,
   fixed: number
 ) => {
-  const format = ethers.BigNumber.from(number).toString();
+  const format = number.toString();
   if (format != "0") {
     if (div != "0") {
       return BigNumber(format).div(div).toFixed(fixed);

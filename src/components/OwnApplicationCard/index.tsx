@@ -5,7 +5,8 @@ import { OwnApplication } from "../../types/baseTypes";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { UpdateApplication } from "../../types/formTypes";
-import { shortenCID } from "../../utils/tools";
+import { shortenCID, bignumberConvert } from "../../utils/tools";
+import { DECIMALS_18, DECIMALS_6 } from "../../utils/constants";
 
 const applicationCardItem = (label: string, info: string) => {
   return (
@@ -50,7 +51,14 @@ const OwnApplicationCard = (application: OwnApplication, key: React.Key) => {
       <div className="flex w-full flex-row justify-between items-center my-3">
         {applicationCardItem("Type", application.type)}
         <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />
-        {applicationCardItem("Price", application.price)}
+        <Tooltip title={application.price}>
+          {applicationCardItem(
+            "Price",
+            application.type == "OT0"
+              ? bignumberConvert(application.price, DECIMALS_18, 2)
+              : bignumberConvert(application.price, DECIMALS_6, 2)
+          )}
+        </Tooltip>
         <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />
         {applicationCardItem("State", application.state)}
         <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />

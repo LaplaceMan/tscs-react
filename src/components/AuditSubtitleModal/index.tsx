@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Tag, Spin } from "antd";
 import { useContext } from "react";
 import { BigNumber } from "bignumber.js";
@@ -18,15 +18,16 @@ const AuditSubtitle = () => {
   const { defaultAuditSubtitleData, auditSubtitle } =
     useContext(ApplicationContext);
   const { hideAuditModal, isLoading } = useContext(GlobalContext);
-
   const { defaultAuditSubtitleMaker } = useContext(DataContext);
+
   const txParams = (attitude: number): Audit => {
     return {
       subtitleId: defaultAuditSubtitleData.subtitleId,
       attitude: attitude,
-      auditor: isConnected ? address! : "",
+      auditor: address!,
     };
   };
+
   return (
     <Spin spinning={isLoading} size="large">
       <div className="flex flex-col w-full p-5">
@@ -49,10 +50,10 @@ const AuditSubtitle = () => {
               </div>
               <div className="flex flex-col items-start ml-3">
                 <div className="text-lg font-medium">
-                  <a href={defaultAuditSubtitleData.cid}>Source</a>
+                  <a href={defaultAuditSubtitleData.applySource}>Source</a>
                 </div>
                 <div className="text-sm text-[#696969]">
-                  {"#" + defaultAuditSubtitleData.subtitleId}
+                  {"#" + defaultAuditSubtitleData.applyId}
                 </div>
               </div>
             </div>
@@ -135,13 +136,13 @@ const AuditSubtitle = () => {
         <div className="flex items-center w-full text-white font-semibold text-base mt-2">
           <div
             className="flex items-center justify-center rounded-md bg-gradient-to-r w-1/2 py-2 cursor-pointer from-purple-400 to-purple-200 mr-1 hover:brightness-110"
-            onClick={() => auditSubtitle(txParams(0))}
+            onClick={() => isConnected && auditSubtitle(txParams(0))}
           >
             Adopt
           </div>
           <div
             className="flex items-center justify-center rounded-md bg-gradient-to-r w-1/2 py-2 cursor-pointer from-blue-200 to-blue-400 ml-1 hover:brightness-110"
-            onClick={() => auditSubtitle(txParams(1))}
+            onClick={() => isConnected && auditSubtitle(txParams(1))}
           >
             Report
           </div>

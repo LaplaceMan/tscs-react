@@ -1,11 +1,12 @@
-import SubtitleSystemABI from "./abis/Murmes.json";
+import MurmesABI from "./abis/Murmes.json";
 import ZimuTokenABI from "./abis/ZimuToken.json";
 import ERC20ABI from "./abis/ERC20.json";
 import ERC1155ABI from "./abis/ERC1155.json";
 import ERC721ABI from "./abis/ERC721.json";
 import ACCESSABI from "./abis/AccessStrategy.json";
+import { useContract } from "wagmi";
 
-export const SUBTITLE_SYSTEM_ABI = SubtitleSystemABI.abi;
+export const SUBTITLE_SYSTEM_ABI = MurmesABI.abi;
 export const ZIMU_TOKEN_ABI = ZimuTokenABI.abi;
 export const ERC20_ABI = ERC20ABI.abi;
 export const ERC1155_ABI = ERC1155ABI.abi;
@@ -17,9 +18,23 @@ export const SUBTITLE_SYSTEM: { [key: number]: string } = {
   1337: "0xe43ed01D7fdc971C0F6aD5a8F3c21f4ACb7c3dA8",
 };
 
+export const Murmes = (networkId: number) => {
+  return useContract({
+    address: SUBTITLE_SYSTEM[networkId],
+    abi: SUBTITLE_SYSTEM_ABI,
+  });
+};
+
 export const ZIMU_TOKEN: { [key: number]: string } = {
   5: "0x195D1F8BC906f1129a1Ab177E7536CAe9b7E142b",
   1337: "0x1cFfc2D4e0D7d7EDb9e38c18849033698B4B8dA0",
+};
+
+export const Zimu = (networkId: number) => {
+  return useContract({
+    address: ZIMU_TOKEN[networkId],
+    abi: ZIMU_TOKEN_ABI,
+  });
 };
 
 export const VIDEO_TOKEN: { [key: number]: string } = {
@@ -43,6 +58,13 @@ export const PLATFORM_MANAGER: { [key: number]: string } = {
 export const ACCESS_STRATEGY: { [key: number]: string } = {
   5: "0x8bA47eBcc3877ddE208de5abE5a5Cb973CF44437",
   1337: "0xca4B4FF4d9AA63348930C64be121c0500BeFd409",
+};
+
+export const Access = (networkId: number) => {
+  return useContract({
+    address: ACCESS_STRATEGY[networkId],
+    abi: ACCESS_ABI,
+  });
 };
 
 export const AUDIT_STRATEGY: { [key: number]: string } = {

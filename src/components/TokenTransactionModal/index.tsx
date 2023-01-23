@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Select, Form, Input, InputNumber, Spin } from "antd";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ApplicationContext } from "../../context/ApplicationContext";
-import { useContext, useEffect } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import { ModelDataMini } from "../index";
-
+import { RealTokenTransaction } from "../../types/formTypes";
 const { Option } = Select;
 
 const TokenTransaction = () => {
@@ -16,7 +15,7 @@ const TokenTransaction = () => {
 
   const onFinish = () => {
     const values = form.getFieldsValue();
-    tokenTransaction(values);
+    tokenTransaction(values as RealTokenTransaction);
   };
 
   useEffect(() => {

@@ -4,7 +4,11 @@ import {
   Audit,
   TokenTransaction,
   UpdateApplication,
+  RealTokenTransaction,
+  RealWithdrawRewardTransaction,
+  RealUpdateApplictaionTransaction,
 } from "./formTypes";
+import { ethers } from "ethers";
 
 export type Application = {
   applicant: string;
@@ -131,6 +135,7 @@ export type WalletContent = {
 };
 
 export type GlobalContent = {
+  chainId: number;
   isLoading: boolean;
   isUploadModalOpen: boolean;
   isApplicationModalOpen: boolean;
@@ -163,7 +168,7 @@ export type OwnToken = {
   name: string;
   symbol: string;
   decimals: number;
-  balance: string;
+  balance: ethers.BigNumber;
   type: string;
   issuser: string;
   address: string;
@@ -253,7 +258,6 @@ export const defaultUserOwn = {
 };
 
 export type ApplicationContent = {
-  userDID: { reputation: string; deposit: string };
   defaultUploadSubtitleData: { applyId: string; language: string };
   updateDefaultUploadSubtitleData: (applyId: string, language: string) => void;
   defaultAuditSubtitleData: Subtitle;
@@ -261,7 +265,7 @@ export type ApplicationContent = {
   submitApplication: (params: Submit) => void;
   uploadSubtitle: (params: Upload) => void;
   auditSubtitle: (params: Audit) => void;
-  tokenTransaction: (params: any) => void;
+  tokenTransaction: (params: RealTokenTransaction) => void;
   defaultTokenTransactionData: TokenTransaction;
   updateDefaultTokenTransaction: (params: TokenTransaction) => void;
   preSettlement: (type: string, applyId: string) => void;
@@ -269,18 +273,18 @@ export type ApplicationContent = {
   defaultUpdateApplicationData: UpdateApplication;
   updateDefaultWithdrawOrDespoit: (platform: string, manage: string) => void;
   defaultWithdrawOrDespoitData: { platform: string; manage: string };
-  updateApplication: (params: any) => void;
-  withdrawReward: (params: any) => void;
-  depoitZimuManage: (address: string, amount: string) => void;
+  updateApplication: (params: RealUpdateApplictaionTransaction) => void;
+  withdrawReward: (params: RealWithdrawRewardTransaction) => void;
+  depoitZimuManage: (address: string, amount: number) => void;
   personalDID: PersonalPageData;
   getPersonalPageData: (address: string) => void;
 };
 
 export type DataContent = {
-  applications: Application[];
-  subtitles: Subtitle[];
+  applications: Application[] | null;
+  subtitles: Subtitle[] | null;
   queryApplicationData: (first: number, skip: number, language: string) => void;
-  dashboard: Dashboard;
+  dashboard: Dashboard | null;
   queryHomeData: () => void;
   querySubtitleData: (first: number, skip: number, language: string) => void;
   defaultAuditSubtitleMaker: User;
@@ -292,20 +296,21 @@ export type DataContent = {
   regiserLanguages: { id: string; notes: string }[];
   regiserPlatforms: { id: string; name: string }[];
   isGetDataLoading: boolean;
+  clearData: () => void;
 };
 
 export type PersonalPageData = {
   reputation: string;
-  despoit: string;
-  zimu: string;
-  vt0: string;
-  needed: string;
+  despoit: ethers.BigNumber;
+  zimu: ethers.BigNumber;
+  vt0: ethers.BigNumber;
+  needed: ethers.BigNumber;
 };
 
 export const defaultPersonalPageData = {
   reputation: "0",
-  despoit: "0",
-  zimu: "0",
-  vt0: "0",
-  needed: "0",
+  despoit: ethers.BigNumber.from("0"),
+  zimu: ethers.BigNumber.from("0"),
+  vt0: ethers.BigNumber.from("0"),
+  needed: ethers.BigNumber.from("0"),
 };

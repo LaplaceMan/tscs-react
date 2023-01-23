@@ -21,7 +21,7 @@ const DepositAssetManageModal = () => {
     } else {
       form.setFieldsValue(null);
     }
-  });
+  }, []);
 
   return (
     <Spin spinning={isLoading} size="large">

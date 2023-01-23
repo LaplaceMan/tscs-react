@@ -1,31 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Select, Form, Input, InputNumber, DatePicker, Spin } from "antd";
 import { MdOutlineClose } from "react-icons/md";
 import { GiToken } from "react-icons/gi";
 import { AiFillDollarCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
 import { ModelDataMini } from "../index";
-import { useContext } from "react";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { DataContext } from "../../context/DataContext";
 import { countryLanguageMap } from "../../utils/constants";
 import { SUBTITLE_SYSTEM } from "../../utils/contracts";
 import { fetchFeeData } from "@wagmi/core";
-import { useAccount } from "wagmi";
-import { getNetwork } from "@wagmi/core";
 import { getGasPriceFixed } from "../../utils/tools";
 
 const { Option } = Select;
 
 const SubmitApplication = () => {
   const [form] = Form.useForm();
-  const { isConnected } = useAccount();
-  const { chain } = getNetwork();
   const [gasPrice, setGasPrice] = useState("");
-  const { submitApplication, userDID } = useContext(ApplicationContext);
   const { hideApplicationModal, isLoading } = useContext(GlobalContext);
   const { regiserLanguages, regiserPlatforms } = useContext(DataContext);
+  const { submitApplication, personalDID } = useContext(ApplicationContext);
 
   useEffect(() => {
     try {
@@ -36,10 +31,12 @@ const SubmitApplication = () => {
             : "0.00"
         );
       });
+      0;
     } catch (error) {
       console.log(error);
     }
   }, []);
+
   const onFinish = () => {
     const values = form.getFieldsValue();
     const date = values.deadline.valueOf();
@@ -75,7 +72,11 @@ const SubmitApplication = () => {
           </div>
           <Form.Item>
             <div className="flex bg-gray-100 rounded-md p-2 items-center justify-between">
-              {ModelDataMini("DVTs Available", <GiToken />, userDID.reputation)}
+              {ModelDataMini(
+                "DVTs Available",
+                <GiToken />,
+                personalDID.reputation
+              )}
               {ModelDataMini("Current Value", <AiFillDollarCircle />, 1.1)}
               {ModelDataMini("Gas Price", <SiEthereum />, gasPrice)}
             </div>
@@ -143,7 +144,6 @@ const SubmitApplication = () => {
               placeholder="Payment amount or proportion."
               min={0}
               style={{ width: "100%" }}
-              // decimalSeparator="18"
             />
           </Form.Item>
           <Form.Item name="language" label="Language" required>

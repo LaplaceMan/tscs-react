@@ -6,11 +6,10 @@ import { SubtitleCard } from "../components";
 import { SubtitleItems } from "../utils/testData";
 import { DataContext } from "../context/DataContext";
 import { GlobalContext } from "../context/GlobalContext";
-import { DEFAULT_PAGE_SIZE } from "../utils/constants";
-import { countryLanguageMap } from "../utils/constants";
+import { DEFAULT_PAGE_SIZE, countryLanguageMap } from "../utils/constants";
 const { Option } = Select;
 const Government = (): React.ReactElement => {
-  const { showUploadModal } = useContext(GlobalContext);
+  const { showUploadModal, chainId } = useContext(GlobalContext);
   const {
     subtitles,
     querySubtitleData,
@@ -22,7 +21,7 @@ const Government = (): React.ReactElement => {
 
   useEffect(() => {
     querySubtitleData(DEFAULT_PAGE_SIZE, 0, "0");
-  }, []);
+  }, [chainId]);
 
   const pageChangeHandle = (page: number, pageSize: number) => {
     const skip = page == 1 ? 0 : (page - 1) * pageSize;
@@ -62,9 +61,10 @@ const Government = (): React.ReactElement => {
         </div>
       ) : (
         <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
-          {subtitles.map(
-            (item, index) => item.applyId != "0" && SubtitleCard(item, index)
-          )}
+          {subtitles &&
+            subtitles.map(
+              (item, index) => item.applyId != "0" && SubtitleCard(item, index)
+            )}
           {SubtitleItems.map((item, index) => SubtitleCard(item, index))}
         </div>
       )}
@@ -73,7 +73,7 @@ const Government = (): React.ReactElement => {
         <Pagination
           current={currentPage.page}
           defaultPageSize={DEFAULT_PAGE_SIZE}
-          total={Number(dashboard.applicationCount)}
+          total={Number(dashboard && dashboard.applicationCount)}
           responsive={true}
           onChange={(page, pageSize) => pageChangeHandle(page, pageSize)}
         />

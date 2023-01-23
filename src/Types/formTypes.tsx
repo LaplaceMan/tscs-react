@@ -9,7 +9,7 @@ export type Submit = {
 };
 
 export type Upload = {
-  applyId: number;
+  applyId: string;
   language: number;
   fingerprint: string;
   cid: string;
@@ -63,4 +63,25 @@ export const defaultUpdateApplication = {
   amount: "0",
   deadline: 0,
   type: "",
+};
+
+export type RealUpdateApplictaionTransaction = {
+  applyId: string;
+  amount: number;
+  deadline: number;
+  type: string;
+};
+
+export type RealWithdrawRewardTransaction = {
+  platform: string;
+  day: number;
+};
+
+export type RealTokenTransaction = {
+  address: string;
+  type: string;
+  from: string;
+  to: string;
+  tokenId: number;
+  amount: number;
 };

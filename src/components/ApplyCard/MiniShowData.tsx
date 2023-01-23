@@ -1,9 +1,8 @@
 import React from "react";
 import { Tooltip } from "antd";
 import { Application } from "../../types/baseTypes";
-import { shortenId, shortenAmount } from "../../utils/tools";
+import { shortenId, shortenAmount, bignumberConvert } from "../../utils/tools";
 import { BASE_RATE, DECIMALS_18 } from "../../utils/constants";
-import BigNumber from "bignumber.js";
 
 const ApplyLabel = ["Type", "Amount", "Platform", "Uploads", "Apply ID"];
 const DividerH = (): React.ReactElement => {
@@ -32,7 +31,7 @@ export const MiniShowData0Package = (data: Application): React.ReactElement => {
   let amount = data.amount;
   if (data.payType === "OT0" || data.payType === "DR2") {
     prefix = "$";
-    amount = BigNumber(amount).div(DECIMALS_18).toFixed(2);
+    amount = bignumberConvert(amount, DECIMALS_18, 2);
     amount = shortenAmount(amount);
   } else {
     suffix = "%";
