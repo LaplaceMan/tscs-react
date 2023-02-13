@@ -75,7 +75,8 @@ const AuditSubtitle = () => {
                 Simhash Fingerprint
               </div>
               <div className="flex p-2 bg-gray-100 break-all rounded-md font-medium items-center justify-center">
-                {BigNumber(defaultAuditSubtitleData.fingerprint).toString(16)}
+                {"0x" +
+                  BigNumber(defaultAuditSubtitleData.fingerprint).toString(16)}
               </div>
             </div>
             <div className="flex flex-col">

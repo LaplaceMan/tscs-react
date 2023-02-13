@@ -67,6 +67,14 @@ export const shortenCID = (text: string, type: string): string => {
   }
 };
 
+export const shortenText = (text: string): string => {
+  if (text.length > 12) {
+    return `${text.slice(0, 6)}...${text.slice(text.length - 6)}`;
+  } else {
+    return text;
+  }
+};
+
 export const timestampToDate = (time: number) => {
   const date = new Date(time * 1000);
   const year = date.getFullYear();

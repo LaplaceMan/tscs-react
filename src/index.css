@@ -8,6 +8,10 @@
     background-repeat: no-repeat;
 }
 
+#xg {
+  margin: 0 auto;
+}
+
 .own-card {
   background-image: url("../src/assets/magellan_gradient.png");
   background-size: 100% 50%;

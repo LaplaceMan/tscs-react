@@ -24,8 +24,9 @@ const App = () => {
     isWithdrawRewardModalOpen,
     isDespoitAssetModalOpen,
   } = useContext(GlobalContext);
+  const path = location.pathname.split("/")[2];
   return (
-    <div className="mbg">
+    <div className={path == undefined || path == "" ? "mbg" : ""}>
       <Layout>
         <Affix offsetTop={0}>{HeaderRoutes()}</Affix>
         <div className="flex w-full items-center justify-center">

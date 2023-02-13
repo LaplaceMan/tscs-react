@@ -20,6 +20,7 @@ import {
   fetchEnsAvatar,
   fetchEnsName,
 } from "@wagmi/core";
+import { personal_default } from "../assets";
 
 const NoItems = () => {
   return (
@@ -47,12 +48,12 @@ const Personal = (): React.ReactElement => {
 
   useEffect(() => {
     if (provider) {
-      fetchEnsAvatar({ address: user as `0x${string}` }).then((ens) => {
+      fetchEnsAvatar({ address: user as `0x${string}` }).then((ens: any) => {
         if (ens) {
           setAvatarAndName({ ...avatarAndName, avatar: ens });
         }
       });
-      fetchEnsName({ address: user as `0x${string}` }).then((ens) => {
+      fetchEnsName({ address: user as `0x${string}` }).then((ens: any) => {
         if (ens) {
           setAvatarAndName({ ...avatarAndName, name: ens });
         }
@@ -197,21 +198,23 @@ const Personal = (): React.ReactElement => {
 
   return (
     <div className="flex flex-col w-full">
-      <div
-        className="h-[250px] md:h-[270px] mt-[8px] ring ring-black ring-offset-4 bg-center bg-cover"
-        style={{
-          backgroundImage: `url("https://i.seadn.io/gae/P3RpreFAUcZIt1FeVB-y2o95x3zw7DWBU9dXsihVsgdfElfZcl0_8g601ydvtTaOIIN6Pae0VXmZTuN_xictxe6_DsCmR0pO_dSFZg?auto=format&w=1920")`,
-        }}
-      >
-        <div className="mt-40 flex justify-center mx-[60px] align-bottom">
-          <img
-            className="shrink-0 w-32 h-32 md:w-36 md:h-36 rounded-xl shadow"
-            src={
-              avatarAndName.avatar != ""
-                ? avatarAndName.avatar
-                : RANDOM_AVATAR_API
-            }
-          />
+      <div className="flex w-full h-[250px] md:h-[270px] mt-[8px] px-[8px]">
+        <div
+          className="w-full ring ring-black ring-offset-4 bg-center bg-cover"
+          style={{
+            backgroundImage: `url(${personal_default})`,
+          }}
+        >
+          <div className="mt-40 flex justify-center mx-[60px] align-bottom">
+            <img
+              className="shrink-0 w-32 h-32 md:w-36 md:h-36 rounded-xl shadow"
+              src={
+                avatarAndName.avatar != ""
+                  ? avatarAndName.avatar
+                  : RANDOM_AVATAR_API
+              }
+            />
+          </div>
         </div>
       </div>
       <div className="flex flex-col items-center mt-11 mb-3 md:mt-10">

@@ -8,6 +8,9 @@ import {
   OwnSubtitle,
   OwnAudit,
   defaultUserOwn,
+  PlayerBaseInfo,
+  defaultPlayerBaseInfo,
+  PlayerSubtitle,
 } from "../types/baseTypes";
 import {
   Application,
@@ -27,14 +30,14 @@ import {
   QueryLockedToken,
   QueryLanguages,
   QueryPlatforms,
+  QuerySpecialApplication,
 } from "../utils/graphql/graphqls";
 import { getNetwork, getAccount } from "@wagmi/core";
-import {
-  GRAPHQL_SUBGRAPH_GOERLI_ABI,
-  SUPPORT_NETWORK,
-} from "../utils/constants";
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { SUPPORT_NETWORK } from "../utils/constants";
+import { gql } from "@apollo/client";
+import { GoerliClient } from "../client/apollo";
 import { GlobalContext } from "./GlobalContext";
+import { message } from "antd";
 
 export const DataContext = React.createContext<DataContent>({} as DataContent);
 
@@ -56,6 +59,11 @@ export const DataProvider = ({ children }: any) => {
   const [regiserPlatforms, setRegiserPlatforms] = useState<
     { id: string; name: string }[]
   >([]);
+  const [playerBaseInfo, setBaseInfo] = useState<PlayerBaseInfo>(
+    defaultPlayerBaseInfo
+  );
+  const [playerSubtitles, setPlayerSubtitles] = useState<PlayerSubtitle[]>([]);
+
   const { chain } = getNetwork();
   const account = getAccount();
 
@@ -77,20 +85,16 @@ export const DataProvider = ({ children }: any) => {
       const day = parseInt(
         (new Date().valueOf() / 86400000).toString()
       ).toString();
-      const client = new ApolloClient({
-        uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
-        cache: new InMemoryCache(),
-      });
-      client
-        .query({
+      try {
+        const data = await GoerliClient.query({
           query: gql(QueryHome),
           variables: {
             id: SUBTITLE_SYSTEM[chain.id],
             first: 8,
             date: day,
           },
-        })
-        .then((data) => {
+        });
+        if (data && data.data) {
           const dashboard = data.data.dashboard;
           const dayData = data.data.dayData;
           const getApplications = data.data.applications;
@@ -143,31 +147,28 @@ export const DataProvider = ({ children }: any) => {
             platformInc: dayData ? dayData.platformCount : "0",
             subtitleInc: dayData ? dayData.subtitleCount : "0",
           });
-          setIsGetDataLoading(false);
-        })
-        .catch((err) => {
-          console.log("Error fetching data: ", err);
-          setIsGetDataLoading(false);
-        });
+        }
+        setIsGetDataLoading(false);
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+        setIsGetDataLoading(false);
+      }
     } else {
       clearData();
       console.log("Not support network!", chainId);
     }
   };
 
-  const queryApplicationData = (
+  const queryApplicationData = async (
     first: number,
     skip: number,
     language: string
   ) => {
     if (chain && SUPPORT_NETWORK.includes(chainId)) {
       setIsGetDataLoading(true);
-      const client = new ApolloClient({
-        uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
-        cache: new InMemoryCache(),
-      });
-      client
-        .query({
+      try {
+        const data = await GoerliClient.query({
           query: gql(
             language == "0" ? QueryApplication : QueryApplicationWithLanguage
           ),
@@ -176,8 +177,8 @@ export const DataProvider = ({ children }: any) => {
             skip: skip,
             languageId: language,
           },
-        })
-        .then((data) => {
+        });
+        if (data && data.data) {
           const getApplications =
             language == "0"
               ? data.data.applications
@@ -201,27 +202,28 @@ export const DataProvider = ({ children }: any) => {
             });
           });
           setApplications(applicationArray);
-          setIsGetDataLoading(false);
-        })
-        .catch((err) => {
-          console.log("Error fetching data: ", err);
-          setIsGetDataLoading(false);
-        });
+        }
+        setIsGetDataLoading(false);
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+        setIsGetDataLoading(false);
+      }
     } else {
       clearData();
       console.log("Not support network!", chainId);
     }
   };
 
-  const querySubtitleData = (first: number, skip: number, language: string) => {
+  const querySubtitleData = async (
+    first: number,
+    skip: number,
+    language: string
+  ) => {
     if (chain && SUPPORT_NETWORK.includes(chainId)) {
       setIsGetDataLoading(true);
-      const client = new ApolloClient({
-        uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
-        cache: new InMemoryCache(),
-      });
-      client
-        .query({
+      try {
+        const data = await GoerliClient.query({
           query: gql(
             language == "0" ? QuerySubtitle : QuerySubtitleWithLanguage
           ),
@@ -230,8 +232,8 @@ export const DataProvider = ({ children }: any) => {
             skip: skip,
             languageId: language,
           },
-        })
-        .then((data) => {
+        });
+        if (data && data.data) {
           const getSubtitles =
             language == "0"
               ? data.data.subtitles
@@ -255,31 +257,28 @@ export const DataProvider = ({ children }: any) => {
             });
           });
           setSubtitles(subtitleArray);
-          setIsGetDataLoading(false);
-        })
-        .catch((err) => {
-          console.log("Error fetching data: ", err);
-          setIsGetDataLoading(false);
-        });
+        }
+        setIsGetDataLoading(false);
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+        setIsGetDataLoading(false);
+      }
     } else {
       clearData();
       console.log("Not support network!", chainId);
     }
   };
 
-  const queryUserData = (userId: string) => {
-    const client = new ApolloClient({
-      uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
-      cache: new InMemoryCache(),
-    });
-    client
-      .query({
+  const queryUserData = async (userId: string) => {
+    try {
+      const data = await GoerliClient.query({
         query: gql(QueryUser),
         variables: {
           id: userId,
         },
-      })
-      .then((data) => {
+      });
+      if (data && data.data) {
         const user = data.data.user;
         setDefaultAuditSubtitleMaker({
           id: user.id,
@@ -288,27 +287,24 @@ export const DataProvider = ({ children }: any) => {
           adopted: user.adoptedCount,
           join: user.time,
         });
-      })
-      .catch((err) => {
-        console.log("Error fetching data: ", err);
-      });
+      }
+    } catch (err) {
+      console.log("Error fetching data: ", err);
+      message.error("Error: " + err);
+    }
   };
 
-  const queryUserOwnData = (address: string) => {
+  const queryUserOwnData = async (address: string) => {
     if (chain && SUPPORT_NETWORK.includes(chainId)) {
       setIsGetDataLoading(true);
-      const client = new ApolloClient({
-        uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
-        cache: new InMemoryCache(),
-      });
-      client
-        .query({
+      try {
+        const data = await GoerliClient.query({
           query: gql(QueryUserOwn),
           variables: {
             id: address.toLocaleLowerCase(),
           },
-        })
-        .then((data) => {
+        });
+        if (data && data) {
           const userData = data.data.user;
           const applicationArray = new Array<OwnApplication>();
           const subtitleArray = new Array<OwnSubtitle>();
@@ -359,25 +355,21 @@ export const DataProvider = ({ children }: any) => {
             subtitles: subtitleArray,
             audits: auditArray,
           });
-          setIsGetDataLoading(false);
-        })
-        .catch((err) => {
-          console.log("Error fetching data: ", err);
-          setIsGetDataLoading(false);
-        });
+        }
+        setIsGetDataLoading(false);
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+      }
     } else {
       clearData();
       console.log("Not support network!", chainId);
     }
   };
 
-  const queryUserLockedToken = (platform: string, day: number) => {
-    const client = new ApolloClient({
-      uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
-      cache: new InMemoryCache(),
-    });
-    client
-      .query({
+  const queryUserLockedToken = async (platform: string, day: number) => {
+    try {
+      const data = await GoerliClient.query({
         query: gql(QueryLockedToken),
         variables: {
           id:
@@ -387,79 +379,124 @@ export const DataProvider = ({ children }: any) => {
             "-" +
             day.toString(),
         },
-      })
-      .then((data) => {
+      });
+      if (data && data.data) {
         const locked = data.data.reward.locked;
         if (locked) {
           setUserDayLocakedToken(locked);
         }
-      })
-      .catch((err) => {
-        console.log("Error fetching data: ", err);
-      });
-  };
-
-  const queryRegiserLanugages = () => {
-    if (chain && SUPPORT_NETWORK.includes(chainId)) {
-      const client = new ApolloClient({
-        uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
-        cache: new InMemoryCache(),
-      });
-      client
-        .query({
-          query: gql(QueryLanguages),
-        })
-        .then((data) => {
-          const languages = data.data.languages;
-          if (languages) {
-            const languageArray = new Array<{ id: string; notes: string }>();
-            languages.map((item: any) => {
-              languageArray.push({
-                id: item.id,
-                notes: item.notes,
-              });
-            });
-            setRegiserLanguages(languageArray);
-          }
-        })
-        .catch((err) => {
-          console.log("Error fetching data: ", err);
-        });
+      }
+    } catch (err) {
+      console.log("Error fetching data: ", err);
+      message.error("Error: " + err);
     }
   };
 
-  const queryRegiserPlatforms = () => {
+  const queryRegiserLanugages = async () => {
     if (chain && SUPPORT_NETWORK.includes(chainId)) {
-      const client = new ApolloClient({
-        uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
-        cache: new InMemoryCache(),
-      });
-      client
-        .query({
+      try {
+        const data = await GoerliClient.query({
+          query: gql(QueryLanguages),
+        });
+        const languages = data.data.languages;
+        if (languages) {
+          const languageArray = new Array<{ id: string; notes: string }>();
+          languages.map((item: any) => {
+            languageArray.push({
+              id: item.id,
+              notes: item.notes,
+            });
+          });
+          setRegiserLanguages(languageArray);
+        }
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+      }
+    }
+  };
+
+  const queryRegiserPlatforms = async () => {
+    if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      try {
+        const data = await GoerliClient.query({
           query: gql(QueryPlatforms),
-        })
-        .then((data) => {
-          const platforms = data.data.platforms;
-          if (platforms) {
-            const platformArray = new Array<{ id: string; name: string }>();
-            platforms.map((item: any) => {
-              platformArray.push({
+        });
+        const platforms = data.data.platforms;
+        if (platforms) {
+          const platformArray = new Array<{ id: string; name: string }>();
+          platforms.map((item: any) => {
+            platformArray.push({
+              id: item.id,
+              name: item.name,
+            });
+          });
+          setRegiserPlatforms(platformArray);
+        }
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+      }
+    }
+  };
+  const querySpecialApplication = async (id: string) => {
+    if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      setIsGetDataLoading(true);
+      try {
+        const data: any = await GoerliClient.query({
+          query: gql(QuerySpecialApplication),
+          variables: {
+            id,
+          },
+        });
+        if (data && data.data && data.data.application) {
+          setBaseInfo({
+            applicant: data.data.application.applicant.id,
+            platform: data.data.application.video.platform.name,
+            deadline: data.data.application.deadline,
+            language: data.data.application.language.notes,
+            source: data.data.application.source,
+            uploads: data.data.application.subtitleCount,
+            adopted: data.data.application.adopted
+              ? data.data.application.adopted
+              : "None",
+            payType: data.data.application.strategy.notes,
+            start: data.data.application.start,
+          });
+          if (
+            data.data.application.subtitles &&
+            data.data.application.subtitles.length > 0
+          ) {
+            const palyerSubtitleArray = new Array<PlayerSubtitle>();
+            data.data.application.subtitles.map((item: any) => {
+              palyerSubtitleArray.push({
                 id: item.id,
-                name: item.name,
+                maker: item.maker.id,
+                reputation: item.maker.reputation,
+                deposit: item.maker.deposit,
+                support: item.supporterCount,
+                oppose: item.dissenterCount,
+                cid: item.cid,
+                fingerprint: item.fingerprint,
               });
             });
-            setRegiserPlatforms(platformArray);
+            setPlayerSubtitles(palyerSubtitleArray);
           }
-        })
-        .catch((err) => {
-          console.log("Error fetching data: ", err);
-        });
+        }
+        setIsGetDataLoading(false);
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+        setIsGetDataLoading(false);
+      }
     }
   };
 
   return (
     <DataContext.Provider
       value={{
+        playerSubtitles,
+        playerBaseInfo,
         dashboard,
         queryHomeData,
         applications,
@@ -471,6 +508,7 @@ export const DataProvider = ({ children }: any) => {
         queryUserData,
         queryUserOwnData,
         queryUserLockedToken,
+        querySpecialApplication,
         userDayLocakedToken,
         regiserLanguages,
         regiserPlatforms,

@@ -7,3 +7,4 @@ export { default as application_Illustration } from "./application_Illustration.
 export { default as government_Illustration } from "./government_Illustration.png";
 export { default as magellan_gradient } from "./magellan_gradient.png";
 export { default as personal_404 } from "./empty.svg";
+export { default as personal_default } from "./personal_default.webp";

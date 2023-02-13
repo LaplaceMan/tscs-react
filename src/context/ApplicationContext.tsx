@@ -79,7 +79,7 @@ export const ApplicationProvider = ({ children }: any) => {
     language: string
   ) => {
     let id = "0";
-    regiserLanguages.map((item) => {
+    regiserLanguages.map((item: any) => {
       if (item.notes == language) {
         id = item.id;
       }
@@ -173,6 +173,7 @@ export const ApplicationProvider = ({ children }: any) => {
           })
           .catch((err) => {
             console.log(err);
+            message.error("Error: " + err);
             setLoadingState(false);
           });
       }
@@ -202,6 +203,7 @@ export const ApplicationProvider = ({ children }: any) => {
           })
           .catch((err) => {
             console.log(err);
+            message.error("Error: " + err);
             setLoadingState(false);
           });
       }
@@ -226,6 +228,7 @@ export const ApplicationProvider = ({ children }: any) => {
           })
           .catch((err) => {
             console.log(err);
+            message.error("Error: " + err);
             setLoadingState(false);
           });
       }
@@ -292,6 +295,7 @@ export const ApplicationProvider = ({ children }: any) => {
           })
           .catch((err) => {
             console.log(err);
+            message.error("Error: " + err);
             setLoadingState(false);
           });
       }
@@ -326,6 +330,7 @@ export const ApplicationProvider = ({ children }: any) => {
           })
           .catch((err) => {
             console.log(err);
+            message.error("Error: " + err);
             setLoadingState(false);
           });
       }
@@ -372,6 +377,7 @@ export const ApplicationProvider = ({ children }: any) => {
           })
           .catch((err) => {
             console.log(err);
+            message.error("Error: " + err);
             setLoadingState(false);
           });
       }
@@ -396,6 +402,7 @@ export const ApplicationProvider = ({ children }: any) => {
           })
           .catch((err) => {
             console.log(err);
+            message.error("Error: " + err);
             setLoadingState(false);
           });
       }
@@ -432,6 +439,7 @@ export const ApplicationProvider = ({ children }: any) => {
           })
           .catch((err) => {
             console.log(err);
+            message.error("Error: " + err);
             setLoadingState(false);
           });
       }

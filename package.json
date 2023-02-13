@@ -20,7 +20,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
     "string-similarity-algorithm": "^1.1.0",
-    "wagmi": "^0.10.14"
+    "wagmi": "^0.11.5"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",

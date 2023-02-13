@@ -36,3 +36,6 @@ export const QueryLanguages = "query { languages {id notes}}";
 
 export const QueryLockedToken =
   "query($id: String) { reward(id: $id) { locked }}";
+
+export const QuerySpecialApplication =
+  "query($id: String){application(id: $id) {applicant{id} subtitleCount video {orderId platform {name}} language {notes} start deadline source strategy {notes} deadline adopted {id} subtitles {id maker {id reputation deposit} supporterCount dissenterCount cid fingerprint  } } } ";

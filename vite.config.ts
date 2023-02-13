@@ -25,6 +25,7 @@ export default defineConfig({
           "@tabs-ink-bar-color": "#000",
           "@primary-color": "#8f95fb",
           "@border-radius-base": "0.375rem",
+          "@zindex-affix": 10000,
         },
       },
     },

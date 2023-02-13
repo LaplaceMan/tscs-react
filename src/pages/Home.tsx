@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { ApplyCard, DashboardMini, SubtitleCard } from "../components";
-import { DashboardMiniItem } from "../types/baseTypes";
+import { Application, DashboardMiniItem, Subtitle } from "../types/baseTypes";
 import {
   MdPeopleAlt,
   MdAllInbox,
@@ -97,7 +97,8 @@ const Home = (): React.ReactElement => {
           <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
             {applications &&
               applications.map(
-                (item, index) => item.applyId != "" && ApplyCard(item, index)
+                (item: Application, index: number) =>
+                  item.applyId != "" && ApplyCard(item, index)
               )}
             {ApplicationItems.map((item, index) => ApplyCard(item, index))}
           </div>
@@ -115,7 +116,8 @@ const Home = (): React.ReactElement => {
           <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
             {subtitles &&
               subtitles.map(
-                (item, index) => item.applyId != "" && SubtitleCard(item, index)
+                (item: Subtitle, index: number) =>
+                  item.applyId != "" && SubtitleCard(item, index)
               )}
             {SubtitleItems.map((item, index) => SubtitleCard(item, index))}
           </div>

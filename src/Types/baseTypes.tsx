@@ -280,7 +280,44 @@ export type ApplicationContent = {
   getPersonalPageData: (address: string) => void;
 };
 
+export type PlayerBaseInfo = {
+  applicant: string;
+  platform: string;
+  deadline: string;
+  language: string;
+  source: string;
+  uploads: string;
+  adopted: string;
+  payType: string;
+  start: string;
+};
+
+export type PlayerSubtitle = {
+  id: string;
+  maker: string;
+  reputation: string;
+  deposit: string;
+  support: string;
+  oppose: string;
+  cid: string;
+  fingerprint: string;
+};
+
+export const defaultPlayerBaseInfo = {
+  applicant: "NaN",
+  platform: "NaN",
+  deadline: "",
+  language: "NaN",
+  source: "NaN",
+  uploads: "NaN",
+  adopted: "NaN",
+  start: "",
+  payType: "",
+};
+
 export type DataContent = {
+  playerSubtitles: PlayerSubtitle[];
+  playerBaseInfo: PlayerBaseInfo;
   applications: Application[] | null;
   subtitles: Subtitle[] | null;
   queryApplicationData: (first: number, skip: number, language: string) => void;
@@ -292,6 +329,7 @@ export type DataContent = {
   queryUserOwnData: (address: string) => void;
   queryUserData: (address: string) => void;
   queryUserLockedToken: (platform: string, day: number) => void;
+  querySpecialApplication: (id: string) => void;
   userDayLocakedToken: string;
   regiserLanguages: { id: string; notes: string }[];
   regiserPlatforms: { id: string; name: string }[];

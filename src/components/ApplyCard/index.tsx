@@ -7,6 +7,7 @@ import { Application } from "../../types/baseTypes";
 import { TimeRemainPercentage, shortenAddress } from "../../utils/tools";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
+import { Link } from "react-router-dom";
 
 const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
   const { updateDefaultUploadSubtitleData } = useContext(ApplicationContext);
@@ -41,9 +42,10 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
             <CircleFlag countryCode={data.language} />
           </div>
           <div className="flex flex-col items-start ml-3">
-            <div className="flex items-end text-lg font-semibold">
-              <a href={data.source}>Source</a>
-            </div>
+            <Link to={`/Player/${data.applyId}/0`}>
+              <div className="flex items-end text-lg font-semibold">Source</div>
+            </Link>
+
             <Tooltip title={data.applicant ? data.applicant : ""}>
               <div className="flex text-sm text-[#696969]">
                 {shortenAddress(data.applicant)}

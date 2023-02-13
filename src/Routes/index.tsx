@@ -7,6 +7,7 @@ import {
   Government,
   Personal,
   UserNotFound,
+  Player,
 } from "../pages";
 import { HeaderTop } from "../components";
 import React, { useContext } from "react";
@@ -19,6 +20,7 @@ export const AllRoutes = (): React.ReactElement => {
       <Route path="/Government" element={<Government />} />
       <Route path="/Personal/:id" element={<Personal />} />
       <Route path="/Personal/" element={<UserNotFound />} />
+      <Route path="/Player/:id/:id" element={<Player />} />
     </Routes>
   );
 };
@@ -27,17 +29,6 @@ export const HeaderRoutes = (): React.ReactElement => {
   const { scrollHeight } = useContext(GlobalContext);
   return (
     <Routes>
-      <Route
-        path="/Personal/:id"
-        element={
-          <Header
-            className="flex items-center bg-white shadow-sm"
-            style={{ padding: 0 }}
-          >
-            <HeaderTop />
-          </Header>
-        }
-      />
       <Route
         path="/*"
         element={
