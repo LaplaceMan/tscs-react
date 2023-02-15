@@ -50,7 +50,7 @@ const TokenCard = (token: OwnToken) => {
   };
 
   return (
-    <div className="flex flex-col p-3 items-center justify-center rounded-md shadow-md w-[300px] h-[180px] own-card mt-5 mx-5">
+    <div className="flex flex-col p-3 items-center justify-center rounded-3xl shadow-md w-[300px] h-[180px] own-card mt-5 mx-5">
       <div className="flex flex-row items-center justify-center">
         <img
           src={RANDOM_AVATAR_API}
@@ -59,7 +59,7 @@ const TokenCard = (token: OwnToken) => {
         <div className="flex flex-col items-start ml-3">
           <div className="text-lg font-medium text-black">{token.name}</div>
           <Tooltip title={token.address}>
-            <div className="flex test-sm rounded-md text-[#696969]">
+            <div className="flex test-sm rounded-xl text-[#696969]">
               {token.address ? shortenAddress(token.address) : ""}
             </div>
           </Tooltip>
@@ -74,14 +74,14 @@ const TokenCard = (token: OwnToken) => {
               : bignumberConvert(token.balance, DECIMALS_6, 2)
           )}
         </Tooltip>
-        <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />
+        <div className="w-[2px] rounded-xl bg-gray-100 h-[30px]" />
         {tokenCardItem("Type", token.type)}
-        <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />
+        <div className="w-[2px] rounded-xl bg-gray-100 h-[30px]" />
         {tokenCardItem("Issuer", token.issuser)}
       </div>
       <div className="flex w-full justify-between text-white font-semibold text-base">
         <div
-          className="flex w-1/2 py-1.5 rounded-lg bg-gradient-to-r cursor-pointer from-purple-400 to-purple-200 hover:brightness-110 mr-1 items-center justify-center"
+          className="flex w-1/2 py-1.5 rounded-xl bg-gradient-to-r cursor-pointer from-purple-400 to-purple-200 hover:brightness-110 mr-1 items-center justify-center"
           onClick={() =>
             tokenTransactionHandle(
               token.name,
@@ -97,7 +97,7 @@ const TokenCard = (token: OwnToken) => {
           Transfer
         </div>
         <div
-          className="flex w-1/2 py-1.5 rounded-lg ml-1 items-center justify-center bg-gradient-to-r cursor-pointer from-blue-200 to-blue-400 hover:brightness-110"
+          className="flex w-1/2 py-1.5 rounded-xl ml-1 items-center justify-center bg-gradient-to-r cursor-pointer from-blue-200 to-blue-400 hover:brightness-110"
           onClick={() =>
             tokenTransactionHandle(
               token.name,

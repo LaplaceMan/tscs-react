@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Tag, Spin } from "antd";
-import { useContext } from "react";
 import { BigNumber } from "bignumber.js";
 import { CircleFlag } from "react-circle-flags";
 import { MdOutlineClose } from "react-icons/md";
@@ -74,7 +73,7 @@ const AuditSubtitle = () => {
               <div className="flex items-center justify-center text-[#696969]">
                 Simhash Fingerprint
               </div>
-              <div className="flex p-2 bg-gray-100 break-all rounded-md font-medium items-center justify-center">
+              <div className="flex p-2 bg-gray-100 break-all rounded-xl font-medium items-center justify-center">
                 {"0x" +
                   BigNumber(defaultAuditSubtitleData.fingerprint).toString(16)}
               </div>
@@ -83,7 +82,7 @@ const AuditSubtitle = () => {
               <div className="flex items-center justify-center text-[#696969] ">
                 IPFS CID
               </div>
-              <div className="flex p-2 bg-gray-100 break-all font-medium rounded-md items-center justify-center">
+              <div className="flex p-2 bg-gray-100 break-all font-medium rounded-xl items-center justify-center">
                 {shortenCID(defaultAuditSubtitleData.cid, "audit")}
               </div>
             </div>
@@ -118,7 +117,7 @@ const AuditSubtitle = () => {
               <div className="flex items-center justify-center text-[#696969]">
                 Reputation
               </div>
-              <div className="flex p-2 bg-gray-100 break-all rounded-md font-medium items-center justify-center">
+              <div className="flex p-2 bg-gray-100 break-all rounded-xl font-medium items-center justify-center">
                 {BigNumber(defaultAuditSubtitleMaker.reputation)
                   .div(10)
                   .toString()}
@@ -128,7 +127,7 @@ const AuditSubtitle = () => {
               <div className="flex items-center justify-center text-[#696969] ">
                 Despoit Token
               </div>
-              <div className="flex p-2 bg-gray-100 break-all font-medium rounded-md items-center justify-center h-full">
+              <div className="flex p-2 bg-gray-100 break-all font-medium rounded-xl items-center justify-center h-full">
                 {defaultAuditSubtitleMaker.deposit}
               </div>
             </div>
@@ -136,13 +135,13 @@ const AuditSubtitle = () => {
         </div>
         <div className="flex items-center w-full text-white font-semibold text-base mt-2">
           <div
-            className="flex items-center justify-center rounded-md bg-gradient-to-r w-1/2 py-2 cursor-pointer from-purple-400 to-purple-200 mr-1 hover:brightness-110"
+            className="flex items-center justify-center rounded-xl bg-gradient-to-r w-1/2 py-2 cursor-pointer from-purple-400 to-purple-200 mr-1 hover:brightness-110"
             onClick={() => isConnected && auditSubtitle(txParams(0))}
           >
             Adopt
           </div>
           <div
-            className="flex items-center justify-center rounded-md bg-gradient-to-r w-1/2 py-2 cursor-pointer from-blue-200 to-blue-400 ml-1 hover:brightness-110"
+            className="flex items-center justify-center rounded-xl bg-gradient-to-r w-1/2 py-2 cursor-pointer from-blue-200 to-blue-400 ml-1 hover:brightness-110"
             onClick={() => isConnected && auditSubtitle(txParams(1))}
           >
             Report

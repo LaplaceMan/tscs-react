@@ -50,7 +50,7 @@ const TokenTransaction = () => {
             </div>
           </div>
           <Form.Item>
-            <div className="flex bg-gray-100 rounded-md p-2 items-center justify-between">
+            <div className="flex bg-gray-100 rounded-xl p-2 items-center justify-between">
               {ModelDataMini(
                 "Token Name",
                 null,
@@ -140,7 +140,7 @@ const TokenTransaction = () => {
             />
           </Form.Item>
           <div
-            className="flex items-center justify-center rounded-md text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
+            className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
             onClick={onFinish}
           >
             Confirm

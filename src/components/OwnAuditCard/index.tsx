@@ -27,7 +27,7 @@ const OwnAuditCard = (audit: OwnAudit, key: React.Key) => {
 
   return (
     <div
-      className="flex flex-col p-3 items-center justify-center rounded-md shadow-md w-[300px] h-[180px] own-card mt-5 mx-5"
+      className="flex flex-col p-3 items-center justify-center rounded-3xl shadow-md w-[300px] h-[180px] own-card mt-5 mx-5"
       key={key}
     >
       <div className="flex flex-row items-center justify-center">
@@ -39,7 +39,7 @@ const OwnAuditCard = (audit: OwnAudit, key: React.Key) => {
             #{audit.subtitleId}
           </div>
           <Tooltip title={audit.cid ? audit.cid : ""}>
-            <div className="flex test-sm rounded-md text-[#696969]">
+            <div className="flex test-sm rounded-xl text-[#696969]">
               {audit.cid ? shortenCID(audit.cid, "personal") : ""}
             </div>
           </Tooltip>
@@ -47,11 +47,11 @@ const OwnAuditCard = (audit: OwnAudit, key: React.Key) => {
       </div>
       <div className="flex w-full flex-row justify-between items-center my-3">
         {auditCardItem("Type", audit.type)}
-        <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />
+        <div className="w-[2px] rounded-xl bg-gray-100 h-[30px]" />
         {auditCardItem("Attitude", audit.attitude)}
-        <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />
+        <div className="w-[2px] rounded-xl bg-gray-100 h-[30px]" />
         {auditCardItem("State", audit.state)}
-        <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />
+        <div className="w-[2px] rounded-xl bg-gray-100 h-[30px]" />
         {auditCardItem("Apply ID", audit.applyId)}
       </div>
       <div className="flex w-full justify-between text-white font-semibold text-base">
@@ -62,7 +62,7 @@ const OwnAuditCard = (audit: OwnAudit, key: React.Key) => {
           Pre settlement
         </div>
         <div
-          className="flex w-1/2 py-1.5 rounded-lg ml-1 items-center justify-center bg-gradient-to-r cursor-pointer from-blue-200 to-blue-400 hover:brightness-110"
+          className="flex w-1/2 py-1.5 rounded-xl ml-1 items-center justify-center bg-gradient-to-r cursor-pointer from-blue-200 to-blue-400 hover:brightness-110"
           onClick={() => withdrawRewardHandle(audit.platform)}
         >
           Settlement

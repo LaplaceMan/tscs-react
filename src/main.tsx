@@ -9,12 +9,15 @@ import { ApplicationProvider } from "./context/ApplicationContext";
 import { DataProvider } from "./context/DataContext";
 import "@rainbow-me/rainbowkit/styles.css";
 import { WagmiConfig } from "wagmi";
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
 import { wagmiClient, chains } from "./client/wagmi";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <WagmiConfig client={wagmiClient}>
-    <RainbowKitProvider chains={chains}>
+    <RainbowKitProvider
+      chains={chains}
+      theme={lightTheme({ accentColor: "#32b1f1" })}
+    >
       <GlobalProvider>
         <DataProvider>
           <ApplicationProvider>

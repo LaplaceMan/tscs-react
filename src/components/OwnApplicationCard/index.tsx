@@ -28,7 +28,7 @@ const OwnApplicationCard = (application: OwnApplication, key: React.Key) => {
 
   return (
     <div
-      className="flex flex-col p-3 items-center justify-center rounded-md shadow-md w-[300px] h-[180px] mt-5 mx-5 own-card"
+      className="flex flex-col p-3 items-center justify-center rounded-3xl shadow-md w-[300px] h-[180px] mt-5 mx-5 own-card"
       key={key}
     >
       <div className="flex flex-row items-center justify-center">
@@ -40,7 +40,7 @@ const OwnApplicationCard = (application: OwnApplication, key: React.Key) => {
             {application.name}
           </div>
           <Tooltip title={application.source ? application.source : ""}>
-            <div className="flex test-sm rounded-md text-[#696969]">
+            <div className="flex test-sm rounded-xl text-[#696969]">
               {application.source
                 ? shortenCID(application.source, "personal")
                 : ""}
@@ -50,7 +50,7 @@ const OwnApplicationCard = (application: OwnApplication, key: React.Key) => {
       </div>
       <div className="flex w-full flex-row justify-between items-center my-3">
         {applicationCardItem("Type", application.type)}
-        <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />
+        <div className="w-[2px] rounded-xl bg-gray-100 h-[30px]" />
         <Tooltip title={application.price}>
           {applicationCardItem(
             "Price",
@@ -59,14 +59,14 @@ const OwnApplicationCard = (application: OwnApplication, key: React.Key) => {
               : bignumberConvert(application.price, DECIMALS_6, 2)
           )}
         </Tooltip>
-        <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />
+        <div className="w-[2px] rounded-xl bg-gray-100 h-[30px]" />
         {applicationCardItem("State", application.state)}
-        <div className="w-[2px] rounded-lg bg-gray-100 h-[30px]" />
+        <div className="w-[2px] rounded-xl bg-gray-100 h-[30px]" />
         {applicationCardItem("Apply ID", application.applyId)}
       </div>
       <div className="flex w-full justify-between text-white font-semibold text-base">
         <div
-          className="flex w-1/2 py-1.5 rounded-lg bg-gradient-to-r cursor-pointer from-purple-400 to-purple-200 hover:brightness-110 mr-1 items-center justify-center"
+          className="flex w-1/2 py-1.5 rounded-xl bg-gradient-to-r cursor-pointer from-purple-400 to-purple-200 hover:brightness-110 mr-1 items-center justify-center"
           onClick={() =>
             updateApplicationHandle({
               payType: application.type,
@@ -82,7 +82,7 @@ const OwnApplicationCard = (application: OwnApplication, key: React.Key) => {
           Update
         </div>
         <div
-          className="flex w-1/2 py-1.5 rounded-lg ml-1 items-center justify-center bg-gradient-to-r cursor-pointer from-blue-200 to-blue-400 hover:brightness-110"
+          className="flex w-1/2 py-1.5 rounded-xl ml-1 items-center justify-center bg-gradient-to-r cursor-pointer from-blue-200 to-blue-400 hover:brightness-110"
           onClick={() =>
             updateApplicationHandle({
               payType: application.type,

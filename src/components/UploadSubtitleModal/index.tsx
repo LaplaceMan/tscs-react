@@ -95,7 +95,7 @@ const UploadSubtitle = (): React.ReactElement => {
             </div>
           </div>
           <Form.Item>
-            <div className="flex bg-gray-100 rounded-md p-2 items-center justify-between">
+            <div className="flex bg-gray-100 rounded-xl p-2 items-center justify-between">
               {ModelDataMini("ZIMUs Available", <GiToken />, 0.01)}
               {ModelDataMini("Current Value", <AiFillDollarCircle />, 1.1)}
               {ModelDataMini("Gas Price", <SiEthereum />, gasPrice)}
@@ -160,7 +160,7 @@ const UploadSubtitle = (): React.ReactElement => {
             <div className="flex flex-row">
               <Input placeholder="Simhash fingerprint of subtitle." />
               <div
-                className="flex px-2 py-1 bg-[#696969] rounded-md ml-1 text-white font-medium hover:bg-gradient-to-r from-purple-400 to-blue-400 cursor-pointer"
+                className="flex px-2 py-1 bg-[#696969] rounded-xl ml-1 text-white font-medium hover:bg-gradient-to-r from-purple-400 to-blue-400 cursor-pointer"
                 onClick={showDrawer}
               >
                 Compute
@@ -194,7 +194,7 @@ const UploadSubtitle = (): React.ReactElement => {
             <Input placeholder="Subtitle storage link, as the tokenURI." />
           </Form.Item>
           <div
-            className="flex items-center justify-center rounded-md text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
+            className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
             onClick={onFinish}
           >
             Upload

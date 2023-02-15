@@ -17,7 +17,7 @@ const ModelDataMini = (
   number: number | string
 ) => {
   return (
-    <div className="flex bg-gray-100 rounded-md p-2">
+    <div className="flex bg-gray-100 rounded-xl p-2">
       <div className="flex flex-col items-center justify-center">
         {Label(label)} {Content(icon, number)}
       </div>

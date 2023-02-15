@@ -21,7 +21,7 @@ const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
   const AuditButton = (): React.ReactElement => {
     return (
       <div
-        className="flex items-center justify-center rounded-md text-white font-medium px-[1.1rem] py-3 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
+        className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-3 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
         onClick={() => auditSubtitleHandle()}
       >
         Audit
@@ -31,7 +31,7 @@ const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
 
   return (
     <div
-      className="flex flex-row bg-[white] p-4 my-5 rounded-md items-center shadow hover:shadow-xl"
+      className="flex flex-row bg-[white] p-4 my-5 rounded-3xl items-center shadow hover:shadow-xl"
       key={key}
     >
       <div className="flex flex-col items-start">

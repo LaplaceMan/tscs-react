@@ -46,12 +46,13 @@ const Player = () => {
     }
     const defaultProps = {
       id: `videoPlayer`,
-      source: playerBaseInfo.source,
+      source:
+        "http://10.201.1.236:8088/ipfs/QmYPAniT52qJvSTsPBTfK1BXgfgqNmALGfQpyaczsKePxh?filename=%E9%BB%91%E4%BA%BA%E5%B0%8F%E5%93%A5%E7%9C%8B%E9%BB%91%E7%A5%9E%E8%AF%9D%E6%82%9F%E7%A9%BA%E6%9C%80%E6%96%B0%E5%85%94%E5%B9%B4%E8%B4%BA%E5%B2%81%E7%9F%AD%E7%89%87.mp4",
       height: "100%",
       preload: false,
       isLive: false,
       autoplay: false,
-      language: playerBaseInfo.language,
+      language: "zh-cn",
       controlBarVisibility: "always",
       x5_fullscreen: true,
     };
@@ -75,11 +76,11 @@ const Player = () => {
         {
           kind: "subtitles",
           label: "#" + usedSubtitle.id,
-          src: usedSubtitle.source,
-          srclang: playerBaseInfo.language,
+          src: "http://10.201.1.236:8088/ipfs/Qmd78LiUk1YoV5v4EePoEy4wPMAGNYe1Z5tMVR52E9FBMW?filename=%5B%E4%B8%AD%E5%AD%97%5DBlack%20Myth%20Wukong%20We%20Finally%20Get%20Dates%20_%20GBG%20Reacts.vtt",
+          srclang: "zh-CN",
         },
       ]);
-      palyerRef.current._ccService.switch(playerBaseInfo.language);
+      palyerRef.current._ccService.switch("zh-CN");
     }
   };
 
@@ -103,7 +104,7 @@ const Player = () => {
   const AuditButton = ({ data }: { data: Subtitle }): React.ReactElement => {
     return (
       <div
-        className="flex items-center justify-center rounded-md text-white font-medium py-3 px-6 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
+        className="flex items-center justify-center rounded-xl text-white font-medium py-3 px-6 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
         onClick={() => auditSubtitleHandle(data)}
       >
         Audit
@@ -130,7 +131,7 @@ const Player = () => {
   }) => {
     return (
       <div
-        className={`flex flex-row rounded-md w-full items-center justify-between p-4 hover:bg-gray-50 cursor-pointer h-[90px] text-base ${
+        className={`flex flex-row rounded-3xl w-full items-center justify-between p-4 hover:bg-gray-50 cursor-pointer h-[90px] text-base ${
           usedSubtitle.id == id ? "bg-green-50" : ""
         }`}
         onClick={() => selectSubtitle(id, cid)}
