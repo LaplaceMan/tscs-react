@@ -335,6 +335,8 @@ export type DataContent = {
   regiserPlatforms: { id: string; name: string }[];
   isGetDataLoading: boolean;
   clearData: () => void;
+  queryRegiserLanugages: () => void;
+  queryRegiserPlatforms: () => void;
 };
 
 export type PersonalPageData = {

@@ -6,12 +6,12 @@ import ERC721ABI from "./abis/ERC721.json";
 import ACCESSABI from "./abis/AccessStrategy.json";
 import { useContract } from "wagmi";
 
-export const SUBTITLE_SYSTEM_ABI = MurmesABI.abi;
-export const ZIMU_TOKEN_ABI = ZimuTokenABI.abi;
-export const ERC20_ABI = ERC20ABI.abi;
-export const ERC1155_ABI = ERC1155ABI.abi;
-export const ERC721_ABI = ERC721ABI.abi;
-export const ACCESS_ABI = ACCESSABI.abi;
+export const SUBTITLE_SYSTEM_ABI = MurmesABI;
+export const ZIMU_TOKEN_ABI = ZimuTokenABI;
+export const ERC20_ABI = ERC20ABI;
+export const ERC1155_ABI = ERC1155ABI;
+export const ERC721_ABI = ERC721ABI;
+export const ACCESS_ABI = ACCESSABI;
 
 export const SUBTITLE_SYSTEM: { [key: number]: string } = {
   5: "0xD18bD5B3439c7994988534F2Bdbb64A0556085BB",

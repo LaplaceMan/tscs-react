@@ -8,10 +8,13 @@ import {
   Personal,
   UserNotFound,
   Player,
+  Tools,
 } from "../pages";
 import { HeaderTop } from "../components";
 import React, { useContext } from "react";
+
 const { Header } = Layout;
+
 export const AllRoutes = (): React.ReactElement => {
   return (
     <Routes>
@@ -21,6 +24,7 @@ export const AllRoutes = (): React.ReactElement => {
       <Route path="/Personal/:id" element={<Personal />} />
       <Route path="/Personal/" element={<UserNotFound />} />
       <Route path="/Player/:id/:id" element={<Player />} />
+      <Route path="/Tools" element={<Tools />} />
     </Routes>
   );
 };

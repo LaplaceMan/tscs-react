@@ -16,3 +16,4 @@ export { default as UpdateApplication } from "./UpdateApplicationModal/index";
 export { default as WithdrawReward } from "./WithdrawRewardModal/index";
 export { default as DepositAssetCard } from "./OwnDepositAssetCard/index";
 export { default as DepositAssetManageModal } from "./DepositAssetManageModal/index";
+export { default as ToolsMenu } from "./ToolsMenu/index";

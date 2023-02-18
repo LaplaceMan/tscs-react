@@ -1,444 +1,435 @@
-{
-  "_format": "hh-sol-artifact-1",
-  "contractName": "AccessStrategy",
-  "sourceName": "contracts/strategy/AccessStrategy.sol",
-  "abi": [
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "dao",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "newOpeator",
-          "type": "address"
-        }
-      ],
-      "name": "SystemChangeOpeator",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint16",
-          "name": "newBaseRatio",
-          "type": "uint16"
-        }
-      ],
-      "name": "SystemSetBaseRatio",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint8",
-          "name": "newBlacklistThreshold",
-          "type": "uint8"
-        }
-      ],
-      "name": "SystemSetBlacklistThreshold",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint8",
-          "name": "newDepoitThreshold",
-          "type": "uint8"
-        }
-      ],
-      "name": "SystemSetDepoitThreshold",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "newMinDeposit",
-          "type": "uint256"
-        }
-      ],
-      "name": "SystemSetMinDeposit",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint8",
-          "name": "newMultiplier",
-          "type": "uint8"
-        }
-      ],
-      "name": "SystemSetMultiplier",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "newPunishmentToken",
-          "type": "uint256"
-        }
-      ],
-      "name": "SystemSetPunishmentToken",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "newRewardToken",
-          "type": "uint256"
-        }
-      ],
-      "name": "SystemSetRewardToken",
-      "type": "event"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "reputation",
-          "type": "uint256"
-        },
-        {
-          "internalType": "int256",
-          "name": "deposit_",
-          "type": "int256"
-        }
-      ],
-      "name": "access",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "baseRatio",
-      "outputs": [
-        {
-          "internalType": "uint16",
-          "name": "",
-          "type": "uint16"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "blacklistThreshold",
-      "outputs": [
-        {
-          "internalType": "uint8",
-          "name": "",
-          "type": "uint8"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "newOpeator",
-          "type": "address"
-        }
-      ],
-      "name": "changeOpeator",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "reputation",
-          "type": "uint256"
-        }
-      ],
-      "name": "deposit",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "depositThreshold",
-      "outputs": [
-        {
-          "internalType": "uint16",
-          "name": "",
-          "type": "uint16"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "minDeposit",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "multiplier",
-      "outputs": [
-        {
-          "internalType": "uint8",
-          "name": "",
-          "type": "uint8"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "opeator",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "reputation",
-          "type": "uint256"
-        }
-      ],
-      "name": "punishment",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "punishmentToken",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "reputation",
-          "type": "uint256"
-        }
-      ],
-      "name": "reward",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "rewardToken",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint16",
-          "name": "newRatio",
-          "type": "uint16"
-        }
-      ],
-      "name": "setBaseRatio",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint8",
-          "name": "newBlacklistThreshold",
-          "type": "uint8"
-        }
-      ],
-      "name": "setBlacklistThreshold",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint8",
-          "name": "newDepoitThreshold",
-          "type": "uint8"
-        }
-      ],
-      "name": "setDepoitThreshold",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "newMinDeposit",
-          "type": "uint256"
-        }
-      ],
-      "name": "setMinDeposit",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint8",
-          "name": "newMultiplier",
-          "type": "uint8"
-        }
-      ],
-      "name": "setMultiplier",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "newPunishmentToken",
-          "type": "uint256"
-        }
-      ],
-      "name": "setPunishmentToken",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "newRewardToken",
-          "type": "uint256"
-        }
-      ],
-      "name": "setRewardToken",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "reputation",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint8",
-          "name": "flag",
-          "type": "uint8"
-        }
-      ],
-      "name": "spread",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    }
-  ],
-  "bytecode": "0x608060405234801561001057600080fd5b50604051610b70380380610b7083398101604081905261002f91610091565b600080546b0400000000000000000000006001908155600281905560035560048054640101f4271064ffffffffff19909316929092179092556001600160a01b03909216610100026001600160a81b03199092169190911760961790556100c1565b6000602082840312156100a357600080fd5b81516001600160a01b03811681146100ba57600080fd5b9392505050565b610aa0806100d06000396000f3fe608060405234801561001057600080fd5b50600436106101075760003560e01c806307b7d86f1461010c5780630b9c8dce146101215780630f3892961461014e57806316bda5501461016f5780631b3ed72214610178578063250d7ed4146101975780632eb5b041146101ba57806341b3d185146101cd5780634962c7ba146101d65780635ce33093146101e957806364cc323f146101fd578063734daaa1146102225780637724ae161461024957806383d993ce1461025c5780638fcc9cfb1461026f578063a9fb763c14610282578063ad008f4914610295578063b6b55f25146102a3578063c08ad315146102b6578063e0e0ba27146102c9578063f7c618c1146102dc575b600080fd5b61011f61011a3660046107fb565b6102e5565b005b61013461012f366004610825565b610359565b604080519283526020830191909152015b60405180910390f35b61016161015c3660046107fb565b6103f7565b604051908152602001610145565b61016160035481565b6004546101859060ff1681565b60405160ff9091168152602001610145565b6101aa6101a5366004610851565b610410565b6040519015158152602001610145565b61011f6101c8366004610873565b610462565b61016160015481565b61011f6101e436600461088e565b6104df565b60005461018590600160201b900460ff1681565b6004546102159061010090046001600160a01b031681565b60405161014591906108b2565b6000546102369062010000900461ffff1681565b60405161ffff9091168152602001610145565b61011f6102573660046107fb565b610552565b61011f61026a366004610873565b6105b6565b61011f61027d3660046107fb565b610627565b6101616102903660046107fb565b61068b565b6000546102369061ffff1681565b6101616102b13660046107fb565b610698565b61011f6102c43660046108c6565b610701565b61011f6102d7366004610873565b610780565b61016160025481565b60045461010090046001600160a01b0316331461031d5760405162461bcd60e51b8152600401610314906108ef565b60405180910390fd5b60028190556040518181527f919ff298b5db8fae01d76ccdc5bdc5bc98e1e92202c2460473f89d4ee1ce372f906020015b60405180910390a150565b6000808260ff166001141561038e5760006103738561068b565b905080600254826103849190610922565b92509250506103f0565b8260ff16600214156103e95760005462010000900461ffff166103b0856103f7565b6103ba9086610941565b10156103d5576103c9846103f7565b600354915091506103f0565b6103de846103f7565b6000915091506103f0565b5060009050805b9250929050565b6000805461040a90839061ffff16610958565b92915050565b6000805462010000900461ffff168311801590610435575061043183610698565b8213155b8061044c5750600054600160201b900460ff168311155b156104595750600061040a565b50600192915050565b60045461010090046001600160a01b031633146104915760405162461bcd60e51b8152600401610314906108ef565b6000805460ff60201b1916600160201b60ff8416908102919091179091556040519081527f1f1ff8f1adfb644a7d4d3fe1ad19efa067eb3dc36eefa5cb9cdee558fe46398b9060200161034e565b60045461010090046001600160a01b0316331461050e5760405162461bcd60e51b8152600401610314906108ef565b6000805461ffff191661ffff83169081179091556040519081527fa5d20e7f106bd2fc4d806c89002e98029d445743aa746ce13690608d0cf383059060200161034e565b60045461010090046001600160a01b031633146105815760405162461bcd60e51b8152600401610314906108ef565b60038190556040518181527f3aa865a4f27db3d78c14bc4773b1206c9b37f43ec550af7d0b7ae4bf607b7a6c9060200161034e565b60045461010090046001600160a01b031633146105e55760405162461bcd60e51b8152600401610314906108ef565b6004805460ff191660ff83169081179091556040519081527f910321587827ea87a4f74f3da5b5bfb9d406d6ba7ffc6b88b6a3fdbb86f9a6889060200161034e565b60045461010090046001600160a01b031633146106565760405162461bcd60e51b8152600401610314906108ef565b60018190556040518181527f1222db85f46899ce3b587083ec19e0704e56a1bba4f1ddd720aeb96ec0f54cdf9060200161034e565b600061040a606483610958565b6000805462010000900461ffff168211156106b557506000919050565b600080546064906106d190859062010000900461ffff16610941565b6106db9190610958565b90506106e8816002610a5e565b6001546106f59190610922565b9392505050565b919050565b60045461010090046001600160a01b031633146107305760405162461bcd60e51b8152600401610314906108ef565b60048054610100600160a81b0319166101006001600160a01b038416021790556040517fc230166d5b3c6ebe94babff2e9235c3d9567bab83962dff750557845669baf3c9061034e9083906108b2565b60045461010090046001600160a01b031633146107af5760405162461bcd60e51b8152600401610314906108ef565b6000805463ffff0000191660ff8316620100008102919091179091556040519081527f3e52bb0d95fac77cc922a5667936bd5caffbcaf54e9dc9c58b73d550dbf40dd59060200161034e565b60006020828403121561080d57600080fd5b5035919050565b803560ff811681146106fc57600080fd5b6000806040838503121561083857600080fd5b8235915061084860208401610814565b90509250929050565b6000806040838503121561086457600080fd5b50508035926020909101359150565b60006020828403121561088557600080fd5b6106f582610814565b6000602082840312156108a057600080fd5b813561ffff811681146106f557600080fd5b6001600160a01b0391909116815260200190565b6000602082840312156108d857600080fd5b81356001600160a01b03811681146106f557600080fd5b60208082526003908201526245523560e81b604082015260600190565b634e487b7160e01b600052601160045260246000fd5b600081600019048311821515161561093c5761093c61090c565b500290565b6000828210156109535761095361090c565b500390565b60008261097557634e487b7160e01b600052601260045260246000fd5b500490565b600181815b808511156109b557816000190482111561099b5761099b61090c565b808516156109a857918102915b93841c939080029061097f565b509250929050565b6000826109cc5750600161040a565b816109d95750600061040a565b81600181146109ef57600281146109f957610a15565b600191505061040a565b60ff841115610a0a57610a0a61090c565b50506001821b61040a565b5060208310610133831016604e8410600b8410161715610a38575081810a61040a565b610a42838361097a565b8060001904821115610a5657610a5661090c565b029392505050565b60006106f583836109bd56fea2646970667358221220d3bbce434138121706ab9dc98a008468c3b5f07045dd2dd7ccd278b3c39b71be64736f6c63430008090033",
-  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106101075760003560e01c806307b7d86f1461010c5780630b9c8dce146101215780630f3892961461014e57806316bda5501461016f5780631b3ed72214610178578063250d7ed4146101975780632eb5b041146101ba57806341b3d185146101cd5780634962c7ba146101d65780635ce33093146101e957806364cc323f146101fd578063734daaa1146102225780637724ae161461024957806383d993ce1461025c5780638fcc9cfb1461026f578063a9fb763c14610282578063ad008f4914610295578063b6b55f25146102a3578063c08ad315146102b6578063e0e0ba27146102c9578063f7c618c1146102dc575b600080fd5b61011f61011a3660046107fb565b6102e5565b005b61013461012f366004610825565b610359565b604080519283526020830191909152015b60405180910390f35b61016161015c3660046107fb565b6103f7565b604051908152602001610145565b61016160035481565b6004546101859060ff1681565b60405160ff9091168152602001610145565b6101aa6101a5366004610851565b610410565b6040519015158152602001610145565b61011f6101c8366004610873565b610462565b61016160015481565b61011f6101e436600461088e565b6104df565b60005461018590600160201b900460ff1681565b6004546102159061010090046001600160a01b031681565b60405161014591906108b2565b6000546102369062010000900461ffff1681565b60405161ffff9091168152602001610145565b61011f6102573660046107fb565b610552565b61011f61026a366004610873565b6105b6565b61011f61027d3660046107fb565b610627565b6101616102903660046107fb565b61068b565b6000546102369061ffff1681565b6101616102b13660046107fb565b610698565b61011f6102c43660046108c6565b610701565b61011f6102d7366004610873565b610780565b61016160025481565b60045461010090046001600160a01b0316331461031d5760405162461bcd60e51b8152600401610314906108ef565b60405180910390fd5b60028190556040518181527f919ff298b5db8fae01d76ccdc5bdc5bc98e1e92202c2460473f89d4ee1ce372f906020015b60405180910390a150565b6000808260ff166001141561038e5760006103738561068b565b905080600254826103849190610922565b92509250506103f0565b8260ff16600214156103e95760005462010000900461ffff166103b0856103f7565b6103ba9086610941565b10156103d5576103c9846103f7565b600354915091506103f0565b6103de846103f7565b6000915091506103f0565b5060009050805b9250929050565b6000805461040a90839061ffff16610958565b92915050565b6000805462010000900461ffff168311801590610435575061043183610698565b8213155b8061044c5750600054600160201b900460ff168311155b156104595750600061040a565b50600192915050565b60045461010090046001600160a01b031633146104915760405162461bcd60e51b8152600401610314906108ef565b6000805460ff60201b1916600160201b60ff8416908102919091179091556040519081527f1f1ff8f1adfb644a7d4d3fe1ad19efa067eb3dc36eefa5cb9cdee558fe46398b9060200161034e565b60045461010090046001600160a01b0316331461050e5760405162461bcd60e51b8152600401610314906108ef565b6000805461ffff191661ffff83169081179091556040519081527fa5d20e7f106bd2fc4d806c89002e98029d445743aa746ce13690608d0cf383059060200161034e565b60045461010090046001600160a01b031633146105815760405162461bcd60e51b8152600401610314906108ef565b60038190556040518181527f3aa865a4f27db3d78c14bc4773b1206c9b37f43ec550af7d0b7ae4bf607b7a6c9060200161034e565b60045461010090046001600160a01b031633146105e55760405162461bcd60e51b8152600401610314906108ef565b6004805460ff191660ff83169081179091556040519081527f910321587827ea87a4f74f3da5b5bfb9d406d6ba7ffc6b88b6a3fdbb86f9a6889060200161034e565b60045461010090046001600160a01b031633146106565760405162461bcd60e51b8152600401610314906108ef565b60018190556040518181527f1222db85f46899ce3b587083ec19e0704e56a1bba4f1ddd720aeb96ec0f54cdf9060200161034e565b600061040a606483610958565b6000805462010000900461ffff168211156106b557506000919050565b600080546064906106d190859062010000900461ffff16610941565b6106db9190610958565b90506106e8816002610a5e565b6001546106f59190610922565b9392505050565b919050565b60045461010090046001600160a01b031633146107305760405162461bcd60e51b8152600401610314906108ef565b60048054610100600160a81b0319166101006001600160a01b038416021790556040517fc230166d5b3c6ebe94babff2e9235c3d9567bab83962dff750557845669baf3c9061034e9083906108b2565b60045461010090046001600160a01b031633146107af5760405162461bcd60e51b8152600401610314906108ef565b6000805463ffff0000191660ff8316620100008102919091179091556040519081527f3e52bb0d95fac77cc922a5667936bd5caffbcaf54e9dc9c58b73d550dbf40dd59060200161034e565b60006020828403121561080d57600080fd5b5035919050565b803560ff811681146106fc57600080fd5b6000806040838503121561083857600080fd5b8235915061084860208401610814565b90509250929050565b6000806040838503121561086457600080fd5b50508035926020909101359150565b60006020828403121561088557600080fd5b6106f582610814565b6000602082840312156108a057600080fd5b813561ffff811681146106f557600080fd5b6001600160a01b0391909116815260200190565b6000602082840312156108d857600080fd5b81356001600160a01b03811681146106f557600080fd5b60208082526003908201526245523560e81b604082015260600190565b634e487b7160e01b600052601160045260246000fd5b600081600019048311821515161561093c5761093c61090c565b500290565b6000828210156109535761095361090c565b500390565b60008261097557634e487b7160e01b600052601260045260246000fd5b500490565b600181815b808511156109b557816000190482111561099b5761099b61090c565b808516156109a857918102915b93841c939080029061097f565b509250929050565b6000826109cc5750600161040a565b816109d95750600061040a565b81600181146109ef57600281146109f957610a15565b600191505061040a565b60ff841115610a0a57610a0a61090c565b50506001821b61040a565b5060208310610133831016604e8410600b8410161715610a38575081810a61040a565b610a42838361097a565b8060001904821115610a5657610a5661090c565b029392505050565b60006106f583836109bd56fea2646970667358221220d3bbce434138121706ab9dc98a008468c3b5f07045dd2dd7ccd278b3c39b71be64736f6c63430008090033",
-  "linkReferences": {},
-  "deployedLinkReferences": {}
-}
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "dao",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "newOpeator",
+        "type": "address"
+      }
+    ],
+    "name": "SystemChangeOpeator",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "newBaseRatio",
+        "type": "uint16"
+      }
+    ],
+    "name": "SystemSetBaseRatio",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "newBlacklistThreshold",
+        "type": "uint8"
+      }
+    ],
+    "name": "SystemSetBlacklistThreshold",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "newDepoitThreshold",
+        "type": "uint8"
+      }
+    ],
+    "name": "SystemSetDepoitThreshold",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newMinDeposit",
+        "type": "uint256"
+      }
+    ],
+    "name": "SystemSetMinDeposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "newMultiplier",
+        "type": "uint8"
+      }
+    ],
+    "name": "SystemSetMultiplier",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newPunishmentToken",
+        "type": "uint256"
+      }
+    ],
+    "name": "SystemSetPunishmentToken",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newRewardToken",
+        "type": "uint256"
+      }
+    ],
+    "name": "SystemSetRewardToken",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "reputation",
+        "type": "uint256"
+      },
+      {
+        "internalType": "int256",
+        "name": "deposit_",
+        "type": "int256"
+      }
+    ],
+    "name": "access",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "baseRatio",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "blacklistThreshold",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOpeator",
+        "type": "address"
+      }
+    ],
+    "name": "changeOpeator",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "reputation",
+        "type": "uint256"
+      }
+    ],
+    "name": "deposit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "depositThreshold",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "minDeposit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "multiplier",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "opeator",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "reputation",
+        "type": "uint256"
+      }
+    ],
+    "name": "punishment",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "punishmentToken",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "reputation",
+        "type": "uint256"
+      }
+    ],
+    "name": "reward",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "rewardToken",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "newRatio",
+        "type": "uint16"
+      }
+    ],
+    "name": "setBaseRatio",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "newBlacklistThreshold",
+        "type": "uint8"
+      }
+    ],
+    "name": "setBlacklistThreshold",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "newDepoitThreshold",
+        "type": "uint8"
+      }
+    ],
+    "name": "setDepoitThreshold",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newMinDeposit",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMinDeposit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "newMultiplier",
+        "type": "uint8"
+      }
+    ],
+    "name": "setMultiplier",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newPunishmentToken",
+        "type": "uint256"
+      }
+    ],
+    "name": "setPunishmentToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newRewardToken",
+        "type": "uint256"
+      }
+    ],
+    "name": "setRewardToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "reputation",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "flag",
+        "type": "uint8"
+      }
+    ],
+    "name": "spread",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

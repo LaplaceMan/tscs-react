@@ -67,11 +67,6 @@ export const DataProvider = ({ children }: any) => {
   const { chain } = getNetwork();
   const account = getAccount();
 
-  useEffect(() => {
-    queryRegiserLanugages();
-    queryRegiserPlatforms();
-  }, []);
-
   const clearData = () => {
     setSubtitles(null);
     setApplications(null);
@@ -439,6 +434,7 @@ export const DataProvider = ({ children }: any) => {
       }
     }
   };
+
   const querySpecialApplication = async (id: string) => {
     if (chain && SUPPORT_NETWORK.includes(chainId)) {
       setIsGetDataLoading(true);
@@ -514,6 +510,8 @@ export const DataProvider = ({ children }: any) => {
         regiserPlatforms,
         isGetDataLoading,
         clearData,
+        queryRegiserLanugages,
+        queryRegiserPlatforms,
       }}
     >
       {children}

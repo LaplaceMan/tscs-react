@@ -20,11 +20,15 @@ const Home = (): React.ReactElement => {
     subtitles,
     queryHomeData,
     isGetDataLoading,
+    queryRegiserLanugages,
+    queryRegiserPlatforms,
   } = useContext(DataContext);
   const { chainId } = useContext(GlobalContext);
 
   useEffect(() => {
     queryHomeData();
+    queryRegiserLanugages();
+    queryRegiserPlatforms();
     const timer = setInterval(() => {
       queryHomeData();
     }, 60000);
@@ -75,8 +79,8 @@ const Home = (): React.ReactElement => {
           Culture Without Boundaries
         </div>
         <div className="flex md:text-lg text-base w-2/3 text-center mt-5 font-medium">
-          Connect video creators, subtitle makers, viewers and artists in an
-          interesting ecosystem.
+          Connect video creators, subtitle makers, viewers, platforms and
+          artists in an interesting ecosystem.
         </div>
       </div>
       <div className="flex w-full flex-wrap items-center md:justify-between justify-center mt-10">

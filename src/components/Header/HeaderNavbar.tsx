@@ -3,7 +3,13 @@ import { Link } from "react-router-dom";
 import React, { ReactElement, useContext } from "react";
 import { IoMenuOutline, IoCloseOutline } from "react-icons/io5";
 import { BiUserCircle } from "react-icons/bi";
-import { BsCollection, BsGem, BsFileText, BsPerson } from "react-icons/bs";
+import {
+  BsCollection,
+  BsGem,
+  BsFileText,
+  BsPerson,
+  BsGearWideConnected,
+} from "react-icons/bs";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount, useEnsAvatar } from "wagmi";
@@ -15,6 +21,11 @@ const NavbarItems = [
     icon: <BsCollection fontSize="1rem" />,
   },
   { title: "Government", link: "/Government", icon: <BsGem fontSize="1rem" /> },
+  {
+    title: "Tools",
+    link: "/Tools",
+    icon: <BsGearWideConnected fontSize="1rem" />,
+  },
 ];
 
 const HeaderNavbar = () => {
