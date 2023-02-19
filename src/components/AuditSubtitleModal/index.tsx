@@ -11,7 +11,7 @@ import { GlobalContext } from "../../context/GlobalContext";
 import { timestampToDate, shortenAddress, shortenCID } from "../../utils/tools";
 import { Audit } from "../../types/formTypes";
 import { RANDOM_AVATAR_API } from "../../utils/constants";
-
+import { countryLanguageMap } from "../../utils/constants";
 const AuditSubtitle = () => {
   const { address, isConnected } = useAccount();
   const { defaultAuditSubtitleData, auditSubtitle } =
@@ -45,7 +45,11 @@ const AuditSubtitle = () => {
           <div className="flex flex-col w-1/2 mr-1">
             <div className="flex flex-row items-center justify-center">
               <div className="flex h-11">
-                <CircleFlag countryCode={defaultAuditSubtitleData.language} />
+                <CircleFlag
+                  countryCode={
+                    countryLanguageMap[defaultAuditSubtitleData.language]
+                  }
+                />
               </div>
               <div className="flex flex-col items-start ml-3">
                 <div className="text-lg font-medium">

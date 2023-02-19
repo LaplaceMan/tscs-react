@@ -8,7 +8,8 @@ const DepositAssetManageModal = () => {
   const [form] = Form.useForm();
   const { address, isConnected } = useAccount();
   const { isLoading, hideDespoitAssetModal } = useContext(GlobalContext);
-  const { depoitZimuManage } = useContext(ApplicationContext);
+  const { depoitZimuManage, defaultWithdrawOrDespoitData } =
+    useContext(ApplicationContext);
 
   const onFinish = () => {
     const values = form.getFieldsValue();
@@ -17,7 +18,9 @@ const DepositAssetManageModal = () => {
 
   useEffect(() => {
     if (isConnected) {
-      form.setFieldsValue({ address: address });
+      form.setFieldsValue({
+        address: address,
+      });
     } else {
       form.setFieldsValue(null);
     }
@@ -36,7 +39,9 @@ const DepositAssetManageModal = () => {
           className="w-full"
         >
           <div className="flex items-center justify-between mb-3">
-            <div className="text-xl font-bold">Withdraw unlocked tokens</div>
+            <div className="text-xl font-bold">
+              Despoit or Withdraw Zimu tokens
+            </div>
             <div
               className="flex hover:text-white hover:bg-black items-center justify-center cursor-pointer mt-1 rounded-full p-0.5"
               onClick={hideDespoitAssetModal}
@@ -59,7 +64,7 @@ const DepositAssetManageModal = () => {
             />
           </Form.Item>
           <div
-            className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
+            className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110 mt-3"
             onClick={onFinish}
           >
             Confirm

@@ -6,7 +6,11 @@ import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { UpdateApplication } from "../../types/formTypes";
 import { shortenCID, bignumberConvert } from "../../utils/tools";
-import { DECIMALS_18, DECIMALS_6 } from "../../utils/constants";
+import {
+  DECIMALS_18,
+  DECIMALS_6,
+  countryLanguageMap,
+} from "../../utils/constants";
 
 const applicationCardItem = (label: string, info: string) => {
   return (
@@ -18,7 +22,8 @@ const applicationCardItem = (label: string, info: string) => {
 };
 
 const OwnApplicationCard = (application: OwnApplication, key: React.Key) => {
-  const { updateDefaultUpdateApplication } = useContext(ApplicationContext);
+  const { updateDefaultUpdateApplication, cancelApplication } =
+    useContext(ApplicationContext);
   const { showUpdateApplicationModal } = useContext(GlobalContext);
 
   const updateApplicationHandle = (params: UpdateApplication) => {
@@ -33,11 +38,11 @@ const OwnApplicationCard = (application: OwnApplication, key: React.Key) => {
     >
       <div className="flex flex-row items-center justify-center">
         <div className="flex h-11 rounded-full shadow-md">
-          <CircleFlag countryCode={application.language} />
+          <CircleFlag countryCode={countryLanguageMap[application.language]} />
         </div>
         <div className="flex flex-col items-start ml-3">
           <div className="text-lg font-medium text-black">
-            {application.name}
+            {application.name.replace(/["]/g, "")}
           </div>
           <Tooltip title={application.source ? application.source : ""}>
             <div className="flex test-sm rounded-xl text-[#696969]">
@@ -73,7 +78,6 @@ const OwnApplicationCard = (application: OwnApplication, key: React.Key) => {
               oldAmount: application.price,
               oldDeadline: application.deadline,
               applyId: application.applyId,
-              type: "Update",
               amount: "",
               deadline: 0,
             })
@@ -83,19 +87,9 @@ const OwnApplicationCard = (application: OwnApplication, key: React.Key) => {
         </div>
         <div
           className="flex w-1/2 py-1.5 rounded-xl ml-1 items-center justify-center bg-gradient-to-r cursor-pointer from-blue-200 to-blue-400 hover:brightness-110"
-          onClick={() =>
-            updateApplicationHandle({
-              payType: application.type,
-              oldAmount: application.price,
-              oldDeadline: application.deadline,
-              applyId: application.applyId,
-              type: "Recover",
-              amount: "",
-              deadline: 0,
-            })
-          }
+          onClick={() => cancelApplication(application.applyId)}
         >
-          Recover
+          Cancel
         </div>
       </div>
     </div>

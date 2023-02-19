@@ -40,7 +40,7 @@ const TokenTransaction = () => {
         >
           <div className="flex items-center justify-between mb-3">
             <div className="text-xl font-bold">
-              Transfer or authorize your token
+              Transfer or approve your token
             </div>
             <div
               className="flex hover:text-white hover:bg-black items-center justify-center cursor-pointer mt-1 rounded-full p-0.5"
@@ -50,7 +50,7 @@ const TokenTransaction = () => {
             </div>
           </div>
           <Form.Item>
-            <div className="flex bg-gray-100 rounded-xl p-2 items-center justify-between">
+            <div className="flex bg-gray-100 rounded-xl p-1 items-center justify-between">
               {ModelDataMini(
                 "Token Name",
                 null,
@@ -140,7 +140,7 @@ const TokenTransaction = () => {
             />
           </Form.Item>
           <div
-            className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
+            className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110 mt-3"
             onClick={onFinish}
           >
             Confirm

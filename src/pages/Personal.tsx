@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Tabs, Empty, Spin } from "antd";
+import { Tabs, Spin } from "antd";
 import { SiEthereum } from "react-icons/si";
 import { DataContext } from "../context/DataContext";
 import { ApplicationContext } from "../context/ApplicationContext";
@@ -12,6 +12,7 @@ import {
   OwnSubtitleCard,
   OwnAuditCard,
   DepositAssetCard,
+  NoItems,
 } from "../components";
 import { ZIMU_TOKEN, VIDEO_TOKEN } from "../utils/contracts";
 import {
@@ -22,22 +23,7 @@ import {
 } from "@wagmi/core";
 import { personal_default } from "../assets";
 
-const NoItems = () => {
-  return (
-    <div className="flex flex-col mx-auto my-10">
-      <Empty description={false} />
-      <div className="flex flex-col max-w-[360px] mx-auto text-center">
-        <span className="font-bold text-2xl">No items to display</span>
-        <span className="text-[#696969] text-base mt-1">
-          Please refresh the page to try again or submit a new transaction.
-        </span>
-      </div>
-    </div>
-  );
-};
-
 const Personal = (): React.ReactElement => {
-  const user = window.location.pathname.slice(10);
   const { userOwnData, queryUserOwnData, isGetDataLoading } =
     useContext(DataContext);
   const { personalDID, getPersonalPageData } = useContext(ApplicationContext);
@@ -45,7 +31,7 @@ const Personal = (): React.ReactElement => {
   const [avatarAndName, setAvatarAndName] = useState({ avatar: "", name: "" });
   const { chain } = getNetwork();
   const provider = getProvider();
-
+  const user: string = window.location.pathname.slice(10);
   useEffect(() => {
     if (provider) {
       fetchEnsAvatar({ address: user as `0x${string}` }).then((ens: any) => {
@@ -93,6 +79,19 @@ const Personal = (): React.ReactElement => {
               : "",
           symbol: "VT",
           tokenId: "0",
+          decimals: 6,
+        })}
+        {OwnAssetCard({
+          name: "VideoToken-1",
+          balance: personalDID.vt1,
+          type: "ERC-1155",
+          issuser: "Lens",
+          address:
+            chain && SUPPORT_NETWORK.includes(chain.id)
+              ? VIDEO_TOKEN[chain.id]
+              : "",
+          symbol: "VT",
+          tokenId: "1",
           decimals: 6,
         })}
       </div>
@@ -153,6 +152,7 @@ const Personal = (): React.ReactElement => {
                 language: item.language,
                 type: item.type,
                 platform: item.platform,
+                videoId: item.videoId,
               },
               index
             )
@@ -185,6 +185,7 @@ const Personal = (): React.ReactElement => {
                 attitude: item.attitude,
                 type: item.type,
                 platform: item.platform,
+                videoId: item.videoId,
               },
               index
             )

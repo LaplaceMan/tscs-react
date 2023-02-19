@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   ApplicationContent,
   Subtitle,
@@ -30,6 +30,12 @@ import {
   VIDEO_TOKEN,
   ACCESS_STRATEGY,
   ACCESS_ABI,
+  AUTHORITY_STRATEGY,
+  AUTHORITY_ABI,
+  PLATFORM_MANAGER,
+  PLATFROM_ABI,
+  LENS_PROTOCOL,
+  LENS_ABI,
 } from "../utils/contracts";
 import { GlobalContext } from "./GlobalContext";
 import { DataContext } from "./DataContext";
@@ -44,13 +50,16 @@ import {
   writeContract,
 } from "@wagmi/core";
 
+import { DECIMALS_18 } from "../utils/constants";
+
 export const ApplicationContext = React.createContext<ApplicationContent>(
   {} as ApplicationContent
 );
 
 export const ApplicationProvider = ({ children }: any) => {
-  const { setLoadingState } = useContext(GlobalContext);
-  const { regiserLanguages } = useContext(DataContext);
+  const { setLoadingState, chainId } = useContext(GlobalContext);
+  const { queryRegiserLanugages, queryRegiserPlatforms, regiserLanguages } =
+    useContext(DataContext);
   const [personalDID, setPersonalDID] = useState<PersonalPageData>(
     defaultPersonalPageData
   );
@@ -66,9 +75,16 @@ export const ApplicationProvider = ({ children }: any) => {
     useState<UpdateApplication>(defaultUpdateApplication);
   const [defaultWithdrawOrDespoitData, setDefaultWithdrawOrDespoitData] =
     useState({ platform: "", manage: "" });
+  const [lensSettleable, setLensSettleable] = useState("0");
 
   const { chain } = getNetwork();
   const provider = getProvider();
+
+  useEffect(() => {
+    chainId;
+    queryRegiserLanugages();
+    queryRegiserPlatforms();
+  }, [chainId]);
 
   const updateDefaultAuditSubtitleData = (subtitle: Subtitle) => {
     setDefaultAuditSubtitleData(subtitle);
@@ -104,27 +120,33 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const getPersonalPageData = async (address: string) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      if (chain && SUPPORT_NETWORK.includes(chainId)) {
         const userBaseData = (await readContract({
-          address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+          address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
           abi: SUBTITLE_SYSTEM_ABI,
           functionName: "getUserBaseInfo",
           args: [address],
         })) as Array<ethers.BigNumber>;
         const zimuBalance = (await readContract({
-          address: ZIMU_TOKEN[chain.id] as `0x${string}`,
+          address: ZIMU_TOKEN[chainId] as `0x${string}`,
           abi: ZIMU_TOKEN_ABI,
           functionName: "balanceOf",
           args: [address],
         })) as ethers.BigNumber;
         const vtBalance = (await readContract({
-          address: VIDEO_TOKEN[chain.id] as `0x${string}`,
+          address: VIDEO_TOKEN[chainId] as `0x${string}`,
           abi: ERC1155_ABI,
           functionName: "balanceOf",
           args: [address, 0],
         })) as ethers.BigNumber;
+        const lensBalance = (await readContract({
+          address: VIDEO_TOKEN[chainId] as `0x${string}`,
+          abi: ERC1155_ABI,
+          functionName: "balanceOf",
+          args: [address, 1],
+        })) as ethers.BigNumber;
         const neededDepositZimu = (await readContract({
-          address: ACCESS_STRATEGY[chain.id] as `0x${string}`,
+          address: ACCESS_STRATEGY[chainId] as `0x${string}`,
           abi: ACCESS_ABI,
           functionName: "deposit",
           args: [userBaseData[0]],
@@ -135,15 +157,30 @@ export const ApplicationProvider = ({ children }: any) => {
           despoit: userBaseData[1],
           zimu: zimuBalance,
           vt0: vtBalance,
+          vt1: lensBalance,
           needed: neededDepositZimu,
         });
       }
     }
   };
 
+  const getLensRevenueSettlable = async (videoId: string) => {
+    if (provider) {
+      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+        const settlable = (await readContract({
+          address: AUTHORITY_STRATEGY[chainId] as `0x${string}`,
+          abi: AUTHORITY_ABI,
+          functionName: "getSettlableInLens",
+          args: [videoId],
+        })) as ethers.BigNumber;
+        setLensSettleable(bignumberConvert(settlable, DECIMALS_18, 2));
+      }
+    }
+  };
+
   const submitApplication = async (params: Submit) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      if (chain && SUPPORT_NETWORK.includes(chainId)) {
         let amount;
         if (params.strategy == 0) {
           amount = ethers.utils.parseUnits(params.amount.toString(), 18);
@@ -151,7 +188,7 @@ export const ApplicationProvider = ({ children }: any) => {
           amount = params.amount;
         }
         const config = await prepareWriteContract({
-          address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+          address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
           abi: SUBTITLE_SYSTEM_ABI,
           functionName: "submitApplication",
           args: [
@@ -182,9 +219,9 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const uploadSubtitle = async (params: Upload) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      if (chain && SUPPORT_NETWORK.includes(chainId)) {
         const config = await prepareWriteContract({
-          address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+          address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
           abi: SUBTITLE_SYSTEM_ABI,
           functionName: "uploadSubtitle",
           args: [
@@ -212,9 +249,9 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const auditSubtitle = async (params: Audit) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      if (chain && SUPPORT_NETWORK.includes(chainId)) {
         const config = await prepareWriteContract({
-          address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+          address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
           abi: SUBTITLE_SYSTEM_ABI,
           functionName: "evaluateSubtitle",
           args: [params.subtitleId, params.attitude],
@@ -237,7 +274,7 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const tokenTransaction = async (params: RealTokenTransaction) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      if (chain && SUPPORT_NETWORK.includes(chainId)) {
         let config;
         if (params.type == "ERC-20") {
           const amount = ethers.utils.parseUnits(params.amount.toString(), 18);
@@ -304,18 +341,18 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const preSettlement = async (type: string, applyId: string) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      if (chain && SUPPORT_NETWORK.includes(chainId)) {
         let config;
         if (type == "OT0") {
           config = await prepareWriteContract({
-            address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+            address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
             abi: SUBTITLE_SYSTEM_ABI,
             functionName: "preExtract0",
             args: [applyId],
           });
         } else {
           config = await prepareWriteContract({
-            address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+            address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
             abi: SUBTITLE_SYSTEM_ABI,
             functionName: "preExtractOther",
             args: [applyId],
@@ -341,33 +378,48 @@ export const ApplicationProvider = ({ children }: any) => {
     params: RealUpdateApplictaionTransaction
   ) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
-        let config, amount;
+      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+        let amount;
         if (defaultUpdateApplicationData.payType == "OT0") {
           amount = ethers.utils.parseUnits(params.amount.toString(), 18);
         } else {
           amount = ethers.utils.parseUnits(params.amount.toString(), 6);
         }
-        if (params.type == "Recover") {
-          config = await prepareWriteContract({
-            address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
-            abi: SUBTITLE_SYSTEM_ABI,
-            functionName: "recover",
-            args: [params.applyId, amount, params.deadline],
-          });
-        } else {
-          // params.type == "Update"
-          let deadline = params.deadline - timestamp();
-          if (deadline < 0) {
-            deadline = timestamp() + 864000;
-          }
-          config = await prepareWriteContract({
-            address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
-            abi: SUBTITLE_SYSTEM_ABI,
-            functionName: "updateApplication",
-            args: [params.applyId, amount, deadline],
-          });
+        let deadline = params.deadline - timestamp();
+        if (deadline < 0) {
+          deadline = timestamp() + 864000;
         }
+        const config = await prepareWriteContract({
+          address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
+          abi: SUBTITLE_SYSTEM_ABI,
+          functionName: "updateApplication",
+          args: [params.applyId, amount, deadline],
+        });
+        setLoadingState(true);
+        writeContract(config)
+          .then(async ({ hash, wait }) => {
+            await wait();
+            message.success("Success: " + hash);
+            setLoadingState(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            message.error("Error: " + err);
+            setLoadingState(false);
+          });
+      }
+    }
+  };
+
+  const cancelApplication = async (taskId: string) => {
+    if (provider) {
+      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+        const config = await prepareWriteContract({
+          address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
+          abi: SUBTITLE_SYSTEM_ABI,
+          functionName: "cancel",
+          args: [taskId],
+        });
         setLoadingState(true);
         writeContract(config)
           .then(async ({ hash, wait }) => {
@@ -386,9 +438,9 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const withdrawReward = async (params: RealWithdrawRewardTransaction) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      if (chain && SUPPORT_NETWORK.includes(chainId)) {
         const config = await prepareWriteContract({
-          address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+          address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
           abi: SUBTITLE_SYSTEM_ABI,
           functionName: "withdraw",
           args: [params.platform, [params.day]],
@@ -411,12 +463,12 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const depoitZimuManage = async (address: string, amount: number) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      if (chain && SUPPORT_NETWORK.includes(chainId)) {
         let config;
         const realAmount = ethers.utils.parseUnits(amount.toString(), 18);
         if (defaultWithdrawOrDespoitData.manage == "DESPOIT") {
           config = await prepareWriteContract({
-            address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+            address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
             abi: SUBTITLE_SYSTEM_ABI,
             functionName: "userJoin",
             args: [address, realAmount],
@@ -424,12 +476,62 @@ export const ApplicationProvider = ({ children }: any) => {
         } else {
           // defaultWithdrawOrDespoitData.manage == "WITHDRAW"
           config = await prepareWriteContract({
-            address: SUBTITLE_SYSTEM[chain.id] as `0x${string}`,
+            address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
             abi: SUBTITLE_SYSTEM_ABI,
             functionName: "withdrawDeposit",
             args: [realAmount],
           });
         }
+        setLoadingState(true);
+        writeContract(config)
+          .then(async ({ hash, wait }) => {
+            await wait();
+            message.success("Success: " + hash);
+            setLoadingState(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            message.error("Error: " + err);
+            setLoadingState(false);
+          });
+      }
+    }
+  };
+
+  const updateRevenueInLens = async (videoId: string) => {
+    if (provider) {
+      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+        const config = await prepareWriteContract({
+          address: PLATFORM_MANAGER[chainId] as `0x${string}`,
+          abi: PLATFROM_ABI,
+          functionName: "updateViewCounts",
+          args: [[videoId], [0]],
+        });
+        setLoadingState(true);
+        writeContract(config)
+          .then(async ({ hash, wait }) => {
+            await wait();
+            message.success("Success: " + hash);
+            setLoadingState(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            message.error("Error: " + err);
+            setLoadingState(false);
+          });
+      }
+    }
+  };
+
+  const swapRevenueInLens = async (amount: string) => {
+    if (provider) {
+      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+        const config = await prepareWriteContract({
+          address: AUTHORITY_STRATEGY[chainId] as `0x${string}`,
+          abi: AUTHORITY_ABI,
+          functionName: "swapInLens",
+          args: [amount],
+        });
         setLoadingState(true);
         writeContract(config)
           .then(async ({ hash, wait }) => {
@@ -469,6 +571,11 @@ export const ApplicationProvider = ({ children }: any) => {
         depoitZimuManage,
         personalDID,
         getPersonalPageData,
+        cancelApplication,
+        updateRevenueInLens,
+        swapRevenueInLens,
+        getLensRevenueSettlable,
+        lensSettleable,
       }}
     >
       {children}

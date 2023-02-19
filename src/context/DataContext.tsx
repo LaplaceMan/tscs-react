@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   DataContent,
   User,
@@ -35,7 +35,7 @@ import {
 import { getNetwork, getAccount } from "@wagmi/core";
 import { SUPPORT_NETWORK } from "../utils/constants";
 import { gql } from "@apollo/client";
-import { GoerliClient } from "../client/apollo";
+import { Client } from "../client/apollo";
 import { GlobalContext } from "./GlobalContext";
 import { message } from "antd";
 
@@ -59,7 +59,7 @@ export const DataProvider = ({ children }: any) => {
   const [regiserPlatforms, setRegiserPlatforms] = useState<
     { id: string; name: string }[]
   >([]);
-  const [playerBaseInfo, setBaseInfo] = useState<PlayerBaseInfo>(
+  const [playerBaseInfo, setPlayerBaseInfo] = useState<PlayerBaseInfo>(
     defaultPlayerBaseInfo
   );
   const [playerSubtitles, setPlayerSubtitles] = useState<PlayerSubtitle[]>([]);
@@ -81,7 +81,7 @@ export const DataProvider = ({ children }: any) => {
         (new Date().valueOf() / 86400000).toString()
       ).toString();
       try {
-        const data = await GoerliClient.query({
+        const data = await Client(chainId).query({
           query: gql(QueryHome),
           variables: {
             id: SUBTITLE_SYSTEM[chain.id],
@@ -163,7 +163,7 @@ export const DataProvider = ({ children }: any) => {
     if (chain && SUPPORT_NETWORK.includes(chainId)) {
       setIsGetDataLoading(true);
       try {
-        const data = await GoerliClient.query({
+        const data = await Client(chainId).query({
           query: gql(
             language == "0" ? QueryApplication : QueryApplicationWithLanguage
           ),
@@ -218,7 +218,7 @@ export const DataProvider = ({ children }: any) => {
     if (chain && SUPPORT_NETWORK.includes(chainId)) {
       setIsGetDataLoading(true);
       try {
-        const data = await GoerliClient.query({
+        const data = await Client(chainId).query({
           query: gql(
             language == "0" ? QuerySubtitle : QuerySubtitleWithLanguage
           ),
@@ -267,7 +267,7 @@ export const DataProvider = ({ children }: any) => {
 
   const queryUserData = async (userId: string) => {
     try {
-      const data = await GoerliClient.query({
+      const data = await Client(chainId).query({
         query: gql(QueryUser),
         variables: {
           id: userId,
@@ -293,13 +293,13 @@ export const DataProvider = ({ children }: any) => {
     if (chain && SUPPORT_NETWORK.includes(chainId)) {
       setIsGetDataLoading(true);
       try {
-        const data = await GoerliClient.query({
+        const data = await Client(chainId).query({
           query: gql(QueryUserOwn),
           variables: {
             id: address.toLocaleLowerCase(),
           },
         });
-        if (data && data) {
+        if (data && data.data && data.data.user) {
           const userData = data.data.user;
           const applicationArray = new Array<OwnApplication>();
           const subtitleArray = new Array<OwnSubtitle>();
@@ -330,6 +330,7 @@ export const DataProvider = ({ children }: any) => {
                 language: item.language.notes,
                 type: item.application.strategy.notes,
                 platform: item.application.video.platform.id,
+                videoId: item.application.video.orderId,
               });
             });
           userData.audits &&
@@ -343,6 +344,7 @@ export const DataProvider = ({ children }: any) => {
                 subtitleId: item.subtitle.id,
                 type: item.subtitle.application.strategy.notes,
                 platform: item.subtitle.application.video.platform.id,
+                videoId: item.subtitle.application.video.orderId,
               });
             });
           setUserOwnData({
@@ -355,6 +357,7 @@ export const DataProvider = ({ children }: any) => {
       } catch (err) {
         console.log("Error fetching data: ", err);
         message.error("Error: " + err);
+        setIsGetDataLoading(false);
       }
     } else {
       clearData();
@@ -364,7 +367,7 @@ export const DataProvider = ({ children }: any) => {
 
   const queryUserLockedToken = async (platform: string, day: number) => {
     try {
-      const data = await GoerliClient.query({
+      const data = await Client(chainId).query({
         query: gql(QueryLockedToken),
         variables: {
           id:
@@ -375,11 +378,11 @@ export const DataProvider = ({ children }: any) => {
             day.toString(),
         },
       });
-      if (data && data.data) {
+      if (data && data.data && data.data.reward && data.data.reward.locked) {
         const locked = data.data.reward.locked;
-        if (locked) {
-          setUserDayLocakedToken(locked);
-        }
+        setUserDayLocakedToken(locked);
+      } else {
+        setUserDayLocakedToken("0");
       }
     } catch (err) {
       console.log("Error fetching data: ", err);
@@ -390,7 +393,7 @@ export const DataProvider = ({ children }: any) => {
   const queryRegiserLanugages = async () => {
     if (chain && SUPPORT_NETWORK.includes(chainId)) {
       try {
-        const data = await GoerliClient.query({
+        const data = await Client(chainId).query({
           query: gql(QueryLanguages),
         });
         const languages = data.data.languages;
@@ -414,7 +417,7 @@ export const DataProvider = ({ children }: any) => {
   const queryRegiserPlatforms = async () => {
     if (chain && SUPPORT_NETWORK.includes(chainId)) {
       try {
-        const data = await GoerliClient.query({
+        const data = await Client(chainId).query({
           query: gql(QueryPlatforms),
         });
         const platforms = data.data.platforms;
@@ -423,7 +426,7 @@ export const DataProvider = ({ children }: any) => {
           platforms.map((item: any) => {
             platformArray.push({
               id: item.id,
-              name: item.name,
+              name: item.name.replace(/["]/g, ""),
             });
           });
           setRegiserPlatforms(platformArray);
@@ -439,14 +442,14 @@ export const DataProvider = ({ children }: any) => {
     if (chain && SUPPORT_NETWORK.includes(chainId)) {
       setIsGetDataLoading(true);
       try {
-        const data: any = await GoerliClient.query({
+        const data: any = await Client(chainId).query({
           query: gql(QuerySpecialApplication),
           variables: {
             id,
           },
         });
         if (data && data.data && data.data.application) {
-          setBaseInfo({
+          setPlayerBaseInfo({
             applicant: data.data.application.applicant.id,
             platform: data.data.application.video.platform.name,
             deadline: data.data.application.deadline,
@@ -454,7 +457,7 @@ export const DataProvider = ({ children }: any) => {
             source: data.data.application.source,
             uploads: data.data.application.subtitleCount,
             adopted: data.data.application.adopted
-              ? data.data.application.adopted
+              ? data.data.application.adopted.id
               : "None",
             payType: data.data.application.strategy.notes,
             start: data.data.application.start,

@@ -9,7 +9,6 @@ import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { getGasPriceFixed } from "../../utils/tools";
 import { DataContext } from "../../context/DataContext";
-import { countryLanguageMap } from "../../utils/constants";
 import { fetchFeeData } from "@wagmi/core";
 import { simhash } from "string-similarity-algorithm";
 
@@ -42,7 +41,7 @@ const UploadSubtitle = (): React.ReactElement => {
 
   const subtitleContentUpdate = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     let text = e.target.value.replace(
-      /[&\|\\\*^%$#@\-\!0123456789,.。，“”、]/g,
+      /[&\|\\\*^%$#@\-\!0123456789,.。，"“”、]/g,
       ""
     );
     text = text.replace(/\s*/g, "");
@@ -95,7 +94,7 @@ const UploadSubtitle = (): React.ReactElement => {
             </div>
           </div>
           <Form.Item>
-            <div className="flex bg-gray-100 rounded-xl p-2 items-center justify-between">
+            <div className="flex bg-gray-100 rounded-xl p-1 items-center justify-between">
               {ModelDataMini("ZIMUs Available", <GiToken />, 0.01)}
               {ModelDataMini("Current Value", <AiFillDollarCircle />, 1.1)}
               {ModelDataMini("Gas Price", <SiEthereum />, gasPrice)}
@@ -144,9 +143,7 @@ const UploadSubtitle = (): React.ReactElement => {
               {regiserLanguages &&
                 regiserLanguages.map((item, index) => (
                   <Option value={item.id} key={index}>
-                    {countryLanguageMap[item.notes]
-                      ? countryLanguageMap[item.notes]
-                      : item.notes}
+                    {item.notes}
                   </Option>
                 ))}
             </Select>
@@ -172,7 +169,7 @@ const UploadSubtitle = (): React.ReactElement => {
                 open={computeOpen}
               >
                 <div className="flex p-2 mb-2 items-center justify-center text-xl font-semibold">
-                  {subtitleTextContent.simhash}
+                  {"0x" + subtitleTextContent.simhash.toString(16)}
                 </div>
                 <TextArea
                   value={subtitleTextContent.content}
@@ -194,7 +191,7 @@ const UploadSubtitle = (): React.ReactElement => {
             <Input placeholder="Subtitle storage link, as the tokenURI." />
           </Form.Item>
           <div
-            className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
+            className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110 mt-3"
             onClick={onFinish}
           >
             Upload

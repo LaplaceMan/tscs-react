@@ -8,6 +8,7 @@ import { TimeRemainPercentage, shortenAddress } from "../../utils/tools";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { Link } from "react-router-dom";
+import { countryLanguageMap } from "../../utils/constants";
 
 const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
   const { updateDefaultUploadSubtitleData } = useContext(ApplicationContext);
@@ -39,7 +40,7 @@ const ApplyCard = (data: Application, key: React.Key): React.ReactElement => {
       <div className="flex flex-col items-start">
         <div className="flex flex-row items-center justify-start w-full min-w-[150px]">
           <div className="flex h-11">
-            <CircleFlag countryCode={data.language} />
+            <CircleFlag countryCode={countryLanguageMap[data.language]} />
           </div>
           <div className="flex flex-col items-start ml-3">
             <Link to={`/Player/${data.applyId}/0`}>

@@ -2,11 +2,11 @@ import { Pagination, Select, Spin } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { application_Illustration } from "../assets/index";
 import { FiArrowUpRight } from "react-icons/fi";
-import { ApplicationItems } from "../utils/testData";
-import { ApplyCard } from "../components";
+// import { ApplicationItems } from "../utils/testData";
+import { ApplyCard, NoItems } from "../components";
 import { GlobalContext } from "../context/GlobalContext";
 import { DataContext } from "../context/DataContext";
-import { DEFAULT_PAGE_SIZE, countryLanguageMap } from "../utils/constants";
+import { DEFAULT_PAGE_SIZE } from "../utils/constants";
 
 const { Option } = Select;
 const ApplicationPage = (): React.ReactElement => {
@@ -66,7 +66,10 @@ const ApplicationPage = (): React.ReactElement => {
             applications.map(
               (item, index) => item.applyId != "" && ApplyCard(item, index)
             )}
-          {ApplicationItems.map((item, index) => ApplyCard(item, index))}
+          {(!applications || !applications[0] || applications[0].applyId) && (
+            <NoItems />
+          )}
+          {/* {ApplicationItems.map((item, index) => ApplyCard(item, index))} */}
         </div>
       )}
 
@@ -87,9 +90,7 @@ const ApplicationPage = (): React.ReactElement => {
           {regiserLanguages.length > 0 &&
             regiserLanguages.map((item, index) => (
               <Option value={item.id} key={item + index.toString()}>
-                {countryLanguageMap[item.notes]
-                  ? countryLanguageMap[item.notes]
-                  : item.notes}
+                {item.notes}
               </Option>
             ))}
         </Select>

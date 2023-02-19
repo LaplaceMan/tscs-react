@@ -19,7 +19,7 @@ export const QueryUser =
   "query($id: BigInt) {user(id: $id) { id time adoptedCount reputation deposit }}";
 
 export const QueryUserOwn =
-  "query($id: String) { user(id: $id) { applications(orderBy: start, orderDirection: desc){id video{id platform {name}} strategy{notes} amount adopted{id} source language{notes} deadline} subtitlesOwner(orderBy: time, orderDirection: desc) {id cid supporterCount dissenterCount state application{id strategy{notes} video{platform{id}}} language{notes}} audits(orderBy: time, orderDirection: desc) { subtitle{id cid application{id strategy{notes} video{platform{id}}} language{notes} state} attitude} }}";
+  "query($id: String) { user(id: $id) { applications(orderBy: start, orderDirection: desc){id video{id platform {name}} strategy{notes} amount adopted{id} source language{notes} deadline} subtitlesOwner(orderBy: time, orderDirection: desc) {id cid supporterCount dissenterCount state application{id strategy{notes} video{platform{id} orderId}} language{notes}} audits(orderBy: time, orderDirection: desc) { subtitle{id cid application{id strategy{notes} video{platform{id} orderId}} language{notes} state} attitude} }}";
 
 export const QueryUserOwnApplication =
   "query($id: String) { user(id: $id) { applications(orderBy: start, orderDirection: desc){ id video{id platform {name}} strategy{notes} amount adopted{id} source language{notes} } }}";

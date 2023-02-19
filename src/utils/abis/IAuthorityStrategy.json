@@ -2,59 +2,17 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "ms",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "lens",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "videoId",
+        "type": "uint256"
       }
     ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "module",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "usability",
-        "type": "bool"
-      }
-    ],
-    "name": "SetWhitelistedLensModule",
-    "type": "event"
-  },
-  {
-    "inputs": [],
-    "name": "Lens",
+    "name": "getSettlableInLens",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "uint256",
         "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "Murmes",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -177,7 +135,13 @@
       }
     ],
     "name": "swapInLens",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   }

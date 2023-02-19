@@ -52,7 +52,6 @@ export type UpdateApplication = {
   applyId: string;
   amount: string;
   deadline: number;
-  type: string;
 };
 
 export const defaultUpdateApplication = {
@@ -69,7 +68,6 @@ export type RealUpdateApplictaionTransaction = {
   applyId: string;
   amount: number;
   deadline: number;
-  type: string;
 };
 
 export type RealWithdrawRewardTransaction = {

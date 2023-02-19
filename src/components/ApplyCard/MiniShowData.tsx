@@ -67,7 +67,12 @@ export const MiniShowData1 = (
 export const MiniShowData1Package = (data: Application): React.ReactElement => {
   return (
     <div className="flex flex-row h-full items-center justify-between">
-      {MiniShowData1(ApplyLabel[2], data.platformName, "", "")}
+      {MiniShowData1(
+        ApplyLabel[2],
+        data.platformName.replace(/["]/g, "").slice(0, 5),
+        "",
+        ""
+      )}
       <DividerH />
       {MiniShowData1(ApplyLabel[3], data.uploads, "", "")}
       <DividerH />

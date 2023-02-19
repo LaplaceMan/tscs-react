@@ -2,11 +2,12 @@ import { Pagination, Select, Spin } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 import { government_Illustration } from "../assets/index";
-import { SubtitleCard } from "../components";
-import { SubtitleItems } from "../utils/testData";
+import { SubtitleCard, NoItems } from "../components";
+// import { SubtitleItems } from "../utils/testData";
 import { DataContext } from "../context/DataContext";
 import { GlobalContext } from "../context/GlobalContext";
-import { DEFAULT_PAGE_SIZE, countryLanguageMap } from "../utils/constants";
+import { ApplicationContext } from "../context/ApplicationContext";
+import { DEFAULT_PAGE_SIZE } from "../utils/constants";
 const { Option } = Select;
 const Government = (): React.ReactElement => {
   const { showUploadModal, chainId } = useContext(GlobalContext);
@@ -17,7 +18,13 @@ const Government = (): React.ReactElement => {
     regiserLanguages,
     isGetDataLoading,
   } = useContext(DataContext);
+  const { updateDefaultUploadSubtitleData } = useContext(ApplicationContext);
   const [currentPage, setCurrentPage] = useState({ page: 1, language: "0" });
+
+  const handleUpload = () => {
+    updateDefaultUploadSubtitleData("0", "");
+    showUploadModal();
+  };
 
   useEffect(() => {
     querySubtitleData(DEFAULT_PAGE_SIZE, 0, "0");
@@ -46,7 +53,7 @@ const Government = (): React.ReactElement => {
           </div>
           <div
             className="flex md:px-12 py-2 text-white font-semibold md:text-lg  text-center rounded-full items-center justify-center bg-gradient-to-r from-purple-400 to-blue-400 mt-2 text-base px-10 cursor-pointer hover:brightness-110"
-            onClick={showUploadModal}
+            onClick={handleUpload}
           >
             Upload <FiArrowUpRight className="ml-3" />
           </div>
@@ -65,7 +72,10 @@ const Government = (): React.ReactElement => {
             subtitles.map(
               (item, index) => item.applyId != "0" && SubtitleCard(item, index)
             )}
-          {SubtitleItems.map((item, index) => SubtitleCard(item, index))}
+          {(!subtitles || !subtitles[0] || subtitles[0].applyId == "") && (
+            <NoItems />
+          )}
+          {/* {SubtitleItems.map((item, index) => SubtitleCard(item, index))} */}
         </div>
       )}
 
@@ -86,9 +96,7 @@ const Government = (): React.ReactElement => {
           {regiserLanguages.length > 0 &&
             regiserLanguages.map((item, index) => (
               <Option value={item.id} key={item + index.toString()}>
-                {countryLanguageMap[item.notes]
-                  ? countryLanguageMap[item.notes]
-                  : item.notes}
+                {item.notes}
               </Option>
             ))}
         </Select>

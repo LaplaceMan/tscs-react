@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { ApplyCard, DashboardMini, SubtitleCard } from "../components";
+import { ApplyCard, DashboardMini, SubtitleCard, NoItems } from "../components";
 import { Application, DashboardMiniItem, Subtitle } from "../types/baseTypes";
 import {
   MdPeopleAlt,
@@ -7,7 +7,7 @@ import {
   MdOutlineSubtitles,
   MdOutlineVideoLibrary,
 } from "react-icons/md";
-import { ApplicationItems, SubtitleItems } from "../utils/testData";
+// import { ApplicationItems, SubtitleItems } from "../utils/testData";
 import { Link } from "react-router-dom";
 import { DataContext } from "../context/DataContext";
 import { GlobalContext } from "../context/GlobalContext";
@@ -20,15 +20,11 @@ const Home = (): React.ReactElement => {
     subtitles,
     queryHomeData,
     isGetDataLoading,
-    queryRegiserLanugages,
-    queryRegiserPlatforms,
   } = useContext(DataContext);
   const { chainId } = useContext(GlobalContext);
 
   useEffect(() => {
     queryHomeData();
-    queryRegiserLanugages();
-    queryRegiserPlatforms();
     const timer = setInterval(() => {
       queryHomeData();
     }, 60000);
@@ -86,7 +82,7 @@ const Home = (): React.ReactElement => {
       <div className="flex w-full flex-wrap items-center md:justify-between justify-center mt-10">
         {DashboardMiniItems.map((item, index) => DashboardMini(item, index))}
       </div>
-      <div className="flex flex-col mt-10">
+      <div className="flex flex-col mt-10 w-full">
         <Link to="./Application">
           <div className="flex items-center justify-center mt-3 mb-2 text-lg font-semibold text-black hover:text-[#696969] cursor-pointer">
             <MdAllInbox className="mt-0.5 mr-3" />
@@ -98,13 +94,16 @@ const Home = (): React.ReactElement => {
             <Spin />
           </div>
         ) : (
-          <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
+          <div className="flex flex-wrap w-full items-center justify-around md:justify-between min-h-[100px]">
             {applications &&
               applications.map(
                 (item: Application, index: number) =>
                   item.applyId != "" && ApplyCard(item, index)
               )}
-            {ApplicationItems.map((item, index) => ApplyCard(item, index))}
+            {(!applications ||
+              !applications[0] ||
+              applications[0].applyId == "") && <NoItems />}
+            {/* {ApplicationItems.map((item, index) => ApplyCard(item, index))} */}
           </div>
         )}
         <Link to="./Government">
@@ -117,13 +116,16 @@ const Home = (): React.ReactElement => {
             <Spin />
           </div>
         ) : (
-          <div className="flex flex-wrap w-full items-center justify-around md:justify-between">
+          <div className="flex flex-wrap w-full items-center justify-around md:justify-between min-h-[100px]">
             {subtitles &&
               subtitles.map(
                 (item: Subtitle, index: number) =>
                   item.applyId != "" && SubtitleCard(item, index)
               )}
-            {SubtitleItems.map((item, index) => SubtitleCard(item, index))}
+            {(!subtitles || !subtitles[0] || subtitles[0].applyId == "") && (
+              <NoItems />
+            )}
+            {/* {SubtitleItems.map((item, index) => SubtitleCard(item, index))} */}
           </div>
         )}
       </div>

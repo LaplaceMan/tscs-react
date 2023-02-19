@@ -209,6 +209,7 @@ export type OwnSubtitle = {
   language: string;
   type: string;
   platform: string;
+  videoId: string;
 };
 
 export const defaultOwnSubtitle = {
@@ -221,6 +222,7 @@ export const defaultOwnSubtitle = {
   language: "",
   type: "",
   platform: "",
+  videoId: "",
 };
 
 export type OwnAudit = {
@@ -232,6 +234,7 @@ export type OwnAudit = {
   subtitleId: string;
   type: string;
   platform: string;
+  videoId: string;
 };
 
 export const defaultOwnAudit = {
@@ -243,6 +246,7 @@ export const defaultOwnAudit = {
   subtitleId: "0",
   type: "",
   platform: "",
+  videoId: "",
 };
 
 export type UserOwn = {
@@ -278,6 +282,11 @@ export type ApplicationContent = {
   depoitZimuManage: (address: string, amount: number) => void;
   personalDID: PersonalPageData;
   getPersonalPageData: (address: string) => void;
+  cancelApplication: (taskId: string) => void;
+  updateRevenueInLens: (videoId: string) => void;
+  swapRevenueInLens: (amount: string) => void;
+  getLensRevenueSettlable: (videoId: string) => void;
+  lensSettleable: string;
 };
 
 export type PlayerBaseInfo = {
@@ -344,6 +353,7 @@ export type PersonalPageData = {
   despoit: ethers.BigNumber;
   zimu: ethers.BigNumber;
   vt0: ethers.BigNumber;
+  vt1: ethers.BigNumber;
   needed: ethers.BigNumber;
 };
 
@@ -352,5 +362,6 @@ export const defaultPersonalPageData = {
   despoit: ethers.BigNumber.from("0"),
   zimu: ethers.BigNumber.from("0"),
   vt0: ethers.BigNumber.from("0"),
+  vt1: ethers.BigNumber.from("0"),
   needed: ethers.BigNumber.from("0"),
 };

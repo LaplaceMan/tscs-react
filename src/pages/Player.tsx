@@ -27,6 +27,7 @@ const tagFormat = (tagName: string, tagContent: string): string => {
   }
   return text;
 };
+
 const Player = () => {
   const [usedSubtitle, setUsedSubtitle] = useState({ id: "", source: "" });
   const palyerRef = useRef<any>();
@@ -46,13 +47,15 @@ const Player = () => {
     }
     const defaultProps = {
       id: `videoPlayer`,
-      source:
-        "http://10.201.1.236:8088/ipfs/QmYPAniT52qJvSTsPBTfK1BXgfgqNmALGfQpyaczsKePxh?filename=%E9%BB%91%E4%BA%BA%E5%B0%8F%E5%93%A5%E7%9C%8B%E9%BB%91%E7%A5%9E%E8%AF%9D%E6%82%9F%E7%A9%BA%E6%9C%80%E6%96%B0%E5%85%94%E5%B9%B4%E8%B4%BA%E5%B2%81%E7%9F%AD%E7%89%87.mp4",
+      source: playerBaseInfo.source,
       height: "100%",
       preload: false,
       isLive: false,
       autoplay: false,
-      language: "zh-cn",
+      language:
+        playerBaseInfo.language == "NaN"
+          ? "zh-cn"
+          : playerBaseInfo.language.toLocaleLowerCase(),
       controlBarVisibility: "always",
       x5_fullscreen: true,
     };
@@ -61,7 +64,7 @@ const Player = () => {
     }
     aliplayer = new (window as any).Aliplayer(defaultProps);
     palyerRef.current = aliplayer;
-  }, []);
+  }, [playerBaseInfo.language]);
 
   const auditSubtitleHandle = (data: Subtitle) => {
     updateDefaultAuditSubtitleData(data);
@@ -76,11 +79,13 @@ const Player = () => {
         {
           kind: "subtitles",
           label: "#" + usedSubtitle.id,
-          src: "http://10.201.1.236:8088/ipfs/Qmd78LiUk1YoV5v4EePoEy4wPMAGNYe1Z5tMVR52E9FBMW?filename=%5B%E4%B8%AD%E5%AD%97%5DBlack%20Myth%20Wukong%20We%20Finally%20Get%20Dates%20_%20GBG%20Reacts.vtt",
-          srclang: "zh-CN",
+          src: source,
+          srclang: playerBaseInfo.language.toLocaleLowerCase(),
         },
       ]);
-      palyerRef.current._ccService.switch("zh-CN");
+      palyerRef.current._ccService.switch(
+        playerBaseInfo.language.toLocaleLowerCase()
+      );
     }
   };
 
@@ -202,9 +207,9 @@ const Player = () => {
           <div className="flex rounded-md mt-[30px] px-2 py-5 justify-between flex-wrap items-center border-b-2">
             {baseData.map((item, index) => (
               <BaseInfo
+                key={index}
                 tagName={item.tagName}
                 tagContent={item.tagContent}
-                key={index}
               />
             ))}
           </div>

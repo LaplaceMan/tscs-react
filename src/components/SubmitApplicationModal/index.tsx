@@ -8,8 +8,6 @@ import { ModelDataMini } from "../index";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { DataContext } from "../../context/DataContext";
-import { countryLanguageMap } from "../../utils/constants";
-import { SUBTITLE_SYSTEM } from "../../utils/contracts";
 import { fetchFeeData } from "@wagmi/core";
 import { getGasPriceFixed } from "../../utils/tools";
 
@@ -56,7 +54,6 @@ const SubmitApplication = () => {
           initialValues={{
             strategy: 0,
             language: "1",
-            platform: String(SUBTITLE_SYSTEM[5]).toLowerCase(),
           }}
         >
           <div className="flex items-center justify-between mb-3">
@@ -71,7 +68,7 @@ const SubmitApplication = () => {
             </div>
           </div>
           <Form.Item>
-            <div className="flex bg-gray-100 rounded-xl p-2 items-center justify-between">
+            <div className="flex bg-gray-100 rounded-xl p-1 items-center justify-between">
               {ModelDataMini(
                 "DVTs Available",
                 <GiToken />,
@@ -138,7 +135,7 @@ const SubmitApplication = () => {
             name="amount"
             label="Payment amount"
             required
-            tooltip="Zimu token is required for one-time payment, and VT token of future expected income is used for others. Divided payment refers to the payment proportion, with a maximum of 1000000 (100%)."
+            tooltip="Zimu token is required for one-time payment, and VT token of future expected income is used for others. Divided payment refers to the payment proportion, with a maximum of 65535 (100%)."
           >
             <InputNumber
               placeholder="Payment amount or proportion."
@@ -160,9 +157,7 @@ const SubmitApplication = () => {
               {regiserLanguages.length > 0 &&
                 regiserLanguages.map((item, index) => (
                   <Option value={item.id} key={index}>
-                    {countryLanguageMap[item.notes]
-                      ? countryLanguageMap[item.notes]
-                      : item.notes}
+                    {item.notes}
                   </Option>
                 ))}
             </Select>
@@ -178,7 +173,7 @@ const SubmitApplication = () => {
             />
           </Form.Item>
           <div
-            className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
+            className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110 mt-3"
             onClick={onFinish}
           >
             Submit

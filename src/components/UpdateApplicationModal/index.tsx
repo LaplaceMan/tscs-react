@@ -1,4 +1,4 @@
-import { Select, Form, Input, InputNumber, Spin, DatePicker } from "antd";
+import { Form, Input, InputNumber, Spin, DatePicker } from "antd";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import React, { useContext, useEffect } from "react";
@@ -9,7 +9,6 @@ import { BASE_RATE } from "../../utils/constants";
 import { ethers } from "ethers";
 import { RealUpdateApplictaionTransaction } from "../../types/formTypes";
 
-const { Option } = Select;
 const UpdateApplication = () => {
   const [form] = Form.useForm();
   const { isLoading, hideUpdateApplicationModal } = useContext(GlobalContext);
@@ -53,7 +52,7 @@ const UpdateApplication = () => {
             </div>
           </div>
           <Form.Item>
-            <div className="flex bg-gray-100 rounded-xl p-2 items-center justify-between">
+            <div className="flex bg-gray-100 rounded-xl p-1 items-center justify-between">
               {ModelDataMini(
                 "Type",
                 null,
@@ -119,17 +118,8 @@ const UpdateApplication = () => {
               placeholder="The default is to extend by 365 days."
             />
           </Form.Item>
-          <Form.Item name="type" label="Type" required>
-            <Select
-              style={{ width: "100%" }}
-              disabled={defaultUpdateApplicationData.type != "" ? true : false}
-            >
-              <Option value="Recover">Recover</Option>
-              <Option value="Update">Update</Option>
-            </Select>
-          </Form.Item>
           <div
-            className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
+            className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110 mt-3"
             onClick={onFinish}
           >
             Update

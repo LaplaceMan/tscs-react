@@ -5,7 +5,7 @@ import { OwnSubtitle } from "../../types/baseTypes";
 import { shortenCID } from "../../utils/tools";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
-
+import { countryLanguageMap } from "../../utils/constants";
 const subtitleCardItem = (label: string, info: string) => {
   return (
     <div className="flex flex-col items-center">
@@ -32,7 +32,7 @@ const OwnSubtitleCard = (subtitle: OwnSubtitle, index: React.Key) => {
     >
       <div className="flex flex-row items-center justify-center">
         <div className="flex h-11 rounded-full shadow-md">
-          <CircleFlag countryCode={subtitle.language} />
+          <CircleFlag countryCode={countryLanguageMap[subtitle.language]} />
         </div>
         <div className="flex flex-col items-start ml-3">
           <div className="text-lg font-medium text-black">
@@ -57,7 +57,7 @@ const OwnSubtitleCard = (subtitle: OwnSubtitle, index: React.Key) => {
       <div className="flex w-full justify-between text-white font-semibold text-base">
         <div
           className="flex w-1/2 py-1.5 rounded-xl bg-gradient-to-r cursor-pointer from-purple-400 to-purple-200 hover:brightness-110 mr-1 items-center justify-center"
-          onClick={() => preSettlement(subtitle.type, subtitle.applyId)}
+          onClick={() => preSettlement(subtitle.type, subtitle.videoId)}
         >
           Pre settlement
         </div>

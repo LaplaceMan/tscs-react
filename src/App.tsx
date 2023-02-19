@@ -24,7 +24,9 @@ const App = () => {
     isWithdrawRewardModalOpen,
     isDespoitAssetModalOpen,
   } = useContext(GlobalContext);
+
   const path = location.pathname.split("/")[2];
+
   return (
     <div className={path == undefined || path == "" ? "mbg" : ""}>
       <Layout>

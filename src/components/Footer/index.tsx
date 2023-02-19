@@ -24,7 +24,7 @@ const DefaultFooter = () => {
         )}
       </div>
       <div className="flex text-sm mt-3">
-        Copyright © 2022 LaplaceMan. All rights reserved.
+        Copyright © 2023 LaplaceMan. All rights reserved.
       </div>
     </div>
   );

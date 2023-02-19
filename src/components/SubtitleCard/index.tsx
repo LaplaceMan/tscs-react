@@ -7,6 +7,7 @@ import { TimeRemainPercentage, shortenAddress } from "../../utils/tools";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { DataContext } from "../../context/DataContext";
 import { GlobalContext } from "../../context/GlobalContext";
+import { countryLanguageMap } from "../../utils/constants";
 
 const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
   const { updateDefaultAuditSubtitleData } = useContext(ApplicationContext);
@@ -37,7 +38,7 @@ const SubtitleCard = (data: Subtitle, key: React.Key): React.ReactElement => {
       <div className="flex flex-col items-start">
         <div className="flex flex-row items-center justify-start w-full min-w-[150px]">
           <div className="flex h-11">
-            <CircleFlag countryCode={data.language} />
+            <CircleFlag countryCode={countryLanguageMap[data.language]} />
           </div>
           <div className="flex flex-col items-start ml-3">
             <div className="flex items-end text-lg font-semibold">

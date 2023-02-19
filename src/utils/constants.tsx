@@ -1,32 +1,23 @@
-export const SUPPORT_NETWORK = [5];
+export const SUPPORT_NETWORK = [5, 80001];
 
 export const countryLanguageMap: { [key: string]: string } = {
-  cn: "Chinese",
-  us: "English(US)",
-  jp: "Japanese",
-  kr: "Korean",
-  de: "German",
-  fr: "French",
-  in: "Hindi",
-  gb: "English(UK)",
-  ru: "Russian",
-  es: "Spanish",
-  my: "Malay",
-  pt: "Portuguese",
-  th: "Thai",
-  bd: "Bengali",
-  sa: "Arabic",
+  "zh-CN": "cn",
+  "zh-TW": "cn",
+  "zh-HK": "cn",
+  "en-US": "us",
+  "ja-JP": "jp",
+  "ko-KR": "kr",
 };
 
-export const Settlement = ["OT0", "DR1", "OT2"];
+export const Settlement = ["OT0", "D1", "OTM2"];
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
-export const GRAPHQL_API =
-  "http://10.201.1.236:8000/subgraphs/name/tscs-subgrpah";
-
 export const GRAPHQL_SUBGRAPH_GOERLI_ABI =
   "https://api.thegraph.com/subgraphs/name/laplaceman/murmes-goerli";
+
+export const MUMBAI_SUBGRAPH_GOERLI_ABI =
+  "https://api.thegraph.com/subgraphs/name/laplaceman/murmes-mumbai-v5";
 
 export const RANDOM_AVATAR_API =
   "https://api.dicebear.com/5.x/adventurer-neutral/svg";
