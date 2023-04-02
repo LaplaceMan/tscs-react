@@ -47,7 +47,7 @@ const Player = () => {
     }
     const defaultProps = {
       id: `videoPlayer`,
-      source: playerBaseInfo.source,
+      source: "https://arweave.net/S07X1ToOk0TuU8JAcLtIJJUO_5ea0Dgh43oVrV7Zv2w",
       height: "100%",
       preload: false,
       isLive: false,
@@ -64,7 +64,7 @@ const Player = () => {
     }
     aliplayer = new (window as any).Aliplayer(defaultProps);
     palyerRef.current = aliplayer;
-  }, [playerBaseInfo.language]);
+  }, []);
 
   const auditSubtitleHandle = (data: Subtitle) => {
     updateDefaultAuditSubtitleData(data);

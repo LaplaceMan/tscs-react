@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { GlobalContent } from "../types/baseTypes";
-import { getScrollTop } from "../utils/tools";
 import { watchNetwork } from "@wagmi/core";
 export const GlobalContext = React.createContext<GlobalContent>(
   {} as GlobalContent
@@ -21,17 +20,12 @@ export const GlobalProvider = ({ children }: any) => {
   const [isDespoitAssetModalOpen, setIsDespoitAssetModalOpen] = useState(false);
 
   const [toggleMenu, setToggleMenu] = useState(false);
-  const [scrollHeight, setScrollHeight] = useState(0);
 
   const unwatch = watchNetwork((network) => {
     network.chain && setChainId(network.chain.id);
   });
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
-      const height: number = getScrollTop();
-      setScrollHeight(height);
-    });
     unwatch;
   }, [unwatch]);
 
@@ -101,7 +95,6 @@ export const GlobalProvider = ({ children }: any) => {
         chainId,
         toggleMenu,
         setToggleMenu,
-        scrollHeight,
         isLoading,
         isUploadModalOpen,
         isApplicationModalOpen,

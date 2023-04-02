@@ -43,6 +43,20 @@ ol, ul, dl {
   color: #696969 !important
 }
 
+/* 表格 */
+.ant-table *{
+  --tw-text-opacity: 1 !important;
+  color: rgb(203 213 225 / var(--tw-text-opacity)) !important;
+}
+
+.ant-table-thead > tr > th {
+  font-weight: 700 !important;
+  font-size: medium;
+  text-shadow: 0 0 5px #00BEA1;
+}
+
+
+
 .ant-spin-nested-loading > div > .ant-spin {
   max-height:none !important
 }

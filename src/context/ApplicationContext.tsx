@@ -183,7 +183,7 @@ export const ApplicationProvider = ({ children }: any) => {
       if (chain && SUPPORT_NETWORK.includes(chainId)) {
         let amount;
         if (params.strategy == 0) {
-          amount = ethers.utils.parseUnits(params.amount.toString(), 18);
+          amount = ethers.utils.parseEther(params.amount);
         } else {
           amount = params.amount;
         }

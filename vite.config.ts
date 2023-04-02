@@ -11,20 +11,31 @@ export default defineConfig({
         javascriptEnabled: true,
         modifyVars: {
           //在这里进行主题的修改，参考官方配置属性
-          "@layout-header-background": "transparent",
-          "@layout-body-background": "transparent",
+          //全局
+          "@body-background": "#0f0a19",
+          "@component-background": "#1b1524",
+          "@primary-color": "#00BEA1",
+          "@font-family":
+            "Consolas, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji",
+          //layout
+          "@layout-body-background": "@body-background",
           "@layout-header-height": "75px",
-          "@link-color": "#000",
-          "@link-hover-color": "#696969",
-          "@link-active-color": "#696969",
+          //link
+          "@link-color": "#fff",
+          //popover
           "@popover-padding-horizontal": 0,
+          //form
           "@form-item-margin-bottom": "5px",
-          "@layout-footer-padding": "24px 0px",
+          //表格
+          "@table-row-hover-bg": "#322d3a",
+          "@table-header-bg": "transparent",
+          "@table-footer-bg": "transparent",
+          "@table-border-color": "@body-background",
+          // tabs
           "@tabs-hover-color": "#000",
           "@tabs-highlight-color": "#000",
           "@tabs-ink-bar-color": "#000",
-          "@primary-color": "#32b1f1",
-          "@border-radius-base": "12px",
+          //modal
           "@modal-border-radius": "24px",
           "@zindex-affix": 10000,
         },

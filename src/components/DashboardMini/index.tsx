@@ -2,30 +2,28 @@ import React from "react";
 import { BiTrendingDown, BiTrendingUp } from "react-icons/bi";
 import { DashboardMiniItem } from "../../types/baseTypes";
 
-const DashboardMini = (item: DashboardMiniItem, key: React.Key) => {
+const DashboardMini = ({
+  item,
+  key,
+}: {
+  item: DashboardMiniItem;
+  key: React.Key;
+}) => {
   return (
     <div
-      className="flex flex-rows items-center rounded-3xl px-5 py-3 min-w-[257px] my-3 mx-3 md:mx-0"
+      className="flex flex-rows items-center justify-between rounded-3xl px-5 py-3 md:w-[250px] md:h-[100px] w-[200px] h-[85px] bg-[#1b1524] m-2"
       key={key}
-      style={{ background: item.bg }}
     >
-      <div className="flex flex-col items-start justify-center">
-        <div className="text-[#696969] text-sm font-medium">{item.label}</div>
-        <div className="text-2xl font-bold my-1">{item.number}</div>
-        <div className="flex flex-row items-center justify-center text-sm">
-          {item.change != "0" ? (
-            <BiTrendingUp color="green" className="mr-2" />
-          ) : (
-            <BiTrendingDown color="red" className="mr-2" />
-          )}
-          {item.change != "0"
-            ? `Increase by ${item.change} today`
-            : `Reduced by ${item.change} today`}
-        </div>
+      <div className="flex flex-col items-start justify-center text-slate-300">
+        <div className="md:text-base text-sm font-medium">{item.label}</div>
+        <div className="md:text-3xl text-2xl font-bold my-1">{item.number}</div>
       </div>
       <div
-        className="flex rounded-xl items-center justify-center w-10 h-10 ml-5 shadow-sm"
-        style={{ background: item.iconBg }}
+        className="flex rounded-xl items-center justify-center w-[50px] h-[50px]"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, #00BEA1 0%, rgba(255, 255, 255, 0.1) 70%)",
+        }}
       >
         {item.icon}
       </div>

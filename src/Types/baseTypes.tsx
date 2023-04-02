@@ -117,9 +117,6 @@ export type NavbarItem = {
 export type DashboardMiniItem = {
   label: string;
   number: string;
-  change: string;
-  bg: string;
-  iconBg: string;
   icon: React.ReactElement;
 };
 
@@ -148,7 +145,6 @@ export type GlobalContent = {
   hideAuditModal: () => void;
   toggleMenu: boolean;
   setToggleMenu: React.Dispatch<React.SetStateAction<boolean>>;
-  scrollHeight: number;
   setLoadingState: (state: boolean) => void;
   isTokenTransactionModalOpen: boolean;
   showTokenTransactionModal: () => void;

@@ -137,7 +137,7 @@ const SubmitApplication = () => {
             required
             tooltip="Zimu token is required for one-time payment, and VT token of future expected income is used for others. Divided payment refers to the payment proportion, with a maximum of 65535 (100%)."
           >
-            <InputNumber
+            <Input
               placeholder="Payment amount or proportion."
               min={0}
               style={{ width: "100%" }}

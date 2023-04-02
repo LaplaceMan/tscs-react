@@ -1,17 +1,18 @@
 import React, { useEffect, useContext } from "react";
-import { ApplyCard, DashboardMini, SubtitleCard, NoItems } from "../components";
-import { Application, DashboardMiniItem, Subtitle } from "../types/baseTypes";
+import { DashboardMini, PrimaryButton } from "../components";
+import { DashboardMiniItem } from "../types/baseTypes";
 import {
   MdPeopleAlt,
   MdAllInbox,
   MdOutlineSubtitles,
   MdOutlineVideoLibrary,
 } from "react-icons/md";
-// import { ApplicationItems, SubtitleItems } from "../utils/testData";
 import { Link } from "react-router-dom";
 import { DataContext } from "../context/DataContext";
 import { GlobalContext } from "../context/GlobalContext";
-import { Spin } from "antd";
+import { star_background, coins } from "../assets";
+import { Table } from "antd";
+import { columns, data } from "../utils/table/columns";
 
 const Home = (): React.ReactElement => {
   const {
@@ -35,99 +36,84 @@ const Home = (): React.ReactElement => {
 
   const DashboardMiniItems: DashboardMiniItem[] = [
     {
-      label: "All Applications",
-      number: dashboard ? dashboard.applicationCount : "0",
-      change: dashboard ? dashboard.applicationInc : "0",
-      bg: "#ecf8ef",
-      iconBg: "#00CD00",
-      icon: <MdAllInbox color="#fff" fontSize={25} />,
+      label: "All Tasks",
+      number: "0",
+      icon: <MdAllInbox color="#00BEA1" fontSize={25} />,
     },
     {
       label: "All Users",
-      number: dashboard ? dashboard.userCount : "0",
-      change: dashboard ? dashboard.userInc : "0",
-      bg: "#FDF5E6",
-      iconBg: "#FF8C00",
-      icon: <MdPeopleAlt color="#fff" fontSize={25} />,
+      number: "0",
+      icon: <MdPeopleAlt color="#00BEA1" fontSize={25} />,
     },
     {
-      label: "All Subtitles",
-      number: dashboard ? dashboard.subtitleCount : "0",
-      change: dashboard ? dashboard.subtitleInc : "0",
-      bg: "#B0EFFF",
-      iconBg: "#1E90FF",
-      icon: <MdOutlineSubtitles color="#fff" fontSize={25} />,
+      label: "All Items",
+      number: "0",
+      icon: <MdOutlineSubtitles color="#00BEA1" fontSize={25} />,
     },
     {
       label: "All Platforms",
-      number: dashboard ? dashboard.platformCount : "0",
-      change: dashboard ? dashboard.platformInc : "0",
-      bg: "#E6E6FA",
-      iconBg: "#9932CC",
-      icon: <MdOutlineVideoLibrary color="#fff" fontSize={25} />,
+      number: "0",
+      icon: <MdOutlineVideoLibrary color="#00BEA1" fontSize={25} />,
     },
   ];
 
   return (
-    <div className="flex flex-col items-center mt-12">
-      <div className="flex flex-col items-center">
-        <div className="text-4xl md:text-5xl font-bold text-center">
-          Culture Without Boundaries
-        </div>
-        <div className="flex md:text-lg text-base w-2/3 text-center mt-5 font-medium">
-          Connect video creators, subtitle makers, viewers, platforms and
-          artists in an interesting ecosystem.
+    <div className="flex flex-col items-center text-white">
+      <div
+        className="flex w-full"
+        style={{
+          backgroundImage: `url(${star_background})`,
+          backgroundSize: "100% 100%",
+        }}
+      >
+        <div
+          className="flex flex-col items-center text-center w-full bg-no-repeat bg-center py-5 bg-contain md:bg-auto"
+          style={{
+            backgroundImage: `url(${coins})`,
+          }}
+        >
+          <div className="my-10">
+            <div className="md:text-4xl text-3xl font-bold">
+              <div>Transparent, Fair, and Efficient</div>
+              <div>Crowdsourcing Experience</div>
+            </div>
+            <div className="md:text-xl text-lg font-medium text-slate-300 mt-5 ">
+              <div>Explore a modular, customizable, and</div>
+              <div>highly compatible crowdsourcing protocol</div>
+            </div>
+          </div>
+          <div className="flex mt-10 space-x-5">
+            <PrimaryButton label="Post" bgColor="#00BEA1" textColor="#fff" />
+            <PrimaryButton
+              label="Learn"
+              bgColor="#edebdc"
+              textColor="#000000"
+            />
+          </div>
         </div>
       </div>
-      <div className="flex w-full flex-wrap items-center md:justify-between justify-center mt-10">
-        {DashboardMiniItems.map((item, index) => DashboardMini(item, index))}
-      </div>
-      <div className="flex flex-col mt-10 w-full">
-        <Link to="./Application">
-          <div className="flex items-center justify-center mt-3 mb-2 text-lg font-semibold text-black hover:text-[#696969] cursor-pointer">
-            <MdAllInbox className="mt-0.5 mr-3" />
-            Applications
+      <div className="flex flex-col items-center md:w-[1200px] mt-12">
+        <div className="flex w-full flex-wrap md:justify-between justify-center ">
+          {DashboardMiniItems.map((item, index) => (
+            <DashboardMini item={item} key={index} />
+          ))}
+        </div>
+        <div className="flex flex-col mx-3 md:w-full mt-5">
+          <div className="flex flex-col px-2">
+            <div className="flex justify-center items-center py-2 text-[#00BEA1] text-base border-b border-[#0f0a19] bg-[#1b1524] rounded-t-3xl">
+              Latest Tasks
+            </div>
+            <Table
+              columns={columns}
+              dataSource={data}
+              pagination={false}
+              scroll={{ scrollToFirstRowOnChange: true, x: true }}
+            />
+            <div className="flex justify-center py-2 text-[#00BEA1] cursor-pointer text-base bg-[#1b1524] rounded-b-3xl">
+              See More
+            </div>
           </div>
-        </Link>
-        {isGetDataLoading ? (
-          <div className="flex w-full items-center justify-center h-32">
-            <Spin />
-          </div>
-        ) : (
-          <div className="flex flex-wrap w-full items-center justify-around md:justify-between min-h-[100px]">
-            {applications &&
-              applications.map(
-                (item: Application, index: number) =>
-                  item.applyId != "" && ApplyCard(item, index)
-              )}
-            {(!applications ||
-              !applications[0] ||
-              applications[0].applyId == "") && <NoItems />}
-            {/* {ApplicationItems.map((item, index) => ApplyCard(item, index))} */}
-          </div>
-        )}
-        <Link to="./Government">
-          <div className="flex items-center justify-center mt-6 mb-2 text-lg font-semibold text-black hover:text-[#696969] cursor-pointer">
-            <MdOutlineSubtitles className="mt-0.5 mr-3" /> Subtitles
-          </div>
-        </Link>
-        {isGetDataLoading ? (
-          <div className="flex w-full items-center justify-center h-32">
-            <Spin />
-          </div>
-        ) : (
-          <div className="flex flex-wrap w-full items-center justify-around md:justify-between min-h-[100px]">
-            {subtitles &&
-              subtitles.map(
-                (item: Subtitle, index: number) =>
-                  item.applyId != "" && SubtitleCard(item, index)
-              )}
-            {(!subtitles || !subtitles[0] || subtitles[0].applyId == "") && (
-              <NoItems />
-            )}
-            {/* {SubtitleItems.map((item, index) => SubtitleCard(item, index))} */}
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );

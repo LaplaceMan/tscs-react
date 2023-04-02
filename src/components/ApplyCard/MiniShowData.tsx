@@ -29,7 +29,7 @@ export const MiniShowData0Package = (data: Application): React.ReactElement => {
   let suffix = "";
   let prefix = "";
   let amount = data.amount;
-  if (data.payType === "OT0" || data.payType === "DR2") {
+  if (data.payType === "OT0" || data.payType === "OTM2") {
     prefix = "$";
     amount = bignumberConvert(amount, DECIMALS_18, 2);
     amount = shortenAmount(amount);

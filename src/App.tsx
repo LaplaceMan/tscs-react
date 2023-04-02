@@ -1,4 +1,5 @@
 import {
+  HeaderTop,
   UploadSubtitle,
   SubmitApplication,
   AuditSubtitle,
@@ -10,10 +11,10 @@ import {
 } from "./components";
 import React, { useContext } from "react";
 import { Layout, Affix, Modal } from "antd";
-import { AllRoutes, HeaderRoutes } from "./routes";
+import { AllRoutes } from "./routes";
 import { GlobalContext } from "./context/GlobalContext";
 
-const { Content, Footer } = Layout;
+const { Header, Content, Footer } = Layout;
 const App = () => {
   const {
     isUploadModalOpen,
@@ -28,11 +29,18 @@ const App = () => {
   const path = location.pathname.split("/")[2];
 
   return (
-    <div className={path == undefined || path == "" ? "mbg" : ""}>
+    <div>
       <Layout>
-        <Affix offsetTop={0}>{HeaderRoutes()}</Affix>
+        <Affix offsetTop={0}>
+          <Header
+            className="flex items-center bg-[#0f0a19]"
+            style={{ padding: 0 }}
+          >
+            <HeaderTop />
+          </Header>
+        </Affix>
         <div className="flex w-full items-center justify-center">
-          <Content className="max-w-[1400px] md:mx-10 min-h-[70vh]">
+          <Content>
             {AllRoutes()}
             <Modal
               open={isUploadModalOpen}

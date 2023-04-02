@@ -64,7 +64,7 @@ export const AUDIT_STRATEGY: { [key: number]: string } = {
 
 export const AUTHORITY_STRATEGY: { [key: number]: string } = {
   5: "0xbBdD22dFE991F5366AC6895B18c6A2Fe11c892f1",
-  80001: "0x7AAD4638e45542fCCEBed5Aa65F7327Ee1a2704E",
+  80001: "0x7851CB87dbDF86Dd76ee1e8BD1D6Cfe95446d2Ed",
 };
 
 export const DETECTION_STRATEGY: { [key: number]: string } = {

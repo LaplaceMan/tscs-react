@@ -1,7 +1,11 @@
 import React, { useContext } from "react";
 import { OwnToken } from "../../types/baseTypes";
 import { Tooltip } from "antd";
-import { shortenAddress, bignumberConvert } from "../../utils/tools";
+import {
+  shortenAddress,
+  bignumberConvert,
+  personalAssetBalanceOptimize,
+} from "../../utils/tools";
 import {
   DECIMALS_18,
   DECIMALS_6,
@@ -71,7 +75,9 @@ const TokenCard = (token: OwnToken) => {
             "Balance",
             token.type == "ERC-20"
               ? bignumberConvert(token.balance, DECIMALS_18, 2)
-              : bignumberConvert(token.balance, DECIMALS_6, 2)
+              : personalAssetBalanceOptimize(
+                  bignumberConvert(token.balance, DECIMALS_6, 2)
+                )
           )}
         </Tooltip>
         <div className="w-[2px] rounded-xl bg-gray-100 h-[30px]" />

@@ -1,5 +1,5 @@
 export type Submit = {
-  amount: number;
+  amount: string;
   platform: string;
   deadline: number;
   language: number;

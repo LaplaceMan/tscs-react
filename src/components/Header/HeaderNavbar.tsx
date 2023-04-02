@@ -39,7 +39,7 @@ const HeaderNavbar = () => {
     return (
       <Link to={item.link} key={key}>
         <li
-          className={`mx-4 cursor-pointer text-lg font-medium flex items-center justify-center ${
+          className={`mx-4 cursor-pointer text-lg font-medium flex items-center justify-center text-white ${
             toggleMenu ? "my-3" : ""
           }`}
         >
@@ -58,7 +58,7 @@ const HeaderNavbar = () => {
         rel="noreferrer noopener"
       >
         <li
-          className={`mx-4 cursor-pointer text-lg font-medium flex items-center justify-center ${
+          className={`mx-4 cursor-pointer text-lg font-medium flex items-center justify-center text-white ${
             toggleMenu ? "my-3" : ""
           }`}
         >

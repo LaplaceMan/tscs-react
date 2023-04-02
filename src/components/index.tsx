@@ -18,3 +18,4 @@ export { default as DepositAssetCard } from "./OwnDepositAssetCard/index";
 export { default as DepositAssetManageModal } from "./DepositAssetManageModal/index";
 export { default as ToolsMenu } from "./ToolsMenu/index";
 export { default as NoItems } from "./NoItems/index";
+export { default as PrimaryButton } from "./PrimaryButton/index";

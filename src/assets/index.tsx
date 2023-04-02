@@ -8,3 +8,5 @@ export { default as government_Illustration } from "./government_Illustration.pn
 export { default as magellan_gradient } from "./magellan_gradient.png";
 export { default as personal_404 } from "./empty.svg";
 export { default as personal_default } from "./personal_default.webp";
+export { default as star_background } from "./star_background.png";
+export { default as coins } from "./coins.png";

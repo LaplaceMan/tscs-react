@@ -17,14 +17,14 @@ const iconItem = [
 
 const DefaultFooter = () => {
   return (
-    <div className="flex flex-col w-full md:px-[60px] px-[20px]">
+    <div className="flex flex-col w-full">
       <div className="flex flex-row">
         {iconItem.map((item, index) =>
           footerLinkIcon(item.src, item.link, index)
         )}
       </div>
       <div className="flex text-sm mt-3">
-        Copyright © 2023 LaplaceMan. All rights reserved.
+        Copyright © 2023 Heichen. All rights reserved.
       </div>
     </div>
   );
