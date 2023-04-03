@@ -27,6 +27,7 @@ export default defineConfig({
           //form
           "@form-item-margin-bottom": "5px",
           //表格
+          "@table-bg": "transparent",
           "@table-row-hover-bg": "#322d3a",
           "@table-header-bg": "transparent",
           "@table-footer-bg": "transparent",

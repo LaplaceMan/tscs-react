@@ -116,6 +116,7 @@ export type NavbarItem = {
 
 export type DashboardMiniItem = {
   label: string;
+  tag: string;
   number: string;
   icon: React.ReactElement;
 };

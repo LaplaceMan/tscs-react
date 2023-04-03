@@ -1,7 +1,6 @@
 export { default as HeaderTop } from "./Header/index";
 export { default as ApplyCard } from "./ApplyCard/index";
 export { default as SubtitleCard } from "./SubtitleCard/index";
-export { default as DashboardMini } from "./DashboardMini/index";
 export { default as SubmitApplication } from "./SubmitApplicationModal/index";
 export { default as ModelDataMini } from "./ModelDataMini/index";
 export { default as UploadSubtitle } from "./UploadSubtitleModal/index";
@@ -19,3 +18,4 @@ export { default as DepositAssetManageModal } from "./DepositAssetManageModal/in
 export { default as ToolsMenu } from "./ToolsMenu/index";
 export { default as NoItems } from "./NoItems/index";
 export { default as PrimaryButton } from "./PrimaryButton/index";
+export { default as DotsContainer } from "./DotsContainer/index";

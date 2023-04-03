@@ -10,3 +10,7 @@ export { default as personal_404 } from "./empty.svg";
 export { default as personal_default } from "./personal_default.webp";
 export { default as star_background } from "./star_background.png";
 export { default as coins } from "./coins.png";
+export { default as ethereum } from "./ethereum.png";
+export { default as polygon } from "./polygon.png";
+export { default as dots } from "./dots.png";
+export { default as heichen } from "./heichen.png";

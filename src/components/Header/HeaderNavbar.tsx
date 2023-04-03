@@ -16,11 +16,11 @@ import { useAccount, useEnsAvatar } from "wagmi";
 import { RANDOM_AVATAR_API } from "../../utils/constants";
 const NavbarItems = [
   {
-    title: "Application",
+    title: "Tasks",
     link: "/Application",
     icon: <BsCollection fontSize="1rem" />,
   },
-  { title: "Government", link: "/Government", icon: <BsGem fontSize="1rem" /> },
+  { title: "Items", link: "/Government", icon: <BsGem fontSize="1rem" /> },
   {
     title: "Tools",
     link: "/Tools",
