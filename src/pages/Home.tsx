@@ -151,7 +151,10 @@ const Home = (): React.ReactElement => {
               columns={columns[tableDataType]}
               dataSource={data}
               pagination={false}
-              scroll={{ x: true }}
+              scroll={{ x: 1100 }}
+              style={{
+                width: document.body.clientWidth - 40,
+              }}
             />
             <div className="flex justify-center py-2 text-[#00BEA1] cursor-pointer text-base">
               See More

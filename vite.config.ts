@@ -32,13 +32,16 @@ export default defineConfig({
           "@table-header-bg": "transparent",
           "@table-footer-bg": "transparent",
           "@table-border-color": "@body-background",
-          // tabs
+          "@table-font-size": "16px",
+          //tabs
           "@tabs-hover-color": "#000",
           "@tabs-highlight-color": "#000",
           "@tabs-ink-bar-color": "#000",
           //modal
           "@modal-border-radius": "24px",
           "@zindex-affix": 10000,
+          //Input
+          "@input-addon-bg": "transparent",
         },
       },
     },
