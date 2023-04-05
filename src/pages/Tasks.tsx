@@ -1,9 +1,10 @@
 import { Select, Table, Input } from "antd";
 import React, { useContext, useEffect, useState } from "react";
-import { BiSearchAlt } from "react-icons/bi";
+import { BsPlus } from "react-icons/bs";
 import { GlobalContext } from "../context/GlobalContext";
 import { DataContext } from "../context/DataContext";
 import { columns, data } from "../utils/table/columns";
+import { Link } from "react-router-dom";
 
 const ApplicationPage = (): React.ReactElement => {
   const {
@@ -16,14 +17,14 @@ const ApplicationPage = (): React.ReactElement => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex w-full border-y border-[#322d3a] items-center justify-center h-[80px] space-x-5">
+      <div className="flex w-full border-y border-[#322d3a] items-center justify-center h-[80px] space-x-10">
         <div
-          className="flex item-center border border-[#322d3a] rounded-3xl items-center justify-between px-1"
-          style={{ height: "40px", width: "380px" }}
+          className="flex item-center border border-[#322d3a] rounded-3xl items-center justify-between"
+          style={{ height: "40px", width: "450px" }}
         >
-          <div className="flex items-center">
+          <div className="flex items-center ml-1 search">
             <Select
-              defaultValue="Task ID"
+              defaultValue="taskId"
               options={[
                 { value: "taskId", label: "Task ID" },
                 { value: "requireId", label: "Require ID" },
@@ -39,10 +40,15 @@ const ApplicationPage = (): React.ReactElement => {
             />
           </div>
           <Input className="search" placeholder="Search the Task" />
-          <div className="flex mx-2">
-            <BiSearchAlt color="#bfbfbf" fontSize="25px" />
+          <div className="flex rounded-3xl bg-[#00BEA1] h-full items-center justify-center px-5 text-white font-medium cursor-pointer">
+            Search
           </div>
         </div>
+        <Link to="/Post">
+          <div className="flex w-[40px] h-[40px] rounded-full bg-[#edebdc] hover:bg-[#00BEA1] hover:text-white cursor-pointer items-center justify-center text-[#322d3a]">
+            <BsPlus fontSize={35} />
+          </div>
+        </Link>
       </div>
       <div className="flex px-5">
         <Table
@@ -51,11 +57,11 @@ const ApplicationPage = (): React.ReactElement => {
           pagination={false}
           scroll={{
             x: 1200,
-            y: document.body.clientHeight - 240,
+            y: document.body.clientHeight - 320,
           }}
           style={{
             width: document.body.clientWidth - 40,
-            height: document.body.clientHeight - 179,
+            height: document.body.clientHeight - 260,
           }}
         />
       </div>

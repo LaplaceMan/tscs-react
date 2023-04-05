@@ -25,8 +25,11 @@ export default defineConfig({
           //popover
           "@popover-padding-horizontal": 0,
           //form
-          "@form-item-margin-bottom": "5px",
-          //表格
+          "@label-color": "#fff",
+          "@form-item-label-font-size": "16px",
+          "@label-required-color": "#fff",
+          "@form-warning-input-bg": "@primary-color",
+          //table
           "@table-bg": "transparent",
           "@table-row-hover-bg": "#322d3a",
           "@table-header-bg": "transparent",
@@ -42,6 +45,8 @@ export default defineConfig({
           "@zindex-affix": 10000,
           //Input
           "@input-addon-bg": "transparent",
+          //Datapicker
+          "@picker-basic-cell-hover-color": "@body-background",
         },
       },
     },

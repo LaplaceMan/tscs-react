@@ -10,7 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import { DataContext } from "../context/DataContext";
 import { GlobalContext } from "../context/GlobalContext";
-import { star_background, coins, ethereum, polygon, heichen } from "../assets";
+import { star_background, coins, ethereum, polygon } from "../assets";
 import { Table } from "antd";
 import { columns, data } from "../utils/table/columns";
 
@@ -43,7 +43,7 @@ const DashboardMiniItems: DashboardMiniItem[] = [
 
 const ChainContainer = ({ url, name }: { url: string; name: string }) => {
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center rounded-3xl">
       <div className="flex w-[140px] h-[140px] items-center justify-center chain-container ">
         <img
           src={url}
@@ -127,7 +127,9 @@ const Home = (): React.ReactElement => {
             </div>
           </div>
           <div className="flex mt-10 space-x-5">
-            <PrimaryButton label="Post" bgColor="#00BEA1" textColor="#fff" />
+            <Link to="/Post">
+              <PrimaryButton label="Post" bgColor="#00BEA1" textColor="#fff" />
+            </Link>
             <PrimaryButton
               label="Learn"
               bgColor="#edebdc"
@@ -164,27 +166,11 @@ const Home = (): React.ReactElement => {
             <DotsContainer
               title="Support Networks"
               content={
-                <div className="flex space-x-2">
+                <div className="flex space-x-10">
                   {[
                     { url: ethereum, name: "Ethereum" },
                     { url: polygon, name: "Polygon" },
                   ].map((item, index) => (
-                    <ChainContainer
-                      url={item.url}
-                      name={item.name}
-                      key={index}
-                    />
-                  ))}
-                </div>
-              }
-            />
-          </div>
-          <div className="mt-14">
-            <DotsContainer
-              title="About Us"
-              content={
-                <div className="flex space-x-2">
-                  {[{ url: heichen, name: "Heichen" }].map((item, index) => (
                     <ChainContainer
                       url={item.url}
                       name={item.name}
