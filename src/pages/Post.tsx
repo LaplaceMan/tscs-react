@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Select, DatePicker } from "antd";
 import { PrimaryButton } from "../components";
+import { toPng } from "html-to-image";
+import { invitation, logo_single } from "../assets";
+import download from "downloadjs";
+import { PostTaskData, defaultPostTaskData } from "../types/baseTypes";
+import dayjs from "dayjs";
+import { antdDateFormat } from "../utils/tools";
+
+const { Option } = Select;
 
 const UserStateItem = ({ label, value }: { label: string; value: string }) => {
   return (
@@ -11,75 +19,164 @@ const UserStateItem = ({ label, value }: { label: string; value: string }) => {
   );
 };
 
+const InvitationItem = ({ label, value }: { label: string; value: string }) => {
+  return (
+    <div className="flex flex-col items-center justify-center">
+      <div className="text-[#d982f6]">{label}</div>
+      <div className="text-xl font-semibold text-[#75b0f3]">{value}</div>
+    </div>
+  );
+};
+
 const Post = () => {
+  const [form] = Form.useForm();
+  const [taskData, setTaskData] = useState<PostTaskData>(defaultPostTaskData);
+  const onReset = () => {
+    form.resetFields();
+  };
+
+  const onFinish = () => {
+    const values = form.getFieldsValue();
+    console.log(values);
+    generateImg();
+  };
+
+  const generateImg = () => {
+    const node = document.getElementById("invitation-letter");
+    toPng(node!).then((dataUrl) => {
+      download(dataUrl, "invitation-letter.png");
+    });
+  };
+
+  const invitationItem1: { label: string; value: string }[] = [
+    { label: "Platform", value: taskData.platform },
+    {
+      label: "Source ID",
+      value:
+        taskData.sourceId != "*" ? "#" + taskData.sourceId : taskData.sourceId,
+    },
+    { label: "Source Link", value: taskData.source },
+    { label: "Payment", value: taskData.payment },
+    { label: "Currency", value: taskData.currency },
+    { label: "Amount", value: taskData.amount },
+    { label: "Require", value: taskData.require },
+    {
+      label: "Deadline",
+      value:
+        taskData.deadline != "*"
+          ? dayjs.unix(parseInt(taskData.deadline)).format("YYYY-MM-DD")
+          : "*",
+    },
+    { label: "Start Time", value: dayjs().format("YYYY-MM-DD") },
+  ];
+  const invitationItem2: { label: string; value: string }[] = [
+    { label: "Audit Module", value: taskData.audit },
+    { label: "Detection Module", value: taskData.detection },
+    { label: "Poster", value: "Murmes" },
+  ];
+
   return (
     <div className="flex items-center justify-center">
       <div className="flex md:w-[1200px] md:flex-row flex-col justify-between">
         <Form
+          form={form}
           layout="vertical"
           requiredMark="optional"
           className="w-full"
-          initialValues={{ payment: "D1" }}
+          onFinish={onFinish}
+          id="form"
         >
-          <Form.Item label="PLATFORM" required>
+          <Form.Item name="platform" label="PLATFORM" required>
             <div className="flex border border-[#322d3a] rounded-3xl p-1">
               <Select
-                defaultValue="murmes"
                 placeholder="Select a Platform"
-                options={[{ value: "murmes", label: "Murmes" }]}
+                onChange={(value) =>
+                  setTaskData({ ...taskData, platform: value })
+                }
                 // optionFilterProp="children"
                 //   filterOption={(input, option) =>
                 //     (option!.children as unknown as string)
                 //       .toLowerCase()
                 //       .includes(input.toLowerCase())
                 //   }
+              >
+                <Option value="Murmres">Murmes</Option>
+              </Select>
+            </div>
+          </Form.Item>
+          <Form.Item name="sourceId" label="SOURCE ID" required>
+            <div className="flex border border-[#322d3a] rounded-3xl p-1">
+              <Input
+                placeholder="If the Service is Not Started, the ID is 0"
+                onChange={(e) =>
+                  setTaskData({ ...taskData, sourceId: e.target.value })
+                }
               />
             </div>
           </Form.Item>
-          <Form.Item label="SOURCE ID" required>
+          <Form.Item name="source" label="SOURCE LINK" required>
             <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <Input placeholder="If the Service is Not Started, the ID is 0" />
+              <Input
+                placeholder="Provide the Source Link to Locate the Task"
+                onChange={(e) =>
+                  setTaskData({ ...taskData, source: e.target.value })
+                }
+              />
             </div>
           </Form.Item>
-          <Form.Item label="SOURCE LINK" required>
-            <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <Input placeholder="Provide the Source Link to Locate the Task" />
-            </div>
-          </Form.Item>
-          <Form.Item label="PAYMENT" required>
+          <Form.Item name="payment" label="PAYMENT" required>
             <div className="flex border border-[#322d3a] rounded-3xl p-1">
               <Select
-                defaultValue="OT0"
                 placeholder="Select a Payment Strategy"
-                options={[
+                onChange={(value) =>
+                  setTaskData({ ...taskData, payment: value })
+                }
+              >
+                {[
                   { value: "OT0", label: "One-time Payment" },
                   { value: "D1", label: "Divided Payment" },
                   { value: "OT2", label: "One-time Mortgage Payment" },
-                ]}
-              />
+                ].map((item, index) => (
+                  <Option value={item.value} key={index}>
+                    {item.label}
+                  </Option>
+                ))}
+              </Select>
             </div>
           </Form.Item>
-          <Form.Item label="CURRENCY">
+          <Form.Item name="currency" label="CURRENCY">
             <div className="flex border border-[#322d3a] rounded-3xl p-1">
               <Select
-                defaultValue="default"
                 placeholder="Select a Currency"
-                options={[
-                  { value: "default", label: "Default" },
-                  { value: "usdt", label: "USDT" },
-                  { value: "usdc", label: "USDC" },
-                  { value: "dai", label: "DAI" },
-                  { value: "wtoken", label: "WETH/WMATIC" },
-                ]}
+                onChange={(value) =>
+                  setTaskData({ ...taskData, currency: value })
+                }
+              >
+                {[
+                  { value: "NONE", label: "NONE" },
+                  { value: "USDT", label: "USDT" },
+                  { value: "USDC", label: "USDC" },
+                  { value: "DAI", label: "DAI" },
+                  { value: "WTOKEN", label: "WETH/WMATIC" },
+                ].map((item, index) => (
+                  <Option value={item.value} key={index}>
+                    {item.label}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+          </Form.Item>
+          <Form.Item name="amount" label="AMOUNT" required>
+            <div className="flex border border-[#322d3a] rounded-3xl p-1">
+              <Input
+                placeholder="Payment Amount or Proportion"
+                onChange={(e) =>
+                  setTaskData({ ...taskData, amount: e.target.value })
+                }
               />
             </div>
           </Form.Item>
-          <Form.Item label="AMOUNT" required>
-            <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <Input placeholder="Payment Amount or Proportion" />
-            </div>
-          </Form.Item>
-          <Form.Item label="REQUIRE" required>
+          <Form.Item name="require" label="REQUIRE" required>
             <div className="flex border border-[#322d3a] rounded-3xl p-1">
               <Select
                 showSearch
@@ -90,60 +187,130 @@ const Post = () => {
                 //       .toLowerCase()
                 //       .includes(input.toLowerCase())
                 //   }
+                onChange={(value) =>
+                  setTaskData({ ...taskData, require: value })
+                }
               />
             </div>
           </Form.Item>
-          <Form.Item label="DEADLINE">
+          <Form.Item name="deadline" label="DEADLINE">
             <div className="flex border border-[#322d3a] rounded-3xl p-1">
               <DatePicker
                 style={{ width: "100%" }}
                 placeholder="Default is Extend 365 Days"
+                onChange={(value) =>
+                  setTaskData({
+                    ...taskData,
+                    deadline: antdDateFormat(value?.valueOf()),
+                  })
+                }
               />
             </div>
           </Form.Item>
-          <Form.Item label="AUDIT MODULE" required>
+          <Form.Item name="audit" label="AUDIT MODULE" required>
             <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <Select showSearch placeholder="Select a Audit Module" />
+              <Select
+                showSearch
+                placeholder="Select a Audit Module"
+                onChange={(value) => setTaskData({ ...taskData, audit: value })}
+              />
             </div>
           </Form.Item>
-          <Form.Item label="DETECTION MODULE" required>
+          <Form.Item name="detection" label="DETECTION MODULE" required>
             <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <Select showSearch placeholder="Select a Detection Module" />
+              <Select
+                showSearch
+                placeholder="Select a Detection Module"
+                onChange={(value) =>
+                  setTaskData({ ...taskData, detection: value })
+                }
+              />
             </div>
           </Form.Item>
         </Form>
         <div className="flex flex-col items-center justify-between mb-[24px] md:ml-10">
-          <div className="flex w-[550px] h-full min-h-[500px] bg-white"></div>
-          <div className="flex text-white items-center justify-center my-10 border-2 border-dashed border-[#322d3a] rounded-xl w-full py-5">
-            <div className="flex space-x-10 items-center justify-center">
-              <UserStateItem label="Repuataion" value="100.0" />
-              <div
-                style={{
-                  width: "2px",
-                  height: "30px",
-                  backgroundColor: "#322d3a",
-                  borderRadius: "10px",
-                }}
+          <div
+            id="invitation-letter"
+            className="flex flex-col w-[550px] h-full min-h-[700px] rounded-xl bg-no-repeat bg-center bg-cover items-center justify-between p-5"
+            style={{ backgroundImage: `url(${invitation})` }}
+          >
+            <div className="flex flex-col items-center">
+              <div className="flex text-white invitation text-9xl font-semibold opacity-20">
+                MURMES
+              </div>
+              <img
+                src={logo_single}
+                style={{ width: "100px", marginTop: "-55px" }}
               />
-              <UserStateItem label="Despoit" value="100.0" />
-              <div
-                style={{
-                  width: "2px",
-                  height: "30px",
-                  backgroundColor: "#322d3a",
-                  borderRadius: "10px",
-                }}
-              />
-              <UserStateItem label="Status" value="Normal" />
+            </div>
+
+            <div className="flex flex-col w-full rounded-xl bg-[rgba(255,255,255,0.15)] p-5 shadow-sm">
+              <div className="grid grid-cols-3 space-y-2">
+                {invitationItem1.map((item, index) => (
+                  <InvitationItem
+                    value={item.value}
+                    label={item.label}
+                    key={index}
+                  />
+                ))}
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                {invitationItem2.map((item, index) => (
+                  <InvitationItem
+                    value={item.value}
+                    label={item.label}
+                    key={index}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col items-center mb-5">
+              <div className="text-base font-medium opacity-30 text-[#E066FF]">
+                You Are Invited To Submit Your Excellent Work
+              </div>
+              <div className="text-3xl invitation font-semibold opacity-50 text-white">
+                NEW TASK WITH GREAT REWARDS!
+              </div>
             </div>
           </div>
-          <div className="flex space-x-10">
-            <PrimaryButton
-              label="Reset"
-              bgColor="#edebdc"
-              textColor="#000000"
-            />
-            <PrimaryButton label="Submit" bgColor="#00BEA1" textColor="#fff" />
+          <div className="flex flex-col items-center justify-center w-full mt-10">
+            <div className="flex text-white items-center justify-center border-2 border-dashed border-[#322d3a] rounded-xl w-full py-5 mb-10">
+              <div className="flex space-x-10 items-center justify-center">
+                <UserStateItem label="Repuataion" value="100.0" />
+                <div
+                  style={{
+                    width: "2px",
+                    height: "30px",
+                    backgroundColor: "#322d3a",
+                    borderRadius: "10px",
+                  }}
+                />
+                <UserStateItem label="Despoit" value="100.0" />
+                <div
+                  style={{
+                    width: "2px",
+                    height: "30px",
+                    backgroundColor: "#322d3a",
+                    borderRadius: "10px",
+                  }}
+                />
+                <UserStateItem label="Status" value="Normal" />
+              </div>
+            </div>
+            <div className="flex space-x-10">
+              <PrimaryButton
+                label="Reset"
+                bgColor="#edebdc"
+                textColor="#000000"
+                fn={onReset}
+              />
+              <PrimaryButton
+                label="Submit"
+                bgColor="#00BEA1"
+                textColor="#fff"
+                fn={onFinish}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -151,14 +318,4 @@ const Post = () => {
   );
 };
 
-// address platform; // 所属第三方平台
-// uint256 sourceId; // 在第三方平台内的ID（在Murmes内的顺位）
-// uint256 requireId; // 所需条件的ID
-// string source; // 源地址
-// DataTypes.SettlementType settlement; // 所采用的结算策略
-// uint256 amount; // 支付数目/比例
-// address currency; // 支付代币类型
-// address auditModule; // 所采用的审核（Item状态改变）模块
-// address detectionModule; // 所采用的Item检测模块
-// uint256 deadline; // 截止/有效日期
 export default Post;

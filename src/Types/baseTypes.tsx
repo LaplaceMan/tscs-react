@@ -10,6 +10,33 @@ import {
 } from "./formTypes";
 import { ethers } from "ethers";
 
+export type PostTaskData = {
+  amount: string;
+  audit: string;
+  currency: string;
+  deadline: string;
+  detection: string;
+  payment: string;
+  platform: string;
+  require: string;
+  source: string;
+  sourceId: string;
+  [key: string]: any;
+};
+
+export const defaultPostTaskData = {
+  amount: "*",
+  audit: "*",
+  currency: "*",
+  deadline: "*",
+  detection: "*",
+  payment: "*",
+  platform: "*",
+  require: "*",
+  source: "*",
+  sourceId: "*",
+};
+
 export type Application = {
   applicant: string;
   vidoId: string;

@@ -105,3 +105,11 @@ export const getGasPriceFixed = (gas: string): string => {
 export const personalAssetBalanceOptimize = (balance: string): string => {
   return balance.length > 11 ? balance.slice(0, 10) + "..." : balance;
 };
+
+export const antdDateFormat = (value: number | undefined): string => {
+  if (typeof value != "number") {
+    return "*";
+  } else {
+    return parseInt((value / 1000).toString()).toString();
+  }
+};

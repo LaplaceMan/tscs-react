@@ -128,12 +128,18 @@ const Home = (): React.ReactElement => {
           </div>
           <div className="flex mt-10 space-x-5">
             <Link to="/Post">
-              <PrimaryButton label="Post" bgColor="#00BEA1" textColor="#fff" />
+              <PrimaryButton
+                label="Post"
+                bgColor="#00BEA1"
+                textColor="#fff"
+                fn={() => []}
+              />
             </Link>
             <PrimaryButton
               label="Learn"
               bgColor="#edebdc"
               textColor="#000000"
+              fn={() => []}
             />
           </div>
         </div>

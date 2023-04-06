@@ -17,10 +17,10 @@ import { RANDOM_AVATAR_API } from "../../utils/constants";
 const NavbarItems = [
   {
     title: "Tasks",
-    link: "/Application",
+    link: "/Tasks",
     icon: <BsCollection fontSize="1rem" />,
   },
-  { title: "Items", link: "/Government", icon: <BsGem fontSize="1rem" /> },
+  { title: "Items", link: "/Items", icon: <BsGem fontSize="1rem" /> },
   {
     title: "Tools",
     link: "/Tools",
