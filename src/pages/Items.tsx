@@ -1,16 +1,14 @@
 import { Select, Table, Input } from "antd";
 import { BsPlus } from "react-icons/bs";
 import React, { useContext, useEffect, useState } from "react";
-import { FiArrowUpRight } from "react-icons/fi";
-import { government_Illustration } from "../assets/index";
-import { SubtitleCard, NoItems } from "../components";
+import { Link } from "react-router-dom";
 import { columns, data } from "../utils/table/columns";
 import { DataContext } from "../context/DataContext";
 import { GlobalContext } from "../context/GlobalContext";
 import { ApplicationContext } from "../context/ApplicationContext";
 import { DEFAULT_PAGE_SIZE } from "../utils/constants";
 
-const Government = (): React.ReactElement => {
+const Items = (): React.ReactElement => {
   const { showUploadModal, chainId } = useContext(GlobalContext);
   const {
     subtitles,
@@ -27,9 +25,9 @@ const Government = (): React.ReactElement => {
     showUploadModal();
   };
 
-  useEffect(() => {
-    querySubtitleData(DEFAULT_PAGE_SIZE, 0, "0");
-  }, [chainId]);
+  // useEffect(() => {
+  //   querySubtitleData(DEFAULT_PAGE_SIZE, 0, "0");
+  // }, [chainId]);
 
   return (
     <div className="flex flex-col items-center">
@@ -60,9 +58,11 @@ const Government = (): React.ReactElement => {
             Search
           </div>
         </div>
-        <div className="flex w-[40px] h-[40px] rounded-full bg-[#edebdc] hover:bg-[#00BEA1] hover:text-white cursor-pointer items-center justify-center text-[#322d3a]">
-          <BsPlus fontSize={35} />
-        </div>
+        <Link to="/Submit">
+          <div className="flex w-[40px] h-[40px] rounded-full bg-[#edebdc] hover:bg-[#00BEA1] hover:text-white cursor-pointer items-center justify-center text-[#322d3a]">
+            <BsPlus fontSize={35} />
+          </div>
+        </Link>
       </div>
       <div className="flex px-5">
         <Table
@@ -83,4 +83,4 @@ const Government = (): React.ReactElement => {
   );
 };
 
-export default Government;
+export default Items;

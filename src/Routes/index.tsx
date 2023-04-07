@@ -7,6 +7,7 @@ import {
   Tools,
   UserNotFound,
   Post,
+  Submit,
 } from "../pages";
 import React from "react";
 
@@ -20,6 +21,7 @@ export const AllRoutes = (): React.ReactElement => {
       <Route path="/Personal/:id" element={<Personal />} />
       <Route path="/Personal/" element={<UserNotFound />} />
       <Route path="/Post" element={<Post />} />
+      <Route path="/Submit" element={<Submit />} />
     </Routes>
   );
 };
