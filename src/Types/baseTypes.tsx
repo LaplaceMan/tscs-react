@@ -374,7 +374,7 @@ export type DataContent = {
 
 export type PersonalPageData = {
   reputation: string;
-  despoit: ethers.BigNumber;
+  deposit: ethers.BigNumber;
   zimu: ethers.BigNumber;
   vt0: ethers.BigNumber;
   vt1: ethers.BigNumber;
@@ -383,7 +383,7 @@ export type PersonalPageData = {
 
 export const defaultPersonalPageData = {
   reputation: "0",
-  despoit: ethers.BigNumber.from("0"),
+  deposit: ethers.BigNumber.from("0"),
   zimu: ethers.BigNumber.from("0"),
   vt0: ethers.BigNumber.from("0"),
   vt1: ethers.BigNumber.from("0"),

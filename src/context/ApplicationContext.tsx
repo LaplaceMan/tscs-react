@@ -154,7 +154,7 @@ export const ApplicationProvider = ({ children }: any) => {
         const reputation = bignumberConvert(userBaseData[0], "10", 1);
         setPersonalDID({
           reputation: reputation,
-          despoit: userBaseData[1],
+          deposit: userBaseData[1],
           zimu: zimuBalance,
           vt0: vtBalance,
           vt1: lensBalance,

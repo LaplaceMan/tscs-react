@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Select, DatePicker } from "antd";
-import { PrimaryButton } from "../components";
+import { PrimaryButton, DotsContainer } from "../components";
 import { toPng } from "html-to-image";
 import { invitation, logo_single } from "../assets";
 import download from "downloadjs";
@@ -229,50 +229,60 @@ const Post = () => {
           </Form.Item>
         </Form>
         <div className="flex flex-col items-center justify-between mb-[24px] md:ml-10">
-          <div
-            id="invitation-letter"
-            className="flex flex-col w-[550px] h-full min-h-[700px] rounded-xl bg-no-repeat bg-center bg-cover items-center justify-between p-5"
-            style={{ backgroundImage: `url(${invitation})` }}
-          >
-            <div className="flex flex-col items-center">
-              <div className="flex text-white invitation text-9xl font-semibold opacity-20">
-                MURMES
+          <DotsContainer
+            title={
+              <div className="flex flex-col items-center title text-xl text-white">
+                Generate Invitation
               </div>
-              <img
-                src={logo_single}
-                style={{ width: "100px", marginTop: "-55px" }}
-              />
-            </div>
+            }
+            content={
+              <div
+                id="invitation-letter"
+                className="flex flex-col w-[550px] h-full min-h-[650px] bg-no-repeat bg-center bg-cover items-center justify-between p-5"
+                style={{ backgroundImage: `url(${invitation})` }}
+              >
+                <div className="flex flex-col items-center">
+                  <div className="flex text-white invitation text-9xl font-semibold opacity-20">
+                    MURMES
+                  </div>
+                  <img
+                    src={logo_single}
+                    style={{ width: "100px", marginTop: "-60px" }}
+                  />
+                </div>
 
-            <div className="flex flex-col w-full rounded-xl bg-[rgba(255,255,255,0.15)] p-5 shadow-sm">
-              <div className="grid grid-cols-3 space-y-2">
-                {invitationItem1.map((item, index) => (
-                  <InvitationItem
-                    value={item.value}
-                    label={item.label}
-                    key={index}
-                  />
-                ))}
+                <div className="flex flex-col w-full rounded-xl bg-[rgba(255,255,255,0.15)] p-3 shadow-sm">
+                  <div className="grid grid-cols-3 space-y-2">
+                    {invitationItem1.map((item, index) => (
+                      <InvitationItem
+                        value={item.value}
+                        label={item.label}
+                        key={index}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex flex-col items-center justify-center">
+                    {invitationItem2.map((item, index) => (
+                      <InvitationItem
+                        value={item.value}
+                        label={item.label}
+                        key={index}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="flex flex-col items-center mb-2">
+                  <div className="text-base font-medium opacity-30 text-[#E066FF]">
+                    You Are Invited To Submit Your Excellent Work
+                  </div>
+                  <div className="text-3xl invitation font-semibold opacity-50 text-white">
+                    NEW TASK WITH GREAT REWARDS!
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col items-center justify-center">
-                {invitationItem2.map((item, index) => (
-                  <InvitationItem
-                    value={item.value}
-                    label={item.label}
-                    key={index}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="flex flex-col items-center mb-5">
-              <div className="text-base font-medium opacity-30 text-[#E066FF]">
-                You Are Invited To Submit Your Excellent Work
-              </div>
-              <div className="text-3xl invitation font-semibold opacity-50 text-white">
-                NEW TASK WITH GREAT REWARDS!
-              </div>
-            </div>
-          </div>
+            }
+          />
+
           <div className="flex flex-col items-center justify-center w-full mt-10">
             <div className="flex text-white items-center justify-center border-2 border-dashed border-[#322d3a] rounded-xl w-full py-5 mb-10">
               <div className="flex space-x-10 items-center justify-center">
@@ -285,7 +295,7 @@ const Post = () => {
                     borderRadius: "10px",
                   }}
                 />
-                <UserStateItem label="Despoit" value="100.0" />
+                <UserStateItem label="Deposit" value="100.0" />
                 <div
                   style={{
                     width: "2px",

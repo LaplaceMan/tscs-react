@@ -40,7 +40,7 @@ const DepositAssetManageModal = () => {
         >
           <div className="flex items-center justify-between mb-3">
             <div className="text-xl font-bold">
-              Despoit or Withdraw Zimu tokens
+              Deposit or Withdraw Zimu tokens
             </div>
             <div
               className="flex hover:text-white hover:bg-black items-center justify-center cursor-pointer mt-1 rounded-full p-0.5"

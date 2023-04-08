@@ -50,10 +50,10 @@ const DepositAssetCard = () => {
       <div className="flex w-full flex-row justify-between items-center my-3">
         {tokenCardItem("Reputation", personalDID.reputation)}
         <div className="w-[2px] rounded-xl bg-gray-100 h-[30px]" />
-        <Tooltip title={bignumberConvert(personalDID.despoit, "0", 0)}>
+        <Tooltip title={bignumberConvert(personalDID.deposit, "0", 0)}>
           {tokenCardItem(
             "Deposit",
-            bignumberConvert(personalDID.despoit, DECIMALS_18, 2)
+            bignumberConvert(personalDID.deposit, DECIMALS_18, 2)
           )}
         </Tooltip>
         <div className="w-[2px] rounded-xl bg-gray-100 h-[30px]" />
@@ -69,7 +69,7 @@ const DepositAssetCard = () => {
           className="flex w-1/2 py-1.5 rounded-xl bg-gradient-to-r cursor-pointer from-purple-400 to-purple-200 hover:brightness-110 mr-1 items-center justify-center"
           onClick={() => despoitAssetManageHandle("DESPOIT")}
         >
-          Despoit
+          Deposit
         </div>
         <div
           className="flex w-1/2 py-1.5 rounded-xl ml-1 items-center justify-center bg-gradient-to-r cursor-pointer from-blue-200 to-blue-400 hover:brightness-110"

@@ -129,7 +129,7 @@ const AuditSubtitle = () => {
             </div>
             <div className="flex flex-col h-full">
               <div className="flex items-center justify-center text-[#696969] ">
-                Despoit Token
+                Deposit Token
               </div>
               <div className="flex p-2 bg-gray-100 break-all font-medium rounded-xl items-center justify-center h-full">
                 {defaultAuditSubtitleMaker.deposit}

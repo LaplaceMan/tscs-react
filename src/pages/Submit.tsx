@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Form, Input, Select } from "antd";
+import type { UploadProps } from "antd";
+import { Form, Input, Select, Upload } from "antd";
 import { PrimaryButton, DotsContainer } from "../components";
-
+import { BsUpload } from "react-icons/bs";
 const { Option } = Select;
 
 const UserStateItem = ({ label, value }: { label: string; value: string }) => {
@@ -21,7 +22,7 @@ const BundlrStateItem = ({
   value: React.ReactElement;
 }) => {
   return (
-    <div className="flex flex-col items-start justify-center">
+    <div className="flex flex-col justify-center w-full">
       <div className="text-base">{label}</div>
       <div className="flex text-lg font-semibold">{value}</div>
     </div>
@@ -39,9 +40,28 @@ const Submit = () => {
     console.log(values);
   };
 
+  const uploadProps: UploadProps = {
+    name: "file",
+    maxCount: 1,
+    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    headers: {
+      authorization: "authorization-text",
+    },
+    onChange(info) {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        console.log(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === "error") {
+        console.log(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
   return (
     <div className="flex items-center justify-center">
-      <div className="flex md:w-[1200px] md:flex-row flex-col justify-between">
+      <div className="flex md:w-[1200px] md:flex-row flex-col justify-between ">
         <div className="flex w-full flex-col items-center justify-center">
           <Form
             form={form}
@@ -92,7 +112,7 @@ const Submit = () => {
                   borderRadius: "10px",
                 }}
               />
-              <UserStateItem label="Despoit" value="100.0" />
+              <UserStateItem label="Deposit" value="100.0" />
               <div
                 style={{
                   width: "2px",
@@ -119,15 +139,32 @@ const Submit = () => {
             />
           </div>
         </div>
-        <div className="flex flex-col items-center justify-between mb-[24px] md:ml-10">
-          <div className="flex flex-col w-[550px] items-center justify-center text-white item-center">
+        <div className="flex flex-col items-center justify-between md:ml-10">
+          <div className="flex flex-col h-full w-[550px] items-center justify-between text-white">
             <DotsContainer
               title={
-                <div className="flex flex-col items-center">
-                  <div className="text-xl font-medium title">
-                    Use Bundlr to Upload Files
-                  </div>
-                  <div>Support By Arwarve Network</div>
+                <div className="flex flex-col items-center title text-xl">
+                  Upload File
+                </div>
+              }
+              content={
+                <div className="flex flex-col items-center justify-center min-h-[150px] cursor-pointer">
+                  <Upload {...uploadProps}>
+                    <div className="flex flex-col items-center justify-center  ">
+                      <BsUpload fontSize={35} color="#edebdc" />
+                      <div className="mt-5 text-lg font-normal text-white">
+                        Click to Upload File
+                      </div>
+                    </div>
+                  </Upload>
+                </div>
+              }
+            />
+
+            <DotsContainer
+              title={
+                <div className="flex flex-col items-center title text-xl">
+                  Upload to Arwarve
                 </div>
               }
               content={
@@ -138,10 +175,20 @@ const Submit = () => {
                     value={<>10.0</>}
                   />
                   <BundlrStateItem
+                    label="Estimated Cost to Upload"
+                    value={<>10.0</>}
+                  />
+                  <BundlrStateItem
                     label="Amount to Deposit"
                     value={
-                      <div className="flex border border-[#322d3a] rounded-3xl p-1">
-                        <Input />
+                      <div className="flex border border-[#322d3a] rounded-3xl p-1 w-full mt-[8px]">
+                        <Input
+                          placeholder="Support By Bundlr"
+                          style={{ width: "100%", fontWeight: "normal" }}
+                        />
+                        <div className="flex items-center rounded-full font-semibold text-sm cursor-pointer hover:brightness-110 bg-[#edebdc] text-black px-5 -m-1">
+                          Deposit
+                        </div>
                       </div>
                     }
                   />

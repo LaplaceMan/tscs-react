@@ -9,7 +9,7 @@ const DotsContainer = ({
   content: React.ReactElement;
 }): React.ReactElement => {
   return (
-    <div className="flex flex-col w-full items-center justify-center border-2 border-[#1b1524] overflow-hidden rounded-3xl">
+    <div className="flex flex-col w-full items-center justify-center border-2 border-[#1b1524] overflow-hidden rounded-3xl mt-10 md:mt-0">
       <div className="flex w-full border-b-4 border-[#1b1524]">
         <div
           className="flex w-full items-center justify-center"

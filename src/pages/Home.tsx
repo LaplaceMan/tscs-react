@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
-import { PrimaryButton, DotsContainer } from "../components";
+import { PrimaryButton } from "../components";
 import { DashboardMiniItem } from "../types/baseTypes";
 import {
   MdPeopleAlt,
@@ -168,24 +168,17 @@ const Home = (): React.ReactElement => {
               See More
             </div>
           </div>
-          <div className="mt-14">
-            <DotsContainer
-              title="Support Networks"
-              content={
-                <div className="flex space-x-10">
-                  {[
-                    { url: ethereum, name: "Ethereum" },
-                    { url: polygon, name: "Polygon" },
-                  ].map((item, index) => (
-                    <ChainContainer
-                      url={item.url}
-                      name={item.name}
-                      key={index}
-                    />
-                  ))}
-                </div>
-              }
-            />
+          <div className="flex flex-col mt-14 items-center">
+            <div className="text-2xl">SUPPORT NETWORKS</div>
+
+            <div className="flex mt-5 space-x-10">
+              {[
+                { url: ethereum, name: "Ethereum" },
+                { url: polygon, name: "Polygon" },
+              ].map((item, index) => (
+                <ChainContainer url={item.url} name={item.name} key={index} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
