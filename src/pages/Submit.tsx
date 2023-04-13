@@ -61,7 +61,7 @@ const Submit = () => {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="flex md:w-[1200px] md:flex-row flex-col justify-between ">
+      <div className="flex md:w-[1200px] md:flex-row flex-col justify-between">
         <div className="flex w-full flex-col items-center justify-center">
           <Form
             form={form}

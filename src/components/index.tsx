@@ -19,3 +19,5 @@ export { default as ToolsMenu } from "./ToolsMenu/index";
 export { default as NoItems } from "./NoItems/index";
 export { default as PrimaryButton } from "./PrimaryButton/index";
 export { default as DotsContainer } from "./DotsContainer/index";
+export { default as PropsContainer } from "./PropsContainer/index";
+export { default as PropItem } from "./PropItem/index";

@@ -4,7 +4,7 @@ import { BsPlus } from "react-icons/bs";
 import { GlobalContext } from "../context/GlobalContext";
 import { DataContext } from "../context/DataContext";
 import { columns, data } from "../utils/table/columns";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ApplicationPage = (): React.ReactElement => {
   const {
@@ -14,7 +14,7 @@ const ApplicationPage = (): React.ReactElement => {
     regiserLanguages,
     isGetDataLoading,
   } = useContext(DataContext);
-
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center">
       <div className="flex w-full border-y border-[#322d3a] items-center justify-center h-[80px] space-x-10">
@@ -62,6 +62,11 @@ const ApplicationPage = (): React.ReactElement => {
           style={{
             width: document.body.clientWidth - 40,
             height: document.body.clientHeight - 260,
+          }}
+          onRow={(record) => {
+            return {
+              onClick: () => navigate(`/Task/${record.id}`),
+            };
           }}
         />
       </div>

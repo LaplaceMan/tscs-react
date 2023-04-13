@@ -1,7 +1,7 @@
 import { Select, Table, Input } from "antd";
 import { BsPlus } from "react-icons/bs";
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { columns, data } from "../utils/table/columns";
 import { DataContext } from "../context/DataContext";
 import { GlobalContext } from "../context/GlobalContext";
@@ -17,6 +17,7 @@ const Items = (): React.ReactElement => {
     regiserLanguages,
     isGetDataLoading,
   } = useContext(DataContext);
+  const navigate = useNavigate();
   const { updateDefaultUploadSubtitleData } = useContext(ApplicationContext);
   const [currentPage, setCurrentPage] = useState({ page: 1, language: "0" });
 
@@ -76,6 +77,11 @@ const Items = (): React.ReactElement => {
           style={{
             width: document.body.clientWidth - 40,
             height: document.body.clientHeight - 260,
+          }}
+          onRow={(record) => {
+            return {
+              onClick: () => navigate(`/Item/${record.id}`),
+            };
           }}
         />
       </div>
