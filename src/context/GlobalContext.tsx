@@ -8,8 +8,7 @@ export const GlobalContext = React.createContext<GlobalContent>(
 export const GlobalProvider = ({ children }: any) => {
   const [chainId, setChainId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [isUploadModalOpen, setUploadIsModalOpen] = useState(false);
-  const [isApplicationModalOpen, setApplicationIsModalOpen] = useState(false);
+
   const [isAuditModalOpen, setAuditIsModalOpen] = useState(false);
   const [isTokenTransactionModalOpen, setIsTokenTransactionModalOpen] =
     useState(false);
@@ -53,28 +52,12 @@ export const GlobalProvider = ({ children }: any) => {
     setIsUpdateApplicationModalOpen(false);
   };
 
-  const showUploadModal = () => {
-    setUploadIsModalOpen(true);
-  };
-
-  const hideUploadModal = () => {
-    setUploadIsModalOpen(false);
-  };
-
   const showTokenTransactionModal = () => {
     setIsTokenTransactionModalOpen(true);
   };
 
   const hideTokenTransactionModal = () => {
     setIsTokenTransactionModalOpen(false);
-  };
-
-  const showApplicationModal = () => {
-    setApplicationIsModalOpen(true);
-  };
-
-  const hideApplicationModal = () => {
-    setApplicationIsModalOpen(false);
   };
 
   const showAuditModal = () => {
@@ -96,13 +79,7 @@ export const GlobalProvider = ({ children }: any) => {
         toggleMenu,
         setToggleMenu,
         isLoading,
-        isUploadModalOpen,
-        isApplicationModalOpen,
         isAuditModalOpen,
-        showUploadModal,
-        hideUploadModal,
-        showApplicationModal,
-        hideApplicationModal,
         showAuditModal,
         hideAuditModal,
         setLoadingState,

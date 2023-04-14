@@ -3,7 +3,7 @@ import { Table } from "antd";
 import { PropsContainer, PrimaryButton, PropItem } from "../components";
 import { BsListUl } from "react-icons/bs";
 import { columns, data } from "../utils/table/columns";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const TaskDetails = () => {
   const param = useParams();
@@ -83,18 +83,22 @@ const TaskDetails = () => {
               />
             </div>
             <div className="flex w-full justify-center md:justify-end space-x-5 mt-5 md:mt-0">
-              <PrimaryButton
-                label="Post"
-                bgColor="#edebdc"
-                textColor="#000"
-                fn={() => []}
-              />
-              <PrimaryButton
-                label="Submit"
-                bgColor="#00BEA1"
-                textColor="#fff"
-                fn={() => []}
-              />
+              <Link to="/Post">
+                <PrimaryButton
+                  label="Post"
+                  bgColor="#edebdc"
+                  textColor="#000"
+                  fn={() => []}
+                />
+              </Link>
+              <Link to="/Submit">
+                <PrimaryButton
+                  label="Submit"
+                  bgColor="#00BEA1"
+                  textColor="#fff"
+                  fn={() => []}
+                />
+              </Link>
             </div>
           </div>
         </div>

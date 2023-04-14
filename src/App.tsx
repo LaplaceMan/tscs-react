@@ -1,13 +1,11 @@
 import {
   HeaderTop,
-  UploadSubtitle,
-  SubmitApplication,
-  AuditSubtitle,
   DefaultFooter,
   TokenTransaction,
   UpdateApplication,
   WithdrawReward,
   DepositAssetManageModal,
+  AuditModal,
 } from "./components";
 import React, { useContext } from "react";
 import { Layout, Affix, Modal } from "antd";
@@ -17,13 +15,12 @@ import { GlobalContext } from "./context/GlobalContext";
 const { Header, Content, Footer } = Layout;
 const App = () => {
   const {
-    isUploadModalOpen,
-    isApplicationModalOpen,
     isAuditModalOpen,
     isTokenTransactionModalOpen,
     isUpdateApplicationModalOpen,
     isWithdrawRewardModalOpen,
     isDespoitAssetModalOpen,
+    hideAuditModal,
   } = useContext(GlobalContext);
 
   const path = location.pathname.split("/")[2];
@@ -43,35 +40,12 @@ const App = () => {
           <Content>
             {AllRoutes()}
             <Modal
-              open={isUploadModalOpen}
-              destroyOnClose={true}
-              forceRender={true}
-              closable={false}
-              footer={null}
-              centered
-            >
-              {UploadSubtitle()}
-            </Modal>
-            <Modal
-              open={isApplicationModalOpen}
-              destroyOnClose={true}
-              forceRender={true}
-              closable={false}
-              footer={null}
-              centered
-            >
-              {SubmitApplication()}
-            </Modal>
-
-            <Modal
               open={isAuditModalOpen}
-              destroyOnClose={true}
-              forceRender={true}
-              closable={false}
               footer={null}
+              closable={false}
               centered
             >
-              {AuditSubtitle()}
+              <AuditModal />
             </Modal>
             <Modal
               open={isTokenTransactionModalOpen}

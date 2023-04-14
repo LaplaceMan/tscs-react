@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Table } from "antd";
 import { PropsContainer, PrimaryButton, PropItem } from "../components";
 import { BsListUl } from "react-icons/bs";
 import { columns, data } from "../utils/table/columns";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { GlobalContext } from "../context/GlobalContext";
 
 const ItemDetails = () => {
   const param = useParams();
+  const { showAuditModal } = useContext(GlobalContext);
 
   return (
     <div className="flex items-center justify-center">
@@ -46,9 +48,7 @@ const ItemDetails = () => {
               content={
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { label: "Platform", value: "0x..." },
                     { label: "Require", value: "..." },
-                    { label: "Deadline", value: "2023-5-1" },
                     { label: "Source", value: "..." },
                     { label: "Audit Module", value: "0x..." },
                     { label: "Detection Module", value: "0x..." },
@@ -99,17 +99,19 @@ const ItemDetails = () => {
               />
             </div>
             <div className="flex w-full justify-center md:justify-end space-x-5 mt-5 md:mt-0">
-              <PrimaryButton
-                label="Submit"
-                bgColor="#edebdc"
-                textColor="#000"
-                fn={() => []}
-              />
+              <Link to="/Submit">
+                <PrimaryButton
+                  label="Submit"
+                  bgColor="#edebdc"
+                  textColor="#000"
+                  fn={() => []}
+                />
+              </Link>
               <PrimaryButton
                 label="Audit"
                 bgColor="#00BEA1"
                 textColor="#fff"
-                fn={() => []}
+                fn={() => showAuditModal()}
               />
             </div>
           </div>

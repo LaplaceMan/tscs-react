@@ -1,6 +1,5 @@
 import { Select, Form, Spin, DatePicker } from "antd";
 import { MdOutlineClose } from "react-icons/md";
-import { ModelDataMini } from "../index";
 import React, { useContext, useEffect } from "react";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
@@ -55,15 +54,7 @@ const WithdrawReward = () => {
               <MdOutlineClose fontSize="1.25rem" />
             </div>
           </div>
-          <Form.Item>
-            <div className="flex bg-gray-100 rounded-xl p-1 items-center justify-center">
-              {ModelDataMini(
-                "Number of locked tokens",
-                null,
-                userDayLocakedToken
-              )}
-            </div>
-          </Form.Item>
+          <Form.Item></Form.Item>
           <Form.Item name="platform" label="Platform" required>
             <Select
               showSearch

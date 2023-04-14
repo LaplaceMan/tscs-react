@@ -3,7 +3,6 @@ import { GlobalContext } from "../../context/GlobalContext";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import React, { useContext, useEffect } from "react";
 import { MdOutlineClose } from "react-icons/md";
-import { ModelDataMini } from "../index";
 import { timestampToDate } from "../../utils/tools";
 import { BASE_RATE } from "../../utils/constants";
 import { ethers } from "ethers";
@@ -51,35 +50,7 @@ const UpdateApplication = () => {
               <MdOutlineClose fontSize="1.25rem" />
             </div>
           </div>
-          <Form.Item>
-            <div className="flex bg-gray-100 rounded-xl p-1 items-center justify-between">
-              {ModelDataMini(
-                "Type",
-                null,
-                defaultUpdateApplicationData.payType
-              )}
-              {ModelDataMini(
-                "Old Amount",
-                null,
-                defaultUpdateApplicationData.payType == "OT0"
-                  ? "$ " +
-                      ethers.utils.formatUnits(
-                        defaultUpdateApplicationData.oldAmount,
-                        18
-                      )
-                  : (parseInt(defaultUpdateApplicationData.oldAmount) * 100) /
-                      BASE_RATE +
-                      " %"
-              )}
-              {ModelDataMini(
-                "Old deadline",
-                null,
-                timestampToDate(
-                  Number(defaultUpdateApplicationData.oldDeadline)
-                )
-              )}
-            </div>
-          </Form.Item>
+          <Form.Item></Form.Item>
           <Form.Item
             name="applyId"
             label="Application ID"

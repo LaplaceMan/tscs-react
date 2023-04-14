@@ -162,13 +162,7 @@ export type WalletContent = {
 export type GlobalContent = {
   chainId: number;
   isLoading: boolean;
-  isUploadModalOpen: boolean;
-  isApplicationModalOpen: boolean;
   isAuditModalOpen: boolean;
-  showUploadModal: () => void;
-  hideUploadModal: () => void;
-  showApplicationModal: () => void;
-  hideApplicationModal: () => void;
   showAuditModal: () => void;
   hideAuditModal: () => void;
   toggleMenu: boolean;

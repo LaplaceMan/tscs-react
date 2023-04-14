@@ -41,8 +41,10 @@ export default defineConfig({
           "@tabs-highlight-color": "#000",
           "@tabs-ink-bar-color": "#000",
           //modal
-          "@modal-border-radius": "24px",
+          "@modal-border-radius": "0.75rem",
           "@zindex-affix": 10000,
+          "@modal-content-bg": "#ffffff",
+          "@modal-header-bg": "@modal-content-bg",
           //Input
           "@input-addon-bg": "transparent",
           //Datapicker

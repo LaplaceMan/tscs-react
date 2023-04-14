@@ -3,7 +3,6 @@ import { Select, Form, Input, InputNumber, Spin } from "antd";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { MdOutlineClose } from "react-icons/md";
-import { ModelDataMini } from "../index";
 import { RealTokenTransaction } from "../../types/formTypes";
 const { Option } = Select;
 
@@ -49,25 +48,7 @@ const TokenTransaction = () => {
               <MdOutlineClose fontSize="1.25rem" />
             </div>
           </div>
-          <Form.Item>
-            <div className="flex bg-gray-100 rounded-xl p-1 items-center justify-between">
-              {ModelDataMini(
-                "Token Name",
-                null,
-                defaultTokenTransactionData.name
-              )}
-              {ModelDataMini(
-                "Token Symbol",
-                null,
-                defaultTokenTransactionData.symbol
-              )}
-              {ModelDataMini(
-                "Token Decimals",
-                null,
-                defaultTokenTransactionData.decimals
-              )}
-            </div>
-          </Form.Item>
+          <Form.Item></Form.Item>
           <Form.Item name="address" label="Contract address" required>
             <Input
               placeholder="Token contract address."

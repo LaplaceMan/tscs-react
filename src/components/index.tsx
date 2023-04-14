@@ -1,10 +1,5 @@
 export { default as HeaderTop } from "./Header/index";
-export { default as ApplyCard } from "./ApplyCard/index";
-export { default as SubtitleCard } from "./SubtitleCard/index";
-export { default as SubmitApplication } from "./SubmitApplicationModal/index";
-export { default as ModelDataMini } from "./ModelDataMini/index";
-export { default as UploadSubtitle } from "./UploadSubtitleModal/index";
-export { default as AuditSubtitle } from "./AuditSubtitleModal/index";
+export { default as AuditModal } from "./AuditModal/index";
 export { default as DefaultFooter } from "./Footer/index";
 export { default as OwnAssetCard } from "./OwnAssetCard/index";
 export { default as OwnAuditCard } from "./OwnAuditCard/index";
