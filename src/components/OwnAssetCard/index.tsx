@@ -2,24 +2,19 @@ import React, { useContext } from "react";
 import { OwnToken } from "../../types/baseTypes";
 import { Tooltip } from "antd";
 import {
-  shortenAddress,
   bignumberConvert,
   personalAssetBalanceOptimize,
 } from "../../utils/tools";
-import {
-  DECIMALS_18,
-  DECIMALS_6,
-  RANDOM_AVATAR_API,
-} from "../../utils/constants";
+import { DECIMALS_18, DECIMALS_6 } from "../../utils/constants";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { useAccount } from "wagmi";
 
-const tokenCardItem = (label: string, info: string) => {
+const TokenCardItem = ({ label, value }: { label: string; value: string }) => {
   return (
-    <div className="flex flex-col items-center">
-      <div className="text-sm text-[#696969]">{label}</div>
-      <div className="text-base font-semibold text-black">{info}</div>
+    <div className="flex flex-col items-center bg-[#322d3a] rounded-xl">
+      <div className="text-sm text-[#00BEA1]">{label}</div>
+      <div className="text-base font-semibold text-white">{value}</div>
     </div>
   );
 };
@@ -54,40 +49,35 @@ const TokenCard = (token: OwnToken) => {
   };
 
   return (
-    <div className="flex flex-col p-3 items-center justify-center rounded-3xl shadow-md w-[300px] h-[180px] own-card mt-5 mx-5">
-      <div className="flex flex-row items-center justify-center">
-        <img
-          src={RANDOM_AVATAR_API}
-          className="flex rounded-full w-[50px] shadow"
-        />
-        <div className="flex flex-col items-start ml-3">
-          <div className="text-lg font-medium text-black">{token.name}</div>
-          <Tooltip title={token.address}>
-            <div className="flex test-sm rounded-xl text-[#696969]">
-              {token.address ? shortenAddress(token.address) : ""}
-            </div>
-          </Tooltip>
-        </div>
-      </div>
-      <div className="flex w-full flex-row justify-between items-center my-3">
-        <Tooltip title={bignumberConvert(token.balance, "0", 0)}>
-          {tokenCardItem(
-            "Balance",
-            token.type == "ERC-20"
-              ? bignumberConvert(token.balance, DECIMALS_18, 2)
-              : personalAssetBalanceOptimize(
-                  bignumberConvert(token.balance, DECIMALS_6, 2)
-                )
-          )}
+    <div className="flex flex-col rounded-xl w-[300px] border border-[#322d3a]">
+      <div className="flex flex-col items-center w-full bg-[#322d3a] rounded-t-xl p-2">
+        <Tooltip
+          title={token.address}
+          className="flex items-center space-x-1 text-white"
+        >
+          <div>{token.icon}</div>
+          <div className="text-lg font-medium">{token.name}</div>
         </Tooltip>
-        <div className="w-[2px] rounded-xl bg-gray-100 h-[30px]" />
-        {tokenCardItem("Type", token.type)}
-        <div className="w-[2px] rounded-xl bg-gray-100 h-[30px]" />
-        {tokenCardItem("Issuer", token.issuser)}
       </div>
-      <div className="flex w-full justify-between text-white font-semibold text-base">
+      <div className="grid grid-cols-3 items-center my-3 mx-1 space-x-1">
+        <Tooltip title={bignumberConvert(token.balance, "0", 0)}>
+          <TokenCardItem
+            label="Balance"
+            value={
+              token.type == "ERC-20"
+                ? bignumberConvert(token.balance, DECIMALS_18, 2)
+                : personalAssetBalanceOptimize(
+                    bignumberConvert(token.balance, DECIMALS_6, 2)
+                  )
+            }
+          />
+        </Tooltip>
+        <TokenCardItem label="Type" value={token.type} />
+        <TokenCardItem label="Issuer" value={token.issuser} />
+      </div>
+      <div className="flex w-full justify-between font-semibold text-base space-x-2 mb-3">
         <div
-          className="flex w-1/2 py-1.5 rounded-xl bg-gradient-to-r cursor-pointer from-purple-400 to-purple-200 hover:brightness-110 mr-1 items-center justify-center"
+          className="w-1/2 py-1.5 rounded-full bg-[#00BEA1] text-center hover:brightness-110 text-white"
           onClick={() =>
             tokenTransactionHandle(
               token.name,
@@ -103,7 +93,7 @@ const TokenCard = (token: OwnToken) => {
           Transfer
         </div>
         <div
-          className="flex w-1/2 py-1.5 rounded-xl ml-1 items-center justify-center bg-gradient-to-r cursor-pointer from-blue-200 to-blue-400 hover:brightness-110"
+          className="w-1/2 py-1.5 rounded-full text-center hover:brightness-110 bg-[#edebdc] text-black"
           onClick={() =>
             tokenTransactionHandle(
               token.name,

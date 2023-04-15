@@ -7,7 +7,7 @@ const HeaderTop = (): React.ReactElement => {
     <div className="flex w-full items-center justify-between px-[20px] md:px-[60px]">
       <div className="flex items-center justify-center cursor-pointer w-40">
         <Link to="/">
-          <img src={logo} alt="logo" className="" />
+          <img src={logo} alt="logo" />
         </Link>
       </div>
       <div className="flex flex-row items-center justify-center">

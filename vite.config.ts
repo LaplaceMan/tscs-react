@@ -37,9 +37,8 @@ export default defineConfig({
           "@table-border-color": "@body-background",
           "@table-font-size": "16px",
           //tabs
-          "@tabs-hover-color": "#000",
-          "@tabs-highlight-color": "#000",
-          "@tabs-ink-bar-color": "#000",
+          "@tabs-hover-color": "#fff",
+          "@tabs-ink-bar-color": "transparent",
           //modal
           "@modal-border-radius": "0.75rem",
           "@zindex-affix": 10000,

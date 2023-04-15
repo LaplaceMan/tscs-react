@@ -186,6 +186,7 @@ export type OwnToken = {
   name: string;
   symbol: string;
   decimals: number;
+  icon: React.ReactElement;
   balance: ethers.BigNumber;
   type: string;
   issuser: string;

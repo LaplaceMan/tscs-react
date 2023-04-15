@@ -17,7 +17,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <WagmiConfig client={wagmiClient}>
     <RainbowKitProvider
       chains={chains}
-      theme={lightTheme({ accentColor: "#32b1f1" })}
+      theme={lightTheme({ accentColor: "#00BEA1" })}
+      modalSize="compact"
     >
       <GlobalProvider>
         <DataProvider>

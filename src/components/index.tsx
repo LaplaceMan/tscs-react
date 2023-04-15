@@ -8,7 +8,6 @@ export { default as OwnApplicationCard } from "./OwnApplicationCard/index";
 export { default as TokenTransaction } from "./TokenTransactionModal/index";
 export { default as UpdateApplication } from "./UpdateApplicationModal/index";
 export { default as WithdrawReward } from "./WithdrawRewardModal/index";
-export { default as DepositAssetCard } from "./OwnDepositAssetCard/index";
 export { default as DepositAssetManageModal } from "./DepositAssetManageModal/index";
 export { default as ToolsMenu } from "./ToolsMenu/index";
 export { default as NoItems } from "./NoItems/index";

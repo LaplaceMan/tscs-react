@@ -106,7 +106,11 @@ const HeaderNavbar = () => {
       <ul className="md:flex hidden list-none flex-row justify-between items-center flex-initial">
         {NavbarItems.map((item, index) => HeaderNavbarItems(item, index))}
         <DocumentationItem />
-        <ConnectButton accountStatus="address" />
+        <ConnectButton
+          accountStatus="address"
+          showBalance={false}
+          chainStatus="icon"
+        />
         {isConnected && <AvatarItem />}
       </ul>
       <div className="flex relative">

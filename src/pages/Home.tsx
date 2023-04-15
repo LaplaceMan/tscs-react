@@ -44,7 +44,7 @@ const DashboardMiniItems: DashboardMiniItem[] = [
 const ChainContainer = ({ url, name }: { url: string; name: string }) => {
   return (
     <div className="flex flex-col items-center justify-center rounded-3xl">
-      <div className="flex w-[140px] h-[140px] items-center justify-center chain-container ">
+      <div className="flex w-[140px] h-[140px] items-center justify-center chain-container">
         <img
           src={url}
           style={{ height: "100px", maxWidth: "100px", borderRadius: "100%" }}
