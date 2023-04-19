@@ -171,15 +171,15 @@ export type GlobalContent = {
   isTokenTransactionModalOpen: boolean;
   showTokenTransactionModal: () => void;
   hideTokenTransactionModal: () => void;
-  showUpdateApplicationModal: () => void;
-  hideUpdateApplicationModal: () => void;
-  isUpdateApplicationModalOpen: boolean;
+  showUpdateTaskModal: () => void;
+  hideUpdateTaskModal: () => void;
+  isUpdateTaskModalOpen: boolean;
   showWithdrawRewardModal: () => void;
   hideWithdrawRewardModal: () => void;
   isWithdrawRewardModalOpen: boolean;
-  showDespoitAssetModal: () => void;
-  hideDespoitAssetModal: () => void;
-  isDespoitAssetModalOpen: boolean;
+  showDepositAssetModal: () => void;
+  hideDepositAssetModal: () => void;
+  isDepositAssetModalOpen: boolean;
 };
 
 export type OwnToken = {
@@ -192,6 +192,22 @@ export type OwnToken = {
   issuser: string;
   address: string;
   tokenId: string;
+};
+
+export type OwnOther = {
+  title: string;
+  detail: string;
+  label1: string;
+  value1: string;
+  label2: string;
+  value2: string;
+  label3: string;
+  value3: string;
+  icon: React.ReactElement;
+  fn1Name: string;
+  fn1: () => void;
+  fn2Name: string;
+  fn2: () => void;
 };
 
 export type OwnApplication = {
@@ -294,8 +310,8 @@ export type ApplicationContent = {
   preSettlement: (type: string, applyId: string) => void;
   updateDefaultUpdateApplication: (params: UpdateApplication) => void;
   defaultUpdateApplicationData: UpdateApplication;
-  updateDefaultWithdrawOrDespoit: (platform: string, manage: string) => void;
-  defaultWithdrawOrDespoitData: { platform: string; manage: string };
+  updateDefaultWithdrawOrDeposit: (platform: string, manage: string) => void;
+  defaultWithdrawOrDepositData: { platform: string; manage: string };
   updateApplication: (params: RealUpdateApplictaionTransaction) => void;
   withdrawReward: (params: RealWithdrawRewardTransaction) => void;
   depoitZimuManage: (address: string, amount: number) => void;

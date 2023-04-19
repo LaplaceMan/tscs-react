@@ -73,7 +73,7 @@ export const ApplicationProvider = ({ children }: any) => {
     useState<TokenTransaction>(defaultTokenTransaction);
   const [defaultUpdateApplicationData, setDefaultUpdateApplication] =
     useState<UpdateApplication>(defaultUpdateApplication);
-  const [defaultWithdrawOrDespoitData, setDefaultWithdrawOrDespoitData] =
+  const [defaultWithdrawOrDepositData, setDefaultWithdrawOrDepositData] =
     useState({ platform: "", manage: "" });
   const [lensSettleable, setLensSettleable] = useState("0");
 
@@ -106,8 +106,8 @@ export const ApplicationProvider = ({ children }: any) => {
     });
   };
 
-  const updateDefaultWithdrawOrDespoit = (platform: string, manage: string) => {
-    setDefaultWithdrawOrDespoitData({ platform, manage });
+  const updateDefaultWithdrawOrDeposit = (platform: string, manage: string) => {
+    setDefaultWithdrawOrDepositData({ platform, manage });
   };
 
   const updateDefaultTokenTransaction = (tx: TokenTransaction) => {
@@ -466,7 +466,7 @@ export const ApplicationProvider = ({ children }: any) => {
       if (chain && SUPPORT_NETWORK.includes(chainId)) {
         let config;
         const realAmount = ethers.utils.parseUnits(amount.toString(), 18);
-        if (defaultWithdrawOrDespoitData.manage == "DESPOIT") {
+        if (defaultWithdrawOrDepositData.manage == "DEPOSIT") {
           config = await prepareWriteContract({
             address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
             abi: SUBTITLE_SYSTEM_ABI,
@@ -474,7 +474,7 @@ export const ApplicationProvider = ({ children }: any) => {
             args: [address, realAmount],
           });
         } else {
-          // defaultWithdrawOrDespoitData.manage == "WITHDRAW"
+          // defaultWithdrawOrDepositData.manage == "WITHDRAW"
           config = await prepareWriteContract({
             address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
             abi: SUBTITLE_SYSTEM_ABI,
@@ -564,8 +564,8 @@ export const ApplicationProvider = ({ children }: any) => {
         preSettlement,
         updateDefaultUpdateApplication,
         defaultUpdateApplicationData,
-        updateDefaultWithdrawOrDespoit,
-        defaultWithdrawOrDespoitData,
+        updateDefaultWithdrawOrDeposit,
+        defaultWithdrawOrDepositData,
         updateApplication,
         withdrawReward,
         depoitZimuManage,

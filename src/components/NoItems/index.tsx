@@ -3,7 +3,7 @@ import { Empty } from "antd";
 
 const NoItems = () => {
   return (
-    <div className="flex flex-col mx-auto my-10">
+    <div className="flex col-span-3 justify-center items-center flex-col my-10 ">
       <Empty description={false} />
       <div className="flex flex-col max-w-[360px] mx-auto text-center">
         <span className="font-bold text-2xl">No Items to Display</span>

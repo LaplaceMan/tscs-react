@@ -13,7 +13,7 @@ const { Option } = Select;
 const WithdrawReward = () => {
   const [form] = Form.useForm();
   const { isLoading, hideWithdrawRewardModal } = useContext(GlobalContext);
-  const { withdrawReward, defaultWithdrawOrDespoitData } =
+  const { withdrawReward, defaultWithdrawOrDepositData } =
     useContext(ApplicationContext);
   const { queryUserLockedToken, userDayLocakedToken } = useContext(DataContext);
 
@@ -26,8 +26,8 @@ const WithdrawReward = () => {
   };
 
   useEffect(() => {
-    if (defaultWithdrawOrDespoitData.platform != "") {
-      form.setFieldsValue({ platform: defaultWithdrawOrDespoitData.platform });
+    if (defaultWithdrawOrDepositData.platform != "") {
+      form.setFieldsValue({ platform: defaultWithdrawOrDepositData.platform });
     } else {
       form.setFieldsValue(null);
     }
@@ -66,7 +66,7 @@ const WithdrawReward = () => {
                   .includes(input.toLowerCase())
               }
               disabled={
-                defaultWithdrawOrDespoitData.platform != "" ? true : false
+                defaultWithdrawOrDepositData.platform != "" ? true : false
               }
             >
               <Option value={ZERO_ADDRESS}>Default</Option>
@@ -85,7 +85,7 @@ const WithdrawReward = () => {
                 if (base) {
                   base = timestampToDay(base);
                   queryUserLockedToken(
-                    defaultWithdrawOrDespoitData.platform,
+                    defaultWithdrawOrDepositData.platform,
                     base
                   );
                 }

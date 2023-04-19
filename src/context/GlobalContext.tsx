@@ -12,11 +12,10 @@ export const GlobalProvider = ({ children }: any) => {
   const [isAuditModalOpen, setAuditIsModalOpen] = useState(false);
   const [isTokenTransactionModalOpen, setIsTokenTransactionModalOpen] =
     useState(false);
-  const [isUpdateApplicationModalOpen, setIsUpdateApplicationModalOpen] =
-    useState(false);
+  const [isUpdateTaskModalOpen, setIsUpdateTaskModalOpen] = useState(false);
   const [isWithdrawRewardModalOpen, setIsWithdrawRewardModalOpen] =
     useState(false);
-  const [isDespoitAssetModalOpen, setIsDespoitAssetModalOpen] = useState(false);
+  const [isDepositAssetModalOpen, setIsDepositAssetModalOpen] = useState(false);
 
   const [toggleMenu, setToggleMenu] = useState(false);
 
@@ -28,12 +27,12 @@ export const GlobalProvider = ({ children }: any) => {
     unwatch;
   }, [unwatch]);
 
-  const showDespoitAssetModal = () => {
-    setIsDespoitAssetModalOpen(true);
+  const showDepositAssetModal = () => {
+    setIsDepositAssetModalOpen(true);
   };
 
-  const hideDespoitAssetModal = () => {
-    setIsDespoitAssetModalOpen(false);
+  const hideDepositAssetModal = () => {
+    setIsDepositAssetModalOpen(false);
   };
 
   const showWithdrawRewardModal = () => {
@@ -44,12 +43,12 @@ export const GlobalProvider = ({ children }: any) => {
     setIsWithdrawRewardModalOpen(false);
   };
 
-  const showUpdateApplicationModal = () => {
-    setIsUpdateApplicationModalOpen(true);
+  const showUpdateTaskModal = () => {
+    setIsUpdateTaskModalOpen(true);
   };
 
-  const hideUpdateApplicationModal = () => {
-    setIsUpdateApplicationModalOpen(false);
+  const hideUpdateTaskModal = () => {
+    setIsUpdateTaskModalOpen(false);
   };
 
   const showTokenTransactionModal = () => {
@@ -86,15 +85,15 @@ export const GlobalProvider = ({ children }: any) => {
         isTokenTransactionModalOpen,
         showTokenTransactionModal,
         hideTokenTransactionModal,
-        showUpdateApplicationModal,
-        hideUpdateApplicationModal,
-        isUpdateApplicationModalOpen,
+        showUpdateTaskModal,
+        hideUpdateTaskModal,
+        isUpdateTaskModalOpen,
         showWithdrawRewardModal,
         hideWithdrawRewardModal,
         isWithdrawRewardModalOpen,
-        showDespoitAssetModal,
-        hideDespoitAssetModal,
-        isDespoitAssetModalOpen,
+        showDepositAssetModal,
+        hideDepositAssetModal,
+        isDepositAssetModalOpen,
       }}
     >
       {children}

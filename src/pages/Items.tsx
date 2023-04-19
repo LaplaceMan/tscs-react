@@ -9,7 +9,7 @@ import { ApplicationContext } from "../context/ApplicationContext";
 import { DEFAULT_PAGE_SIZE } from "../utils/constants";
 
 const Items = (): React.ReactElement => {
-  const { showUploadModal, chainId } = useContext(GlobalContext);
+  const { chainId } = useContext(GlobalContext);
   const {
     subtitles,
     querySubtitleData,
@@ -20,11 +20,6 @@ const Items = (): React.ReactElement => {
   const navigate = useNavigate();
   const { updateDefaultUploadSubtitleData } = useContext(ApplicationContext);
   const [currentPage, setCurrentPage] = useState({ page: 1, language: "0" });
-
-  const handleUpload = () => {
-    updateDefaultUploadSubtitleData("0", "");
-    showUploadModal();
-  };
 
   // useEffect(() => {
   //   querySubtitleData(DEFAULT_PAGE_SIZE, 0, "0");

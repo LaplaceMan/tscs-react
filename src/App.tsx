@@ -4,7 +4,7 @@ import {
   TokenTransaction,
   UpdateApplication,
   WithdrawReward,
-  DepositAssetManageModal,
+  DepositManageModal,
   AuditModal,
 } from "./components";
 import React, { useContext } from "react";
@@ -17,9 +17,9 @@ const App = () => {
   const {
     isAuditModalOpen,
     isTokenTransactionModalOpen,
-    isUpdateApplicationModalOpen,
+    isUpdateTaskModalOpen,
     isWithdrawRewardModalOpen,
-    isDespoitAssetModalOpen,
+    isDepositAssetModalOpen,
     hideAuditModal,
   } = useContext(GlobalContext);
 
@@ -58,7 +58,7 @@ const App = () => {
               {TokenTransaction()}
             </Modal>
             <Modal
-              open={isUpdateApplicationModalOpen}
+              open={isUpdateTaskModalOpen}
               destroyOnClose={true}
               forceRender={true}
               closable={false}
@@ -78,14 +78,14 @@ const App = () => {
               {WithdrawReward()}
             </Modal>
             <Modal
-              open={isDespoitAssetModalOpen}
+              open={isDepositAssetModalOpen}
               destroyOnClose={true}
               forceRender={true}
               closable={false}
               footer={null}
               centered
             >
-              {DepositAssetManageModal()}
+              {DepositManageModal()}
             </Modal>
           </Content>
         </div>
