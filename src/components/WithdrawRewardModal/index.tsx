@@ -1,5 +1,4 @@
 import { Select, Form, Spin, DatePicker } from "antd";
-import { MdOutlineClose } from "react-icons/md";
 import React, { useContext, useEffect } from "react";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
@@ -7,7 +6,7 @@ import { DataContext } from "../../context/DataContext";
 import { ZERO_ADDRESS } from "../../utils/constants";
 import { timestampToDay } from "../../utils/tools";
 import { RealWithdrawRewardTransaction } from "../../types/formTypes";
-
+import { PrimaryButton } from "../";
 const { Option } = Select;
 
 const WithdrawReward = () => {
@@ -35,7 +34,7 @@ const WithdrawReward = () => {
 
   return (
     <Spin spinning={isLoading} size="large">
-      <div className="flex p-5 w-full">
+      <div className="flex w-full normal">
         <Form
           form={form}
           layout="vertical"
@@ -45,58 +44,59 @@ const WithdrawReward = () => {
           onFinish={onFinish}
           className="w-full"
         >
-          <div className="flex items-center justify-between mb-3">
-            <div className="text-xl font-bold">Withdraw unlocked tokens</div>
-            <div
-              className="flex hover:text-white hover:bg-black items-center justify-center cursor-pointer mt-1 rounded-full p-0.5"
-              onClick={hideWithdrawRewardModal}
-            >
-              <MdOutlineClose fontSize="1.25rem" />
-            </div>
-          </div>
-          <Form.Item></Form.Item>
-          <Form.Item name="platform" label="Platform" required>
-            <Select
-              showSearch
-              optionFilterProp="children"
-              placeholder="Language of the subtitle"
-              filterOption={(input, option) =>
-                (option!.children as unknown as string)
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-              disabled={
-                defaultWithdrawOrDepositData.platform != "" ? true : false
-              }
-            >
-              <Option value={ZERO_ADDRESS}>Default</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="day"
-            label="Day"
-            tooltip="Extract the locked tokens on the selected date."
-            required
-          >
-            <DatePicker
-              style={{ width: "100%" }}
-              onChange={(date) => {
-                let base = date?.valueOf();
-                if (base) {
-                  base = timestampToDay(base);
-                  queryUserLockedToken(
-                    defaultWithdrawOrDepositData.platform,
-                    base
-                  );
+          <div className="text-xl font-bold">Withdraw Unlocked Tokens</div>
+          <div>Withdraw The Unlocked Tokens to Your Account.</div>
+          <div className="text-lg font-semibold mt-3">Platform</div>
+          <Form.Item name="platform" required>
+            <div className="normal border border-gray-200 mt-2 rounded-xl text-base">
+              <Select
+                showSearch
+                optionFilterProp="children"
+                placeholder="Language of the subtitle"
+                filterOption={(input, option) =>
+                  (option!.children as unknown as string)
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
                 }
-              }}
-            />
+                disabled={
+                  defaultWithdrawOrDepositData.platform != "" ? true : false
+                }
+              >
+                <Option value={ZERO_ADDRESS}>Murmes</Option>
+              </Select>
+            </div>
           </Form.Item>
-          <div
-            className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110 mt-3"
-            onClick={onFinish}
-          >
-            Confirm
+          <div className="text-lg font-semibold">Day</div>
+          <Form.Item name="day" required>
+            <div className="normal border border-gray-200 mt-2 rounded-xl text-base">
+              <DatePicker
+                style={{ width: "100%" }}
+                onChange={(date) => {
+                  let base = date?.valueOf();
+                  if (base) {
+                    base = timestampToDay(base);
+                    queryUserLockedToken(
+                      defaultWithdrawOrDepositData.platform,
+                      base
+                    );
+                  }
+                }}
+              />
+            </div>
+          </Form.Item>
+          <div className="flex items-center justify-center space-x-3">
+            <PrimaryButton
+              label="Confirm"
+              bgColor="#00BEA1"
+              textColor="#fff"
+              fn={() => []}
+            />
+            <PrimaryButton
+              label="Cancel"
+              bgColor="#1C1C1C"
+              textColor="#fff"
+              fn={hideWithdrawRewardModal}
+            />
           </div>
         </Form>
       </div>

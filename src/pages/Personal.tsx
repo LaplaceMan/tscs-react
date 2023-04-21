@@ -69,7 +69,7 @@ const Personal = (): React.ReactElement => {
         }
       );
     }
-    param.id && queryUserOwnData(param.id as `0x${string}`);
+    // param.id && queryUserOwnData(param.id as `0x${string}`);
     // getPersonalPageData(user);
   }, [chainId]);
 

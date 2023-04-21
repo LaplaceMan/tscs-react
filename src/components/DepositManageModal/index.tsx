@@ -55,7 +55,7 @@ const DepositManageModal = () => {
             <div>Withdraw</div>
           </div>
         </div>
-        <div className="text-lg font-semibold">Amount</div>
+        <div className="text-xl font-semibold">Amount</div>
         <div className="normal border border-gray-200 mb-6 mt-2 rounded-xl text-base">
           <Input
             placeholder="Number of Tokens Increased or Withdrawn"

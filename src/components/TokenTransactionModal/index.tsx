@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from "react";
-import { Select, Form, Input, InputNumber, Spin } from "antd";
+import { Select, Form, Input, Spin } from "antd";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ApplicationContext } from "../../context/ApplicationContext";
-import { MdOutlineClose } from "react-icons/md";
 import { RealTokenTransaction } from "../../types/formTypes";
+import { PrimaryButton } from "../";
 const { Option } = Select;
 
-const TokenTransaction = () => {
+const TokenTransactionModal = () => {
   const { isLoading, hideTokenTransactionModal } = useContext(GlobalContext);
   const { defaultTokenTransactionData, tokenTransaction } =
     useContext(ApplicationContext);
@@ -27,7 +27,7 @@ const TokenTransaction = () => {
 
   return (
     <Spin spinning={isLoading} size="large">
-      <div className="flex p-5 w-full">
+      <div className="flex w-full normal">
         <Form
           form={form}
           layout="vertical"
@@ -35,96 +35,110 @@ const TokenTransaction = () => {
           requiredMark="optional"
           className="w-full"
           onFinish={onFinish}
-          initialValues={{ type: "ERC-20" }}
+          initialValues={{ tokenType: "ERC-20" }}
         >
-          <div className="flex items-center justify-between mb-3">
-            <div className="text-xl font-bold">
-              Transfer or approve your token
+          <div className="text-xl font-bold">Transfer or Approve Tokens</div>
+          <div>Operate on The Tokens You Hold.</div>
+          <div className="text-lg font-semibold mt-3">Contract Address</div>
+          <Form.Item name="address" required>
+            <div className="normal border border-gray-200 mt-2 rounded-xl text-base">
+              <Input
+                placeholder="Token Contract Address"
+                style={{ width: "100%" }}
+                disabled={
+                  defaultTokenTransactionData &&
+                  defaultTokenTransactionData.address != ""
+                    ? true
+                    : false
+                }
+              />
             </div>
-            <div
-              className="flex hover:text-white hover:bg-black items-center justify-center cursor-pointer mt-1 rounded-full p-0.5"
-              onClick={hideTokenTransactionModal}
-            >
-              <MdOutlineClose fontSize="1.25rem" />
+          </Form.Item>
+          <div className="text-lg font-semibold">Token Type</div>
+          <Form.Item name="tokenType" required>
+            <div className="normal border border-gray-200 mt-2 rounded-xl text-base">
+              <Select
+                style={{ width: "100%" }}
+                disabled={
+                  defaultTokenTransactionData &&
+                  defaultTokenTransactionData.type != ""
+                    ? true
+                    : false
+                }
+              >
+                <Option value="ERC-20">ERC-20</Option>
+                <Option value="ERC-721">ERC-721</Option>
+                <Option value="ERC-1155">ERC-1155</Option>
+              </Select>
             </div>
-          </div>
-          <Form.Item></Form.Item>
-          <Form.Item name="address" label="Contract address" required>
-            <Input
-              placeholder="Token contract address."
-              style={{ width: "100%" }}
-              disabled={
-                defaultTokenTransactionData &&
-                defaultTokenTransactionData.address != ""
-                  ? true
-                  : false
-              }
+          </Form.Item>
+          <div className="text-lg font-semibold">Transfer From</div>
+          <Form.Item name="from" required>
+            <div className="normal border border-gray-200 mt-2 rounded-xl text-base">
+              <Input
+                placeholder="Token Payer Address"
+                style={{ width: "100%" }}
+                disabled={
+                  defaultTokenTransactionData &&
+                  defaultTokenTransactionData.from != ""
+                    ? true
+                    : false
+                }
+              />
+            </div>
+          </Form.Item>
+          <div className="text-lg font-semibold">Transfer To</div>
+          <Form.Item name="to" required>
+            <div className="normal border border-gray-200 mt-2 rounded-xl text-base">
+              <Input
+                placeholder="Token Receiver Address"
+                style={{ width: "100%" }}
+              />
+            </div>
+          </Form.Item>
+          <div className="text-lg font-semibold">Token ID</div>
+          <Form.Item name="tokenId" required>
+            <div className="normal border border-gray-200 mt-2 rounded-xl text-base">
+              <Input
+                placeholder="ERC-721 or ERC-1155 token ID"
+                style={{ width: "100%" }}
+                disabled={
+                  defaultTokenTransactionData &&
+                  defaultTokenTransactionData.tokenId != ""
+                    ? true
+                    : false
+                }
+              />
+            </div>
+          </Form.Item>
+          <div className="text-lg font-semibold">Amount</div>
+          <Form.Item name="amount" required>
+            <div className="normal border border-gray-200 mt-2 rounded-xl text-base">
+              <Input
+                placeholder="Amount of Token Transfer"
+                style={{ width: "100%" }}
+                disabled={
+                  defaultTokenTransactionData &&
+                  defaultTokenTransactionData.amount != ""
+                    ? true
+                    : false
+                }
+              />
+            </div>
+          </Form.Item>
+          <div className="flex items-center justify-center space-x-3">
+            <PrimaryButton
+              label="Confirm"
+              bgColor="#00BEA1"
+              textColor="#fff"
+              fn={() => []}
             />
-          </Form.Item>
-          <Form.Item name="type" label="Token Type" required>
-            <Select
-              style={{ width: "100%" }}
-              disabled={
-                defaultTokenTransactionData &&
-                defaultTokenTransactionData.type != ""
-                  ? true
-                  : false
-              }
-            >
-              <Option value="ERC-20">ERC-20</Option>
-              <Option value="ERC-721">ERC-721</Option>
-              <Option value="ERC-1155">ERC-1155</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item name="from" label="Transfer from" required>
-            <Input
-              placeholder="Token payer address."
-              style={{ width: "100%" }}
-              disabled={
-                defaultTokenTransactionData &&
-                defaultTokenTransactionData.from != ""
-                  ? true
-                  : false
-              }
+            <PrimaryButton
+              label="Cancel"
+              bgColor="#1C1C1C"
+              textColor="#fff"
+              fn={hideTokenTransactionModal}
             />
-          </Form.Item>
-          <Form.Item name="to" label="Transfer to" required>
-            <Input
-              placeholder="Token receiver address."
-              style={{ width: "100%" }}
-            />
-          </Form.Item>
-          <Form.Item name="tokenId" label="Token id" required>
-            <InputNumber
-              min={0}
-              placeholder="ERC-721 or ERC-1155 token id."
-              style={{ width: "100%" }}
-              disabled={
-                defaultTokenTransactionData &&
-                defaultTokenTransactionData.tokenId != ""
-                  ? true
-                  : false
-              }
-            />
-          </Form.Item>
-          <Form.Item name="amount" label="Transfer amount" required>
-            <InputNumber
-              placeholder="Amount of token transfer."
-              min={0}
-              style={{ width: "100%" }}
-              disabled={
-                defaultTokenTransactionData &&
-                defaultTokenTransactionData.amount != ""
-                  ? true
-                  : false
-              }
-            />
-          </Form.Item>
-          <div
-            className="flex items-center justify-center rounded-xl text-white font-medium px-[1.1rem] py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110 mt-3"
-            onClick={onFinish}
-          >
-            Confirm
           </div>
         </Form>
       </div>
@@ -132,4 +146,4 @@ const TokenTransaction = () => {
   );
 };
 
-export default TokenTransaction;
+export default TokenTransactionModal;

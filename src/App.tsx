@@ -1,9 +1,9 @@
 import {
   HeaderTop,
   DefaultFooter,
-  TokenTransaction,
-  UpdateApplication,
-  WithdrawReward,
+  TokenTransactionModal,
+  UpdateTaskModal,
+  WithdrawRewardModal,
   DepositManageModal,
   AuditModal,
 } from "./components";
@@ -20,10 +20,7 @@ const App = () => {
     isUpdateTaskModalOpen,
     isWithdrawRewardModalOpen,
     isDepositAssetModalOpen,
-    hideAuditModal,
   } = useContext(GlobalContext);
-
-  const path = location.pathname.split("/")[2];
 
   return (
     <div>
@@ -55,7 +52,7 @@ const App = () => {
               footer={null}
               centered
             >
-              {TokenTransaction()}
+              {TokenTransactionModal()}
             </Modal>
             <Modal
               open={isUpdateTaskModalOpen}
@@ -65,7 +62,7 @@ const App = () => {
               footer={null}
               centered
             >
-              {UpdateApplication()}
+              {UpdateTaskModal()}
             </Modal>
             <Modal
               open={isWithdrawRewardModalOpen}
@@ -75,7 +72,7 @@ const App = () => {
               footer={null}
               centered
             >
-              {WithdrawReward()}
+              {WithdrawRewardModal()}
             </Modal>
             <Modal
               open={isDepositAssetModalOpen}
