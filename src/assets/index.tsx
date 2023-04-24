@@ -1,7 +1,7 @@
 export { default as discord } from "./discord.svg";
 export { default as github } from "./github.svg";
-export { default as logo } from "./logo.svg";
-export { default as logo_single } from "./logo_single.svg";
+export { default as logo } from "./logo.png";
+export { default as logo_single } from "./logo_single.png";
 export { default as telegram } from "./telegram.svg";
 export { default as twitter } from "./twitter.svg";
 export { default as application_Illustration } from "./application_Illustration.png";

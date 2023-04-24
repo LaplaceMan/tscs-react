@@ -103,7 +103,7 @@ const Submit = () => {
           </Form>
           <div className="flex text-white items-center justify-center border-2 border-dashed border-[#322d3a] rounded-xl w-full py-5 mb-10 mt-5">
             <div className="flex space-x-10 items-center justify-center">
-              <UserStateItem label="Repuataion" value="100.0" />
+              <UserStateItem label="Reputation" value="100.0" />
               <div
                 style={{
                   width: "2px",

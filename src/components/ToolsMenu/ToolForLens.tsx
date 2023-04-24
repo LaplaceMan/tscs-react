@@ -1,13 +1,10 @@
 import React, { useContext, useState } from "react";
-import {
-  MdSlowMotionVideo,
-  MdOutlineSwapHorizontalCircle,
-} from "react-icons/md";
 import { RiExchangeDollarFill, RiBitCoinLine } from "react-icons/ri";
 import { ApplicationContext } from "../../context/ApplicationContext";
 import { Input } from "antd";
 import { bignumberConvert } from "../../utils/tools";
 import { DECIMALS_6 } from "../../utils/constants";
+import FullButton from "./FullButton";
 
 const ToolForLens = () => {
   const {
@@ -27,49 +24,44 @@ const ToolForLens = () => {
 
   return (
     <div className="flex flex-col w-full space-y-3">
-      <div className="bg-gray-100 flex flex-col w-full rounded-xl items-center p-3 space-y-3">
-        <div className="flex w-full justify-between items-end text-[#696969] text-base">
-          <div className="flex items-center space-x-1 font-medium">
-            <RiBitCoinLine color="#b887fc" />
-            <div>Update Revenue</div>
+      <div className="bg-[#0f0a19] flex flex-col w-full rounded-xl items-center p-3 space-y-3">
+        <div className="flex w-full justify-between items-end text-base">
+          <div className="flex items-center space-x-1 font-medium text-white">
+            <RiBitCoinLine />
+            <div>UPDATE REVENUE</div>
           </div>
-          <div className="text-sm">Renewable: {lensSettleable}</div>
+          <div className="text-sm text-[#696969]">
+            Renewable: {lensSettleable}
+          </div>
         </div>
-        <Input
-          size="large"
-          placeholder="Video's real Id (based on profileId and pubId)"
-          prefix={<MdSlowMotionVideo />}
-          onChange={(e) => handleVideoChange(e.target.value)}
-        />
-        <div
-          className="flex items-center justify-center rounded-xl text-white font-bold w-full py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
-          onClick={() => updateRevenueInLens(videoId)}
-        >
-          Update
+        <div className="w-full border-2 border-[#1b1524] rounded-xl text-base">
+          <Input
+            size="large"
+            placeholder="Box's Real ID (Based on ProfileId and PubId)"
+            style={{ width: "100%" }}
+            onChange={(e) => handleVideoChange(e.target.value)}
+          />
         </div>
+        <FullButton label="Update" fn={() => updateRevenueInLens(videoId)} />
       </div>
-      <div className="bg-gray-100 flex flex-col w-full rounded-xl items-center p-3 space-y-3">
+      <div className="bg-[#0f0a19] flex flex-col w-full rounded-xl items-center p-3 space-y-3">
         <div className="flex w-full justify-between items-end text-[#696969] text-base">
-          <div className="flex items-center space-x-1 font-medium">
-            <RiExchangeDollarFill color="#b887fc" />
-            <div>Swap Token</div>
+          <div className="flex items-center space-x-1 font-medium text-white">
+            <RiExchangeDollarFill />
+            <div>SWAP TOKENS</div>
           </div>
           <div className="text-sm">
             Swapable: {bignumberConvert(personalDID.vt1, DECIMALS_6, 2)}
           </div>
         </div>
-        <Input
-          size="large"
-          placeholder="Number of tokens exchanged"
-          prefix={<MdOutlineSwapHorizontalCircle />}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-        <div
-          className="flex items-center justify-center rounded-xl text-white font-bold w-full py-2.5 cursor-pointer bg-gradient-to-r from-purple-400 to-blue-400 hover:brightness-110"
-          onClick={() => swapRevenueInLens(amount)}
-        >
-          Swap
+        <div className="w-full border-2 border-[#1b1524] rounded-xl text-base">
+          <Input
+            size="large"
+            placeholder="Number of Tokens Exchanged"
+            onChange={(e) => setAmount(e.target.value)}
+          />
         </div>
+        <FullButton label="Swap" fn={() => swapRevenueInLens(amount)} />
       </div>
     </div>
   );
