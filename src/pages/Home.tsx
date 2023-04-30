@@ -14,33 +14,6 @@ import { star_background, coins, ethereum, polygon } from "../assets";
 import { Table } from "antd";
 import { columns, data } from "../utils/table/columns";
 
-const DashboardMiniItems: DashboardMiniItem[] = [
-  {
-    label: "All Tasks",
-    tag: "Tasks",
-    number: "0",
-    icon: <MdAllInbox color="#00BEA1" fontSize={25} />,
-  },
-  {
-    label: "All Users",
-    tag: "Users",
-    number: "0",
-    icon: <MdPeopleAlt color="#00BEA1" fontSize={25} />,
-  },
-  {
-    label: "All Items",
-    tag: "Items",
-    number: "0",
-    icon: <MdOutlineSubtitles color="#00BEA1" fontSize={25} />,
-  },
-  {
-    label: "All Platforms",
-    tag: "Platforms",
-    number: "0",
-    icon: <MdOutlineVideoLibrary color="#00BEA1" fontSize={25} />,
-  },
-];
-
 const ChainContainer = ({ url, name }: { url: string; name: string }) => {
   return (
     <div className="flex flex-col items-center justify-center rounded-3xl">
@@ -75,6 +48,33 @@ const Home = (): React.ReactElement => {
       clearInterval(timer);
     };
   }, [chainId]);
+
+  const DashboardMiniItems: DashboardMiniItem[] = [
+    {
+      label: "All Tasks",
+      tag: "Tasks",
+      number: dashboard?.taskCount ? dashboard.taskCount : "0",
+      icon: <MdAllInbox color="#00BEA1" fontSize={25} />,
+    },
+    {
+      label: "All Users",
+      tag: "Users",
+      number: dashboard?.userCount ? dashboard.userCount : "0",
+      icon: <MdPeopleAlt color="#00BEA1" fontSize={25} />,
+    },
+    {
+      label: "All Items",
+      tag: "Items",
+      number: dashboard?.itemCount ? dashboard.itemCount : "0",
+      icon: <MdOutlineSubtitles color="#00BEA1" fontSize={25} />,
+    },
+    {
+      label: "All Platforms",
+      tag: "Platforms",
+      number: dashboard?.platformCount ? dashboard.platformCount : "0",
+      icon: <MdOutlineVideoLibrary color="#00BEA1" fontSize={25} />,
+    },
+  ];
 
   const DashboardMini = ({ item }: { item: DashboardMiniItem }) => {
     return (

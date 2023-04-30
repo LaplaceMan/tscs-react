@@ -98,25 +98,17 @@ export const defaultSubtitle: Subtitle = {
 };
 
 export type Dashboard = {
-  applicationCount: string;
+  taskCount: string;
   userCount: string;
-  subtitleCount: string;
   platformCount: string;
-  applicationInc: string;
-  userInc: string;
-  platformInc: string;
-  subtitleInc: string;
+  itemCount: string;
 };
 
 export const defaultDashboard = {
-  applicationCount: "0",
+  taskCount: "0",
   userCount: "0",
-  subtitleCount: "0",
+  itemCount: "0",
   platformCount: "0",
-  applicationInc: "0",
-  userInc: "0",
-  platformInc: "0",
-  subtitleInc: "0",
 };
 
 export type User = {
@@ -180,6 +172,9 @@ export type GlobalContent = {
   showDepositAssetModal: () => void;
   hideDepositAssetModal: () => void;
   isDepositAssetModalOpen: boolean;
+  showGuardManageModal: () => void;
+  hideGuardManageModal: () => void;
+  isGuardManageModalOpen: boolean;
 };
 
 export type OwnToken = {
@@ -364,7 +359,7 @@ export type DataContent = {
   playerBaseInfo: PlayerBaseInfo;
   applications: Application[] | null;
   subtitles: Subtitle[] | null;
-  queryApplicationData: (first: number, skip: number, language: string) => void;
+  QueryTaskData: (first: number, skip: number, language: string) => void;
   dashboard: Dashboard | null;
   queryHomeData: () => void;
   querySubtitleData: (first: number, skip: number, language: string) => void;

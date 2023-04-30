@@ -12,7 +12,7 @@ import {
 } from "react-icons/bs";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount, useEnsAvatar } from "wagmi";
+import { useAccount } from "wagmi";
 import { RANDOM_AVATAR_API } from "../../utils/constants";
 const NavbarItems = [
   {
@@ -31,7 +31,6 @@ const NavbarItems = [
 const HeaderNavbar = () => {
   const { toggleMenu, setToggleMenu } = useContext(GlobalContext);
   const { address, isConnected } = useAccount();
-  const { data: ensAvatar } = useEnsAvatar({ address });
   const HeaderNavbarItems = (
     item: NavbarItem,
     key: React.Key
@@ -90,7 +89,7 @@ const HeaderNavbar = () => {
         <li className="mx-4 cursor-pointer log">
           {isConnected ? (
             <img
-              src={ensAvatar ? ensAvatar : RANDOM_AVATAR_API}
+              src={RANDOM_AVATAR_API}
               className="flex rounded-full w-[2rem]"
               alt="ENS Avatar"
             />

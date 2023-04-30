@@ -1,4 +1,4 @@
-export const SUPPORT_NETWORK = [5, 80001];
+export const SUPPORT_NETWORK = [5, 80001, 1337];
 
 export const countryLanguageMap: { [key: string]: string } = {
   "zh-CN": "cn",
@@ -18,6 +18,9 @@ export const GRAPHQL_SUBGRAPH_GOERLI_ABI =
 
 export const MUMBAI_SUBGRAPH_GOERLI_ABI =
   "https://api.thegraph.com/subgraphs/name/laplaceman/murmes-mumbai-v5";
+
+export const TEST_SUBGRAPH_API =
+  "http://10.201.1.236:8000/subgraphs/name/murmes-subgrpah";
 
 export const RANDOM_AVATAR_API =
   "https://api.dicebear.com/5.x/adventurer-neutral/svg";

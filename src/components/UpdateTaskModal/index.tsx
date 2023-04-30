@@ -9,7 +9,8 @@ import { PrimaryButton } from "..";
 
 const UpdateTaskModal = () => {
   const [form] = Form.useForm();
-  const { isLoading, hideUpdateTaskModal } = useContext(GlobalContext);
+  const { isLoading, hideUpdateTaskModal, isUpdateTaskModalOpen } =
+    useContext(GlobalContext);
   const { defaultUpdateApplicationData, updateApplication } =
     useContext(ApplicationContext);
 
@@ -21,10 +22,12 @@ const UpdateTaskModal = () => {
   };
 
   useEffect(() => {
-    if (defaultUpdateApplicationData.applyId != "0") {
-      form.setFieldsValue({ ...defaultUpdateApplicationData });
-    } else {
-      form.setFieldsValue(null);
+    if (isUpdateTaskModalOpen) {
+      if (defaultUpdateApplicationData.applyId != "0") {
+        form.setFieldsValue({ ...defaultUpdateApplicationData });
+      } else {
+        form.setFieldsValue(null);
+      }
     }
   });
 

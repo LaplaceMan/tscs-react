@@ -7,7 +7,8 @@ import { PrimaryButton } from "../";
 const { Option } = Select;
 
 const TokenTransactionModal = () => {
-  const { isLoading, hideTokenTransactionModal } = useContext(GlobalContext);
+  const { isLoading, hideTokenTransactionModal, isTokenTransactionModalOpen } =
+    useContext(GlobalContext);
   const { defaultTokenTransactionData, tokenTransaction } =
     useContext(ApplicationContext);
   const [form] = Form.useForm();
@@ -18,10 +19,12 @@ const TokenTransactionModal = () => {
   };
 
   useEffect(() => {
-    if (defaultTokenTransactionData.type != "") {
-      form.setFieldsValue({ ...defaultTokenTransactionData });
-    } else {
-      form.setFieldsValue(null);
+    if (isTokenTransactionModalOpen) {
+      if (defaultTokenTransactionData.type != "") {
+        form.setFieldsValue({ ...defaultTokenTransactionData });
+      } else {
+        form.setFieldsValue(null);
+      }
     }
   });
 

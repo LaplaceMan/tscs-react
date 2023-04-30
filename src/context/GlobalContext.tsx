@@ -8,7 +8,7 @@ export const GlobalContext = React.createContext<GlobalContent>(
 export const GlobalProvider = ({ children }: any) => {
   const [chainId, setChainId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [toggleMenu, setToggleMenu] = useState(false);
   const [isAuditModalOpen, setAuditIsModalOpen] = useState(false);
   const [isTokenTransactionModalOpen, setIsTokenTransactionModalOpen] =
     useState(false);
@@ -16,8 +16,7 @@ export const GlobalProvider = ({ children }: any) => {
   const [isWithdrawRewardModalOpen, setIsWithdrawRewardModalOpen] =
     useState(false);
   const [isDepositAssetModalOpen, setIsDepositAssetModalOpen] = useState(false);
-
-  const [toggleMenu, setToggleMenu] = useState(false);
+  const [isGuardManageModalOpen, setIsGuardManageModalOpen] = useState(false);
 
   const unwatch = watchNetwork((network) => {
     network.chain && setChainId(network.chain.id);
@@ -67,6 +66,14 @@ export const GlobalProvider = ({ children }: any) => {
     setAuditIsModalOpen(false);
   };
 
+  const showGuardManageModal = () => {
+    setIsGuardManageModalOpen(true);
+  };
+
+  const hideGuardManageModal = () => {
+    setIsGuardManageModalOpen(false);
+  };
+
   const setLoadingState = (state: boolean) => {
     setIsLoading(state);
   };
@@ -94,6 +101,9 @@ export const GlobalProvider = ({ children }: any) => {
         showDepositAssetModal,
         hideDepositAssetModal,
         isDepositAssetModalOpen,
+        showGuardManageModal,
+        hideGuardManageModal,
+        isGuardManageModalOpen,
       }}
     >
       {children}

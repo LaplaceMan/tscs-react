@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 const ApplicationPage = (): React.ReactElement => {
   const {
     applications,
-    queryApplicationData,
+    QueryTaskData,
     dashboard,
     regiserLanguages,
     isGetDataLoading,

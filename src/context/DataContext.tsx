@@ -18,11 +18,11 @@ import {
   Dashboard,
   defaultDashboard,
 } from "../types/baseTypes";
-import { SUBTITLE_SYSTEM } from "../utils/contracts";
+import { MURMES_PROTOCOL } from "../utils/contracts";
 import {
   QueryHome,
-  QueryApplication,
-  QueryApplicationWithLanguage,
+  QueryTasks,
+  QueryTaskWithLanguage,
   QuerySubtitle,
   QuerySubtitleWithLanguage,
   QueryUser,
@@ -77,70 +77,20 @@ export const DataProvider = ({ children }: any) => {
   const queryHomeData = async () => {
     if (chain && SUPPORT_NETWORK.includes(chainId)) {
       setIsGetDataLoading(true);
-      const day = parseInt(
-        (new Date().valueOf() / 86400000).toString()
-      ).toString();
       try {
         const data = await Client(chainId).query({
           query: gql(QueryHome),
           variables: {
-            id: SUBTITLE_SYSTEM[chain.id],
-            first: 8,
-            date: day,
+            id: MURMES_PROTOCOL[chain.id],
           },
         });
         if (data && data.data) {
           const dashboard = data.data.dashboard;
-          const dayData = data.data.dayData;
-          const getApplications = data.data.applications;
-          const getSubtitles = data.data.subtitles;
-          const applicationArray = new Array<Application>();
-          const subtitleArray = new Array<Subtitle>();
-          getApplications.map((item: any) => {
-            applicationArray.push({
-              applicant: item.applicant.id,
-              vidoId: item.video.orderId
-                ? item.video.orderId
-                : item.video.realId,
-              platformName: item.video.platform.name,
-              applyId: item.id,
-              language: item.language.notes,
-              amount: item.amount,
-              payType: item.strategy.notes,
-              uploads: item.subtitleCount,
-              start: item.start,
-              deadline: Number(item.deadline),
-              source: item.source,
-            });
-          });
-          getSubtitles.map((item: any) => {
-            subtitleArray.push({
-              applyId: item.application.id,
-              applySource: item.application.source,
-              payType: item.application.strategy.notes,
-              platformName: item.application.video.platform.name,
-              subtitleId: item.id,
-              language: item.language.notes,
-              support: item.supporterCount,
-              oppose: item.dissenterCount,
-              maker: item.maker.id,
-              start: item.application.start,
-              deadline: Number(item.application.deadline),
-              fingerprint: item.fingerprint,
-              cid: item.cid,
-            });
-          });
-          setSubtitles(subtitleArray);
-          setApplications(applicationArray);
           setDashboard({
-            applicationCount: dashboard.applicationCount,
-            userCount: dashboard.userCount.toString(),
-            subtitleCount: dashboard.subtitleCount,
+            taskCount: dashboard.taskCount,
+            userCount: dashboard.userCount,
+            itemCount: dashboard.itemCount,
             platformCount: dashboard.platformCount,
-            applicationInc: dayData ? dayData.applicationCount : "0",
-            userInc: dayData ? dayData.userCount : "0",
-            platformInc: dayData ? dayData.platformCount : "0",
-            subtitleInc: dayData ? dayData.subtitleCount : "0",
           });
         }
         setIsGetDataLoading(false);
@@ -155,7 +105,7 @@ export const DataProvider = ({ children }: any) => {
     }
   };
 
-  const queryApplicationData = async (
+  const QueryTaskData = async (
     first: number,
     skip: number,
     language: string
@@ -164,9 +114,7 @@ export const DataProvider = ({ children }: any) => {
       setIsGetDataLoading(true);
       try {
         const data = await Client(chainId).query({
-          query: gql(
-            language == "0" ? QueryApplication : QueryApplicationWithLanguage
-          ),
+          query: gql(language == "0" ? QueryTasks : QueryTaskWithLanguage),
           variables: {
             first: first,
             skip: skip,
@@ -499,7 +447,7 @@ export const DataProvider = ({ children }: any) => {
         dashboard,
         queryHomeData,
         applications,
-        queryApplicationData,
+        QueryTaskData,
         subtitles,
         querySubtitleData,
         defaultAuditSubtitleMaker,

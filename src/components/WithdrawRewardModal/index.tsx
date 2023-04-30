@@ -11,7 +11,8 @@ const { Option } = Select;
 
 const WithdrawReward = () => {
   const [form] = Form.useForm();
-  const { isLoading, hideWithdrawRewardModal } = useContext(GlobalContext);
+  const { isLoading, hideWithdrawRewardModal, isWithdrawRewardModalOpen } =
+    useContext(GlobalContext);
   const { withdrawReward, defaultWithdrawOrDepositData } =
     useContext(ApplicationContext);
   const { queryUserLockedToken, userDayLocakedToken } = useContext(DataContext);
@@ -25,10 +26,14 @@ const WithdrawReward = () => {
   };
 
   useEffect(() => {
-    if (defaultWithdrawOrDepositData.platform != "") {
-      form.setFieldsValue({ platform: defaultWithdrawOrDepositData.platform });
-    } else {
-      form.setFieldsValue(null);
+    if (isWithdrawRewardModalOpen) {
+      if (defaultWithdrawOrDepositData.platform != "") {
+        form.setFieldsValue({
+          platform: defaultWithdrawOrDepositData.platform,
+        });
+      } else {
+        form.setFieldsValue(null);
+      }
     }
   });
 

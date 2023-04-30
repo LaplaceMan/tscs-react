@@ -13,10 +13,10 @@ import { GlobalContext } from "../context/GlobalContext";
 import { shortenAddress } from "../utils/tools";
 import { RANDOM_AVATAR_API, SUPPORT_NETWORK } from "../utils/constants";
 import { OwnAssetCard, OwnOtherCard, NoItems } from "../components";
-import { ZIMU_TOKEN, VIDEO_TOKEN } from "../utils/contracts";
-import { getNetwork, getProvider, fetchEnsAvatar } from "@wagmi/core";
+import { TEST_TOKEN, PLATFORM_TOKEN } from "../utils/contracts";
+import { getNetwork } from "@wagmi/core";
 import { personal_default } from "../assets";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const PersonalItem = ({
   label,
@@ -52,23 +52,17 @@ const Personal = (): React.ReactElement => {
   const { userOwnData, queryUserOwnData, isGetDataLoading } =
     useContext(DataContext);
   const { personalDID, getPersonalPageData } = useContext(ApplicationContext);
-  const { chainId, showDepositAssetModal, showUpdateTaskModal } =
-    useContext(GlobalContext);
-  const [avatarAndName, setAvatarAndName] = useState({ avatar: "", name: "" });
+  const {
+    chainId,
+    showDepositAssetModal,
+    showUpdateTaskModal,
+    showGuardManageModal,
+  } = useContext(GlobalContext);
   const { chain } = getNetwork();
-  const provider = getProvider();
   const param = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (provider) {
-      fetchEnsAvatar({ address: param.id as `0x${string}` }).then(
-        (ens: any) => {
-          if (ens) {
-            setAvatarAndName({ ...avatarAndName, avatar: ens });
-          }
-        }
-      );
-    }
     // param.id && queryUserOwnData(param.id as `0x${string}`);
     // getPersonalPageData(user);
   }, [chainId]);
@@ -84,7 +78,7 @@ const Personal = (): React.ReactElement => {
             issuser: "Murmes",
             address:
               chain && SUPPORT_NETWORK.includes(chain.id)
-                ? ZIMU_TOKEN[chain.id]
+                ? TEST_TOKEN[chain.id]
                 : "",
             symbol: "Zimu",
             tokenId: "0",
@@ -98,7 +92,7 @@ const Personal = (): React.ReactElement => {
             issuser: "Murmes",
             address:
               chain && SUPPORT_NETWORK.includes(chain.id)
-                ? VIDEO_TOKEN[chain.id]
+                ? PLATFORM_TOKEN[chain.id]
                 : "",
             symbol: "VT",
             tokenId: "0",
@@ -112,7 +106,7 @@ const Personal = (): React.ReactElement => {
             issuser: "Lens",
             address:
               chain && SUPPORT_NETWORK.includes(chain.id)
-                ? VIDEO_TOKEN[chain.id]
+                ? PLATFORM_TOKEN[chain.id]
                 : "",
             symbol: "VT",
             tokenId: "1",
@@ -250,11 +244,7 @@ const Personal = (): React.ReactElement => {
           <div className="flex justify-center mt-40 align-bottom">
             <img
               className="shrink-0 w-32 h-32 md:w-36 md:h-36 rounded-full"
-              src={
-                avatarAndName.avatar != ""
-                  ? avatarAndName.avatar
-                  : RANDOM_AVATAR_API
-              }
+              src={RANDOM_AVATAR_API}
             />
           </div>
         </div>
@@ -268,7 +258,7 @@ const Personal = (): React.ReactElement => {
           label="REPUTATION"
           value="100.0"
           icon={<BiAward />}
-          fn={{ label: "Submit", fn: () => [] }}
+          fn={{ label: "Submit", fn: () => navigate("/Submit") }}
         />
         <PersonalItem
           label="DEPOSIT"
@@ -280,7 +270,7 @@ const Personal = (): React.ReactElement => {
           label="GUARD"
           value="0x1234...5678"
           icon={<BiCheckShield />}
-          fn={{ label: "Set", fn: () => [] }}
+          fn={{ label: "Set", fn: showGuardManageModal }}
         />
       </div>
       <Tabs

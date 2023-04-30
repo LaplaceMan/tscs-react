@@ -1,12 +1,10 @@
 export const QueryHome =
-  "query($id: String, $first: Int, $date: String) { dashboard(id: $id) { applicationCount platformCount subtitleCount userCount}  applications(first: $first, orderBy: start, orderDirection: desc) { id applicant {id} video { realId orderId platform {name}} language {notes} amount strategy{notes} subtitleCount start deadline source} subtitles(first: $first, orderBy: time, orderDirection: desc) {id application{id subtitleCount start deadline strategy{notes} video{platform{name}}} language{notes} supporterCount dissenterCount maker{id} fingerprint cid } dayData(id: $date) {applicationCount subtitleCount platformCount userCount}}";
+  "query($id: String) { dashboard(id: $id) { taskCount platformCount itemCount userCount}}";
 
-export const QueryApplication =
-  "query($first: Int, $skip: Int) {applications(first: $first, skip: $skip, orderBy: start, orderDirection: desc) { id applicant {id} video { realId orderId platform {name}} language {notes} amount strategy{notes} subtitleCount start deadline source}}";
+export const QueryTasks =
+  "query($first: Int, $skip: Int) {tasks(first: $first, skip: $skip, orderBy: start, orderDirection: desc) { id applicant {id} requires { notes } strategy{notes} currency {symbol} amount auditModule detectionModule state box{id platform{name}} start deadline source itemCount adopted }}";
 
-// export const QueryApplicationWithLanguage =
-//   "query($first: Int, $skip: Int, $languageId: String) {applications(first: $first, skip: $skip, orderBy: start, orderDirection: desc, where: {language_: {id: $languageId}}) { id applicant {id} video { realId orderId platform {name}} language{notes} amount strategy{notes} subtitleCount start deadline source}}";
-export const QueryApplicationWithLanguage =
+export const QueryTaskWithLanguage =
   "query($first: Int, $skip: Int, $languageId: String) {language(id: $languageId) {applications(irst: $first, skip: $skip, orderBy: start, orderDirection: desc){id applicant {id} video { realId orderId platform {name}} language{notes} amount strategy{notes} subtitleCount start deadline source}} }";
 
 export const QuerySubtitle =

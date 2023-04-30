@@ -20,14 +20,14 @@ import {
 } from "../types/formTypes";
 import { ethers } from "ethers";
 import {
-  SUBTITLE_SYSTEM,
-  SUBTITLE_SYSTEM_ABI,
+  MURMES_PROTOCOL,
+  MURMES_PROTOCOL_ABI,
   ERC20_ABI,
   ERC1155_ABI,
   ERC721_ABI,
-  ZIMU_TOKEN,
-  ZIMU_TOKEN_ABI,
-  VIDEO_TOKEN,
+  TEST_TOKEN,
+  TEST_TOKEN_ABI,
+  PLATFORM_TOKEN,
   ACCESS_STRATEGY,
   ACCESS_ABI,
   AUTHORITY_STRATEGY,
@@ -82,8 +82,6 @@ export const ApplicationProvider = ({ children }: any) => {
 
   useEffect(() => {
     chainId;
-    queryRegiserLanugages();
-    queryRegiserPlatforms();
   }, [chainId]);
 
   const updateDefaultAuditSubtitleData = (subtitle: Subtitle) => {
@@ -122,25 +120,25 @@ export const ApplicationProvider = ({ children }: any) => {
     if (provider) {
       if (chain && SUPPORT_NETWORK.includes(chainId)) {
         const userBaseData = (await readContract({
-          address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
-          abi: SUBTITLE_SYSTEM_ABI,
+          address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+          abi: MURMES_PROTOCOL_ABI,
           functionName: "getUserBaseInfo",
           args: [address],
         })) as Array<ethers.BigNumber>;
         const zimuBalance = (await readContract({
-          address: ZIMU_TOKEN[chainId] as `0x${string}`,
-          abi: ZIMU_TOKEN_ABI,
+          address: TEST_TOKEN[chainId] as `0x${string}`,
+          abi: TEST_TOKEN_ABI,
           functionName: "balanceOf",
           args: [address],
         })) as ethers.BigNumber;
         const vtBalance = (await readContract({
-          address: VIDEO_TOKEN[chainId] as `0x${string}`,
+          address: PLATFORM_TOKEN[chainId] as `0x${string}`,
           abi: ERC1155_ABI,
           functionName: "balanceOf",
           args: [address, 0],
         })) as ethers.BigNumber;
         const lensBalance = (await readContract({
-          address: VIDEO_TOKEN[chainId] as `0x${string}`,
+          address: PLATFORM_TOKEN[chainId] as `0x${string}`,
           abi: ERC1155_ABI,
           functionName: "balanceOf",
           args: [address, 1],
@@ -188,8 +186,8 @@ export const ApplicationProvider = ({ children }: any) => {
           amount = params.amount;
         }
         const config = await prepareWriteContract({
-          address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
-          abi: SUBTITLE_SYSTEM_ABI,
+          address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+          abi: MURMES_PROTOCOL_ABI,
           functionName: "submitApplication",
           args: [
             params.platform,
@@ -221,8 +219,8 @@ export const ApplicationProvider = ({ children }: any) => {
     if (provider) {
       if (chain && SUPPORT_NETWORK.includes(chainId)) {
         const config = await prepareWriteContract({
-          address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
-          abi: SUBTITLE_SYSTEM_ABI,
+          address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+          abi: MURMES_PROTOCOL_ABI,
           functionName: "uploadSubtitle",
           args: [
             params.applyId,
@@ -251,8 +249,8 @@ export const ApplicationProvider = ({ children }: any) => {
     if (provider) {
       if (chain && SUPPORT_NETWORK.includes(chainId)) {
         const config = await prepareWriteContract({
-          address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
-          abi: SUBTITLE_SYSTEM_ABI,
+          address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+          abi: MURMES_PROTOCOL_ABI,
           functionName: "evaluateSubtitle",
           args: [params.subtitleId, params.attitude],
         });
@@ -345,15 +343,15 @@ export const ApplicationProvider = ({ children }: any) => {
         let config;
         if (type == "OT0") {
           config = await prepareWriteContract({
-            address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
-            abi: SUBTITLE_SYSTEM_ABI,
+            address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+            abi: MURMES_PROTOCOL_ABI,
             functionName: "preExtract0",
             args: [applyId],
           });
         } else {
           config = await prepareWriteContract({
-            address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
-            abi: SUBTITLE_SYSTEM_ABI,
+            address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+            abi: MURMES_PROTOCOL_ABI,
             functionName: "preExtractOther",
             args: [applyId],
           });
@@ -390,8 +388,8 @@ export const ApplicationProvider = ({ children }: any) => {
           deadline = timestamp() + 864000;
         }
         const config = await prepareWriteContract({
-          address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
-          abi: SUBTITLE_SYSTEM_ABI,
+          address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+          abi: MURMES_PROTOCOL_ABI,
           functionName: "updateApplication",
           args: [params.applyId, amount, deadline],
         });
@@ -415,8 +413,8 @@ export const ApplicationProvider = ({ children }: any) => {
     if (provider) {
       if (chain && SUPPORT_NETWORK.includes(chainId)) {
         const config = await prepareWriteContract({
-          address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
-          abi: SUBTITLE_SYSTEM_ABI,
+          address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+          abi: MURMES_PROTOCOL_ABI,
           functionName: "cancel",
           args: [taskId],
         });
@@ -440,8 +438,8 @@ export const ApplicationProvider = ({ children }: any) => {
     if (provider) {
       if (chain && SUPPORT_NETWORK.includes(chainId)) {
         const config = await prepareWriteContract({
-          address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
-          abi: SUBTITLE_SYSTEM_ABI,
+          address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+          abi: MURMES_PROTOCOL_ABI,
           functionName: "withdraw",
           args: [params.platform, [params.day]],
         });
@@ -468,16 +466,16 @@ export const ApplicationProvider = ({ children }: any) => {
         const realAmount = ethers.utils.parseUnits(amount.toString(), 18);
         if (defaultWithdrawOrDepositData.manage == "DEPOSIT") {
           config = await prepareWriteContract({
-            address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
-            abi: SUBTITLE_SYSTEM_ABI,
+            address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+            abi: MURMES_PROTOCOL_ABI,
             functionName: "userJoin",
             args: [address, realAmount],
           });
         } else {
           // defaultWithdrawOrDepositData.manage == "WITHDRAW"
           config = await prepareWriteContract({
-            address: SUBTITLE_SYSTEM[chainId] as `0x${string}`,
-            abi: SUBTITLE_SYSTEM_ABI,
+            address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+            abi: MURMES_PROTOCOL_ABI,
             functionName: "withdrawDeposit",
             args: [realAmount],
           });

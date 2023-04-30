@@ -6,6 +6,7 @@ import {
   WithdrawRewardModal,
   DepositManageModal,
   AuditModal,
+  GuardManageModal,
 } from "./components";
 import React, { useContext } from "react";
 import { Layout, Affix, Modal } from "antd";
@@ -20,6 +21,7 @@ const App = () => {
     isUpdateTaskModalOpen,
     isWithdrawRewardModalOpen,
     isDepositAssetModalOpen,
+    isGuardManageModalOpen,
   } = useContext(GlobalContext);
 
   return (
@@ -37,7 +39,10 @@ const App = () => {
           <Content>
             {AllRoutes()}
             <Modal
+              getContainer={false}
               open={isAuditModalOpen}
+              destroyOnClose={true}
+              forceRender
               footer={null}
               closable={false}
               centered
@@ -45,16 +50,18 @@ const App = () => {
               <AuditModal />
             </Modal>
             <Modal
+              getContainer={false}
               open={isTokenTransactionModalOpen}
               destroyOnClose={true}
-              forceRender={true}
+              forceRender
               closable={false}
               footer={null}
               centered
             >
-              {TokenTransactionModal()}
+              <TokenTransactionModal />
             </Modal>
             <Modal
+              getContainer={false}
               open={isUpdateTaskModalOpen}
               destroyOnClose={true}
               forceRender={true}
@@ -62,27 +69,40 @@ const App = () => {
               footer={null}
               centered
             >
-              {UpdateTaskModal()}
+              <UpdateTaskModal />
             </Modal>
             <Modal
+              getContainer={false}
               open={isWithdrawRewardModalOpen}
               destroyOnClose={true}
-              forceRender={true}
+              forceRender
               closable={false}
               footer={null}
               centered
             >
-              {WithdrawRewardModal()}
+              <WithdrawRewardModal />
             </Modal>
             <Modal
+              getContainer={false}
               open={isDepositAssetModalOpen}
               destroyOnClose={true}
-              forceRender={true}
+              forceRender
               closable={false}
               footer={null}
               centered
             >
-              {DepositManageModal()}
+              <DepositManageModal />
+            </Modal>
+            <Modal
+              getContainer={false}
+              open={isGuardManageModalOpen}
+              destroyOnClose={true}
+              forceRender
+              closable={false}
+              footer={null}
+              centered
+            >
+              <GuardManageModal />
             </Modal>
           </Content>
         </div>
