@@ -2,10 +2,10 @@ import { ethers } from "ethers";
 import { BigNumber } from "bignumber.js";
 
 export const shortenAddress = (address: string): string => {
-  if (address.length) {
+  if (address.length > 8) {
     return `${address.slice(0, 6)}...${address.slice(address.length - 4)}`;
   } else {
-    return "";
+    return address;
   }
 };
 

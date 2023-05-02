@@ -1,53 +1,16 @@
 import React from "react";
 import type { ColumnsType } from "antd/es/table";
-
-interface TaskDataType {
-  key: string;
-  id: string;
-  require: string;
-  payment: string;
-  currency: string;
-  amount: string;
-  audit: string;
-  detection: string;
-  state: string;
-}
-
-interface ItemDataType {
-  key: string;
-  id: string;
-  task: string;
-  support: string;
-  oppose: string;
-  state: string;
-  source: string;
-  fingerprint: string;
-}
-
-interface UserDataType {
-  key: string;
-  id: string;
-  reputation: string;
-  deposit: string;
-  tasks: string;
-  items: string;
-  audits: string;
-}
-
-interface PlatformDataType {
-  key: string;
-  id: string;
-  owner: string;
-  authority: string;
-  rate1: string;
-  rate2: string;
-  boxes: string;
-}
+import {
+  ListTask,
+  ListItem,
+  ListUser,
+  ListPlatform,
+} from "../../types/baseTypes";
+import { shortenAddress, shortenItemContent, bignumberConvert } from "../tools";
+import { DECIMALS_18 } from "../constants";
 
 export const columns: {
-  [key: string]: ColumnsType<
-    TaskDataType | ItemDataType | UserDataType | PlatformDataType
-  >;
+  [key: string]: ColumnsType<ListTask | ListItem | ListUser | ListPlatform>;
 } = {
   Tasks: [
     {
@@ -86,19 +49,20 @@ export const columns: {
       key: "audit",
       dataIndex: "audit",
       width: "150px",
+      render: (text) => shortenAddress(text),
     },
     {
       title: "Detection",
       key: "detection",
       dataIndex: "detection",
       width: "150px",
+      render: (text) => shortenAddress(text),
     },
     {
       title: "State",
       key: "state",
       dataIndex: "state",
       width: "200px",
-      // render: (text: string[]) => text.map((item, index) => <Tag color="#0f0a19" key={index}>{item}</Tag>)
     },
   ],
   Items: [
@@ -108,13 +72,19 @@ export const columns: {
       key: "id",
       fixed: "left",
       width: "100px",
-      render: (text) => <a>#{text}</a>,
+      render: (text) => `#${text}`,
     },
     {
-      title: "TaskID",
+      title: "Task ID",
       dataIndex: "task",
       key: "task",
       width: "100px",
+      render: (text) => `#${text}`,
+    },
+    {
+      title: "Require",
+      dataIndex: "require",
+      key: "require",
     },
     {
       title: "Support",
@@ -139,6 +109,7 @@ export const columns: {
       dataIndex: "source",
       key: "source",
       width: "200px",
+      render: (text) => shortenItemContent(text),
     },
     {
       title: "Fingerprint",
@@ -154,19 +125,27 @@ export const columns: {
       key: "id",
       fixed: "left",
       width: "100px",
-      render: (text) => <a>#{text}</a>,
+      render: (text) => `#${text}`,
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+      render: (text) => shortenAddress(text),
     },
     {
       title: "Reputation",
       dataIndex: "reputation",
       key: "reputation",
       width: "150px",
+      render: (text) => bignumberConvert(text, 10, 1),
     },
     {
       title: "Deposit",
       dataIndex: "deposit",
       key: "deposit",
       width: "150px",
+      render: (text) => bignumberConvert(text, DECIMALS_18, 2),
     },
     {
       title: "Post Tasks",
@@ -183,6 +162,13 @@ export const columns: {
       dataIndex: "audits",
       key: "audits",
     },
+    {
+      title: "Guard",
+      dataIndex: "guard",
+      key: "guard",
+      width: "150px",
+      render: (text) => shortenAddress(text),
+    },
   ],
   Platforms: [
     {
@@ -191,40 +177,49 @@ export const columns: {
       key: "id",
       fixed: "left",
       width: "100px",
-      render: (text) => <a>#{text}</a>,
+      render: (text) => `#${text}`,
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
     },
     {
       title: "Admin",
       dataIndex: "owner",
       key: "owner",
       width: "150px",
+      render: (text) => shortenAddress(text),
     },
     {
       title: "Authority",
       dataIndex: "authority",
       key: "authority",
       width: "150px",
+      render: (text) => shortenAddress(text),
     },
     {
       title: "Earnings Rate",
       dataIndex: "rate1",
       key: "rate1",
+      render: (text) => parseInt(text) / 10000 + "%",
     },
     {
       title: "Share Rate",
       dataIndex: "rate2",
       key: "rate2",
+      render: (text) => parseInt(text) / 10000 + "%",
     },
     {
       title: "Boxes",
       dataIndex: "boxes",
       key: "boxes",
-      width: "150px",
+      width: "100px",
     },
   ],
 };
 
-export const data: TaskDataType[] = [
+export const data: ListTask[] = [
   {
     key: "1",
     id: "1",

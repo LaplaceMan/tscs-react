@@ -1,17 +1,23 @@
 import React, { useEffect, useContext, useState } from "react";
 import { PrimaryButton } from "../components";
-import { DashboardMiniItem } from "../types/baseTypes";
+import {
+  DashboardMiniItem,
+  ListItem,
+  ListPlatform,
+  ListTask,
+  ListUser,
+} from "../types/baseTypes";
 import {
   MdPeopleAlt,
   MdAllInbox,
   MdOutlineSubtitles,
   MdOutlineVideoLibrary,
 } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DataContext } from "../context/DataContext";
 import { GlobalContext } from "../context/GlobalContext";
 import { star_background, coins, ethereum, polygon } from "../assets";
-import { Table } from "antd";
+import { Table, Spin } from "antd";
 import { columns, data } from "../utils/table/columns";
 
 const ChainContainer = ({ url, name }: { url: string; name: string }) => {
@@ -31,22 +37,24 @@ const ChainContainer = ({ url, name }: { url: string; name: string }) => {
 const Home = (): React.ReactElement => {
   const {
     dashboard,
-    applications,
-    subtitles,
-    queryHomeData,
+    tasks,
+    items,
+    users,
+    platforms,
+    queryDashboard,
+    queryTaskData,
+    queryItemData,
+    queryUserData,
+    queryPlatforms,
     isGetDataLoading,
   } = useContext(DataContext);
   const { chainId } = useContext(GlobalContext);
   const [tableDataType, setTableDataType] = useState("Tasks");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    queryHomeData();
-    const timer = setInterval(() => {
-      queryHomeData();
-    }, 60000);
-    return () => {
-      clearInterval(timer);
-    };
+    queryDashboard();
+    queryTaskData(8, 0, "0");
   }, [chainId]);
 
   const DashboardMiniItems: DashboardMiniItem[] = [
@@ -76,11 +84,58 @@ const Home = (): React.ReactElement => {
     },
   ];
 
+  const dashboardMiniHandle = (item: DashboardMiniItem) => {
+    setTableDataType(item.tag);
+    switch (item.tag) {
+      case "Tasks": {
+        queryTaskData(8, 0, "0");
+      }
+      case "Items": {
+        queryItemData(8, 0, "0");
+      }
+      case "Users": {
+        queryUserData(8, 0);
+      }
+      case "Platforms": {
+        queryPlatforms();
+      }
+    }
+  };
+
+  const seeMoreLink = () => {
+    switch (tableDataType) {
+      case "Tasks":
+        navigate("/Tasks");
+      case "Items":
+        navigate("Items");
+    }
+  };
+
+  const tableData = ():
+    | ListItem[]
+    | ListTask[]
+    | ListUser[]
+    | ListPlatform[]
+    | null => {
+    switch (tableDataType) {
+      case "Tasks":
+        return tasks;
+      case "Items":
+        return items;
+      case "Users":
+        return users;
+      case "Platforms":
+        return platforms;
+      default:
+        return null;
+    }
+  };
+
   const DashboardMini = ({ item }: { item: DashboardMiniItem }) => {
     return (
       <div
         className="flex flex-rows items-center justify-between rounded-3xl px-5 py-3 md:w-[250px] md:h-[100px] w-[200px] h-[85px] bg-[#1b1524] m-2 cursor-pointer"
-        onClick={() => setTableDataType(item.tag)}
+        onClick={() => dashboardMiniHandle(item)}
       >
         <div className="flex flex-col items-start justify-center text-slate-300">
           <div className="md:text-base text-sm font-medium">{item.label}</div>
@@ -150,24 +205,30 @@ const Home = (): React.ReactElement => {
             <DashboardMini item={item} key={index} />
           ))}
         </div>
+
         <div className="flex flex-col md:w-full mt-10 px-2">
-          <div className="flex flex-col bg-[#1b1524] rounded-3xl ">
-            <div className="flex justify-center items-center py-2 text-[#00BEA1] text-base border-b border-[#0f0a19] overflow-hidden">
-              Latest {tableDataType}
+          <Spin spinning={isGetDataLoading}>
+            <div className="flex flex-col bg-[#1b1524] rounded-3xl ">
+              <div className="flex justify-center items-center py-2 text-[#00BEA1] text-base border-b border-[#0f0a19] overflow-hidden">
+                Latest {tableDataType}
+              </div>
+              <Table
+                columns={columns[tableDataType]}
+                dataSource={tableData()!}
+                pagination={false}
+                scroll={{ x: 1100 }}
+                style={{
+                  width: document.body.clientWidth - 40,
+                }}
+              />
+              <div
+                className="flex justify-center py-2 text-[#00BEA1] cursor-pointer text-base"
+                onClick={seeMoreLink}
+              >
+                See More
+              </div>
             </div>
-            <Table
-              columns={columns[tableDataType]}
-              dataSource={data}
-              pagination={false}
-              scroll={{ x: 1100 }}
-              style={{
-                width: document.body.clientWidth - 40,
-              }}
-            />
-            <div className="flex justify-center py-2 text-[#00BEA1] cursor-pointer text-base">
-              See More
-            </div>
-          </div>
+          </Spin>
           <div className="flex flex-col mt-14 items-center">
             <div className="text-2xl">SUPPORT NETWORKS</div>
 

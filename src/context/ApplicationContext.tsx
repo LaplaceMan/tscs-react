@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
-  ApplicationContent,
-  Subtitle,
+  Item,
   defaultSubtitle,
   PersonalPageData,
   defaultPersonalPageData,
 } from "../types/baseTypes";
+import { ApplicationContent } from "../types/contextTypes";
 import {
   Submit,
   Upload,
@@ -58,7 +58,7 @@ export const ApplicationContext = React.createContext<ApplicationContent>(
 
 export const ApplicationProvider = ({ children }: any) => {
   const { setLoadingState, chainId } = useContext(GlobalContext);
-  const { queryRegiserLanugages, queryRegiserPlatforms, regiserLanguages } =
+  const { queryRegiserLanugages, queryPlatforms, regiserLanguages } =
     useContext(DataContext);
   const [personalDID, setPersonalDID] = useState<PersonalPageData>(
     defaultPersonalPageData
@@ -68,7 +68,7 @@ export const ApplicationProvider = ({ children }: any) => {
     language: "0",
   });
   const [defaultAuditSubtitleData, setDefaultAuditSubtitleData] =
-    useState<Subtitle>(defaultSubtitle);
+    useState<Item>(defaultSubtitle);
   const [defaultTokenTransactionData, setDefaultTokenTransactionData] =
     useState<TokenTransaction>(defaultTokenTransaction);
   const [defaultUpdateApplicationData, setDefaultUpdateApplication] =
@@ -84,7 +84,7 @@ export const ApplicationProvider = ({ children }: any) => {
     chainId;
   }, [chainId]);
 
-  const updateDefaultAuditSubtitleData = (subtitle: Subtitle) => {
+  const updateDefaultAuditSubtitleData = (subtitle: Item) => {
     setDefaultAuditSubtitleData(subtitle);
   };
 

@@ -1,13 +1,3 @@
-import {
-  Submit,
-  Upload,
-  Audit,
-  TokenTransaction,
-  UpdateApplication,
-  RealTokenTransaction,
-  RealWithdrawRewardTransaction,
-  RealUpdateApplictaionTransaction,
-} from "./formTypes";
 import { ethers } from "ethers";
 
 export type PostTaskData = {
@@ -37,7 +27,7 @@ export const defaultPostTaskData = {
   sourceId: "*",
 };
 
-export type Application = {
+export type Task = {
   applicant: string;
   vidoId: string;
   platformName: string;
@@ -51,7 +41,19 @@ export type Application = {
   source: string;
 };
 
-export const defaultApplication: Application = {
+export type ListTask = {
+  key: string;
+  id: string;
+  require: string;
+  payment: string;
+  currency: string;
+  amount: string;
+  audit: string;
+  detection: string;
+  state: string;
+};
+
+export const defaultTask: Task = {
   applicant: "",
   vidoId: "",
   platformName: "",
@@ -65,7 +67,7 @@ export const defaultApplication: Application = {
   source: "",
 };
 
-export type Subtitle = {
+export type Item = {
   applyId: string;
   applySource: string;
   payType: string;
@@ -81,7 +83,19 @@ export type Subtitle = {
   cid: string;
 };
 
-export const defaultSubtitle: Subtitle = {
+export type ListItem = {
+  key: string;
+  id: string;
+  task: string;
+  require: string;
+  support: string;
+  oppose: string;
+  state: string;
+  source: string;
+  fingerprint: string;
+};
+
+export const defaultSubtitle: Item = {
   applyId: "",
   applySource: "",
   payType: "",
@@ -119,12 +133,35 @@ export type User = {
   join: number;
 };
 
+export type ListUser = {
+  key: string;
+  id: string;
+  address: string;
+  reputation: string;
+  deposit: string;
+  tasks: string;
+  items: string;
+  audits: string;
+  guard: string;
+};
+
 export const defaultUser = {
   id: "",
   reputation: "0",
   deposit: "0",
   adopted: "0",
   join: 0,
+};
+
+export type ListPlatform = {
+  key: string;
+  id: string;
+  name: string;
+  owner: string;
+  authority: string;
+  rate1: string;
+  rate2: string;
+  boxes: string;
 };
 
 export type NavbarItem = {
@@ -149,32 +186,6 @@ export type WalletContent = {
   connectWalletMetaMask: () => void;
   killSessionWalletConnect: () => void;
   gasPrice: string;
-};
-
-export type GlobalContent = {
-  chainId: number;
-  isLoading: boolean;
-  isAuditModalOpen: boolean;
-  showAuditModal: () => void;
-  hideAuditModal: () => void;
-  toggleMenu: boolean;
-  setToggleMenu: React.Dispatch<React.SetStateAction<boolean>>;
-  setLoadingState: (state: boolean) => void;
-  isTokenTransactionModalOpen: boolean;
-  showTokenTransactionModal: () => void;
-  hideTokenTransactionModal: () => void;
-  showUpdateTaskModal: () => void;
-  hideUpdateTaskModal: () => void;
-  isUpdateTaskModalOpen: boolean;
-  showWithdrawRewardModal: () => void;
-  hideWithdrawRewardModal: () => void;
-  isWithdrawRewardModalOpen: boolean;
-  showDepositAssetModal: () => void;
-  hideDepositAssetModal: () => void;
-  isDepositAssetModalOpen: boolean;
-  showGuardManageModal: () => void;
-  hideGuardManageModal: () => void;
-  isGuardManageModalOpen: boolean;
 };
 
 export type OwnToken = {
@@ -289,93 +300,6 @@ export const defaultUserOwn = {
   applications: [defaultOwnApplication],
   subtitles: [defaultOwnSubtitle],
   audits: [defaultOwnAudit],
-};
-
-export type ApplicationContent = {
-  defaultUploadSubtitleData: { applyId: string; language: string };
-  updateDefaultUploadSubtitleData: (applyId: string, language: string) => void;
-  defaultAuditSubtitleData: Subtitle;
-  updateDefaultAuditSubtitleData: (subtitle: Subtitle) => void;
-  submitApplication: (params: Submit) => void;
-  uploadSubtitle: (params: Upload) => void;
-  auditSubtitle: (params: Audit) => void;
-  tokenTransaction: (params: RealTokenTransaction) => void;
-  defaultTokenTransactionData: TokenTransaction;
-  updateDefaultTokenTransaction: (params: TokenTransaction) => void;
-  preSettlement: (type: string, applyId: string) => void;
-  updateDefaultUpdateApplication: (params: UpdateApplication) => void;
-  defaultUpdateApplicationData: UpdateApplication;
-  updateDefaultWithdrawOrDeposit: (platform: string, manage: string) => void;
-  defaultWithdrawOrDepositData: { platform: string; manage: string };
-  updateApplication: (params: RealUpdateApplictaionTransaction) => void;
-  withdrawReward: (params: RealWithdrawRewardTransaction) => void;
-  depoitZimuManage: (address: string, amount: number) => void;
-  personalDID: PersonalPageData;
-  getPersonalPageData: (address: string) => void;
-  cancelApplication: (taskId: string) => void;
-  updateRevenueInLens: (videoId: string) => void;
-  swapRevenueInLens: (amount: string) => void;
-  getLensRevenueSettlable: (videoId: string) => void;
-  lensSettleable: string;
-};
-
-export type PlayerBaseInfo = {
-  applicant: string;
-  platform: string;
-  deadline: string;
-  language: string;
-  source: string;
-  uploads: string;
-  adopted: string;
-  payType: string;
-  start: string;
-};
-
-export type PlayerSubtitle = {
-  id: string;
-  maker: string;
-  reputation: string;
-  deposit: string;
-  support: string;
-  oppose: string;
-  cid: string;
-  fingerprint: string;
-};
-
-export const defaultPlayerBaseInfo = {
-  applicant: "NaN",
-  platform: "NaN",
-  deadline: "",
-  language: "NaN",
-  source: "NaN",
-  uploads: "NaN",
-  adopted: "NaN",
-  start: "",
-  payType: "",
-};
-
-export type DataContent = {
-  playerSubtitles: PlayerSubtitle[];
-  playerBaseInfo: PlayerBaseInfo;
-  applications: Application[] | null;
-  subtitles: Subtitle[] | null;
-  QueryTaskData: (first: number, skip: number, language: string) => void;
-  dashboard: Dashboard | null;
-  queryHomeData: () => void;
-  querySubtitleData: (first: number, skip: number, language: string) => void;
-  defaultAuditSubtitleMaker: User;
-  userOwnData: UserOwn;
-  queryUserOwnData: (address: string) => void;
-  queryUserData: (address: string) => void;
-  queryUserLockedToken: (platform: string, day: number) => void;
-  querySpecialApplication: (id: string) => void;
-  userDayLocakedToken: string;
-  regiserLanguages: { id: string; notes: string }[];
-  regiserPlatforms: { id: string; name: string }[];
-  isGetDataLoading: boolean;
-  clearData: () => void;
-  queryRegiserLanugages: () => void;
-  queryRegiserPlatforms: () => void;
 };
 
 export type PersonalPageData = {

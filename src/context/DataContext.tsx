@@ -1,6 +1,8 @@
 import React, { useState, useContext } from "react";
 import {
-  DataContent,
+  ListTask,
+  ListItem,
+  ListUser,
   User,
   defaultUser,
   UserOwn,
@@ -8,31 +10,25 @@ import {
   OwnSubtitle,
   OwnAudit,
   defaultUserOwn,
-  PlayerBaseInfo,
-  defaultPlayerBaseInfo,
-  PlayerSubtitle,
+  ListPlatform,
 } from "../types/baseTypes";
-import {
-  Application,
-  Subtitle,
-  Dashboard,
-  defaultDashboard,
-} from "../types/baseTypes";
+import { DataContent } from "../types/contextTypes";
+import { Task, Item, Dashboard, defaultDashboard } from "../types/baseTypes";
 import { MURMES_PROTOCOL } from "../utils/contracts";
 import {
   QueryHome,
   QueryTasks,
   QueryTaskWithLanguage,
-  QuerySubtitle,
+  QueryItems,
   QuerySubtitleWithLanguage,
-  QueryUser,
+  QueryUsers,
   QueryUserOwn,
   QueryLockedToken,
   QueryLanguages,
   QueryPlatforms,
   QuerySpecialApplication,
 } from "../utils/graphql/graphqls";
-import { getNetwork, getAccount } from "@wagmi/core";
+import { getAccount } from "@wagmi/core";
 import { SUPPORT_NETWORK } from "../utils/constants";
 import { gql } from "@apollo/client";
 import { Client } from "../client/apollo";
@@ -43,45 +39,38 @@ export const DataContext = React.createContext<DataContent>({} as DataContent);
 
 export const DataProvider = ({ children }: any) => {
   const { chainId } = useContext(GlobalContext);
+  const account = getAccount();
   const [isGetDataLoading, setIsGetDataLoading] = useState<boolean>(false);
+
   const [dashboard, setDashboard] = useState<Dashboard | null>(
     defaultDashboard
   );
-  const [applications, setApplications] = useState<Application[] | null>([]);
-  const [subtitles, setSubtitles] = useState<Subtitle[] | null>([]);
+  const [tasks, setTasks] = useState<ListTask[] | null>([]);
+  const [items, setItems] = useState<ListItem[] | null>([]);
+  const [users, setUsers] = useState<ListUser[] | null>([]);
+  const [regiserLanguages, setRegiserLanguages] = useState<
+    { id: string; notes: string }[]
+  >([]);
+  const [platforms, setPlatforms] = useState<ListPlatform[] | null>([]);
   const [defaultAuditSubtitleMaker, setDefaultAuditSubtitleMaker] =
     useState<User>(defaultUser);
   const [userOwnData, setUserOwnData] = useState<UserOwn>(defaultUserOwn);
   const [userDayLocakedToken, setUserDayLocakedToken] = useState("*");
-  const [regiserLanguages, setRegiserLanguages] = useState<
-    { id: string; notes: string }[]
-  >([]);
-  const [regiserPlatforms, setRegiserPlatforms] = useState<
-    { id: string; name: string }[]
-  >([]);
-  const [playerBaseInfo, setPlayerBaseInfo] = useState<PlayerBaseInfo>(
-    defaultPlayerBaseInfo
-  );
-  const [playerSubtitles, setPlayerSubtitles] = useState<PlayerSubtitle[]>([]);
-
-  const { chain } = getNetwork();
-  const account = getAccount();
 
   const clearData = () => {
-    setSubtitles(null);
-    setApplications(null);
+    setItems(null);
+    setTasks(null);
     setDashboard(null);
     setUserOwnData(defaultUserOwn);
   };
 
-  const queryHomeData = async () => {
-    if (chain && SUPPORT_NETWORK.includes(chainId)) {
-      setIsGetDataLoading(true);
+  const queryDashboard = async () => {
+    if (SUPPORT_NETWORK.includes(chainId)) {
       try {
         const data = await Client(chainId).query({
           query: gql(QueryHome),
           variables: {
-            id: MURMES_PROTOCOL[chain.id],
+            id: MURMES_PROTOCOL[chainId],
           },
         });
         if (data && data.data) {
@@ -93,143 +82,161 @@ export const DataProvider = ({ children }: any) => {
             platformCount: dashboard.platformCount,
           });
         }
-        setIsGetDataLoading(false);
       } catch (err) {
         console.log("Error fetching data: ", err);
         message.error("Error: " + err);
-        setIsGetDataLoading(false);
       }
-    } else {
-      clearData();
-      console.log("Not support network!", chainId);
     }
   };
 
-  const QueryTaskData = async (
+  const queryTaskData = async (
     first: number,
     skip: number,
-    language: string
+    require: string
   ) => {
-    if (chain && SUPPORT_NETWORK.includes(chainId)) {
+    if (SUPPORT_NETWORK.includes(chainId)) {
       setIsGetDataLoading(true);
       try {
         const data = await Client(chainId).query({
-          query: gql(language == "0" ? QueryTasks : QueryTaskWithLanguage),
+          query: gql(require == "0" ? QueryTasks : QueryTaskWithLanguage),
           variables: {
             first: first,
             skip: skip,
-            languageId: language,
+            requireId: require,
           },
         });
         if (data && data.data) {
-          const getApplications =
-            language == "0"
-              ? data.data.applications
-              : data.data.language.applications;
-          const applicationArray = new Array<Application>();
-          getApplications.map((item: any) => {
-            applicationArray.push({
-              applicant: item.applicant.id,
-              vidoId: item.video.orderId
-                ? item.video.orderId
-                : item.video.realId,
-              platformName: item.video.platform.name,
-              applyId: item.id,
-              language: item.language.notes,
+          const getTasks =
+            require == "0" ? data.data.tasks : data.data.require.tasks;
+          const taskArray = new Array<ListTask>();
+          getTasks.map((item: any) => {
+            taskArray.push({
+              key: item.id,
+              id: item.id,
+              require: item.requires.notes,
+              payment: item.strategy,
+              currency: item.currency.symbol,
               amount: item.amount,
-              payType: item.strategy.notes,
-              uploads: item.subtitleCount,
-              start: item.start,
-              deadline: Number(item.deadline),
-              source: item.source,
+              audit: item.auditModule,
+              detection: item.detectionModule,
+              state: item.state,
             });
           });
-          setApplications(applicationArray);
+          setTasks(taskArray);
         }
         setIsGetDataLoading(false);
       } catch (err) {
         console.log("Error fetching data: ", err);
-        message.error("Error: " + err);
         setIsGetDataLoading(false);
+        message.error("Error: " + err);
       }
-    } else {
-      clearData();
-      console.log("Not support network!", chainId);
     }
   };
 
-  const querySubtitleData = async (
+  const queryItemData = async (
     first: number,
     skip: number,
-    language: string
+    require: string
   ) => {
-    if (chain && SUPPORT_NETWORK.includes(chainId)) {
+    if (SUPPORT_NETWORK.includes(chainId)) {
       setIsGetDataLoading(true);
       try {
         const data = await Client(chainId).query({
-          query: gql(
-            language == "0" ? QuerySubtitle : QuerySubtitleWithLanguage
-          ),
+          query: gql(require == "0" ? QueryItems : QuerySubtitleWithLanguage),
           variables: {
             first: first,
             skip: skip,
-            languageId: language,
+            requireId: require,
           },
         });
         if (data && data.data) {
-          const getSubtitles =
-            language == "0"
-              ? data.data.subtitles
-              : data.data.language.subtitles;
-          const subtitleArray = new Array<Subtitle>();
-          getSubtitles.map((item: any) => {
-            subtitleArray.push({
-              applyId: item.application.id,
-              applySource: item.application.source,
-              payType: item.application.strategy.notes,
-              platformName: item.application.video.platform.name,
-              subtitleId: item.id,
-              language: item.language.notes,
+          const getItems =
+            require == "0" ? data.data.items : data.data.require.items;
+          const itemArray = new Array<ListItem>();
+          getItems.map((item: any) => {
+            itemArray.push({
+              key: item.id,
+              id: item.id,
+              task: item.task.id,
+              require: item.requires.notes,
               support: item.supporterCount,
-              oppose: item.dissenterCount,
-              maker: item.maker.id,
-              start: item.application.start,
-              deadline: Number(item.application.deadline),
+              oppose: item.opponentCount,
+              state: item.state,
+              source: item.cid,
               fingerprint: item.fingerprint,
-              cid: item.cid,
             });
           });
-          setSubtitles(subtitleArray);
+          setItems(itemArray);
         }
         setIsGetDataLoading(false);
       } catch (err) {
         console.log("Error fetching data: ", err);
-        message.error("Error: " + err);
         setIsGetDataLoading(false);
+        message.error("Error: " + err);
       }
     } else {
       clearData();
-      console.log("Not support network!", chainId);
+      message.error("3 Not support network!", chainId);
     }
   };
 
-  const queryUserData = async (userId: string) => {
+  const queryPlatforms = async () => {
+    if (SUPPORT_NETWORK.includes(chainId)) {
+      try {
+        const data = await Client(chainId).query({
+          query: gql(QueryPlatforms),
+        });
+        const getPlatforms = data.data.platforms;
+        if (platforms) {
+          const platformArray = new Array<ListPlatform>();
+          getPlatforms.map((item: any) => {
+            platformArray.push({
+              key: item.platformId,
+              id: item.platformId,
+              name: item.name,
+              owner: item.id,
+              authority: item.authorityModule,
+              rate1: item.rateCountsToProfit,
+              rate2: item.rateAuditorDivide,
+              boxes: item.boxCount,
+            });
+          });
+          setPlatforms(platformArray);
+        }
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+      }
+    }
+  };
+
+  const queryUserData = async (first: number, skip: number) => {
     try {
       const data = await Client(chainId).query({
-        query: gql(QueryUser),
+        query: gql(QueryUsers),
         variables: {
-          id: userId,
+          first: first,
+          skip: skip,
         },
       });
       if (data && data.data) {
-        const user = data.data.user;
-        setDefaultAuditSubtitleMaker({
-          id: user.id,
-          reputation: user.reputation,
-          deposit: user.deposit,
-          adopted: user.adoptedCount,
-          join: user.time,
+        console.log(data.data);
+        const getUsers = data.data.users;
+        const userArray = new Array<ListUser>();
+        getUsers.map((item: any) => {
+          userArray.push({
+            key: item.userId,
+            id: item.userId,
+            address: item.id,
+            reputation: item.reputation,
+            deposit: item.deposit,
+            tasks: item.taskCount,
+            items: item.makeItemCount,
+            audits: item.auditCount,
+            guard: item.guard ? item.guard : "None",
+          });
         });
+        setUsers(userArray);
       }
     } catch (err) {
       console.log("Error fetching data: ", err);
@@ -238,7 +245,7 @@ export const DataProvider = ({ children }: any) => {
   };
 
   const queryUserOwnData = async (address: string) => {
-    if (chain && SUPPORT_NETWORK.includes(chainId)) {
+    if (SUPPORT_NETWORK.includes(chainId)) {
       setIsGetDataLoading(true);
       try {
         const data = await Client(chainId).query({
@@ -309,7 +316,7 @@ export const DataProvider = ({ children }: any) => {
       }
     } else {
       clearData();
-      console.log("Not support network!", chainId);
+      message.error("4 Not support network!", chainId);
     }
   };
 
@@ -339,7 +346,7 @@ export const DataProvider = ({ children }: any) => {
   };
 
   const queryRegiserLanugages = async () => {
-    if (chain && SUPPORT_NETWORK.includes(chainId)) {
+    if (SUPPORT_NETWORK.includes(chainId)) {
       try {
         const data = await Client(chainId).query({
           query: gql(QueryLanguages),
@@ -362,32 +369,8 @@ export const DataProvider = ({ children }: any) => {
     }
   };
 
-  const queryRegiserPlatforms = async () => {
-    if (chain && SUPPORT_NETWORK.includes(chainId)) {
-      try {
-        const data = await Client(chainId).query({
-          query: gql(QueryPlatforms),
-        });
-        const platforms = data.data.platforms;
-        if (platforms) {
-          const platformArray = new Array<{ id: string; name: string }>();
-          platforms.map((item: any) => {
-            platformArray.push({
-              id: item.id,
-              name: item.name.replace(/["]/g, ""),
-            });
-          });
-          setRegiserPlatforms(platformArray);
-        }
-      } catch (err) {
-        console.log("Error fetching data: ", err);
-        message.error("Error: " + err);
-      }
-    }
-  };
-
   const querySpecialApplication = async (id: string) => {
-    if (chain && SUPPORT_NETWORK.includes(chainId)) {
+    if (SUPPORT_NETWORK.includes(chainId)) {
       setIsGetDataLoading(true);
       try {
         const data: any = await Client(chainId).query({
@@ -397,37 +380,10 @@ export const DataProvider = ({ children }: any) => {
           },
         });
         if (data && data.data && data.data.application) {
-          setPlayerBaseInfo({
-            applicant: data.data.application.applicant.id,
-            platform: data.data.application.video.platform.name,
-            deadline: data.data.application.deadline,
-            language: data.data.application.language.notes,
-            source: data.data.application.source,
-            uploads: data.data.application.subtitleCount,
-            adopted: data.data.application.adopted
-              ? data.data.application.adopted.id
-              : "None",
-            payType: data.data.application.strategy.notes,
-            start: data.data.application.start,
-          });
           if (
             data.data.application.subtitles &&
             data.data.application.subtitles.length > 0
           ) {
-            const palyerSubtitleArray = new Array<PlayerSubtitle>();
-            data.data.application.subtitles.map((item: any) => {
-              palyerSubtitleArray.push({
-                id: item.id,
-                maker: item.maker.id,
-                reputation: item.maker.reputation,
-                deposit: item.maker.deposit,
-                support: item.supporterCount,
-                oppose: item.dissenterCount,
-                cid: item.cid,
-                fingerprint: item.fingerprint,
-              });
-            });
-            setPlayerSubtitles(palyerSubtitleArray);
           }
         }
         setIsGetDataLoading(false);
@@ -442,27 +398,26 @@ export const DataProvider = ({ children }: any) => {
   return (
     <DataContext.Provider
       value={{
-        playerSubtitles,
-        playerBaseInfo,
         dashboard,
-        queryHomeData,
-        applications,
-        QueryTaskData,
-        subtitles,
-        querySubtitleData,
+        queryDashboard,
+        tasks,
+        queryTaskData,
+        items,
+        queryItemData,
         defaultAuditSubtitleMaker,
         userOwnData,
+        users,
         queryUserData,
         queryUserOwnData,
         queryUserLockedToken,
         querySpecialApplication,
         userDayLocakedToken,
         regiserLanguages,
-        regiserPlatforms,
+        platforms,
         isGetDataLoading,
         clearData,
         queryRegiserLanugages,
-        queryRegiserPlatforms,
+        queryPlatforms,
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { GlobalContent } from "../types/baseTypes";
+import { GlobalContent } from "../types/contextTypes";
 import { watchNetwork } from "@wagmi/core";
 export const GlobalContext = React.createContext<GlobalContent>(
   {} as GlobalContent
