@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { GlobalContent } from "../types/contextTypes";
-import { watchNetwork } from "@wagmi/core";
 export const GlobalContext = React.createContext<GlobalContent>(
   {} as GlobalContent
 );
 
 export const GlobalProvider = ({ children }: any) => {
-  const [chainId, setChainId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [isAuditModalOpen, setAuditIsModalOpen] = useState(false);
@@ -17,14 +15,6 @@ export const GlobalProvider = ({ children }: any) => {
     useState(false);
   const [isDepositAssetModalOpen, setIsDepositAssetModalOpen] = useState(false);
   const [isGuardManageModalOpen, setIsGuardManageModalOpen] = useState(false);
-
-  const unwatch = watchNetwork((network) => {
-    network.chain && setChainId(network.chain.id);
-  });
-
-  useEffect(() => {
-    unwatch;
-  }, [unwatch]);
 
   const showDepositAssetModal = () => {
     setIsDepositAssetModalOpen(true);
@@ -81,7 +71,6 @@ export const GlobalProvider = ({ children }: any) => {
   return (
     <GlobalContext.Provider
       value={{
-        chainId,
         toggleMenu,
         setToggleMenu,
         isLoading,

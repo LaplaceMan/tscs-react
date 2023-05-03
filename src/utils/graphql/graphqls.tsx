@@ -4,8 +4,8 @@ export const QueryHome =
 export const QueryTasks =
   "query($first: Int, $skip: Int) {tasks(first: $first, skip: $skip, orderBy: start, orderDirection: desc) { id requires { notes } strategy currency {symbol} amount auditModule detectionModule state }}";
 
-// export const QueryTasks =
-//   "query($first: Int, $skip: Int) {tasks(first: $first, skip: $skip, orderBy: start, orderDirection: desc) { id applicant {id} requires { notes } strategy currency {symbol} amount auditModule detectionModule state box{id platform{name}} start deadline source itemCount adopted }}";
+export const QuerySpecialTask =
+  "query($id: String) {task(id: $id){applicant {id} box{orderId platform{name}}  requires { notes } strategy currency {symbol} amount start deadline source auditModule detectionModule state itemCount adopted }}";
 
 export const QueryTaskWithLanguage =
   "query($first: Int, $skip: Int, $requireId: String) {language(id: $requireId) {applications(irst: $first, skip: $skip, orderBy: start, orderDirection: desc){id applicant {id} video { realId orderId platform {name}} language{notes} amount strategy{notes} subtitleCount start deadline source}} }";
@@ -13,8 +13,8 @@ export const QueryTaskWithLanguage =
 export const QueryItems =
   "query($first: Int, $skip: Int) {items(first: $first, skip: $skip, orderBy: time, orderDirection: desc) {id task{id} requires{notes} supporterCount opponentCount state cid fingerprint }}";
 
-// export const QuerySubtitle =
-//   "query($first: Int, $skip: Int) {subtitles(first: $first, skip: $skip, orderBy: time, orderDirection: desc) {id application{id start deadline source strategy{notes} video{platform{name}}} language{notes} supporterCount dissenterCount maker{id} fingerprint cid }}";
+export const QuerySpecialItem =
+  "query($id: String) {item(id: $id) { task{id source auditModule detectionModule} maker{id} supporterCount opponentCount cid fingerprint time requires{notes} versionCount state}}";
 
 export const QuerySubtitleWithLanguage =
   "query($first: Int, $skip: Int, $languageId: String) {language(id: $languageId){subtitles(first: $first, skip: $skip, orderBy: time, orderDirection: desc) {id application{id start source deadline strategy{notes} video{platform{name}}} language{notes} supporterCount dissenterCount maker{id} fingerprint cid}} }";
@@ -44,6 +44,3 @@ export const QueryLanguages = "query { languages {id notes }}";
 
 export const QueryLockedToken =
   "query($id: String) { reward(id: $id) { locked }}";
-
-export const QuerySpecialApplication =
-  "query($id: String){application(id: $id) {applicant{id} subtitleCount video {orderId platform {name}} language {notes} start deadline source strategy {notes} deadline adopted {id} subtitles {id maker {id reputation deposit} supporterCount dissenterCount cid fingerprint  } } } ";

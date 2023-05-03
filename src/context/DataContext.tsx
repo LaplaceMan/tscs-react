@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   ListTask,
   ListItem,
@@ -26,22 +26,19 @@ import {
   QueryLockedToken,
   QueryLanguages,
   QueryPlatforms,
-  QuerySpecialApplication,
+  QuerySpecialTask,
+  QuerySpecialItem,
 } from "../utils/graphql/graphqls";
-import { getAccount } from "@wagmi/core";
+import { getAccount, getNetwork } from "@wagmi/core";
 import { SUPPORT_NETWORK } from "../utils/constants";
 import { gql } from "@apollo/client";
 import { Client } from "../client/apollo";
-import { GlobalContext } from "./GlobalContext";
 import { message } from "antd";
 
 export const DataContext = React.createContext<DataContent>({} as DataContent);
-
 export const DataProvider = ({ children }: any) => {
-  const { chainId } = useContext(GlobalContext);
   const account = getAccount();
   const [isGetDataLoading, setIsGetDataLoading] = useState<boolean>(false);
-
   const [dashboard, setDashboard] = useState<Dashboard | null>(
     defaultDashboard
   );
@@ -56,7 +53,7 @@ export const DataProvider = ({ children }: any) => {
     useState<User>(defaultUser);
   const [userOwnData, setUserOwnData] = useState<UserOwn>(defaultUserOwn);
   const [userDayLocakedToken, setUserDayLocakedToken] = useState("*");
-
+  const { chain } = getNetwork();
   const clearData = () => {
     setItems(null);
     setTasks(null);
@@ -65,12 +62,12 @@ export const DataProvider = ({ children }: any) => {
   };
 
   const queryDashboard = async () => {
-    if (SUPPORT_NETWORK.includes(chainId)) {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
       try {
-        const data = await Client(chainId).query({
+        const data = await Client(chain.id).query({
           query: gql(QueryHome),
           variables: {
-            id: MURMES_PROTOCOL[chainId],
+            id: MURMES_PROTOCOL[chain.id],
           },
         });
         if (data && data.data) {
@@ -89,15 +86,11 @@ export const DataProvider = ({ children }: any) => {
     }
   };
 
-  const queryTaskData = async (
-    first: number,
-    skip: number,
-    require: string
-  ) => {
-    if (SUPPORT_NETWORK.includes(chainId)) {
+  const queryTasks = async (first: number, skip: number, require: string) => {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
       setIsGetDataLoading(true);
       try {
-        const data = await Client(chainId).query({
+        const data = await Client(chain.id).query({
           query: gql(require == "0" ? QueryTasks : QueryTaskWithLanguage),
           variables: {
             first: first,
@@ -133,15 +126,11 @@ export const DataProvider = ({ children }: any) => {
     }
   };
 
-  const queryItemData = async (
-    first: number,
-    skip: number,
-    require: string
-  ) => {
-    if (SUPPORT_NETWORK.includes(chainId)) {
+  const queryItems = async (first: number, skip: number, require: string) => {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
       setIsGetDataLoading(true);
       try {
-        const data = await Client(chainId).query({
+        const data = await Client(chain.id).query({
           query: gql(require == "0" ? QueryItems : QuerySubtitleWithLanguage),
           variables: {
             first: first,
@@ -174,16 +163,13 @@ export const DataProvider = ({ children }: any) => {
         setIsGetDataLoading(false);
         message.error("Error: " + err);
       }
-    } else {
-      clearData();
-      message.error("3 Not support network!", chainId);
     }
   };
 
   const queryPlatforms = async () => {
-    if (SUPPORT_NETWORK.includes(chainId)) {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
       try {
-        const data = await Client(chainId).query({
+        const data = await Client(chain.id).query({
           query: gql(QueryPlatforms),
         });
         const getPlatforms = data.data.platforms;
@@ -210,45 +196,134 @@ export const DataProvider = ({ children }: any) => {
     }
   };
 
-  const queryUserData = async (first: number, skip: number) => {
-    try {
-      const data = await Client(chainId).query({
-        query: gql(QueryUsers),
-        variables: {
-          first: first,
-          skip: skip,
-        },
-      });
-      if (data && data.data) {
-        console.log(data.data);
-        const getUsers = data.data.users;
-        const userArray = new Array<ListUser>();
-        getUsers.map((item: any) => {
-          userArray.push({
-            key: item.userId,
-            id: item.userId,
-            address: item.id,
-            reputation: item.reputation,
-            deposit: item.deposit,
-            tasks: item.taskCount,
-            items: item.makeItemCount,
-            audits: item.auditCount,
-            guard: item.guard ? item.guard : "None",
-          });
+  const queryUsers = async (first: number, skip: number) => {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      try {
+        const data = await Client(chain.id).query({
+          query: gql(QueryUsers),
+          variables: {
+            first: first,
+            skip: skip,
+          },
         });
-        setUsers(userArray);
+        if (data && data.data) {
+          const getUsers = data.data.users;
+          const userArray = new Array<ListUser>();
+          getUsers.map((item: any) => {
+            userArray.push({
+              key: item.userId,
+              id: item.userId,
+              address: item.id,
+              reputation: item.reputation,
+              deposit: item.deposit,
+              tasks: item.taskCount,
+              items: item.makeItemCount,
+              audits: item.auditCount,
+              guard: item.guard ? item.guard : "None",
+            });
+          });
+          setUsers(userArray);
+        }
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
       }
-    } catch (err) {
-      console.log("Error fetching data: ", err);
-      message.error("Error: " + err);
+    }
+  };
+
+  const querySpecialTask = async (
+    id: string
+  ): Promise<Task | null | undefined> => {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      setIsGetDataLoading(true);
+      try {
+        const data: any = await Client(chain.id).query({
+          query: gql(QuerySpecialTask),
+          variables: {
+            id,
+          },
+        });
+        if (data && data.data && data.data.task) {
+          const getTask = data.data.task;
+          const task: Task = {
+            applicant: getTask.applicant.id,
+            platform: getTask.box.platform.name,
+            boxId: getTask.box.orderId,
+            require: getTask.requires.notes,
+            payment: getTask.strategy,
+            currency: getTask.currency.symbol,
+            amount: getTask.amount,
+            start: getTask.start,
+            deadline: getTask.deadline,
+            source: getTask.source,
+            audit: getTask.auditModule,
+            detection: getTask.detectionModule,
+            state: getTask.state,
+            uploads: getTask.itemCount,
+            adopted: getTask.adopted ? getTask.adopted : "None",
+          };
+          setIsGetDataLoading(false);
+          return task;
+        } else {
+          setIsGetDataLoading(false);
+          return null;
+        }
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+        setIsGetDataLoading(false);
+      }
+    }
+  };
+
+  const querySpecialItem = async (
+    id: string
+  ): Promise<Item | null | undefined> => {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      setIsGetDataLoading(true);
+      try {
+        const data: any = await Client(chain.id).query({
+          query: gql(QuerySpecialItem),
+          variables: {
+            id,
+          },
+        });
+        if (data && data.data && data.data.item) {
+          const getItem = data.data.item;
+          const item: Item = {
+            taskId: getItem.task.id,
+            maker: getItem.maker.id,
+            support: getItem.supporterCount,
+            opponent: getItem.opponentCount,
+            source: getItem.cid,
+            fingerprint: getItem.fingerprint,
+            time: getItem.time,
+            require: getItem.requires.notes,
+            taskSource: getItem.task.source,
+            audit: getItem.task.auditModule,
+            detection: getItem.task.detectionModule,
+            versions: getItem.versionCount,
+            state: getItem.state,
+          };
+          setIsGetDataLoading(false);
+          return item;
+        } else {
+          setIsGetDataLoading(false);
+          return null;
+        }
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+        setIsGetDataLoading(false);
+      }
     }
   };
 
   const queryUserOwnData = async (address: string) => {
-    if (SUPPORT_NETWORK.includes(chainId)) {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
       setIsGetDataLoading(true);
       try {
-        const data = await Client(chainId).query({
+        const data = await Client(chain.id).query({
           query: gql(QueryUserOwn),
           variables: {
             id: address.toLocaleLowerCase(),
@@ -314,41 +389,40 @@ export const DataProvider = ({ children }: any) => {
         message.error("Error: " + err);
         setIsGetDataLoading(false);
       }
-    } else {
-      clearData();
-      message.error("4 Not support network!", chainId);
     }
   };
 
   const queryUserLockedToken = async (platform: string, day: number) => {
-    try {
-      const data = await Client(chainId).query({
-        query: gql(QueryLockedToken),
-        variables: {
-          id:
-            account.address!.toLocaleLowerCase() +
-            "-" +
-            platform +
-            "-" +
-            day.toString(),
-        },
-      });
-      if (data && data.data && data.data.reward && data.data.reward.locked) {
-        const locked = data.data.reward.locked;
-        setUserDayLocakedToken(locked);
-      } else {
-        setUserDayLocakedToken("0");
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      try {
+        const data = await Client(chain.id).query({
+          query: gql(QueryLockedToken),
+          variables: {
+            id:
+              account.address!.toLocaleLowerCase() +
+              "-" +
+              platform +
+              "-" +
+              day.toString(),
+          },
+        });
+        if (data && data.data && data.data.reward && data.data.reward.locked) {
+          const locked = data.data.reward.locked;
+          setUserDayLocakedToken(locked);
+        } else {
+          setUserDayLocakedToken("0");
+        }
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
       }
-    } catch (err) {
-      console.log("Error fetching data: ", err);
-      message.error("Error: " + err);
     }
   };
 
   const queryRegiserLanugages = async () => {
-    if (SUPPORT_NETWORK.includes(chainId)) {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
       try {
-        const data = await Client(chainId).query({
+        const data = await Client(chain.id).query({
           query: gql(QueryLanguages),
         });
         const languages = data.data.languages;
@@ -369,48 +443,22 @@ export const DataProvider = ({ children }: any) => {
     }
   };
 
-  const querySpecialApplication = async (id: string) => {
-    if (SUPPORT_NETWORK.includes(chainId)) {
-      setIsGetDataLoading(true);
-      try {
-        const data: any = await Client(chainId).query({
-          query: gql(QuerySpecialApplication),
-          variables: {
-            id,
-          },
-        });
-        if (data && data.data && data.data.application) {
-          if (
-            data.data.application.subtitles &&
-            data.data.application.subtitles.length > 0
-          ) {
-          }
-        }
-        setIsGetDataLoading(false);
-      } catch (err) {
-        console.log("Error fetching data: ", err);
-        message.error("Error: " + err);
-        setIsGetDataLoading(false);
-      }
-    }
-  };
-
   return (
     <DataContext.Provider
       value={{
         dashboard,
         queryDashboard,
         tasks,
-        queryTaskData,
+        queryTasks,
         items,
-        queryItemData,
+        queryItems,
         defaultAuditSubtitleMaker,
         userOwnData,
         users,
-        queryUserData,
+        queryUsers,
         queryUserOwnData,
         queryUserLockedToken,
-        querySpecialApplication,
+        querySpecialTask,
         userDayLocakedToken,
         regiserLanguages,
         platforms,
@@ -418,6 +466,7 @@ export const DataProvider = ({ children }: any) => {
         clearData,
         queryRegiserLanugages,
         queryPlatforms,
+        querySpecialItem,
       }}
     >
       {children}

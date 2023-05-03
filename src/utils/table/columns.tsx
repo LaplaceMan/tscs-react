@@ -6,7 +6,7 @@ import {
   ListUser,
   ListPlatform,
 } from "../../types/baseTypes";
-import { shortenAddress, shortenItemContent, bignumberConvert } from "../tools";
+import { shortenAddress, bignumberConvert, shortenText } from "../tools";
 import { DECIMALS_18 } from "../constants";
 
 export const columns: {
@@ -43,6 +43,7 @@ export const columns: {
       key: "amount",
       dataIndex: "amount",
       width: "150px",
+      render: (text) => shortenText(text),
     },
     {
       title: "Audit",
@@ -109,13 +110,14 @@ export const columns: {
       dataIndex: "source",
       key: "source",
       width: "200px",
-      render: (text) => shortenItemContent(text),
+      render: (text) => shortenText(text),
     },
     {
       title: "Fingerprint",
       dataIndex: "fingerprint",
       key: "fingerprint",
       width: "200px",
+      render: (text) => shortenText(text),
     },
   ],
   Users: [

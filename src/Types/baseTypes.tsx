@@ -29,16 +29,20 @@ export const defaultPostTaskData = {
 
 export type Task = {
   applicant: string;
-  vidoId: string;
-  platformName: string;
-  applyId: string;
-  language: string;
+  platform: string;
+  boxId: string;
+  require: string;
+  payment: string;
+  currency: string;
   amount: string;
-  payType: string;
-  uploads: string;
-  start: number;
-  deadline: number;
+  start: string;
+  deadline: string;
   source: string;
+  audit: string;
+  detection: string;
+  state: string;
+  uploads: string;
+  adopted: string;
 };
 
 export type ListTask = {
@@ -53,34 +57,20 @@ export type ListTask = {
   state: string;
 };
 
-export const defaultTask: Task = {
-  applicant: "",
-  vidoId: "",
-  platformName: "",
-  applyId: "",
-  language: "",
-  amount: "",
-  payType: "",
-  uploads: "",
-  start: 0,
-  deadline: 0,
-  source: "",
-};
-
 export type Item = {
-  applyId: string;
-  applySource: string;
-  payType: string;
-  platformName: string;
-  subtitleId: string;
-  language: string;
-  support: string;
-  oppose: string;
+  taskId: string;
   maker: string;
-  start: number;
-  deadline: number;
+  support: string;
+  opponent: string;
+  source: string;
   fingerprint: string;
-  cid: string;
+  time: string;
+  require: string;
+  taskSource: string;
+  audit: string;
+  detection: string;
+  versions: string;
+  state: string;
 };
 
 export type ListItem = {
@@ -93,22 +83,6 @@ export type ListItem = {
   state: string;
   source: string;
   fingerprint: string;
-};
-
-export const defaultSubtitle: Item = {
-  applyId: "",
-  applySource: "",
-  payType: "",
-  platformName: "",
-  subtitleId: "",
-  language: "",
-  support: "",
-  oppose: "",
-  maker: "",
-  start: 0,
-  deadline: 0,
-  fingerprint: "",
-  cid: "",
 };
 
 export type Dashboard = {

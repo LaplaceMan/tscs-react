@@ -15,9 +15,9 @@ import {
 } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { DataContext } from "../context/DataContext";
-import { GlobalContext } from "../context/GlobalContext";
 import { star_background, coins, ethereum, polygon } from "../assets";
 import { Table, Spin } from "antd";
+import { getNetwork } from "@wagmi/core";
 import { columns, data } from "../utils/table/columns";
 
 const ChainContainer = ({ url, name }: { url: string; name: string }) => {
@@ -42,20 +42,19 @@ const Home = (): React.ReactElement => {
     users,
     platforms,
     queryDashboard,
-    queryTaskData,
-    queryItemData,
-    queryUserData,
+    queryTasks,
+    queryItems,
+    queryUsers,
     queryPlatforms,
     isGetDataLoading,
   } = useContext(DataContext);
-  const { chainId } = useContext(GlobalContext);
   const [tableDataType, setTableDataType] = useState("Tasks");
   const navigate = useNavigate();
-
+  const { chain } = getNetwork();
   useEffect(() => {
     queryDashboard();
-    queryTaskData(8, 0, "0");
-  }, [chainId]);
+    queryTasks(8, 0, "0");
+  }, [chain?.id]);
 
   const DashboardMiniItems: DashboardMiniItem[] = [
     {
@@ -88,13 +87,13 @@ const Home = (): React.ReactElement => {
     setTableDataType(item.tag);
     switch (item.tag) {
       case "Tasks": {
-        queryTaskData(8, 0, "0");
+        queryTasks(8, 0, "0");
       }
       case "Items": {
-        queryItemData(8, 0, "0");
+        queryItems(8, 0, "0");
       }
       case "Users": {
-        queryUserData(8, 0);
+        queryUsers(8, 0);
       }
       case "Platforms": {
         queryPlatforms();

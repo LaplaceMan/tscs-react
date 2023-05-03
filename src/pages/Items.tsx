@@ -4,26 +4,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { columns, data } from "../utils/table/columns";
 import { DataContext } from "../context/DataContext";
-import { GlobalContext } from "../context/GlobalContext";
-import { ApplicationContext } from "../context/ApplicationContext";
-import { DEFAULT_PAGE_SIZE } from "../utils/constants";
+import { getNetwork } from "@wagmi/core";
 
 const Items = (): React.ReactElement => {
-  const { chainId } = useContext(GlobalContext);
-  const {
-    subtitles,
-    querySubtitleData,
-    dashboard,
-    regiserLanguages,
-    isGetDataLoading,
-  } = useContext(DataContext);
+  const { items, queryItems, isGetDataLoading } = useContext(DataContext);
   const navigate = useNavigate();
-  const { updateDefaultUploadSubtitleData } = useContext(ApplicationContext);
-  const [currentPage, setCurrentPage] = useState({ page: 1, language: "0" });
-
-  // useEffect(() => {
-  //   querySubtitleData(DEFAULT_PAGE_SIZE, 0, "0");
-  // }, [chainId]);
+  const { chain } = getNetwork();
+  useEffect(() => {
+    queryItems(10, 0, "0");
+  }, [chain?.id]);
 
   return (
     <div className="flex flex-col items-center">
@@ -62,8 +51,8 @@ const Items = (): React.ReactElement => {
       </div>
       <div className="flex px-5">
         <Table
-          columns={columns["Tasks"]}
-          dataSource={data}
+          columns={columns["Items"]}
+          dataSource={items!}
           pagination={false}
           scroll={{
             x: 1200,

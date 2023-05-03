@@ -52,12 +52,8 @@ const Personal = (): React.ReactElement => {
   const { userOwnData, queryUserOwnData, isGetDataLoading } =
     useContext(DataContext);
   const { personalDID, getPersonalPageData } = useContext(ApplicationContext);
-  const {
-    chainId,
-    showDepositAssetModal,
-    showUpdateTaskModal,
-    showGuardManageModal,
-  } = useContext(GlobalContext);
+  const { showDepositAssetModal, showUpdateTaskModal, showGuardManageModal } =
+    useContext(GlobalContext);
   const { chain } = getNetwork();
   const param = useParams();
   const navigate = useNavigate();
@@ -65,7 +61,7 @@ const Personal = (): React.ReactElement => {
   useEffect(() => {
     // param.id && queryUserOwnData(param.id as `0x${string}`);
     // getPersonalPageData(user);
-  }, [chainId]);
+  }, [chain?.id]);
 
   const Tokens = () => {
     return (

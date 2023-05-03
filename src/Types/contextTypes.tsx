@@ -24,7 +24,7 @@ import {
 export type ApplicationContent = {
   defaultUploadSubtitleData: { applyId: string; language: string };
   updateDefaultUploadSubtitleData: (applyId: string, language: string) => void;
-  defaultAuditSubtitleData: Item;
+  defaultAuditSubtitleData: Item | undefined;
   updateDefaultAuditSubtitleData: (subtitle: Item) => void;
   submitApplication: (params: Submit) => void;
   uploadSubtitle: (params: Upload) => void;
@@ -53,16 +53,16 @@ export type DataContent = {
   users: ListUser[] | null;
   tasks: ListTask[] | null;
   items: ListItem[] | null;
-  queryTaskData: (first: number, skip: number, language: string) => void;
+  queryTasks: (first: number, skip: number, language: string) => void;
   dashboard: Dashboard | null;
   queryDashboard: () => void;
-  queryItemData: (first: number, skip: number, language: string) => void;
+  queryItems: (first: number, skip: number, language: string) => void;
   defaultAuditSubtitleMaker: User;
   userOwnData: UserOwn;
   queryUserOwnData: (address: string) => void;
-  queryUserData: (first: number, skip: number) => void;
+  queryUsers: (first: number, skip: number) => void;
   queryUserLockedToken: (platform: string, day: number) => void;
-  querySpecialApplication: (id: string) => void;
+  querySpecialTask: (id: string) => Promise<Task | null | undefined>;
   userDayLocakedToken: string;
   regiserLanguages: { id: string; notes: string }[];
   platforms: ListPlatform[] | null;
@@ -70,10 +70,10 @@ export type DataContent = {
   clearData: () => void;
   queryRegiserLanugages: () => void;
   queryPlatforms: () => void;
+  querySpecialItem: (id: string) => Promise<Item | null | undefined>;
 };
 
 export type GlobalContent = {
-  chainId: number;
   isLoading: boolean;
   isAuditModalOpen: boolean;
   showAuditModal: () => void;

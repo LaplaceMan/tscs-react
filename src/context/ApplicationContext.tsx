@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
   Item,
-  defaultSubtitle,
   PersonalPageData,
   defaultPersonalPageData,
 } from "../types/baseTypes";
@@ -57,7 +56,7 @@ export const ApplicationContext = React.createContext<ApplicationContent>(
 );
 
 export const ApplicationProvider = ({ children }: any) => {
-  const { setLoadingState, chainId } = useContext(GlobalContext);
+  const { setLoadingState } = useContext(GlobalContext);
   const { queryRegiserLanugages, queryPlatforms, regiserLanguages } =
     useContext(DataContext);
   const [personalDID, setPersonalDID] = useState<PersonalPageData>(
@@ -67,8 +66,9 @@ export const ApplicationProvider = ({ children }: any) => {
     applyId: "0",
     language: "0",
   });
-  const [defaultAuditSubtitleData, setDefaultAuditSubtitleData] =
-    useState<Item>(defaultSubtitle);
+  const [defaultAuditSubtitleData, setDefaultAuditSubtitleData] = useState<
+    Item | undefined
+  >();
   const [defaultTokenTransactionData, setDefaultTokenTransactionData] =
     useState<TokenTransaction>(defaultTokenTransaction);
   const [defaultUpdateApplicationData, setDefaultUpdateApplication] =
@@ -79,10 +79,6 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const { chain } = getNetwork();
   const provider = getProvider();
-
-  useEffect(() => {
-    chainId;
-  }, [chainId]);
 
   const updateDefaultAuditSubtitleData = (subtitle: Item) => {
     setDefaultAuditSubtitleData(subtitle);
@@ -118,33 +114,33 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const getPersonalPageData = async (address: string) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
         const userBaseData = (await readContract({
-          address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+          address: MURMES_PROTOCOL[chain.id] as `0x${string}`,
           abi: MURMES_PROTOCOL_ABI,
           functionName: "getUserBaseInfo",
           args: [address],
         })) as Array<ethers.BigNumber>;
         const zimuBalance = (await readContract({
-          address: TEST_TOKEN[chainId] as `0x${string}`,
+          address: TEST_TOKEN[chain.id] as `0x${string}`,
           abi: TEST_TOKEN_ABI,
           functionName: "balanceOf",
           args: [address],
         })) as ethers.BigNumber;
         const vtBalance = (await readContract({
-          address: PLATFORM_TOKEN[chainId] as `0x${string}`,
+          address: PLATFORM_TOKEN[chain.id] as `0x${string}`,
           abi: ERC1155_ABI,
           functionName: "balanceOf",
           args: [address, 0],
         })) as ethers.BigNumber;
         const lensBalance = (await readContract({
-          address: PLATFORM_TOKEN[chainId] as `0x${string}`,
+          address: PLATFORM_TOKEN[chain.id] as `0x${string}`,
           abi: ERC1155_ABI,
           functionName: "balanceOf",
           args: [address, 1],
         })) as ethers.BigNumber;
         const neededDepositZimu = (await readContract({
-          address: ACCESS_STRATEGY[chainId] as `0x${string}`,
+          address: ACCESS_STRATEGY[chain.id] as `0x${string}`,
           abi: ACCESS_ABI,
           functionName: "deposit",
           args: [userBaseData[0]],
@@ -164,9 +160,9 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const getLensRevenueSettlable = async (videoId: string) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
         const settlable = (await readContract({
-          address: AUTHORITY_STRATEGY[chainId] as `0x${string}`,
+          address: AUTHORITY_STRATEGY[chain.id] as `0x${string}`,
           abi: AUTHORITY_ABI,
           functionName: "getSettlableInLens",
           args: [videoId],
@@ -178,7 +174,7 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const submitApplication = async (params: Submit) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
         let amount;
         if (params.strategy == 0) {
           amount = ethers.utils.parseEther(params.amount);
@@ -186,7 +182,7 @@ export const ApplicationProvider = ({ children }: any) => {
           amount = params.amount;
         }
         const config = await prepareWriteContract({
-          address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+          address: MURMES_PROTOCOL[chain.id] as `0x${string}`,
           abi: MURMES_PROTOCOL_ABI,
           functionName: "submitApplication",
           args: [
@@ -217,9 +213,9 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const uploadSubtitle = async (params: Upload) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
         const config = await prepareWriteContract({
-          address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+          address: MURMES_PROTOCOL[chain.id] as `0x${string}`,
           abi: MURMES_PROTOCOL_ABI,
           functionName: "uploadSubtitle",
           args: [
@@ -247,9 +243,9 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const auditSubtitle = async (params: Audit) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
         const config = await prepareWriteContract({
-          address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+          address: MURMES_PROTOCOL[chain.id] as `0x${string}`,
           abi: MURMES_PROTOCOL_ABI,
           functionName: "evaluateSubtitle",
           args: [params.subtitleId, params.attitude],
@@ -272,7 +268,7 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const tokenTransaction = async (params: RealTokenTransaction) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
         let config;
         if (params.type == "ERC-20") {
           const amount = ethers.utils.parseUnits(params.amount.toString(), 18);
@@ -339,18 +335,18 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const preSettlement = async (type: string, applyId: string) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
         let config;
         if (type == "OT0") {
           config = await prepareWriteContract({
-            address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+            address: MURMES_PROTOCOL[chain.id] as `0x${string}`,
             abi: MURMES_PROTOCOL_ABI,
             functionName: "preExtract0",
             args: [applyId],
           });
         } else {
           config = await prepareWriteContract({
-            address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+            address: MURMES_PROTOCOL[chain.id] as `0x${string}`,
             abi: MURMES_PROTOCOL_ABI,
             functionName: "preExtractOther",
             args: [applyId],
@@ -376,7 +372,7 @@ export const ApplicationProvider = ({ children }: any) => {
     params: RealUpdateApplictaionTransaction
   ) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
         let amount;
         if (defaultUpdateApplicationData.payType == "OT0") {
           amount = ethers.utils.parseUnits(params.amount.toString(), 18);
@@ -388,7 +384,7 @@ export const ApplicationProvider = ({ children }: any) => {
           deadline = timestamp() + 864000;
         }
         const config = await prepareWriteContract({
-          address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+          address: MURMES_PROTOCOL[chain.id] as `0x${string}`,
           abi: MURMES_PROTOCOL_ABI,
           functionName: "updateApplication",
           args: [params.applyId, amount, deadline],
@@ -411,9 +407,9 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const cancelApplication = async (taskId: string) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
         const config = await prepareWriteContract({
-          address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+          address: MURMES_PROTOCOL[chain.id] as `0x${string}`,
           abi: MURMES_PROTOCOL_ABI,
           functionName: "cancel",
           args: [taskId],
@@ -436,9 +432,9 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const withdrawReward = async (params: RealWithdrawRewardTransaction) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
         const config = await prepareWriteContract({
-          address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+          address: MURMES_PROTOCOL[chain.id] as `0x${string}`,
           abi: MURMES_PROTOCOL_ABI,
           functionName: "withdraw",
           args: [params.platform, [params.day]],
@@ -461,12 +457,12 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const depoitZimuManage = async (address: string, amount: number) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
         let config;
         const realAmount = ethers.utils.parseUnits(amount.toString(), 18);
         if (defaultWithdrawOrDepositData.manage == "DEPOSIT") {
           config = await prepareWriteContract({
-            address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+            address: MURMES_PROTOCOL[chain.id] as `0x${string}`,
             abi: MURMES_PROTOCOL_ABI,
             functionName: "userJoin",
             args: [address, realAmount],
@@ -474,7 +470,7 @@ export const ApplicationProvider = ({ children }: any) => {
         } else {
           // defaultWithdrawOrDepositData.manage == "WITHDRAW"
           config = await prepareWriteContract({
-            address: MURMES_PROTOCOL[chainId] as `0x${string}`,
+            address: MURMES_PROTOCOL[chain.id] as `0x${string}`,
             abi: MURMES_PROTOCOL_ABI,
             functionName: "withdrawDeposit",
             args: [realAmount],
@@ -498,9 +494,9 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const updateRevenueInLens = async (videoId: string) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
         const config = await prepareWriteContract({
-          address: PLATFORM_MANAGER[chainId] as `0x${string}`,
+          address: PLATFORM_MANAGER[chain.id] as `0x${string}`,
           abi: PLATFROM_ABI,
           functionName: "updateViewCounts",
           args: [[videoId], [0]],
@@ -523,9 +519,9 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const swapRevenueInLens = async (amount: string) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chainId)) {
+      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
         const config = await prepareWriteContract({
-          address: AUTHORITY_STRATEGY[chainId] as `0x${string}`,
+          address: AUTHORITY_STRATEGY[chain.id] as `0x${string}`,
           abi: AUTHORITY_ABI,
           functionName: "swapInLens",
           args: [amount],

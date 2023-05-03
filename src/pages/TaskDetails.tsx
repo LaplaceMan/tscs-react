@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { Table } from "antd";
 import { PropsContainer, PrimaryButton, PropItem } from "../components";
 import { BsListUl } from "react-icons/bs";
 import { columns, data } from "../utils/table/columns";
 import { Link, useParams } from "react-router-dom";
+import { DataContext } from "../context/DataContext";
+import { Task } from "../types/baseTypes";
 
 const TaskDetails = () => {
   const param = useParams();
+  const { querySpecialTask } = useContext(DataContext);
+  const [taskDetail, setTaskDetail] = useState<Task | null>();
+  useEffect(() => {
+    const feachData = async (id: string) => {
+      const data = await querySpecialTask(id);
+      if (data && data != undefined) {
+        setTaskDetail(data);
+      }
+    };
+    param.id != undefined && feachData(param.id);
+  }, []);
 
   return (
     <div className="flex items-center justify-center">
@@ -22,24 +35,77 @@ const TaskDetails = () => {
               content={
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { label: "Task ID", value: `#${param.id}` },
-                    { label: "Applicant", value: "0x..." },
-                    { label: "Platform", value: "0x..." },
-                    { label: "Box ID", value: "#10" },
-                    { label: "Require", value: "..." },
-                    { label: "Payment", value: "OT0" },
-                    { label: "Currency", value: "USDT" },
-                    { label: "Amount", value: "10.0" },
-                    { label: "Start", value: "2023-4-10" },
-                    { label: "Deadline", value: "2023-5-1" },
-                    { label: "Source", value: "..." },
-                    { label: "Audit Module", value: "0x..." },
-                    { label: "Detection Module", value: "0x..." },
-                    { label: "Status", value: "NORMAL" },
+                    { label: "Task ID", value: param.id, type: "id" },
+                    {
+                      label: "Applicant",
+                      value: taskDetail?.applicant,
+                      type: "address",
+                    },
+                    {
+                      label: "Platform",
+                      value: taskDetail?.platform,
+                      type: "",
+                    },
+                    {
+                      label: "Box ID",
+                      value: taskDetail?.boxId,
+                      type: "id",
+                    },
+                    {
+                      label: "Require",
+                      value: taskDetail?.require,
+                      type: "",
+                    },
+                    {
+                      label: "Payment",
+                      value: taskDetail?.payment,
+                      type: "",
+                    },
+                    {
+                      label: "Currency",
+                      value: taskDetail?.currency,
+                      type: "",
+                    },
+                    {
+                      label: "Amount",
+                      value: taskDetail?.amount,
+                      type: "amount" + '-' + taskDetail?.payment,
+                    },
+                    {
+                      label: "Start",
+                      value: taskDetail?.start,
+                      type: "time",
+                    },
+                    {
+                      label: "Deadline",
+                      value: taskDetail?.deadline,
+                      type: "time",
+                    },
+                    {
+                      label: "Source",
+                      value: taskDetail?.source,
+                      type: "",
+                    },
+                    {
+                      label: "Audit Module",
+                      value: taskDetail?.audit,
+                      type: "address",
+                    },
+                    {
+                      label: "Detection Module",
+                      value: taskDetail?.detection,
+                      type: "address",
+                    },
+                    {
+                      label: "State",
+                      value: taskDetail?.state,
+                      type: "",
+                    },
                   ].map((item, index) => (
                     <PropItem
                       label={item.label}
                       value={item.value}
+                      type={item.type}
                       key={index}
                     />
                   ))}
@@ -52,12 +118,21 @@ const TaskDetails = () => {
               content={
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { label: "Item Count", value: "10" },
-                    { label: "Adopted Item", value: "#10" },
+                    {
+                      label: "Item Count",
+                      value: taskDetail && taskDetail.uploads,
+                      type: "",
+                    },
+                    {
+                      label: "Adopted Item",
+                      value: taskDetail && taskDetail.adopted,
+                      type: "",
+                    },
                   ].map((item, index) => (
                     <PropItem
                       label={item.label}
                       value={item.value}
+                      type={item.type}
                       key={index}
                     />
                   ))}
