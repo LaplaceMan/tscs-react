@@ -1,11 +1,15 @@
 import { ethers } from "ethers";
 import { BigNumber } from "bignumber.js";
 
-export const shortenAddress = (address: string): string => {
-  if (address.length > 8) {
-    return `${address.slice(0, 6)}...${address.slice(address.length - 4)}`;
+export const shortenAddress = (address: string | undefined): string => {
+  if (!address || typeof address == undefined) {
+    return "None";
   } else {
-    return address;
+    if (address.length > 8) {
+      return `${address.slice(0, 6)}...${address.slice(address.length - 4)}`;
+    } else {
+      return address;
+    }
   }
 };
 
@@ -60,19 +64,23 @@ export const timestampToDay = (time: number) => {
 };
 
 export const bignumberConvert = (
-  number: ethers.BigNumber | string,
+  number: ethers.BigNumber | string | undefined,
   div: string | number,
   fixed: number
 ) => {
-  const format = number.toString();
-  if (format != "0") {
-    if (div != "0") {
-      return BigNumber(format).div(div).toFixed(fixed);
-    } else {
-      return BigNumber(format).toFixed(fixed);
-    }
+  if (!number || typeof number == undefined) {
+    return "None";
   } else {
-    return format;
+    const format = number.toString();
+    if (format != "0") {
+      if (div != "0") {
+        return BigNumber(format).div(div).toFixed(fixed);
+      } else {
+        return BigNumber(format).toFixed(fixed);
+      }
+    } else {
+      return format;
+    }
   }
 };
 

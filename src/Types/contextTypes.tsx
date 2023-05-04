@@ -1,14 +1,14 @@
 import {
   Item,
-  PersonalPageData,
   Task,
   Dashboard,
   User,
-  UserOwn,
+  OwnTaskCard,
   ListTask,
   ListItem,
   ListUser,
   ListPlatform,
+  ListAudit,
 } from "./baseTypes";
 import {
   Upload,
@@ -40,7 +40,6 @@ export type ApplicationContent = {
   updateApplication: (params: RealUpdateApplictaionTransaction) => void;
   withdrawReward: (params: RealWithdrawRewardTransaction) => void;
   depoitZimuManage: (address: string, amount: number) => void;
-  personalDID: PersonalPageData;
   getPersonalPageData: (address: string) => void;
   cancelApplication: (taskId: string) => void;
   updateRevenueInLens: (videoId: string) => void;
@@ -57,12 +56,11 @@ export type DataContent = {
   dashboard: Dashboard | null;
   queryDashboard: () => void;
   queryItems: (first: number, skip: number, language: string) => void;
-  defaultAuditSubtitleMaker: User;
-  userOwnData: UserOwn;
-  queryUserOwnData: (address: string) => void;
   queryUsers: (first: number, skip: number) => void;
   queryUserLockedToken: (platform: string, day: number) => void;
-  querySpecialTask: (id: string) => Promise<Task | null | undefined>;
+  querySpecialTask: (
+    id: string
+  ) => Promise<{ task: Task; items: ListItem[] | null } | null | undefined>;
   userDayLocakedToken: string;
   regiserLanguages: { id: string; notes: string }[];
   platforms: ListPlatform[] | null;
@@ -70,7 +68,12 @@ export type DataContent = {
   clearData: () => void;
   queryRegiserLanugages: () => void;
   queryPlatforms: () => void;
-  querySpecialItem: (id: string) => Promise<Item | null | undefined>;
+  querySpecialItem: (
+    id: string
+  ) => Promise<{ item: Item; audits: ListAudit[] | null } | null | undefined>;
+  querySpecialUser: (
+    id: string
+  ) => Promise<{ item: User; tasks: OwnTaskCard[] | null } | null | undefined>;
 };
 
 export type GlobalContent = {

@@ -1,5 +1,5 @@
 import React from "react";
-import { OwnOther } from "../../types/baseTypes";
+import { OwnOthersCard } from "../../types/baseTypes";
 import { Tooltip } from "antd";
 import { shortenItemContent } from "../../utils/tools";
 
@@ -16,7 +16,7 @@ const OtherCardItem = ({ label, value }: { label: string; value: string }) => {
   );
 };
 
-const OwnOtherCard = ({ other }: { other: OwnOther }) => {
+const OwnOtherCard = ({ other }: { other: OwnOthersCard }) => {
   return (
     <div className="flex items-center justify-center">
       <div className="flex flex-col rounded-xl w-[300px] border border-[#322d3a]">

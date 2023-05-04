@@ -1,9 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  Item,
-  PersonalPageData,
-  defaultPersonalPageData,
-} from "../types/baseTypes";
+import { Item, PersonalPageData } from "../types/baseTypes";
 import { ApplicationContent } from "../types/contextTypes";
 import {
   Submit,
@@ -59,9 +55,9 @@ export const ApplicationProvider = ({ children }: any) => {
   const { setLoadingState } = useContext(GlobalContext);
   const { queryRegiserLanugages, queryPlatforms, regiserLanguages } =
     useContext(DataContext);
-  const [personalDID, setPersonalDID] = useState<PersonalPageData>(
-    defaultPersonalPageData
-  );
+  // const [personalDID, setPersonalDID] = useState<PersonalPageData>(
+  //   defaultPersonalPageData
+  // );
   const [defaultUploadSubtitleData, setDefaultUploadSubtitleData] = useState({
     applyId: "0",
     language: "0",
@@ -146,14 +142,14 @@ export const ApplicationProvider = ({ children }: any) => {
           args: [userBaseData[0]],
         })) as ethers.BigNumber;
         const reputation = bignumberConvert(userBaseData[0], "10", 1);
-        setPersonalDID({
-          reputation: reputation,
-          deposit: userBaseData[1],
-          zimu: zimuBalance,
-          vt0: vtBalance,
-          vt1: lensBalance,
-          needed: neededDepositZimu,
-        });
+        // setPersonalDID({
+        //   reputation: reputation,
+        //   deposit: userBaseData[1],
+        //   zimu: zimuBalance,
+        //   vt0: vtBalance,
+        //   vt1: lensBalance,
+        //   needed: neededDepositZimu,
+        // });
       }
     }
   };
@@ -563,7 +559,7 @@ export const ApplicationProvider = ({ children }: any) => {
         updateApplication,
         withdrawReward,
         depoitZimuManage,
-        personalDID,
+        // personalDID,
         getPersonalPageData,
         cancelApplication,
         updateRevenueInLens,

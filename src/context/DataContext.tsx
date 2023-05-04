@@ -4,30 +4,24 @@ import {
   ListItem,
   ListUser,
   User,
-  defaultUser,
-  UserOwn,
-  OwnApplication,
-  OwnSubtitle,
-  OwnAudit,
-  defaultUserOwn,
   ListPlatform,
+  ListAudit,
+  OwnTaskCard,
 } from "../types/baseTypes";
 import { DataContent } from "../types/contextTypes";
-import { Task, Item, Dashboard, defaultDashboard } from "../types/baseTypes";
+import { Task, Item, Dashboard } from "../types/baseTypes";
 import { MURMES_PROTOCOL } from "../utils/contracts";
 import {
   QueryHome,
   QueryTasks,
-  QueryTaskWithLanguage,
   QueryItems,
-  QuerySubtitleWithLanguage,
   QueryUsers,
-  QueryUserOwn,
   QueryLockedToken,
   QueryLanguages,
   QueryPlatforms,
   QuerySpecialTask,
   QuerySpecialItem,
+  QuerySpecialUser,
 } from "../utils/graphql/graphqls";
 import { getAccount, getNetwork } from "@wagmi/core";
 import { SUPPORT_NETWORK } from "../utils/constants";
@@ -39,9 +33,7 @@ export const DataContext = React.createContext<DataContent>({} as DataContent);
 export const DataProvider = ({ children }: any) => {
   const account = getAccount();
   const [isGetDataLoading, setIsGetDataLoading] = useState<boolean>(false);
-  const [dashboard, setDashboard] = useState<Dashboard | null>(
-    defaultDashboard
-  );
+  const [dashboard, setDashboard] = useState<Dashboard | null>(null);
   const [tasks, setTasks] = useState<ListTask[] | null>([]);
   const [items, setItems] = useState<ListItem[] | null>([]);
   const [users, setUsers] = useState<ListUser[] | null>([]);
@@ -49,16 +41,13 @@ export const DataProvider = ({ children }: any) => {
     { id: string; notes: string }[]
   >([]);
   const [platforms, setPlatforms] = useState<ListPlatform[] | null>([]);
-  const [defaultAuditSubtitleMaker, setDefaultAuditSubtitleMaker] =
-    useState<User>(defaultUser);
-  const [userOwnData, setUserOwnData] = useState<UserOwn>(defaultUserOwn);
   const [userDayLocakedToken, setUserDayLocakedToken] = useState("*");
   const { chain } = getNetwork();
+
   const clearData = () => {
     setItems(null);
     setTasks(null);
     setDashboard(null);
-    setUserOwnData(defaultUserOwn);
   };
 
   const queryDashboard = async () => {
@@ -91,7 +80,7 @@ export const DataProvider = ({ children }: any) => {
       setIsGetDataLoading(true);
       try {
         const data = await Client(chain.id).query({
-          query: gql(require == "0" ? QueryTasks : QueryTaskWithLanguage),
+          query: gql(require == "0" ? QueryTasks : ""),
           variables: {
             first: first,
             skip: skip,
@@ -131,7 +120,7 @@ export const DataProvider = ({ children }: any) => {
       setIsGetDataLoading(true);
       try {
         const data = await Client(chain.id).query({
-          query: gql(require == "0" ? QueryItems : QuerySubtitleWithLanguage),
+          query: gql(require == "0" ? QueryItems : ""),
           variables: {
             first: first,
             skip: skip,
@@ -233,7 +222,7 @@ export const DataProvider = ({ children }: any) => {
 
   const querySpecialTask = async (
     id: string
-  ): Promise<Task | null | undefined> => {
+  ): Promise<{ task: Task; items: ListItem[] | null } | null | undefined> => {
     if (chain && SUPPORT_NETWORK.includes(chain.id)) {
       setIsGetDataLoading(true);
       try {
@@ -262,8 +251,24 @@ export const DataProvider = ({ children }: any) => {
             uploads: getTask.itemCount,
             adopted: getTask.adopted ? getTask.adopted : "None",
           };
+          /***********************/
+          const getItems = data.data.task.items;
+          const itemArray = new Array<ListItem>();
+          getItems.map((item: any) => {
+            itemArray.push({
+              key: item.id,
+              id: item.id,
+              task: id,
+              require: item.requires.notes,
+              support: item.supporterCount,
+              oppose: item.opponentCount,
+              state: item.state,
+              source: item.cid,
+              fingerprint: item.fingerprint,
+            });
+          });
           setIsGetDataLoading(false);
-          return task;
+          return { task: task, items: itemArray };
         } else {
           setIsGetDataLoading(false);
           return null;
@@ -278,7 +283,7 @@ export const DataProvider = ({ children }: any) => {
 
   const querySpecialItem = async (
     id: string
-  ): Promise<Item | null | undefined> => {
+  ): Promise<{ item: Item; audits: ListAudit[] | null } | null | undefined> => {
     if (chain && SUPPORT_NETWORK.includes(chain.id)) {
       setIsGetDataLoading(true);
       try {
@@ -305,8 +310,21 @@ export const DataProvider = ({ children }: any) => {
             versions: getItem.versionCount,
             state: getItem.state,
           };
+          /***********************/
+          const getAudits = data.data.item.audits;
+          const auditArray = new Array<ListAudit>();
+          getAudits.map((item: any) => {
+            auditArray.push({
+              key: item.auditor.userId,
+              id: item.auditor.userId,
+              auditor: item.auditor.id,
+              reputation: item.auditor.reputation,
+              result: item.attitude,
+              time: item.time,
+            });
+          });
           setIsGetDataLoading(false);
-          return item;
+          return { item: item, audits: auditArray };
         } else {
           setIsGetDataLoading(false);
           return null;
@@ -319,71 +337,47 @@ export const DataProvider = ({ children }: any) => {
     }
   };
 
-  const queryUserOwnData = async (address: string) => {
+  const querySpecialUser = async (
+    id: string
+  ): Promise<
+    { item: User; tasks: OwnTaskCard[] | null } | null | undefined
+  > => {
     if (chain && SUPPORT_NETWORK.includes(chain.id)) {
       setIsGetDataLoading(true);
       try {
-        const data = await Client(chain.id).query({
-          query: gql(QueryUserOwn),
+        const data: any = await Client(chain.id).query({
+          query: gql(QuerySpecialUser),
           variables: {
-            id: address.toLocaleLowerCase(),
+            id,
           },
         });
         if (data && data.data && data.data.user) {
-          const userData = data.data.user;
-          const applicationArray = new Array<OwnApplication>();
-          const subtitleArray = new Array<OwnSubtitle>();
-          const auditArray = new Array<OwnAudit>();
-          userData.applications &&
-            userData.applications.map((item: any) => {
-              applicationArray.push({
-                name: item.video.platform.name,
-                type: item.strategy.notes,
-                price: item.amount,
-                state: item.adopted ? item.adopted.id : "0",
-                source: item.source,
-                videoId: item.video.id,
-                applyId: item.id,
-                language: item.language.notes,
-                deadline: item.deadline,
-              });
+          const getUser = data.data.user;
+          const user: User = {
+            id: getUser.id,
+            reputation: getUser.reputation,
+            deposit: getUser.deposit,
+            guard: getUser.guard ? getUser.guard : "None",
+            join: getUser.time,
+            userId: getUser.userId,
+          };
+          /***********************/
+          const getTasks = data.data.user.tasks;
+          const taskArray = new Array<OwnTaskCard>();
+          getTasks.map((item: any) => {
+            taskArray.push({
+              platform: item.box.platform.name,
+              source: item.source,
+              taskId: item.id,
+              boxId: item.box.orderId,
+              state: item.state,
             });
-          userData.subtitlesOwner &&
-            userData.subtitlesOwner.map((item: any) => {
-              subtitleArray.push({
-                subtitleId: item.id,
-                cid: item.cid,
-                support: item.supporterCount,
-                oppose: item.dissenterCount,
-                state: item.state,
-                applyId: item.application.id,
-                language: item.language.notes,
-                type: item.application.strategy.notes,
-                platform: item.application.video.platform.id,
-                videoId: item.application.video.orderId,
-              });
-            });
-          userData.audits &&
-            userData.audits.map((item: any) => {
-              auditArray.push({
-                cid: item.subtitle.cid,
-                state: item.subtitle.state,
-                applyId: item.subtitle.application.id,
-                language: item.subtitle.language.notes,
-                attitude: item.attitude,
-                subtitleId: item.subtitle.id,
-                type: item.subtitle.application.strategy.notes,
-                platform: item.subtitle.application.video.platform.id,
-                videoId: item.subtitle.application.video.orderId,
-              });
-            });
-          setUserOwnData({
-            applications: applicationArray,
-            subtitles: subtitleArray,
-            audits: auditArray,
           });
+          setIsGetDataLoading(false);
+          return { item: user, tasks: taskArray };
         }
         setIsGetDataLoading(false);
+        return null;
       } catch (err) {
         console.log("Error fetching data: ", err);
         message.error("Error: " + err);
@@ -452,11 +446,8 @@ export const DataProvider = ({ children }: any) => {
         queryTasks,
         items,
         queryItems,
-        defaultAuditSubtitleMaker,
-        userOwnData,
         users,
         queryUsers,
-        queryUserOwnData,
         queryUserLockedToken,
         querySpecialTask,
         userDayLocakedToken,
@@ -467,6 +458,7 @@ export const DataProvider = ({ children }: any) => {
         queryRegiserLanugages,
         queryPlatforms,
         querySpecialItem,
+        querySpecialUser,
       }}
     >
       {children}

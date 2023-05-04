@@ -3,19 +3,25 @@ import { Table } from "antd";
 import { PropsContainer, PrimaryButton, PropItem } from "../components";
 import { BsListUl } from "react-icons/bs";
 import { columns, data } from "../utils/table/columns";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { DataContext } from "../context/DataContext";
-import { Task } from "../types/baseTypes";
+import { ListItem, Task } from "../types/baseTypes";
 
 const TaskDetails = () => {
   const param = useParams();
+  const navigate = useNavigate();
   const { querySpecialTask } = useContext(DataContext);
   const [taskDetail, setTaskDetail] = useState<Task | null>();
+  const [taskItems, setTaskItems] = useState<ListItem[] | null>([]);
+
   useEffect(() => {
     const feachData = async (id: string) => {
       const data = await querySpecialTask(id);
-      if (data && data != undefined) {
-        setTaskDetail(data);
+      if (data && data.task != undefined) {
+        setTaskDetail(data.task);
+      }
+      if (data && data.items != undefined) {
+        setTaskItems(data.items);
       }
     };
     param.id != undefined && feachData(param.id);
@@ -69,7 +75,7 @@ const TaskDetails = () => {
                     {
                       label: "Amount",
                       value: taskDetail?.amount,
-                      type: "amount" + '-' + taskDetail?.payment,
+                      type: "amount" + "-" + taskDetail?.payment,
                     },
                     {
                       label: "Start",
@@ -143,16 +149,17 @@ const TaskDetails = () => {
           <div className="flex flex-col items-center justify-between mt-5 md:mt-0">
             <div className="flex w-full md:w-[800px] border border-[#322d3a] rounded-xl p-1">
               <Table
-                columns={columns["Tasks"]}
-                dataSource={data}
+                columns={columns["Items"]}
+                dataSource={taskItems!}
                 pagination={false}
                 scroll={{ x: 1100 }}
                 style={{
                   width: document.body.clientWidth - 40,
+                  maxHeight: "522px",
                 }}
                 onRow={(record) => {
                   return {
-                    onClick: () => console.log(record),
+                    onClick: () => navigate(`/Item/${record.id}`),
                   };
                 }}
               />

@@ -5,12 +5,20 @@ import {
   ListItem,
   ListUser,
   ListPlatform,
+  ListAudit,
 } from "../../types/baseTypes";
-import { shortenAddress, bignumberConvert, shortenText } from "../tools";
+import {
+  shortenAddress,
+  bignumberConvert,
+  shortenText,
+  timestampToDate,
+} from "../tools";
 import { DECIMALS_18 } from "../constants";
 
 export const columns: {
-  [key: string]: ColumnsType<ListTask | ListItem | ListUser | ListPlatform>;
+  [key: string]: ColumnsType<
+    ListTask | ListItem | ListUser | ListPlatform | ListAudit
+  >;
 } = {
   Tasks: [
     {
@@ -19,7 +27,7 @@ export const columns: {
       key: "id",
       fixed: "left",
       width: "100px",
-      render: (text) => <a>#{text}</a>,
+      render: (text) => `#${text}`,
     },
     {
       title: "Reuire",
@@ -217,6 +225,42 @@ export const columns: {
       dataIndex: "boxes",
       key: "boxes",
       width: "100px",
+    },
+  ],
+  Audits: [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+      width: "100px",
+      render: (text) => `#${text}`,
+    },
+    {
+      title: "Auditor",
+      dataIndex: "auditor",
+      key: "auditor",
+      width: "150px",
+      render: (text) => shortenAddress(text),
+    },
+    {
+      title: "Reputation",
+      dataIndex: "reputation",
+      key: "reputation",
+      width: "100px",
+      render: (text) => bignumberConvert(text, 10, 1),
+    },
+    {
+      title: "Result",
+      dataIndex: "result",
+      key: "result",
+      width: "100px",
+    },
+    {
+      title: "Time",
+      dataIndex: "time",
+      key: "time",
+      width: "150px",
+      render: (text) => timestampToDate(text),
     },
   ],
 };

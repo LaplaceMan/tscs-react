@@ -6,19 +6,23 @@ import { columns, data } from "../utils/table/columns";
 import { Link, useParams } from "react-router-dom";
 import { DataContext } from "../context/DataContext";
 import { GlobalContext } from "../context/GlobalContext";
-import { Item } from "../types/baseTypes";
+import { Item, ListAudit } from "../types/baseTypes";
 
 const ItemDetails = () => {
   const param = useParams();
   const { showAuditModal } = useContext(GlobalContext);
   const { querySpecialItem } = useContext(DataContext);
   const [itemDetail, setItemDetail] = useState<Item | null>();
+  const [itemAudits, setItemAudits] = useState<ListAudit[] | null>([]);
 
   useEffect(() => {
     const feachData = async (id: string) => {
       const data = await querySpecialItem(id);
-      if (data && data != undefined) {
-        setItemDetail(data);
+      if (data && data.item != undefined) {
+        setItemDetail(data.item);
+      }
+      if (data && data.audits != undefined) {
+        setItemAudits(data.audits);
       }
     };
     param.id != undefined && feachData(param.id);
@@ -133,12 +137,13 @@ const ItemDetails = () => {
           <div className="flex flex-col items-center justify-between mt-5 md:mt-0">
             <div className="flex w-full md:w-[800px] border border-[#322d3a] rounded-xl p-1">
               <Table
-                columns={columns["Tasks"]}
-                dataSource={data}
+                columns={columns["Audits"]}
+                dataSource={itemAudits!}
                 pagination={false}
                 scroll={{ x: 1100 }}
                 style={{
                   width: document.body.clientWidth - 40,
+                  maxHeight: "522px",
                 }}
                 onRow={(record) => {
                   return {

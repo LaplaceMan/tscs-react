@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { OwnToken } from "../../types/baseTypes";
+import { OwnAssetsCard } from "../../types/baseTypes";
 import { Tooltip } from "antd";
 import {
   bignumberConvert,
@@ -19,7 +19,7 @@ const AssetCardItem = ({ label, value }: { label: string; value: string }) => {
   );
 };
 
-const OwnAssetCard = (token: OwnToken) => {
+const OwnAssetCard = ({ token }: { token: OwnAssetsCard }) => {
   const { updateDefaultTokenTransaction } = useContext(ApplicationContext);
   const { showTokenTransactionModal } = useContext(GlobalContext);
   const { address, isConnected } = useAccount();

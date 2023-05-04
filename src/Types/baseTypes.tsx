@@ -27,6 +27,19 @@ export const defaultPostTaskData = {
   sourceId: "*",
 };
 
+export type NavbarItem = {
+  title: string;
+  link: string;
+  icon: React.ReactElement;
+};
+
+export type DashboardMiniItem = {
+  label: string;
+  tag: string;
+  number: string;
+  icon: React.ReactElement;
+};
+
 export type Task = {
   applicant: string;
   platform: string;
@@ -92,19 +105,13 @@ export type Dashboard = {
   itemCount: string;
 };
 
-export const defaultDashboard = {
-  taskCount: "0",
-  userCount: "0",
-  itemCount: "0",
-  platformCount: "0",
-};
-
 export type User = {
   id: string;
   reputation: string;
   deposit: string;
-  adopted: string;
-  join: number;
+  guard: string;
+  join: string;
+  userId: string;
 };
 
 export type ListUser = {
@@ -119,14 +126,6 @@ export type ListUser = {
   guard: string;
 };
 
-export const defaultUser = {
-  id: "",
-  reputation: "0",
-  deposit: "0",
-  adopted: "0",
-  join: 0,
-};
-
 export type ListPlatform = {
   key: string;
   id: string;
@@ -138,17 +137,13 @@ export type ListPlatform = {
   boxes: string;
 };
 
-export type NavbarItem = {
-  title: string;
-  link: string;
-  icon: React.ReactElement;
-};
-
-export type DashboardMiniItem = {
-  label: string;
-  tag: string;
-  number: string;
-  icon: React.ReactElement;
+export type ListAudit = {
+  key: string;
+  id: string;
+  auditor: string;
+  reputation: string;
+  result: string;
+  time: string;
 };
 
 export type WalletContent = {
@@ -162,19 +157,19 @@ export type WalletContent = {
   gasPrice: string;
 };
 
-export type OwnToken = {
+export type OwnAssetsCard = {
   name: string;
   symbol: string;
   decimals: number;
   icon: React.ReactElement;
-  balance: ethers.BigNumber;
+  balance: ethers.BigNumber | string;
   type: string;
   issuser: string;
   address: string;
   tokenId: string;
 };
 
-export type OwnOther = {
+export type OwnOthersCard = {
   title: string;
   detail: string;
   label1: string;
@@ -190,28 +185,12 @@ export type OwnOther = {
   fn2: () => void;
 };
 
-export type OwnApplication = {
-  name: string;
-  type: string;
-  price: string;
-  state: string;
+export type OwnTaskCard = {
+  platform: string;
   source: string;
-  videoId: string;
-  applyId: string;
-  language: string;
-  deadline: string;
-};
-
-export const defaultOwnApplication = {
-  name: "",
-  type: "",
-  price: "0",
-  state: "",
-  source: "",
-  videoId: "0",
-  applyId: "0",
-  language: "0",
-  deadline: "",
+  taskId: string;
+  boxId: string;
+  state: string;
 };
 
 export type OwnSubtitle = {
@@ -227,19 +206,6 @@ export type OwnSubtitle = {
   videoId: string;
 };
 
-export const defaultOwnSubtitle = {
-  subtitleId: "0",
-  cid: "",
-  support: "0",
-  oppose: "0",
-  state: "",
-  applyId: "0",
-  language: "",
-  type: "",
-  platform: "",
-  videoId: "",
-};
-
 export type OwnAudit = {
   cid: string;
   state: string;
@@ -252,30 +218,6 @@ export type OwnAudit = {
   videoId: string;
 };
 
-export const defaultOwnAudit = {
-  cid: "",
-  state: "",
-  applyId: "0",
-  language: "",
-  attitude: "",
-  subtitleId: "0",
-  type: "",
-  platform: "",
-  videoId: "",
-};
-
-export type UserOwn = {
-  applications: OwnApplication[];
-  subtitles: OwnSubtitle[];
-  audits: OwnAudit[];
-};
-
-export const defaultUserOwn = {
-  applications: [defaultOwnApplication],
-  subtitles: [defaultOwnSubtitle],
-  audits: [defaultOwnAudit],
-};
-
 export type PersonalPageData = {
   reputation: string;
   deposit: ethers.BigNumber;
@@ -283,13 +225,4 @@ export type PersonalPageData = {
   vt0: ethers.BigNumber;
   vt1: ethers.BigNumber;
   needed: ethers.BigNumber;
-};
-
-export const defaultPersonalPageData = {
-  reputation: "0",
-  deposit: ethers.BigNumber.from("0"),
-  zimu: ethers.BigNumber.from("0"),
-  vt0: ethers.BigNumber.from("0"),
-  vt1: ethers.BigNumber.from("0"),
-  needed: ethers.BigNumber.from("0"),
 };

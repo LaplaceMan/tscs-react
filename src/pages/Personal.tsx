@@ -10,13 +10,19 @@ import {
 import { DataContext } from "../context/DataContext";
 import { ApplicationContext } from "../context/ApplicationContext";
 import { GlobalContext } from "../context/GlobalContext";
-import { shortenAddress } from "../utils/tools";
-import { RANDOM_AVATAR_API, SUPPORT_NETWORK } from "../utils/constants";
+import { shortenAddress, bignumberConvert } from "../utils/tools";
+import {
+  DECIMALS_6,
+  DECIMALS_18,
+  RANDOM_AVATAR_API,
+  SUPPORT_NETWORK,
+} from "../utils/constants";
 import { OwnAssetCard, OwnOtherCard, NoItems } from "../components";
 import { TEST_TOKEN, PLATFORM_TOKEN } from "../utils/contracts";
 import { getNetwork } from "@wagmi/core";
 import { personal_default } from "../assets";
 import { useParams, useNavigate } from "react-router-dom";
+import { OwnTaskCard, User } from "../types/baseTypes";
 
 const PersonalItem = ({
   label,
@@ -49,16 +55,27 @@ const PersonalItem = ({
 };
 
 const Personal = (): React.ReactElement => {
-  const { userOwnData, queryUserOwnData, isGetDataLoading } =
-    useContext(DataContext);
-  const { personalDID, getPersonalPageData } = useContext(ApplicationContext);
+  const { isGetDataLoading, querySpecialUser } = useContext(DataContext);
+  const {} = useContext(ApplicationContext);
   const { showDepositAssetModal, showUpdateTaskModal, showGuardManageModal } =
     useContext(GlobalContext);
+  const [user, setUser] = useState<User | null>(null);
+  const [ownTasks, setOwnTasks] = useState<OwnTaskCard[] | null>([]);
   const { chain } = getNetwork();
   const param = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
+    const feachData = async (id: string) => {
+      const data = await querySpecialUser(id);
+      if (data && data.item != undefined) {
+        setUser(data.item);
+      }
+      if (data && data.tasks != undefined) {
+        setOwnTasks(data.tasks);
+      }
+    };
+    param.id != undefined && feachData(param.id.toLocaleLowerCase());
     // param.id && queryUserOwnData(param.id as `0x${string}`);
     // getPersonalPageData(user);
   }, [chain?.id]);
@@ -67,48 +84,54 @@ const Personal = (): React.ReactElement => {
     return (
       <div className="flex items-center justify-center">
         <div className="grid md:grid-cols-3 grid-cols-1 md:w-[1200px] gap-y-5">
-          {OwnAssetCard({
-            name: "Zimu",
-            balance: personalDID.zimu,
-            type: "ERC-20",
-            issuser: "Murmes",
-            address:
-              chain && SUPPORT_NETWORK.includes(chain.id)
-                ? TEST_TOKEN[chain.id]
-                : "",
-            symbol: "Zimu",
-            tokenId: "0",
-            decimals: 18,
-            icon: <SiEthereum />,
-          })}
-          {OwnAssetCard({
-            name: "VideoToken-0",
-            balance: personalDID.vt0,
-            type: "ERC-1155",
-            issuser: "Murmes",
-            address:
-              chain && SUPPORT_NETWORK.includes(chain.id)
-                ? PLATFORM_TOKEN[chain.id]
-                : "",
-            symbol: "VT",
-            tokenId: "0",
-            decimals: 6,
-            icon: <SiEthereum />,
-          })}
-          {OwnAssetCard({
-            name: "VideoToken-1",
-            balance: personalDID.vt1,
-            type: "ERC-1155",
-            issuser: "Lens",
-            address:
-              chain && SUPPORT_NETWORK.includes(chain.id)
-                ? PLATFORM_TOKEN[chain.id]
-                : "",
-            symbol: "VT",
-            tokenId: "1",
-            decimals: 6,
-            icon: <SiEthereum />,
-          })}
+          <OwnAssetCard
+            token={{
+              name: "Zimu",
+              balance: "20",
+              type: "ERC-20",
+              issuser: "Murmes",
+              address:
+                chain && SUPPORT_NETWORK.includes(chain.id)
+                  ? TEST_TOKEN[chain.id]
+                  : "",
+              symbol: "Zimu",
+              tokenId: "0",
+              decimals: 18,
+              icon: <SiEthereum />,
+            }}
+          />
+          <OwnAssetCard
+            token={{
+              name: "VideoToken-0",
+              balance: "",
+              type: "ERC-1155",
+              issuser: "Murmes",
+              address:
+                chain && SUPPORT_NETWORK.includes(chain.id)
+                  ? PLATFORM_TOKEN[chain.id]
+                  : "",
+              symbol: "VT",
+              tokenId: "0",
+              decimals: 6,
+              icon: <SiEthereum />,
+            }}
+          />
+          <OwnAssetCard
+            token={{
+              name: "VideoToken-1",
+              balance: "",
+              type: "ERC-1155",
+              issuser: "Lens",
+              address:
+                chain && SUPPORT_NETWORK.includes(chain.id)
+                  ? PLATFORM_TOKEN[chain.id]
+                  : "",
+              symbol: "VT",
+              tokenId: "1",
+              decimals: 6,
+              icon: <SiEthereum />,
+            }}
+          />
         </div>
       </div>
     );
@@ -122,18 +145,17 @@ const Personal = (): React.ReactElement => {
     ) : (
       <div className="flex items-center justify-center">
         <div className="grid md:grid-cols-3 grid-cols-1 md:w-[1200px] gap-y-5">
-          {userOwnData.applications[0] &&
-            userOwnData.applications[0].applyId != "0" &&
-            userOwnData.applications.map((item, index) => (
+          {ownTasks &&
+            ownTasks.map((item, index) => (
               <OwnOtherCard
                 other={{
-                  title: item.name,
+                  title: item.platform,
                   detail: item.source,
                   label1: "Box ID",
-                  value1: item.videoId,
+                  value1: item.boxId,
                   label2: "Task ID",
-                  value2: item.applyId,
-                  label3: "Status",
+                  value2: item.taskId,
+                  label3: "State",
                   value3: item.state,
                   icon: <RiTodoFill />,
                   fn1Name: "Update",
@@ -144,9 +166,7 @@ const Personal = (): React.ReactElement => {
                 key={index}
               />
             ))}
-          {!userOwnData.applications[0] ||
-            (userOwnData.applications[0] &&
-              userOwnData.applications[0].applyId == "0" && <NoItems />)}
+          {(!ownTasks || ownTasks.length == 0) && <NoItems />}
         </div>
       </div>
     );
@@ -160,7 +180,7 @@ const Personal = (): React.ReactElement => {
     ) : (
       <div className="flex items-center justify-center">
         <div className="grid md:grid-cols-3 grid-cols-1 md:w-[1200px] gap-y-5">
-          {userOwnData.subtitles[0] &&
+          {/* {userOwnData.subtitles[0] &&
             userOwnData.subtitles[0].applyId != "0" &&
             userOwnData.subtitles.map((item, index) => (
               <OwnOtherCard
@@ -171,7 +191,7 @@ const Personal = (): React.ReactElement => {
                   value1: item.applyId,
                   label2: "Box ID",
                   value2: item.videoId,
-                  label3: "Status",
+                  label3: "State",
                   value3: item.state,
                   icon: <RiUploadCloud2Fill />,
                   fn1Name: "Pre Settlement",
@@ -184,7 +204,7 @@ const Personal = (): React.ReactElement => {
             ))}
           {(!userOwnData.subtitles[0] ||
             (userOwnData.subtitles[0] &&
-              userOwnData.subtitles[0].subtitleId == "0")) && <NoItems />}
+              userOwnData.subtitles[0].subtitleId == "0")) && <NoItems />} */}
         </div>
       </div>
     );
@@ -198,7 +218,7 @@ const Personal = (): React.ReactElement => {
     ) : (
       <div className="flex items-center justify-center">
         <div className="grid md:grid-cols-3 grid-cols-1 md:w-[1200px] gap-y-5">
-          {userOwnData.audits[0] &&
+          {/* {userOwnData.audits[0] &&
             userOwnData.audits[0].applyId != "0" &&
             userOwnData.audits.map((item, index) => (
               <OwnOtherCard
@@ -209,7 +229,7 @@ const Personal = (): React.ReactElement => {
                   value1: item.applyId,
                   label2: "Result",
                   value2: item.attitude,
-                  label3: "Status",
+                  label3: "State",
                   value3: item.state,
                   icon: <RiShieldCheckFill />,
                   fn1Name: "Pre Settlement",
@@ -222,7 +242,7 @@ const Personal = (): React.ReactElement => {
             ))}
           {(!userOwnData.audits[0] ||
             (userOwnData.audits[0] &&
-              userOwnData.audits[0].subtitleId == "0")) && <NoItems />}
+              userOwnData.audits[0].subtitleId == "0")) && <NoItems />} */}
         </div>
       </div>
     );
@@ -252,19 +272,19 @@ const Personal = (): React.ReactElement => {
       <div className="flex flex-wrap items-center justify-center my-5 space-x-2">
         <PersonalItem
           label="REPUTATION"
-          value="100.0"
+          value={bignumberConvert(user?.reputation, 10, 1)}
           icon={<BiAward />}
           fn={{ label: "Submit", fn: () => navigate("/Submit") }}
         />
         <PersonalItem
           label="DEPOSIT"
-          value="100.0"
+          value={bignumberConvert(user?.deposit, DECIMALS_18, 2)}
           icon={<BiBitcoin />}
           fn={{ label: "Update", fn: showDepositAssetModal }}
         />
         <PersonalItem
           label="GUARD"
-          value="0x1234...5678"
+          value={shortenAddress(user?.guard)}
           icon={<BiCheckShield />}
           fn={{ label: "Set", fn: showGuardManageModal }}
         />
