@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Form, Input, Select, DatePicker } from "antd";
 import { PrimaryButton, DotsContainer } from "../components";
 import { toPng } from "html-to-image";
@@ -7,7 +7,8 @@ import download from "downloadjs";
 import { PostTaskData, defaultPostTaskData } from "../types/baseTypes";
 import dayjs from "dayjs";
 import { antdDateFormat } from "../utils/tools";
-
+import { DataContext } from "../context/DataContext";
+import { getNetwork } from "@wagmi/core";
 const { Option } = Select;
 
 const UserStateItem = ({ label, value }: { label: string; value: string }) => {
@@ -31,6 +32,15 @@ const InvitationItem = ({ label, value }: { label: string; value: string }) => {
 const Post = () => {
   const [form] = Form.useForm();
   const [taskData, setTaskData] = useState<PostTaskData>(defaultPostTaskData);
+  const { platforms, requires, queryRequires, queryPlatforms } =
+    useContext(DataContext);
+  const { chain } = getNetwork();
+
+  useEffect(() => {
+    queryRequires();
+    queryPlatforms();
+  }, [chain?.id]);
+
   const onReset = () => {
     form.resetFields();
   };
@@ -100,7 +110,12 @@ const Post = () => {
                 //       .includes(input.toLowerCase())
                 //   }
               >
-                <Option value="Murmres">Murmes</Option>
+                {platforms &&
+                  platforms.map((item, index) => (
+                    <Option key={index} value={item.id}>
+                      {item.name}
+                    </Option>
+                  ))}
               </Select>
             </div>
           </Form.Item>
@@ -190,7 +205,14 @@ const Post = () => {
                 onChange={(value) =>
                   setTaskData({ ...taskData, require: value })
                 }
-              />
+              >
+                {requires &&
+                  requires.map((item, index) => (
+                    <Option key={index} value={item.id}>
+                      {item.name}
+                    </Option>
+                  ))}
+              </Select>
             </div>
           </Form.Item>
           <Form.Item name="deadline" label="DEADLINE">

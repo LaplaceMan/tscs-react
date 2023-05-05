@@ -1,17 +1,25 @@
-import { Select, Table, Input, Spin } from "antd";
+import { Select, Table, Input } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { BsPlus } from "react-icons/bs";
 import { DataContext } from "../context/DataContext";
 import { columns, data } from "../utils/table/columns";
 import { Link, useNavigate } from "react-router-dom";
 import { getNetwork } from "@wagmi/core";
+import { ListTask } from "../types/baseTypes";
 
 const TasksPage = (): React.ReactElement => {
-  const { tasks, queryTasks, isGetDataLoading } = useContext(DataContext);
+  const { queryTasks, isGetDataLoading } = useContext(DataContext);
+  const [tasks, setListTasks] = useState<ListTask[] | null>([]);
   const navigate = useNavigate();
   const { chain } = getNetwork();
   useEffect(() => {
-    queryTasks(10, 0, "0");
+    const fetchData = async () => {
+      const data = await queryTasks(10, 0, "0");
+      if (data && data != undefined) {
+        setListTasks(data);
+      }
+    };
+    fetchData();
   }, [chain?.id]);
 
   return (
@@ -49,28 +57,27 @@ const TasksPage = (): React.ReactElement => {
           </div>
         </Link>
       </div>
-      <Spin spinning={isGetDataLoading}>
-        <div className="flex px-5">
-          <Table
-            columns={columns["Tasks"]}
-            dataSource={tasks!}
-            pagination={false}
-            scroll={{
-              x: 1200,
-              y: document.body.clientHeight - 320,
-            }}
-            style={{
-              width: document.body.clientWidth - 40,
-              height: document.body.clientHeight - 260,
-            }}
-            onRow={(record) => {
-              return {
-                onClick: () => navigate(`/Task/${record.id}`),
-              };
-            }}
-          />
-        </div>
-      </Spin>
+      <div className="flex px-5">
+        <Table
+          columns={columns["Tasks"]}
+          dataSource={tasks!}
+          pagination={false}
+          loading={isGetDataLoading}
+          scroll={{
+            x: 1200,
+            y: document.body.clientHeight - 320,
+          }}
+          style={{
+            width: document.body.clientWidth - 40,
+            height: document.body.clientHeight - 260,
+          }}
+          onRow={(record) => {
+            return {
+              onClick: () => navigate(`/Task/${record.id}`),
+            };
+          }}
+        />
+      </div>
     </div>
   );
 };

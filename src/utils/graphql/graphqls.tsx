@@ -7,7 +7,7 @@ export const QueryUsers =
 export const QueryPlatforms =
   "query { platforms {id name platformId authorityModule rateCountsToProfit rateAuditorDivide boxCount}}";
 
-export const QueryLanguages = "query { languages {id notes }}";
+export const QueryRequires = "query { requires {id notes }}";
 
 /************************************************/
 export const QueryTasks =
@@ -28,13 +28,13 @@ export const QuerySpecialUser =
   "query($id: String) {user(id: $id) { id userId time reputation deposit guard tasks {id box{orderId platform{name} } state source  } }}";
 
 export const QueryUserOwnTasks =
-  "query($id: String) { user(id: $id) { tasks{ id box{orderId platform{name} } state source} }}";
+  "query($id: String) { user(id: $id) { tasks(orderBy: time, orderDirection: desc){ id box{orderId platform{name} } state source} }}";
 
 export const QueryUserOwnItems =
-  "query($id: String) { user(id: $id) { subtitlesOwner(orderBy: time, orderDirection: desc) {id cid supporterCount dissenterCount state application{id} language{notes}} }}";
+  "query($id: String) { user(id: $id) { itemsOwner(orderBy: time, orderDirection: desc) {id cid task{id box{orderId}} state} }}";
 
 export const QueryUserOwnAudits =
-  "query($id: String) { user(id: $id) { audits(orderBy: time, orderDirection: desc) { subtitle{id cid application{id} language{notes} state} attitude } }}";
+  "query($id: String) { user(id: $id) { audits(orderBy: time, orderDirection: desc) { item{id cid task{id} state} attitude} }}";
 
 /************************************************/
 

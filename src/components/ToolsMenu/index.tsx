@@ -27,14 +27,14 @@ const ToolsMenu = () => {
       <div className="flex rounded-3xl p-5 flex-col items-center justify-center w-[450px] bg-[#1b1524]">
         <div className="flex w-full flex-row">
           <div className="flex space-x-5 mb-1">
-            {["Lens", "Murmes"].map((item, index) => (
+            {["Murmes", "Lens"].map((item, index) => (
               <ToolsButton label={item} key={index} />
             ))}
           </div>
         </div>
         <div className="flex w-full items-center justify-center mt-3">
-          {toolPage == "Lens" && <ToolForLens />}
           {toolPage == "Murmes" && <ToolForMurmes />}
+          {toolPage == "Lens" && <ToolForLens />}
         </div>
       </div>
     </Spin>

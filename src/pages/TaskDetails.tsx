@@ -6,13 +6,15 @@ import { columns, data } from "../utils/table/columns";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { DataContext } from "../context/DataContext";
 import { ListItem, Task } from "../types/baseTypes";
+import { getNetwork } from "@wagmi/core";
 
 const TaskDetails = () => {
-  const param = useParams();
   const navigate = useNavigate();
-  const { querySpecialTask } = useContext(DataContext);
+  const { querySpecialTask, isGetDataLoading } = useContext(DataContext);
   const [taskDetail, setTaskDetail] = useState<Task | null>();
   const [taskItems, setTaskItems] = useState<ListItem[] | null>([]);
+  const param = useParams();
+  const { chain } = getNetwork();
 
   useEffect(() => {
     const feachData = async (id: string) => {
@@ -25,7 +27,7 @@ const TaskDetails = () => {
       }
     };
     param.id != undefined && feachData(param.id);
-  }, []);
+  }, [chain?.id]);
 
   return (
     <div className="flex items-center justify-center">
@@ -152,7 +154,8 @@ const TaskDetails = () => {
                 columns={columns["Items"]}
                 dataSource={taskItems!}
                 pagination={false}
-                scroll={{ x: 1100 }}
+                loading={isGetDataLoading}
+                scroll={{ x: 1100, y: 522 }}
                 style={{
                   width: document.body.clientWidth - 40,
                   maxHeight: "522px",

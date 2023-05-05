@@ -5,13 +5,21 @@ import { Link, useNavigate } from "react-router-dom";
 import { columns, data } from "../utils/table/columns";
 import { DataContext } from "../context/DataContext";
 import { getNetwork } from "@wagmi/core";
+import { ListItem } from "../types/baseTypes";
 
 const Items = (): React.ReactElement => {
-  const { items, queryItems, isGetDataLoading } = useContext(DataContext);
+  const { queryItems, isGetDataLoading } = useContext(DataContext);
+  const [items, setListItems] = useState<ListItem[] | null>([]);
   const navigate = useNavigate();
   const { chain } = getNetwork();
   useEffect(() => {
-    queryItems(10, 0, "0");
+    const fetchData = async () => {
+      const data = await queryItems(10, 0, "0");
+      if (data && data != undefined) {
+        setListItems(data);
+      }
+    };
+    fetchData();
   }, [chain?.id]);
 
   return (
@@ -54,6 +62,7 @@ const Items = (): React.ReactElement => {
           columns={columns["Items"]}
           dataSource={items!}
           pagination={false}
+          loading={isGetDataLoading}
           scroll={{
             x: 1200,
             y: document.body.clientHeight - 320,

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Tabs, Spin } from "antd";
+import { Tabs, Spin, Modal } from "antd";
 import { BiWalletAlt, BiAward, BiBitcoin, BiCheckShield } from "react-icons/bi";
 import { SiEthereum } from "react-icons/si";
 import {
@@ -17,12 +17,26 @@ import {
   RANDOM_AVATAR_API,
   SUPPORT_NETWORK,
 } from "../utils/constants";
-import { OwnAssetCard, OwnOtherCard, NoItems } from "../components";
+import {
+  OwnAssetCard,
+  OwnOtherCard,
+  NoItems,
+  TokenTransactionModal,
+  UpdateTaskModal,
+  WithdrawRewardModal,
+  DepositManageModal,
+  GuardManageModal,
+} from "../components";
 import { TEST_TOKEN, PLATFORM_TOKEN } from "../utils/contracts";
 import { getNetwork } from "@wagmi/core";
 import { personal_default } from "../assets";
 import { useParams, useNavigate } from "react-router-dom";
-import { OwnTaskCard, User } from "../types/baseTypes";
+import {
+  OwnTaskCard,
+  OwnItemCard,
+  OwnAuditCard,
+  User,
+} from "../types/baseTypes";
 
 const PersonalItem = ({
   label,
@@ -55,12 +69,28 @@ const PersonalItem = ({
 };
 
 const Personal = (): React.ReactElement => {
-  const { isGetDataLoading, querySpecialUser } = useContext(DataContext);
+  const {
+    isGetDataLoading,
+    querySpecialUser,
+    querySpecialUserOwnItems,
+    querySpecialUserOwnTasks,
+    querySpecialUserOwnAudits,
+  } = useContext(DataContext);
   const {} = useContext(ApplicationContext);
-  const { showDepositAssetModal, showUpdateTaskModal, showGuardManageModal } =
-    useContext(GlobalContext);
+  const {
+    showDepositAssetModal,
+    showUpdateTaskModal,
+    showGuardManageModal,
+    isTokenTransactionModalOpen,
+    isUpdateTaskModalOpen,
+    isWithdrawRewardModalOpen,
+    isDepositAssetModalOpen,
+    isGuardManageModalOpen,
+  } = useContext(GlobalContext);
   const [user, setUser] = useState<User | null>(null);
   const [ownTasks, setOwnTasks] = useState<OwnTaskCard[] | null>([]);
+  const [ownItems, setOwnItems] = useState<OwnItemCard[] | null>([]);
+  const [ownAudits, setOwnAudits] = useState<OwnAuditCard[] | null>();
   const { chain } = getNetwork();
   const param = useParams();
   const navigate = useNavigate();
@@ -76,9 +106,42 @@ const Personal = (): React.ReactElement => {
       }
     };
     param.id != undefined && feachData(param.id.toLocaleLowerCase());
-    // param.id && queryUserOwnData(param.id as `0x${string}`);
     // getPersonalPageData(user);
   }, [chain?.id]);
+
+  const queryItems = async (id: string) => {
+    const data = await querySpecialUserOwnItems(id);
+    if (data && data != undefined) {
+      setOwnItems(data);
+    }
+  };
+
+  const queryTasks = async (id: string) => {
+    const data = await querySpecialUserOwnTasks(id);
+    if (data && data != undefined) {
+      setOwnTasks(data);
+    }
+  };
+
+  const queryAudits = async (id: string) => {
+    const data = await querySpecialUserOwnAudits(id);
+    if (data && data != undefined) {
+      setOwnAudits(data);
+    }
+  };
+
+  const tabsHandle = (id: string) => {
+    if (param.id != undefined) {
+      switch (id) {
+        case "1":
+          queryTasks(param.id);
+        case "2":
+          queryItems(param.id);
+        case "3":
+          queryAudits(param.id);
+      }
+    }
+  };
 
   const Tokens = () => {
     return (
@@ -180,17 +243,16 @@ const Personal = (): React.ReactElement => {
     ) : (
       <div className="flex items-center justify-center">
         <div className="grid md:grid-cols-3 grid-cols-1 md:w-[1200px] gap-y-5">
-          {/* {userOwnData.subtitles[0] &&
-            userOwnData.subtitles[0].applyId != "0" &&
-            userOwnData.subtitles.map((item, index) => (
+          {ownItems &&
+            ownItems.map((item, index) => (
               <OwnOtherCard
                 other={{
-                  title: "#" + item.subtitleId,
-                  detail: item.cid,
+                  title: "#" + item.id,
+                  detail: item.source,
                   label1: "Task ID",
-                  value1: item.applyId,
+                  value1: item.taskId,
                   label2: "Box ID",
-                  value2: item.videoId,
+                  value2: item.boxId,
                   label3: "State",
                   value3: item.state,
                   icon: <RiUploadCloud2Fill />,
@@ -202,9 +264,7 @@ const Personal = (): React.ReactElement => {
                 key={index}
               />
             ))}
-          {(!userOwnData.subtitles[0] ||
-            (userOwnData.subtitles[0] &&
-              userOwnData.subtitles[0].subtitleId == "0")) && <NoItems />} */}
+          {(!ownItems || ownItems.length == 0) && <NoItems />}
         </div>
       </div>
     );
@@ -218,17 +278,16 @@ const Personal = (): React.ReactElement => {
     ) : (
       <div className="flex items-center justify-center">
         <div className="grid md:grid-cols-3 grid-cols-1 md:w-[1200px] gap-y-5">
-          {/* {userOwnData.audits[0] &&
-            userOwnData.audits[0].applyId != "0" &&
-            userOwnData.audits.map((item, index) => (
+          {ownAudits &&
+            ownAudits.map((item, index) => (
               <OwnOtherCard
                 other={{
-                  title: "#" + item.subtitleId,
-                  detail: item.cid,
+                  title: "#" + item.itemId,
+                  detail: item.source,
                   label1: "Task ID",
-                  value1: item.applyId,
+                  value1: item.taskId,
                   label2: "Result",
-                  value2: item.attitude,
+                  value2: item.result,
                   label3: "State",
                   value3: item.state,
                   icon: <RiShieldCheckFill />,
@@ -240,9 +299,7 @@ const Personal = (): React.ReactElement => {
                 key={index}
               />
             ))}
-          {(!userOwnData.audits[0] ||
-            (userOwnData.audits[0] &&
-              userOwnData.audits[0].subtitleId == "0")) && <NoItems />} */}
+          {(!ownAudits || ownAudits.length == 0) && <NoItems />}
         </div>
       </div>
     );
@@ -294,6 +351,7 @@ const Personal = (): React.ReactElement => {
         tabBarGutter={50}
         centered
         size="large"
+        onChange={(activeKey) => tabsHandle(activeKey)}
         items={[
           {
             label: <div className="font-semibold text-lg ">TASKS</div>,
@@ -317,6 +375,61 @@ const Personal = (): React.ReactElement => {
           },
         ]}
       />
+      <Modal
+        getContainer={false}
+        open={isTokenTransactionModalOpen}
+        destroyOnClose={true}
+        forceRender
+        closable={false}
+        footer={null}
+        centered
+      >
+        <TokenTransactionModal />
+      </Modal>
+      <Modal
+        getContainer={false}
+        open={isUpdateTaskModalOpen}
+        destroyOnClose={true}
+        forceRender={true}
+        closable={false}
+        footer={null}
+        centered
+      >
+        <UpdateTaskModal />
+      </Modal>
+      <Modal
+        getContainer={false}
+        open={isWithdrawRewardModalOpen}
+        destroyOnClose={true}
+        forceRender
+        closable={false}
+        footer={null}
+        centered
+      >
+        <WithdrawRewardModal />
+      </Modal>
+      <Modal
+        getContainer={false}
+        open={isDepositAssetModalOpen}
+        destroyOnClose={true}
+        forceRender
+        closable={false}
+        footer={null}
+        centered
+      >
+        <DepositManageModal />
+      </Modal>
+      <Modal
+        getContainer={false}
+        open={isGuardManageModalOpen}
+        destroyOnClose={true}
+        forceRender
+        closable={false}
+        footer={null}
+        centered
+      >
+        <GuardManageModal />
+      </Modal>
     </div>
   );
 };

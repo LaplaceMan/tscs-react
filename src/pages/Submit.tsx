@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect } from "react";
 import type { UploadProps } from "antd";
 import { Form, Input, Select, Upload } from "antd";
 import { PrimaryButton, DotsContainer } from "../components";
 import { BsUpload } from "react-icons/bs";
+import { DataContext } from "../context/DataContext";
+import { getNetwork } from "@wagmi/core";
 const { Option } = Select;
 
 const UserStateItem = ({ label, value }: { label: string; value: string }) => {
@@ -31,9 +33,16 @@ const BundlrStateItem = ({
 
 const Submit = () => {
   const [form] = Form.useForm();
+  const { queryRequires, requires } = useContext(DataContext);
+  const { chain } = getNetwork();
+
   const onReset = () => {
     form.resetFields();
   };
+
+  useEffect(() => {
+    queryRequires();
+  }, [chain?.id]);
 
   const onFinish = () => {
     const values = form.getFieldsValue();
@@ -97,7 +106,14 @@ const Submit = () => {
                   //       .toLowerCase()
                   //       .includes(input.toLowerCase())
                   //   }
-                />
+                >
+                  {requires &&
+                    requires.map((item, index) => (
+                      <Option key={index} value={item.id}>
+                        {item.name}
+                      </Option>
+                    ))}
+                </Select>
               </div>
             </Form.Item>
           </Form>

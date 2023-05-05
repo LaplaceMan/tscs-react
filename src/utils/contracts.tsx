@@ -25,7 +25,7 @@ export const LENS_PROTOCOL: { [key: number]: string } = {
 export const MURMES_PROTOCOL: { [key: number]: string } = {
   5: "0xD18bD5B3439c7994988534F2Bdbb64A0556085BB",
   80001: "0x87042950BFCE9b365E3C1E21C5DD343Cb8AcDA95",
-  1337: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  1337: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
 };
 
 export const TEST_TOKEN: { [key: number]: string } = {

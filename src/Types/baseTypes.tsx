@@ -137,6 +137,12 @@ export type ListPlatform = {
   boxes: string;
 };
 
+export type ListReuire = {
+  key: string;
+  id: string;
+  name: string;
+};
+
 export type ListAudit = {
   key: string;
   id: string;
@@ -193,34 +199,23 @@ export type OwnTaskCard = {
   state: string;
 };
 
-export type OwnSubtitle = {
-  subtitleId: string;
-  cid: string;
-  support: string;
-  oppose: string;
+export type OwnItemCard = {
+  id: string;
+  source: string;
+  taskId: string;
+  boxId: string;
   state: string;
-  applyId: string;
-  language: string;
-  type: string;
-  platform: string;
-  videoId: string;
 };
 
-export type OwnAudit = {
-  cid: string;
+export type OwnAuditCard = {
+  itemId: string;
+  taskId: string;
+  source: string;
+  result: string;
   state: string;
-  applyId: string;
-  language: string;
-  attitude: string;
-  subtitleId: string;
-  type: string;
-  platform: string;
-  videoId: string;
 };
 
 export type PersonalPageData = {
-  reputation: string;
-  deposit: ethers.BigNumber;
   zimu: ethers.BigNumber;
   vt0: ethers.BigNumber;
   vt1: ethers.BigNumber;

@@ -21,7 +21,13 @@ export const MumbaiClient = new ApolloClient({
 
 export const TestClient = new ApolloClient({
   uri: TEST_SUBGRAPH_API,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      User: {
+        merge: true,
+      },
+    },
+  }),
 });
 
 export const Client = (

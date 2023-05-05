@@ -4,11 +4,14 @@ import {
   Dashboard,
   User,
   OwnTaskCard,
+  OwnItemCard,
+  OwnAuditCard,
   ListTask,
   ListItem,
   ListUser,
   ListPlatform,
   ListAudit,
+  ListReuire,
 } from "./baseTypes";
 import {
   Upload,
@@ -49,24 +52,30 @@ export type ApplicationContent = {
 };
 
 export type DataContent = {
-  users: ListUser[] | null;
-  tasks: ListTask[] | null;
-  items: ListItem[] | null;
-  queryTasks: (first: number, skip: number, language: string) => void;
+  queryTasks: (
+    first: number,
+    skip: number,
+    require: string
+  ) => Promise<ListTask[] | null | undefined>;
   dashboard: Dashboard | null;
   queryDashboard: () => void;
-  queryItems: (first: number, skip: number, language: string) => void;
-  queryUsers: (first: number, skip: number) => void;
+  queryItems: (
+    first: number,
+    skip: number,
+    language: string
+  ) => Promise<ListItem[] | null | undefined>;
+  queryUsers: (
+    first: number,
+    skip: number
+  ) => Promise<ListUser[] | null | undefined>;
   queryUserLockedToken: (platform: string, day: number) => void;
   querySpecialTask: (
     id: string
   ) => Promise<{ task: Task; items: ListItem[] | null } | null | undefined>;
-  userDayLocakedToken: string;
-  regiserLanguages: { id: string; notes: string }[];
+  requires: ListReuire[] | null;
   platforms: ListPlatform[] | null;
   isGetDataLoading: boolean;
-  clearData: () => void;
-  queryRegiserLanugages: () => void;
+  queryRequires: () => void;
   queryPlatforms: () => void;
   querySpecialItem: (
     id: string
@@ -74,6 +83,15 @@ export type DataContent = {
   querySpecialUser: (
     id: string
   ) => Promise<{ item: User; tasks: OwnTaskCard[] | null } | null | undefined>;
+  querySpecialUserOwnItems: (
+    id: string
+  ) => Promise<OwnItemCard[] | null | undefined>;
+  querySpecialUserOwnTasks: (
+    id: string
+  ) => Promise<OwnTaskCard[] | null | undefined>;
+  querySpecialUserOwnAudits: (
+    id: string
+  ) => Promise<OwnAuditCard[] | null | undefined>;
 };
 
 export type GlobalContent = {

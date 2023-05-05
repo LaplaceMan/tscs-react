@@ -37,9 +37,6 @@ const ChainContainer = ({ url, name }: { url: string; name: string }) => {
 const Home = (): React.ReactElement => {
   const {
     dashboard,
-    tasks,
-    items,
-    users,
     platforms,
     queryDashboard,
     queryTasks,
@@ -49,11 +46,14 @@ const Home = (): React.ReactElement => {
     isGetDataLoading,
   } = useContext(DataContext);
   const [tableDataType, setTableDataType] = useState("Tasks");
+  const [tasks, setListTasks] = useState<ListTask[] | null>([]);
+  const [items, setListItems] = useState<ListItem[] | null>([]);
+  const [users, setListUsers] = useState<ListUser[] | null>([]);
   const navigate = useNavigate();
   const { chain } = getNetwork();
   useEffect(() => {
     queryDashboard();
-    queryTasks(8, 0, "0");
+    queryListTasks();
   }, [chain?.id]);
 
   const DashboardMiniItems: DashboardMiniItem[] = [
@@ -83,17 +83,38 @@ const Home = (): React.ReactElement => {
     },
   ];
 
+  const queryListTasks = async () => {
+    const data = await queryTasks(8, 0, "0");
+    if (data && data != undefined) {
+      setListTasks(data);
+    }
+  };
+
+  const queryListItems = async () => {
+    const data = await queryItems(8, 0, "0");
+    if (data && data != undefined) {
+      setListItems(data);
+    }
+  };
+
+  const queryListUser = async () => {
+    const data = await queryUsers(8, 0);
+    if (data && data != undefined) {
+      setListUsers(data);
+    }
+  };
+
   const dashboardMiniHandle = (item: DashboardMiniItem) => {
     setTableDataType(item.tag);
     switch (item.tag) {
       case "Tasks": {
-        queryTasks(8, 0, "0");
+        queryListTasks();
       }
       case "Items": {
-        queryItems(8, 0, "0");
+        queryListItems();
       }
       case "Users": {
-        queryUsers(8, 0);
+        queryListUser();
       }
       case "Platforms": {
         queryPlatforms();
@@ -218,6 +239,7 @@ const Home = (): React.ReactElement => {
                 scroll={{ x: 1100 }}
                 style={{
                   width: document.body.clientWidth - 40,
+                  maxHeight: "522px",
                 }}
               />
               <div

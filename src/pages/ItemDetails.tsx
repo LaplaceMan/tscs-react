@@ -1,19 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Table } from "antd";
-import { PropsContainer, PrimaryButton, PropItem } from "../components";
+import { Table, Modal } from "antd";
+import {
+  PropsContainer,
+  PrimaryButton,
+  PropItem,
+  AuditModal,
+} from "../components";
 import { BsListUl } from "react-icons/bs";
 import { columns, data } from "../utils/table/columns";
 import { Link, useParams } from "react-router-dom";
 import { DataContext } from "../context/DataContext";
 import { GlobalContext } from "../context/GlobalContext";
 import { Item, ListAudit } from "../types/baseTypes";
+import { getNetwork } from "@wagmi/core";
 
 const ItemDetails = () => {
-  const param = useParams();
-  const { showAuditModal } = useContext(GlobalContext);
-  const { querySpecialItem } = useContext(DataContext);
+  const { showAuditModal, isAuditModalOpen } = useContext(GlobalContext);
+  const { querySpecialItem, isGetDataLoading } = useContext(DataContext);
   const [itemDetail, setItemDetail] = useState<Item | null>();
   const [itemAudits, setItemAudits] = useState<ListAudit[] | null>([]);
+  const param = useParams();
+  const { chain } = getNetwork();
 
   useEffect(() => {
     const feachData = async (id: string) => {
@@ -26,7 +33,7 @@ const ItemDetails = () => {
       }
     };
     param.id != undefined && feachData(param.id);
-  }, []);
+  }, [chain?.id]);
 
   return (
     <div className="flex items-center justify-center">
@@ -140,7 +147,8 @@ const ItemDetails = () => {
                 columns={columns["Audits"]}
                 dataSource={itemAudits!}
                 pagination={false}
-                scroll={{ x: 1100 }}
+                loading={isGetDataLoading}
+                scroll={{ x: 1100, y: 522 }}
                 style={{
                   width: document.body.clientWidth - 40,
                   maxHeight: "522px",
@@ -171,6 +179,17 @@ const ItemDetails = () => {
           </div>
         </div>
       </div>
+      <Modal
+        getContainer={false}
+        open={isAuditModalOpen}
+        destroyOnClose={true}
+        forceRender
+        footer={null}
+        closable={false}
+        centered
+      >
+        <AuditModal />
+      </Modal>
     </div>
   );
 };

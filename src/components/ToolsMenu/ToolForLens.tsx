@@ -12,7 +12,6 @@ const ToolForLens = () => {
     swapRevenueInLens,
     getLensRevenueSettlable,
     lensSettleable,
-    personalDID,
   } = useContext(ApplicationContext);
   const [videoId, setVideoId] = useState("");
   const [amount, setAmount] = useState("");
@@ -51,7 +50,7 @@ const ToolForLens = () => {
             <div>SWAP TOKENS</div>
           </div>
           <div className="text-sm">
-            Swapable: {bignumberConvert(personalDID.vt1, DECIMALS_6, 2)}
+            Swapable: {bignumberConvert("0", DECIMALS_6, 2)}
           </div>
         </div>
         <div className="w-full border-2 border-[#1b1524] rounded-xl text-base">

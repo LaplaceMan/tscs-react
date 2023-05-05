@@ -53,8 +53,7 @@ export const ApplicationContext = React.createContext<ApplicationContent>(
 
 export const ApplicationProvider = ({ children }: any) => {
   const { setLoadingState } = useContext(GlobalContext);
-  const { queryRegiserLanugages, queryPlatforms, regiserLanguages } =
-    useContext(DataContext);
+  const { queryRequires, queryPlatforms, requires } = useContext(DataContext);
   // const [personalDID, setPersonalDID] = useState<PersonalPageData>(
   //   defaultPersonalPageData
   // );
@@ -85,7 +84,7 @@ export const ApplicationProvider = ({ children }: any) => {
     language: string
   ) => {
     let id = "0";
-    regiserLanguages.map((item: any) => {
+    requires.map((item: any) => {
       if (item.notes == language) {
         id = item.id;
       }

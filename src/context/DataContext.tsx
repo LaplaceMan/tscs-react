@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ListTask,
   ListItem,
   ListUser,
+  ListReuire,
   User,
   ListPlatform,
   ListAudit,
   OwnTaskCard,
+  OwnItemCard,
+  OwnAuditCard,
 } from "../types/baseTypes";
 import { DataContent } from "../types/contextTypes";
 import { Task, Item, Dashboard } from "../types/baseTypes";
@@ -17,11 +20,14 @@ import {
   QueryItems,
   QueryUsers,
   QueryLockedToken,
-  QueryLanguages,
+  QueryRequires,
   QueryPlatforms,
   QuerySpecialTask,
   QuerySpecialItem,
   QuerySpecialUser,
+  QueryUserOwnItems,
+  QueryUserOwnTasks,
+  QueryUserOwnAudits,
 } from "../utils/graphql/graphqls";
 import { getAccount, getNetwork } from "@wagmi/core";
 import { SUPPORT_NETWORK } from "../utils/constants";
@@ -34,21 +40,9 @@ export const DataProvider = ({ children }: any) => {
   const account = getAccount();
   const [isGetDataLoading, setIsGetDataLoading] = useState<boolean>(false);
   const [dashboard, setDashboard] = useState<Dashboard | null>(null);
-  const [tasks, setTasks] = useState<ListTask[] | null>([]);
-  const [items, setItems] = useState<ListItem[] | null>([]);
-  const [users, setUsers] = useState<ListUser[] | null>([]);
-  const [regiserLanguages, setRegiserLanguages] = useState<
-    { id: string; notes: string }[]
-  >([]);
+  const [requires, setRequires] = useState<ListReuire[] | null>([]);
   const [platforms, setPlatforms] = useState<ListPlatform[] | null>([]);
-  const [userDayLocakedToken, setUserDayLocakedToken] = useState("*");
   const { chain } = getNetwork();
-
-  const clearData = () => {
-    setItems(null);
-    setTasks(null);
-    setDashboard(null);
-  };
 
   const queryDashboard = async () => {
     if (chain && SUPPORT_NETWORK.includes(chain.id)) {
@@ -60,6 +54,7 @@ export const DataProvider = ({ children }: any) => {
           },
         });
         if (data && data.data) {
+          console.log(data.data);
           const dashboard = data.data.dashboard;
           setDashboard({
             taskCount: dashboard.taskCount,
@@ -75,7 +70,11 @@ export const DataProvider = ({ children }: any) => {
     }
   };
 
-  const queryTasks = async (first: number, skip: number, require: string) => {
+  const queryTasks = async (
+    first: number,
+    skip: number,
+    require: string
+  ): Promise<ListTask[] | null | undefined> => {
     if (chain && SUPPORT_NETWORK.includes(chain.id)) {
       setIsGetDataLoading(true);
       try {
@@ -104,9 +103,11 @@ export const DataProvider = ({ children }: any) => {
               state: item.state,
             });
           });
-          setTasks(taskArray);
+          setIsGetDataLoading(false);
+          return taskArray;
         }
         setIsGetDataLoading(false);
+        return null;
       } catch (err) {
         console.log("Error fetching data: ", err);
         setIsGetDataLoading(false);
@@ -115,7 +116,11 @@ export const DataProvider = ({ children }: any) => {
     }
   };
 
-  const queryItems = async (first: number, skip: number, require: string) => {
+  const queryItems = async (
+    first: number,
+    skip: number,
+    require: string
+  ): Promise<ListItem[] | null | undefined> => {
     if (chain && SUPPORT_NETWORK.includes(chain.id)) {
       setIsGetDataLoading(true);
       try {
@@ -144,9 +149,11 @@ export const DataProvider = ({ children }: any) => {
               fingerprint: item.fingerprint,
             });
           });
-          setItems(itemArray);
+          setIsGetDataLoading(false);
+          return itemArray;
         }
         setIsGetDataLoading(false);
+        return null;
       } catch (err) {
         console.log("Error fetching data: ", err);
         setIsGetDataLoading(false);
@@ -185,8 +192,12 @@ export const DataProvider = ({ children }: any) => {
     }
   };
 
-  const queryUsers = async (first: number, skip: number) => {
+  const queryUsers = async (
+    first: number,
+    skip: number
+  ): Promise<ListUser[] | null | undefined> => {
     if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      setIsGetDataLoading(true);
       try {
         const data = await Client(chain.id).query({
           query: gql(QueryUsers),
@@ -211,10 +222,14 @@ export const DataProvider = ({ children }: any) => {
               guard: item.guard ? item.guard : "None",
             });
           });
-          setUsers(userArray);
+          setIsGetDataLoading(false);
+          return userArray;
         }
+        setIsGetDataLoading(true);
+        return null;
       } catch (err) {
         console.log("Error fetching data: ", err);
+        setIsGetDataLoading(false);
         message.error("Error: " + err);
       }
     }
@@ -386,6 +401,113 @@ export const DataProvider = ({ children }: any) => {
     }
   };
 
+  const querySpecialUserOwnTasks = async (
+    id: string
+  ): Promise<OwnTaskCard[] | null | undefined> => {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      setIsGetDataLoading(true);
+      try {
+        const data: any = await Client(chain.id).query({
+          query: gql(QueryUserOwnTasks),
+          variables: {
+            id,
+          },
+        });
+        if (data && data.data && data.data.user && data.data.user.tasks) {
+          const getTasks = data.data.user.tasks;
+          const taskArray = new Array<OwnTaskCard>();
+          getTasks.map((item: any) => {
+            taskArray.push({
+              platform: item.box.platform.name,
+              source: item.source,
+              taskId: item.id,
+              boxId: item.box.orderId,
+              state: item.state,
+            });
+          });
+          setIsGetDataLoading(false);
+          return taskArray;
+        }
+        setIsGetDataLoading(false);
+        return null;
+      } catch (error) {}
+    }
+  };
+
+  const querySpecialUserOwnItems = async (
+    id: string
+  ): Promise<OwnItemCard[] | null | undefined> => {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      setIsGetDataLoading(true);
+      try {
+        const data: any = await Client(chain.id).query({
+          query: gql(QueryUserOwnItems),
+          variables: {
+            id,
+          },
+        });
+        if (data && data.data && data.data.user && data.data.user.itemsOwner) {
+          const getItems = data.data.user.itemsOwner;
+          const itemArray = new Array<OwnItemCard>();
+          getItems.map((item: any) => {
+            itemArray.push({
+              id: item.id,
+              source: item.cid,
+              taskId: item.task.id,
+              boxId: item.task.box.orderId,
+              state: item.state,
+            });
+          });
+          setIsGetDataLoading(false);
+          return itemArray;
+        }
+        setIsGetDataLoading(false);
+        return null;
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+        setIsGetDataLoading(false);
+      }
+    }
+  };
+
+  const querySpecialUserOwnAudits = async (
+    id: string
+  ): Promise<OwnAuditCard[] | null | undefined> => {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      setIsGetDataLoading(true);
+      try {
+        const data: any = await Client(chain.id).query({
+          query: gql(QueryUserOwnAudits),
+          variables: {
+            id,
+          },
+        });
+        if (data && data.data && data.data.user && data.data.user.audits) {
+          const getAudits = data.data.user.audits;
+          const auditArray = new Array<OwnAuditCard>();
+          getAudits.map((item: any) => {
+            auditArray.push({
+              itemId: item.item.id,
+              taskId: item.item.task.id,
+              source: item.item.cid,
+              result: item.attitude,
+              state: item.item.state,
+            });
+          });
+          setIsGetDataLoading(false);
+          return auditArray;
+        }
+        setIsGetDataLoading(false);
+        return null;
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+        setIsGetDataLoading(false);
+      }
+    }
+  };
+
   const queryUserLockedToken = async (platform: string, day: number) => {
     if (chain && SUPPORT_NETWORK.includes(chain.id)) {
       try {
@@ -402,9 +524,7 @@ export const DataProvider = ({ children }: any) => {
         });
         if (data && data.data && data.data.reward && data.data.reward.locked) {
           const locked = data.data.reward.locked;
-          setUserDayLocakedToken(locked);
         } else {
-          setUserDayLocakedToken("0");
         }
       } catch (err) {
         console.log("Error fetching data: ", err);
@@ -413,22 +533,23 @@ export const DataProvider = ({ children }: any) => {
     }
   };
 
-  const queryRegiserLanugages = async () => {
+  const queryRequires = async () => {
     if (chain && SUPPORT_NETWORK.includes(chain.id)) {
       try {
         const data = await Client(chain.id).query({
-          query: gql(QueryLanguages),
+          query: gql(QueryRequires),
         });
-        const languages = data.data.languages;
-        if (languages) {
-          const languageArray = new Array<{ id: string; notes: string }>();
-          languages.map((item: any) => {
-            languageArray.push({
+        if (data && data.data && data.data.requires) {
+          const getReuires = data.data.requires;
+          const requireArray = new Array<ListReuire>();
+          getReuires.map((item: any) => {
+            requireArray.push({
+              key: item.id,
               id: item.id,
-              notes: item.notes,
+              name: item.notes,
             });
           });
-          setRegiserLanguages(languageArray);
+          setRequires(requireArray);
         }
       } catch (err) {
         console.log("Error fetching data: ", err);
@@ -442,23 +563,21 @@ export const DataProvider = ({ children }: any) => {
       value={{
         dashboard,
         queryDashboard,
-        tasks,
         queryTasks,
-        items,
         queryItems,
-        users,
         queryUsers,
         queryUserLockedToken,
         querySpecialTask,
-        userDayLocakedToken,
-        regiserLanguages,
+        requires,
         platforms,
         isGetDataLoading,
-        clearData,
-        queryRegiserLanugages,
+        queryRequires,
         queryPlatforms,
         querySpecialItem,
         querySpecialUser,
+        querySpecialUserOwnItems,
+        querySpecialUserOwnTasks,
+        querySpecialUserOwnAudits,
       }}
     >
       {children}
