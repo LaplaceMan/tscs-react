@@ -37,7 +37,7 @@ const ToolForLens = () => {
           <Input
             size="large"
             placeholder="Box's Real ID (Based on ProfileId and PubId)"
-            style={{ width: "100%" }}
+            style={{ width: "100%", color: "white" }}
             onChange={(e) => handleVideoChange(e.target.value)}
           />
         </div>
@@ -57,6 +57,7 @@ const ToolForLens = () => {
           <Input
             size="large"
             placeholder="Number of Tokens Exchanged"
+            style={{ color: "white" }}
             onChange={(e) => setAmount(e.target.value)}
           />
         </div>

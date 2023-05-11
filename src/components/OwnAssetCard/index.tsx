@@ -5,10 +5,9 @@ import {
   bignumberConvert,
   personalAssetBalanceOptimize,
 } from "../../utils/tools";
-import { DECIMALS_18, DECIMALS_6 } from "../../utils/constants";
-import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
-import { useAccount } from "wagmi";
+import { ApplicationContext } from "../../context/ApplicationContext";
+import { DECIMALS_18, DECIMALS_6 } from "../../utils/constants";
 
 const AssetCardItem = ({ label, value }: { label: string; value: string }) => {
   return (
@@ -20,30 +19,16 @@ const AssetCardItem = ({ label, value }: { label: string; value: string }) => {
 };
 
 const OwnAssetCard = ({ token }: { token: OwnAssetsCard }) => {
-  const { updateDefaultTokenTransaction } = useContext(ApplicationContext);
   const { showTokenTransactionModal } = useContext(GlobalContext);
-  const { address, isConnected } = useAccount();
+  const { updateDefaultTokenTransaction } = useContext(ApplicationContext);
 
-  const tokenTransactionHandle = (
-    name: string,
-    symbol: string,
-    decimals: number,
-    type: string,
-    address_: string,
-    tokenId: string,
-    operation: string
-  ) => {
-    const user = window.location.pathname.slice(10);
+  const tokenTransactionHandle = (label: string) => {
     updateDefaultTokenTransaction({
-      name: name,
-      symbol: symbol,
-      decimals: decimals,
-      type: type,
-      address: address_,
-      tokenId: tokenId,
-      from: isConnected ? address! : user,
-      amount: "",
-      operation: operation,
+      decimals: token.decimals,
+      type: token.type,
+      address: token.address,
+      tokenId: token.tokenId,
+      operation: label,
     });
     showTokenTransactionModal();
   };
@@ -79,33 +64,13 @@ const OwnAssetCard = ({ token }: { token: OwnAssetsCard }) => {
         <div className="flex w-full justify-between font-semibold text-base space-x-2 px-2 mb-3">
           <div
             className="w-1/2 py-1.5 rounded-full bg-[#00BEA1] text-center hover:brightness-110 text-white cursor-pointer"
-            onClick={() =>
-              tokenTransactionHandle(
-                token.name,
-                token.symbol,
-                token.decimals,
-                token.type,
-                token.address,
-                token.tokenId,
-                "TRANSFER"
-              )
-            }
+            onClick={() => tokenTransactionHandle("Transfer")}
           >
             Transfer
           </div>
           <div
             className="w-1/2 py-1.5 rounded-full text-center hover:brightness-110 bg-[#edebdc] text-black cursor-pointer"
-            onClick={() =>
-              tokenTransactionHandle(
-                token.name,
-                token.symbol,
-                token.decimals,
-                token.type,
-                token.address,
-                token.tokenId,
-                "APPROVE"
-              )
-            }
+            onClick={() => tokenTransactionHandle("Approve")}
           >
             Approve
           </div>

@@ -33,7 +33,7 @@ export type ApplicationContent = {
   uploadSubtitle: (params: Upload) => void;
   auditSubtitle: (params: Audit) => void;
   tokenTransaction: (params: RealTokenTransaction) => void;
-  defaultTokenTransactionData: TokenTransaction;
+  defaultTokenTransactionData: TokenTransaction | null;
   updateDefaultTokenTransaction: (params: TokenTransaction) => void;
   preSettlement: (type: string, applyId: string) => void;
   updateDefaultUpdateApplication: (params: UpdateApplication) => void;

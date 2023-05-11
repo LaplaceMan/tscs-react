@@ -39,7 +39,7 @@ const WithdrawReward = () => {
 
   return (
     <Spin spinning={isLoading} size="large">
-      <div className="flex w-full normal">
+      <div className="flex w-full ">
         <Form
           form={form}
           layout="vertical"
@@ -49,11 +49,13 @@ const WithdrawReward = () => {
           onFinish={onFinish}
           className="w-full"
         >
-          <div className="text-xl font-bold">Withdraw Unlocked Tokens</div>
-          <div>Withdraw The Unlocked Tokens to Your Account.</div>
+          <div className="flex flex-col p-5 bg-gray-200 rounded-xl text-center">
+            <div className="text-xl font-bold">Withdraw Unlocked Tokens</div>
+            <div>Withdraw The Unlocked Tokens to Your Account</div>
+          </div>
           <div className="text-lg font-semibold mt-3">Platform</div>
           <Form.Item name="platform" required>
-            <div className="normal border border-gray-200 mt-2 rounded-xl text-base">
+            <div className=" border border-gray-200 mt-2 rounded-xl text-base">
               <Select
                 showSearch
                 optionFilterProp="children"
@@ -66,6 +68,7 @@ const WithdrawReward = () => {
                 disabled={
                   defaultWithdrawOrDepositData.platform != "" ? true : false
                 }
+                size="large"
               >
                 <Option value={ZERO_ADDRESS}>Murmes</Option>
               </Select>
@@ -73,8 +76,9 @@ const WithdrawReward = () => {
           </Form.Item>
           <div className="text-lg font-semibold">Day</div>
           <Form.Item name="day" required>
-            <div className="normal border border-gray-200 mt-2 rounded-xl text-base">
+            <div className=" border border-gray-200 mt-2 rounded-xl text-base">
               <DatePicker
+                size="large"
                 style={{ width: "100%" }}
                 onChange={(date) => {
                   let base = date?.valueOf();

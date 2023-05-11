@@ -3,7 +3,7 @@ import { Table } from "antd";
 import { PropsContainer, PrimaryButton, PropItem } from "../components";
 import { BsListUl } from "react-icons/bs";
 import { columns, data } from "../utils/table/columns";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { DataContext } from "../context/DataContext";
 import { ListItem, Task } from "../types/baseTypes";
 import { getNetwork } from "@wagmi/core";
@@ -168,22 +168,22 @@ const TaskDetails = () => {
               />
             </div>
             <div className="flex w-full justify-center md:justify-end space-x-5 mt-5 md:mt-0">
-              <Link to="/Post">
-                <PrimaryButton
-                  label="Post"
-                  bgColor="#edebdc"
-                  textColor="#000"
-                  fn={() => []}
-                />
-              </Link>
-              <Link to="/Submit">
-                <PrimaryButton
-                  label="Submit"
-                  bgColor="#00BEA1"
-                  textColor="#fff"
-                  fn={() => []}
-                />
-              </Link>
+              <PrimaryButton
+                label="Post"
+                bgColor="#edebdc"
+                textColor="#000"
+                fn={() => navigate("/Post")}
+              />
+              <PrimaryButton
+                label="Submit"
+                bgColor="#00BEA1"
+                textColor="#fff"
+                fn={() =>
+                  navigate(
+                    `/Submit?taskId=${param.id}&require=${taskDetail?.requireId}`
+                  )
+                }
+              />
             </div>
           </div>
         </div>

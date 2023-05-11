@@ -6,7 +6,6 @@ import {
   Upload,
   Audit,
   TokenTransaction,
-  defaultTokenTransaction,
   defaultUpdateApplication,
   UpdateApplication,
   RealUpdateApplictaionTransaction,
@@ -33,7 +32,6 @@ import {
   LENS_ABI,
 } from "../utils/contracts";
 import { GlobalContext } from "./GlobalContext";
-import { DataContext } from "./DataContext";
 import { SUPPORT_NETWORK } from "../utils/constants";
 import { bignumberConvert, timestamp } from "../utils/tools";
 import { message } from "antd";
@@ -53,10 +51,6 @@ export const ApplicationContext = React.createContext<ApplicationContent>(
 
 export const ApplicationProvider = ({ children }: any) => {
   const { setLoadingState } = useContext(GlobalContext);
-  const { queryRequires, queryPlatforms, requires } = useContext(DataContext);
-  // const [personalDID, setPersonalDID] = useState<PersonalPageData>(
-  //   defaultPersonalPageData
-  // );
   const [defaultUploadSubtitleData, setDefaultUploadSubtitleData] = useState({
     applyId: "0",
     language: "0",
@@ -65,7 +59,7 @@ export const ApplicationProvider = ({ children }: any) => {
     Item | undefined
   >();
   const [defaultTokenTransactionData, setDefaultTokenTransactionData] =
-    useState<TokenTransaction>(defaultTokenTransaction);
+    useState<TokenTransaction | null>(null);
   const [defaultUpdateApplicationData, setDefaultUpdateApplication] =
     useState<UpdateApplication>(defaultUpdateApplication);
   const [defaultWithdrawOrDepositData, setDefaultWithdrawOrDepositData] =
@@ -83,16 +77,7 @@ export const ApplicationProvider = ({ children }: any) => {
     applyId: string,
     language: string
   ) => {
-    let id = "0";
-    requires.map((item: any) => {
-      if (item.notes == language) {
-        id = item.id;
-      }
-    });
-    setDefaultUploadSubtitleData({
-      applyId: applyId,
-      language: id,
-    });
+    console.log(applyId);
   };
 
   const updateDefaultWithdrawOrDeposit = (platform: string, manage: string) => {
@@ -263,11 +248,15 @@ export const ApplicationProvider = ({ children }: any) => {
 
   const tokenTransaction = async (params: RealTokenTransaction) => {
     if (provider) {
-      if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      if (
+        chain &&
+        SUPPORT_NETWORK.includes(chain.id) &&
+        defaultTokenTransactionData
+      ) {
         let config;
         if (params.type == "ERC-20") {
           const amount = ethers.utils.parseUnits(params.amount.toString(), 18);
-          if (defaultTokenTransactionData.operation == "TRANSFER") {
+          if (defaultTokenTransactionData.operation == "Transfer") {
             config = await prepareWriteContract({
               address: params.address as `0x${string}`,
               abi: ERC20_ABI,
@@ -285,7 +274,7 @@ export const ApplicationProvider = ({ children }: any) => {
           }
         } else if (params.type == "ERC-1155") {
           const amount = ethers.utils.parseUnits(params.amount.toString(), 6);
-          if (defaultTokenTransactionData.operation == "TRANSFER") {
+          if (defaultTokenTransactionData.operation == "Transfer") {
             config = await prepareWriteContract({
               address: params.address as `0x${string}`,
               abi: ERC1155_ABI,

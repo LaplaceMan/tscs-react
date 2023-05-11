@@ -23,7 +23,7 @@ const TasksPage = (): React.ReactElement => {
   }, [chain?.id]);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center styled">
       <div className="flex w-full border-y border-[#322d3a] items-center justify-center h-[80px] space-x-10">
         <div
           className="flex item-center border border-[#322d3a] rounded-3xl items-center justify-between"
@@ -46,7 +46,11 @@ const TasksPage = (): React.ReactElement => {
               }}
             />
           </div>
-          <Input className="search" placeholder="Search the Task" />
+          <Input
+            className="search"
+            placeholder="Search the Task"
+            style={{ border: "none" }}
+          />
           <div className="flex rounded-3xl bg-[#00BEA1] h-full items-center justify-center px-5 text-white font-medium cursor-pointer">
             Search
           </div>

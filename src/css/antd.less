@@ -1,3 +1,84 @@
+.styled {
+
+  // Input
+  .ant-input:focus {
+    box-shadow: none !important;
+  }
+
+  .ant-input {
+    color: white !important;
+    border-color: #322d3a !important;
+    background-color: transparent !important;
+  }
+
+  // Selete
+  .ant-select {
+    color: white !important;
+  }
+
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border: 1px !important;
+    border-color: #322d3a !important;
+    border-style: solid !important;
+  }
+
+  .ant-select-arrow {
+    //右边的下拉框
+    color: #bfbfbf !important;
+  }
+
+  // Date picker
+  .ant-picker {
+    border-color: #322d3a !important;
+    background-color: transparent !important;
+  }
+
+  .ant-picker-suffix {
+    color: white !important;
+  }
+
+  .ant-picker-input>input {
+    color: white !important;
+  }
+
+  .search {
+    .ant-select-selector {
+      width: 130px !important;
+    }
+
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+      border: none !important;
+    }
+  }
+
+}
+
+// Input
+.ant-input {
+  background-color: transparent !important;
+}
+
+// Selete
+.ant-select-selector {
+  box-shadow: none !important;
+}
+
+.ant-select-dropdown {
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  background-color: #e5e7eb !important;
+}
+
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  background-color: transparent !important;
+}
+
+// Upload
+.ant-upload-text-icon {
+  display: flex !important;
+  align-items: center !important;
+}
+
 //Popover
 .ant-popover-arrow {
   display: none !important;
@@ -12,6 +93,14 @@
 .ant-table * {
   --tw-text-opacity: 1 !important;
   color: rgb(203 213 225 / var(--tw-text-opacity)) !important;
+}
+
+.ant-table-body {
+  overflow-x: auto !important;
+}
+
+.ant-table-cell {
+  white-space: nowrap !important;
 }
 
 .ant-table-thead>tr>th {
@@ -40,22 +129,9 @@
 
 // }
 
-.ant-table-body {
-  overflow-x: auto !important;
-}
-
-.ant-table-cell {
-  white-space: nowrap !important;
-}
-
 // Spin
 .ant-spin-nested-loading>div>.ant-spin {
   max-height: none !important
-}
-
-// Empty
-.ant-empty-description {
-  color: white !important;
 }
 
 // Pagination
@@ -70,102 +146,24 @@
   font-size: 14px !important;
 }
 
-// Date picker
-.ant-picker {
-  border: none !important;
-  background-color: transparent !important;
+.ant-form-item {
+  margin-bottom: 16px !important;
 }
 
+// Picker
 .ant-picker-focused {
   box-shadow: none !important;
 }
 
-.ant-picker-input>input {
-  color: white !important;
-}
-
-.ant-picker-header {
-  color: white !important;
-}
-
-.ant-picker-cell-inner {
-  color: white !important;
-}
-
-// Input
-.ant-input:focus {
-  border: none !important;
-  box-shadow: none !important;
-}
-
-.ant-input {
-  color: white !important;
-  border: none !important;
-  background-color: transparent !important;
-}
-
-.normal {
-  .ant-input {
-    color: black !important
-  }
-
-  .ant-form-item {
-    margin-bottom: 16px !important;
-  }
-
-  .ant-select {
-    color: black !important;
-  }
-
-  .ant-select-item-option {
-    color: black !important;
-    background: #bfbfbf !important;
-  }
-
-  .ant-picker-input>input {
-    color: black !important;
-  }
-
-  .ant-picker-clear {
-    background: white !important;
-    color: black !important;
-  }
-}
-
-// Selete
-.ant-select {
-  color: white !important;
-}
-
-.search .ant-select-selector {
-  width: 130px !important;
-}
-
-.ant-select-selector {
-  box-shadow: none !important;
-}
-
-.ant-select-arrow {
-  color: #bfbfbf !important;
-}
-
-.ant-select:not(.ant-select-customize-input) .ant-select-selector {
-  border: none !important;
-  background-color: transparent !important;
-}
-
-.ant-select-item-option {
-  color: #bfbfbf !important;
-  background: #322d3a !important;
-}
-
-.ant-select-dropdown {
+.ant-picker-panel-container {
   border-radius: 10px !important;
-  overflow: hidden !important;
 }
 
-//Upload
-.ant-upload-text-icon {
-  display: flex !important;
-  align-items: center !important;
+.ant-picker-today-btn {
+  color: black !important;
+}
+
+// Empty
+.ant-empty-description {
+  color: black !important;
 }

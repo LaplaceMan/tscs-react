@@ -14,7 +14,7 @@ export const QueryTasks =
   "query($first: Int, $skip: Int) {tasks(first: $first, skip: $skip, orderBy: start, orderDirection: desc) { id requires { notes } strategy currency {symbol} amount auditModule detectionModule state }}";
 
 export const QuerySpecialTask =
-  "query($id: String) {task(id: $id){applicant {id} box{orderId platform{name}}  requires { notes } strategy currency {symbol} amount start deadline source auditModule detectionModule state itemCount adopted items{id requires{notes} supporterCount opponentCount state cid fingerprint } }}";
+  "query($id: String) {task(id: $id){applicant {id} box{orderId platform{name}}  requires { id notes } strategy currency {symbol} amount start deadline source auditModule detectionModule state itemCount adopted items{id requires{notes} supporterCount opponentCount state cid fingerprint } }}";
 
 export const QueryItems =
   "query($first: Int, $skip: Int) {items(first: $first, skip: $skip, orderBy: time, orderDirection: desc) {id task{id} requires{notes} supporterCount opponentCount state cid fingerprint }}";

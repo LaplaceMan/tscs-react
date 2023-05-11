@@ -1,50 +1,48 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Form, Spin, Input } from "antd";
+import React, { useState, useContext } from "react";
+import { Spin, Input } from "antd";
 import { PrimaryButton } from "..";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ApplicationContext } from "../../context/ApplicationContext";
-import { BsDatabaseAdd, BsDatabaseDash } from "react-icons/bs";
-import { useAccount } from "wagmi";
 
-const GuardManageModal = () => {
-  const [form] = Form.useForm();
-  const { address, isConnected } = useAccount();
+const GuardManageModal = ({
+  current,
+}: {
+  current: string | null | undefined;
+}) => {
   const { isLoading, hideGuardManageModal, isGuardManageModalOpen } =
     useContext(GlobalContext);
   const { depoitZimuManage } = useContext(ApplicationContext);
-  const [txType, setTxType] = useState("");
 
   const onFinish = () => {
-    const values = form.getFieldsValue();
-    depoitZimuManage(values.address, values.amount);
+    // depoitZimuManage(values.address, values.amount);
   };
-
-  useEffect(() => {
-    if (isGuardManageModalOpen) {
-      if (isConnected) {
-        form.setFieldsValue({
-          address: address,
-        });
-      } else {
-        form.setFieldsValue(null);
-      }
-    }
-  }, []);
 
   return (
     <Spin spinning={isLoading} size="large">
       <div className="flex flex-col w-full">
-        <div className="text-xl font-semibold">Set Your Transaction Guard</div>
-        <div>Customised Screening of Makers and Auditors.</div>
-        <div className="text-xl font-semibold mt-5">Current Guard</div>
-        <div className="normal border border-gray-200 mb-6 mt-2 rounded-xl text-base">
-          <Input disabled style={{ width: "100%", color: "black" }} />
+        <div className="flex flex-col py-5 bg-gray-200 rounded-xl text-center">
+          <div className="text-xl font-semibold">
+            Set Your Transaction Guard
+          </div>
+          <div>Customised Screening of Makers and Auditors</div>
         </div>
-        <div className="text-xl font-semibold">New Guard</div>
-        <div className="normal border border-gray-200 mb-6 mt-2 rounded-xl text-base">
+        <div className="text-lg font-semibold mt-5">Current Guard</div>
+        <div className=" border border-gray-200 mb-6 mt-2 rounded-xl text-base">
+          <Input
+            disabled={true}
+            style={{ width: "100%" }}
+            size="large"
+            defaultValue={
+              !current || typeof current == undefined ? "None" : current
+            }
+          />
+        </div>
+        <div className="text-lg font-semibold">New Guard</div>
+        <div className=" border border-gray-200 mb-6 mt-2 rounded-xl text-base">
           <Input
             placeholder="Address of The Guard You Want to Set"
-            style={{ width: "100%", color: "black" }}
+            style={{ width: "100%" }}
+            size="large"
           />
         </div>
         <div className="flex items-center justify-center space-x-3">

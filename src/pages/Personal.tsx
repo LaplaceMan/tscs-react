@@ -8,7 +8,6 @@ import {
   RiShieldCheckFill,
 } from "react-icons/ri";
 import { DataContext } from "../context/DataContext";
-import { ApplicationContext } from "../context/ApplicationContext";
 import { GlobalContext } from "../context/GlobalContext";
 import { shortenAddress, bignumberConvert } from "../utils/tools";
 import {
@@ -21,13 +20,13 @@ import {
   OwnAssetCard,
   OwnOtherCard,
   NoItems,
-  TokenTransactionModal,
   UpdateTaskModal,
+  TokenTransactionModal,
   WithdrawRewardModal,
   DepositManageModal,
   GuardManageModal,
 } from "../components";
-import { TEST_TOKEN, PLATFORM_TOKEN } from "../utils/contracts";
+import { PLATFORM_TOKEN } from "../utils/contracts";
 import { getNetwork } from "@wagmi/core";
 import { personal_default } from "../assets";
 import { useParams, useNavigate } from "react-router-dom";
@@ -69,6 +68,9 @@ const PersonalItem = ({
 };
 
 const Personal = (): React.ReactElement => {
+  const { chain } = getNetwork();
+  const param = useParams();
+  const navigate = useNavigate();
   const {
     isGetDataLoading,
     querySpecialUser,
@@ -76,24 +78,20 @@ const Personal = (): React.ReactElement => {
     querySpecialUserOwnTasks,
     querySpecialUserOwnAudits,
   } = useContext(DataContext);
-  const {} = useContext(ApplicationContext);
   const {
     showDepositAssetModal,
     showUpdateTaskModal,
     showGuardManageModal,
-    isTokenTransactionModalOpen,
     isUpdateTaskModalOpen,
     isWithdrawRewardModalOpen,
     isDepositAssetModalOpen,
+    isTokenTransactionModalOpen,
     isGuardManageModalOpen,
   } = useContext(GlobalContext);
   const [user, setUser] = useState<User | null>(null);
   const [ownTasks, setOwnTasks] = useState<OwnTaskCard[] | null>([]);
   const [ownItems, setOwnItems] = useState<OwnItemCard[] | null>([]);
   const [ownAudits, setOwnAudits] = useState<OwnAuditCard[] | null>();
-  const { chain } = getNetwork();
-  const param = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const feachData = async (id: string) => {
@@ -106,7 +104,6 @@ const Personal = (): React.ReactElement => {
       }
     };
     param.id != undefined && feachData(param.id.toLocaleLowerCase());
-    // getPersonalPageData(user);
   }, [chain?.id]);
 
   const queryItems = async (id: string) => {
@@ -149,23 +146,7 @@ const Personal = (): React.ReactElement => {
         <div className="grid md:grid-cols-3 grid-cols-1 md:w-[1200px] gap-y-5">
           <OwnAssetCard
             token={{
-              name: "Zimu",
-              balance: "20",
-              type: "ERC-20",
-              issuser: "Murmes",
-              address:
-                chain && SUPPORT_NETWORK.includes(chain.id)
-                  ? TEST_TOKEN[chain.id]
-                  : "",
-              symbol: "Zimu",
-              tokenId: "0",
-              decimals: 18,
-              icon: <SiEthereum />,
-            }}
-          />
-          <OwnAssetCard
-            token={{
-              name: "VideoToken-0",
+              name: "PlatformToken-0",
               balance: "",
               type: "ERC-1155",
               issuser: "Murmes",
@@ -173,15 +154,15 @@ const Personal = (): React.ReactElement => {
                 chain && SUPPORT_NETWORK.includes(chain.id)
                   ? PLATFORM_TOKEN[chain.id]
                   : "",
-              symbol: "VT",
+              symbol: "PT",
               tokenId: "0",
-              decimals: 6,
+              decimals: "6",
               icon: <SiEthereum />,
             }}
           />
           <OwnAssetCard
             token={{
-              name: "VideoToken-1",
+              name: "PlatformToken-1",
               balance: "",
               type: "ERC-1155",
               issuser: "Lens",
@@ -189,9 +170,9 @@ const Personal = (): React.ReactElement => {
                 chain && SUPPORT_NETWORK.includes(chain.id)
                   ? PLATFORM_TOKEN[chain.id]
                   : "",
-              symbol: "VT",
+              symbol: "PT",
               tokenId: "1",
-              decimals: 6,
+              decimals: "6",
               icon: <SiEthereum />,
             }}
           />
@@ -428,7 +409,7 @@ const Personal = (): React.ReactElement => {
         footer={null}
         centered
       >
-        <GuardManageModal />
+        <GuardManageModal current={user?.guard} />
       </Modal>
     </div>
   );

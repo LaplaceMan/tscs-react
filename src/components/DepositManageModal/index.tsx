@@ -34,10 +34,13 @@ const DepositManageModal = () => {
   return (
     <Spin spinning={isLoading} size="large">
       <div className="flex flex-col w-full">
-        <div className="text-xl font-semibold">
-          Increase or Withdraw Deposit
+        <div className="flex flex-col py-5 bg-gray-200 rounded-xl text-center">
+          <div className="text-xl font-semibold">
+            Increase or Withdraw Deposit
+          </div>
+          <div>Renewal of Pledged Tokens in Murmes</div>
         </div>
-        <div>Renewal of Pledged Tokens in Murmes.</div>
+
         <div className="flex font-medium border-gray-200 text-lg mt-6 mb-5 cursor-pointer space-x-1">
           <div
             className={`flex items-center justify-center w-1/2 py-2 hover:bg-[#00BEA1] hover:text-white rounded-l-xl border space-x-3 ${
@@ -58,12 +61,12 @@ const DepositManageModal = () => {
             <div>Withdraw</div>
           </div>
         </div>
-        <div className="text-xl font-semibold">Amount</div>
-        <div className="normal border border-gray-200 mb-6 mt-2 rounded-xl text-base">
+        <div className="text-lg font-semibold">Amount</div>
+        <div className="border border-gray-200 mb-6 mt-2 rounded-xl text-base">
           <Input
             placeholder="Number of Tokens Increased or Withdrawn"
-            min={0}
-            style={{ width: "100%", color: "black" }}
+            style={{ width: "100%" }}
+            size="large"
           />
         </div>
         <div className="flex items-center justify-center space-x-3">

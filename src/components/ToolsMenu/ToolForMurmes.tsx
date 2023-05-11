@@ -14,7 +14,11 @@ const ToolForMurmes = () => {
           </div>
         </div>
         <div className="w-full border-2 border-[#1b1524] rounded-xl text-base">
-          <Input size="large" placeholder="Register for Task Conditions" />
+          <Input
+            size="large"
+            placeholder="Register for Task Conditions"
+            style={{ color: "white" }}
+          />
         </div>
         <FullButton label="Add" fn={() => []} />
       </div>

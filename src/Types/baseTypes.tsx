@@ -7,8 +7,8 @@ export type PostTaskData = {
   deadline: string;
   detection: string;
   payment: string;
-  platform: string;
-  require: string;
+  platform: string | null;
+  require: string | null;
   source: string;
   sourceId: string;
   [key: string]: any;
@@ -45,6 +45,7 @@ export type Task = {
   platform: string;
   boxId: string;
   require: string;
+  requireId: string;
   payment: string;
   currency: string;
   amount: string;
@@ -166,7 +167,7 @@ export type WalletContent = {
 export type OwnAssetsCard = {
   name: string;
   symbol: string;
-  decimals: number;
+  decimals: string;
   icon: React.ReactElement;
   balance: ethers.BigNumber | string;
   type: string;

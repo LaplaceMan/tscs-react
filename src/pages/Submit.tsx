@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import type { UploadProps } from "antd";
 import { Form, Input, Select, Upload } from "antd";
 import { PrimaryButton, DotsContainer } from "../components";
 import { BsUpload } from "react-icons/bs";
 import { DataContext } from "../context/DataContext";
+import { useSearchParams } from "react-router-dom";
 import { getNetwork } from "@wagmi/core";
 const { Option } = Select;
 
@@ -35,7 +36,7 @@ const Submit = () => {
   const [form] = Form.useForm();
   const { queryRequires, requires } = useContext(DataContext);
   const { chain } = getNetwork();
-
+  const [searchParams] = useSearchParams();
   const onReset = () => {
     form.resetFields();
   };
@@ -69,7 +70,7 @@ const Submit = () => {
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center styled">
       <div className="flex md:w-[1200px] md:flex-row flex-col justify-between">
         <div className="flex w-full flex-col items-center justify-center">
           <Form
@@ -81,40 +82,44 @@ const Submit = () => {
             id="form"
           >
             <Form.Item name="taskId" label="TASK ID" required>
-              <div className="flex border border-[#322d3a] rounded-3xl p-1">
-                <Input placeholder="ID of the Task to Which the Work Belongs" />
-              </div>
+              <Input
+                size="large"
+                placeholder="ID of the Task to Which the Work Belongs"
+                defaultValue={searchParams.get("taskId")?.toString()}
+              />
             </Form.Item>
             <Form.Item name="cid" label="SOURCE LINK" required>
-              <div className="flex border border-[#322d3a] rounded-3xl p-1">
-                <Input placeholder="Storage Address for Completed Work" />
-              </div>
+              <Input
+                size="large"
+                placeholder="Storage Address for Completed Work"
+              />
             </Form.Item>
             <Form.Item name="fingerprint" label="Fingerprint" required>
-              <div className="flex border border-[#322d3a] rounded-3xl p-1">
-                <Input placeholder="Fingerprint Value for Completed Work" />
-              </div>
+              <Input
+                size="large"
+                placeholder="Fingerprint Value for Completed Work"
+              />
             </Form.Item>
             <Form.Item name="require" label="REQUIRE" required>
-              <div className="flex border border-[#322d3a] rounded-3xl p-1">
-                <Select
-                  showSearch
-                  placeholder="Select a Rquire"
-                  // optionFilterProp="children"
-                  //   filterOption={(input, option) =>
-                  //     (option!.children as unknown as string)
-                  //       .toLowerCase()
-                  //       .includes(input.toLowerCase())
-                  //   }
-                >
-                  {requires &&
-                    requires.map((item, index) => (
-                      <Option key={index} value={item.id}>
-                        {item.name}
-                      </Option>
-                    ))}
-                </Select>
-              </div>
+              <Select
+                size="large"
+                showSearch
+                placeholder="Select a Rquire"
+                defaultValue={searchParams.get("require")}
+                // optionFilterProp="children"
+                //   filterOption={(input, option) =>
+                //     (option!.children as unknown as string)
+                //       .toLowerCase()
+                //       .includes(input.toLowerCase())
+                //   }
+              >
+                {requires &&
+                  requires.map((item, index) => (
+                    <Option key={index} value={item.id}>
+                      {item.name}
+                    </Option>
+                  ))}
+              </Select>
             </Form.Item>
           </Form>
           <div className="flex text-white items-center justify-center border-2 border-dashed border-[#322d3a] rounded-xl w-full py-5 mb-10 mt-5">
@@ -168,7 +173,7 @@ const Submit = () => {
                   <Upload {...uploadProps}>
                     <div className="flex flex-col items-center justify-center  ">
                       <BsUpload fontSize={35} color="#edebdc" />
-                      <div className="mt-5 text-lg font-normal text-white">
+                      <div className="mt-5 text-lg font- text-white">
                         Click to Upload File
                       </div>
                     </div>
@@ -200,7 +205,11 @@ const Submit = () => {
                       <div className="flex border border-[#322d3a] rounded-3xl p-1 w-full mt-[8px]">
                         <Input
                           placeholder="Support By Bundlr"
-                          style={{ width: "100%", fontWeight: "normal" }}
+                          style={{
+                            width: "100%",
+                            fontWeight: "",
+                            border: "none",
+                          }}
                         />
                         <div className="flex items-center rounded-full font-semibold text-sm cursor-pointer hover:brightness-110 bg-[#edebdc] text-black px-5 -m-1">
                           Deposit

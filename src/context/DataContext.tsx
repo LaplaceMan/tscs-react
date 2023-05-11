@@ -54,7 +54,6 @@ export const DataProvider = ({ children }: any) => {
           },
         });
         if (data && data.data) {
-          console.log(data.data);
           const dashboard = data.data.dashboard;
           setDashboard({
             taskCount: dashboard.taskCount,
@@ -254,6 +253,7 @@ export const DataProvider = ({ children }: any) => {
             platform: getTask.box.platform.name,
             boxId: getTask.box.orderId,
             require: getTask.requires.notes,
+            requireId: getTask.requires.id,
             payment: getTask.strategy,
             currency: getTask.currency.symbol,
             amount: getTask.amount,

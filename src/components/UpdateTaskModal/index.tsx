@@ -33,7 +33,7 @@ const UpdateTaskModal = () => {
 
   return (
     <Spin spinning={isLoading} size="large">
-      <div className="flex w-full normal">
+      <div className="flex w-full ">
         <Form
           form={form}
           layout="vertical"
@@ -43,35 +43,40 @@ const UpdateTaskModal = () => {
           onFinish={onFinish}
           className="w-full"
         >
-          <div className="text-xl font-bold">Update Task State</div>
-          <div>Make Your Tasks More Visible and Accessible.</div>
+          <div className="flex flex-col p-5 bg-gray-200 rounded-xl text-center">
+            <div className="text-xl font-bold">Update Task State</div>
+            <div>Make Your Tasks More Visible and Accessible</div>
+          </div>
           <div className="text-lg font-semibold mt-3">Task ID</div>
           <Form.Item name="taskId" required>
-            <div className="normal border border-gray-200 mt-2 rounded-xl text-base">
+            <div className=" border border-gray-200 mt-2 rounded-xl text-base">
               <Input
                 placeholder="ID of The Task to Be Updated"
                 style={{ width: "100%" }}
                 disabled={
                   defaultUpdateApplicationData.applyId != "0" ? true : false
                 }
+                size="large"
               />
             </div>
           </Form.Item>
           <div className="text-lg font-semibold">Increase Amount</div>
           <Form.Item name="amount" required>
-            <div className="normal border border-gray-200 mt-2 rounded-xl text-base">
+            <div className=" border border-gray-200 mt-2 rounded-xl text-base">
               <Input
                 placeholder="Payment Amount or Proportion"
                 style={{ width: "100%" }}
+                size="large"
               />
             </div>
           </Form.Item>
           <div className="text-lg font-semibold">Extended Days</div>
           <Form.Item name="extended" required>
-            <div className="normal border border-gray-200 mt-2 rounded-xl text-base">
+            <div className=" border border-gray-200 mt-2 rounded-xl text-base">
               <Input
                 placeholder="The Base Unit is Day"
                 style={{ width: "100%" }}
+                size="large"
               />
             </div>
           </Form.Item>

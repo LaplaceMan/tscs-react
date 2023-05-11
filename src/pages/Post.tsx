@@ -20,11 +20,19 @@ const UserStateItem = ({ label, value }: { label: string; value: string }) => {
   );
 };
 
-const InvitationItem = ({ label, value }: { label: string; value: string }) => {
+const InvitationItem = ({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | null;
+}) => {
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="text-[#d982f6]">{label}</div>
-      <div className="text-xl font-semibold text-[#75b0f3]">{value}</div>
+      <div className="text-xl font-semibold text-[#75b0f3]">
+        {value ? value : "*"}
+      </div>
     </div>
   );
 };
@@ -58,7 +66,7 @@ const Post = () => {
     });
   };
 
-  const invitationItem1: { label: string; value: string }[] = [
+  const invitationItem1: { label: string; value: string | null }[] = [
     { label: "Platform", value: taskData.platform },
     {
       label: "Source ID",
@@ -87,7 +95,7 @@ const Post = () => {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="flex md:w-[1200px] md:flex-row flex-col justify-between">
+      <div className="flex md:w-[1200px] md:flex-row flex-col justify-between styled">
         <Form
           form={form}
           layout="vertical"
@@ -97,157 +105,152 @@ const Post = () => {
           id="form"
         >
           <Form.Item name="platform" label="PLATFORM" required>
-            <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <Select
-                placeholder="Select a Platform"
-                onChange={(value) =>
-                  setTaskData({ ...taskData, platform: value })
-                }
-                // optionFilterProp="children"
-                //   filterOption={(input, option) =>
-                //     (option!.children as unknown as string)
-                //       .toLowerCase()
-                //       .includes(input.toLowerCase())
-                //   }
-              >
-                {platforms &&
-                  platforms.map((item, index) => (
-                    <Option key={index} value={item.id}>
-                      {item.name}
-                    </Option>
-                  ))}
-              </Select>
-            </div>
+            <Select
+              size="large"
+              placeholder="Select a Platform"
+              onChange={(value) =>
+                setTaskData({
+                  ...taskData,
+                  platform: platforms && platforms[value].name,
+                })
+              }
+              // optionFilterProp="children"
+              //   filterOption={(input, option) =>
+              //     (option!.children as unknown as string)
+              //       .toLowerCase()
+              //       .includes(input.toLowerCase())
+              //   }
+            >
+              {platforms &&
+                platforms.map((item, index) => (
+                  <Option key={index} value={item.id}>
+                    {item.name}
+                  </Option>
+                ))}
+            </Select>
           </Form.Item>
           <Form.Item name="sourceId" label="SOURCE ID" required>
-            <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <Input
-                placeholder="If the Service is Not Started, the ID is 0"
-                onChange={(e) =>
-                  setTaskData({ ...taskData, sourceId: e.target.value })
-                }
-              />
-            </div>
+            <Input
+              size="large"
+              placeholder="If the Service is Not Started, the ID is 0"
+              onChange={(e) =>
+                setTaskData({ ...taskData, sourceId: e.target.value })
+              }
+            />
           </Form.Item>
           <Form.Item name="source" label="SOURCE LINK" required>
-            <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <Input
-                placeholder="Provide the Source Link to Locate the Task"
-                onChange={(e) =>
-                  setTaskData({ ...taskData, source: e.target.value })
-                }
-              />
-            </div>
+            <Input
+              size="large"
+              placeholder="Provide the Source Link to Locate the Task"
+              onChange={(e) =>
+                setTaskData({ ...taskData, source: e.target.value })
+              }
+            />
           </Form.Item>
           <Form.Item name="payment" label="PAYMENT" required>
-            <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <Select
-                placeholder="Select a Payment Strategy"
-                onChange={(value) =>
-                  setTaskData({ ...taskData, payment: value })
-                }
-              >
-                {[
-                  { value: "OT0", label: "One-time Payment" },
-                  { value: "D1", label: "Divided Payment" },
-                  { value: "OT2", label: "One-time Mortgage Payment" },
-                ].map((item, index) => (
-                  <Option value={item.value} key={index}>
-                    {item.label}
-                  </Option>
-                ))}
-              </Select>
-            </div>
+            <Select
+              size="large"
+              placeholder="Select a Payment Strategy"
+              onChange={(value) => setTaskData({ ...taskData, payment: value })}
+            >
+              {[
+                { value: "OT0", label: "One-time Payment" },
+                { value: "D1", label: "Divided Payment" },
+                { value: "OT2", label: "One-time Mortgage Payment" },
+              ].map((item, index) => (
+                <Option value={item.value} key={index}>
+                  {item.label}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item name="currency" label="CURRENCY">
-            <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <Select
-                placeholder="Select a Currency"
-                onChange={(value) =>
-                  setTaskData({ ...taskData, currency: value })
-                }
-              >
-                {[
-                  { value: "NONE", label: "NONE" },
-                  { value: "USDT", label: "USDT" },
-                  { value: "USDC", label: "USDC" },
-                  { value: "DAI", label: "DAI" },
-                  { value: "WTOKEN", label: "WETH/WMATIC" },
-                ].map((item, index) => (
-                  <Option value={item.value} key={index}>
-                    {item.label}
-                  </Option>
-                ))}
-              </Select>
-            </div>
+            <Select
+              size="large"
+              placeholder="Select a Currency"
+              onChange={(value) =>
+                setTaskData({ ...taskData, currency: value })
+              }
+            >
+              {[
+                { value: "NONE", label: "NONE" },
+                { value: "USDT", label: "USDT" },
+                { value: "USDC", label: "USDC" },
+                { value: "DAI", label: "DAI" },
+                { value: "WTOKEN", label: "WETH/WMATIC" },
+              ].map((item, index) => (
+                <Option value={item.value} key={index}>
+                  {item.label}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item name="amount" label="AMOUNT" required>
-            <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <Input
-                placeholder="Payment Amount or Proportion"
-                onChange={(e) =>
-                  setTaskData({ ...taskData, amount: e.target.value })
-                }
-              />
-            </div>
+            <Input
+              size="large"
+              placeholder="Payment Amount or Proportion"
+              onChange={(e) =>
+                setTaskData({ ...taskData, amount: e.target.value })
+              }
+            />
           </Form.Item>
           <Form.Item name="require" label="REQUIRE" required>
-            <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <Select
-                showSearch
-                placeholder="Select a Rquire"
-                // optionFilterProp="children"
-                //   filterOption={(input, option) =>
-                //     (option!.children as unknown as string)
-                //       .toLowerCase()
-                //       .includes(input.toLowerCase())
-                //   }
-                onChange={(value) =>
-                  setTaskData({ ...taskData, require: value })
-                }
-              >
-                {requires &&
-                  requires.map((item, index) => (
-                    <Option key={index} value={item.id}>
-                      {item.name}
-                    </Option>
-                  ))}
-              </Select>
-            </div>
+            <Select
+              size="large"
+              showSearch
+              placeholder="Select a Rquire"
+              // optionFilterProp="children"
+              //   filterOption={(input, option) =>
+              //     (option!.children as unknown as string)
+              //       .toLowerCase()
+              //       .includes(input.toLowerCase())
+              //   }
+              onChange={(value) =>
+                setTaskData({
+                  ...taskData,
+                  require: requires && requires[value].name,
+                })
+              }
+            >
+              {requires &&
+                requires.map((item, index) => (
+                  <Option key={index} value={item.id}>
+                    {item.name}
+                  </Option>
+                ))}
+            </Select>
           </Form.Item>
           <Form.Item name="deadline" label="DEADLINE">
-            <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <DatePicker
-                style={{ width: "100%" }}
-                placeholder="Default is Extend 365 Days"
-                onChange={(value) =>
-                  setTaskData({
-                    ...taskData,
-                    deadline: antdDateFormat(value?.valueOf()),
-                  })
-                }
-              />
-            </div>
+            <DatePicker
+              size="large"
+              style={{ width: "100%" }}
+              allowClear={false}
+              placeholder="Default is Extend 365 Days"
+              onChange={(value) =>
+                setTaskData({
+                  ...taskData,
+                  deadline: antdDateFormat(value?.valueOf()),
+                })
+              }
+            />
           </Form.Item>
           <Form.Item name="audit" label="AUDIT MODULE" required>
-            <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <Select
-                showSearch
-                placeholder="Select a Audit Module"
-                onChange={(value) => setTaskData({ ...taskData, audit: value })}
-              />
-            </div>
+            <Select
+              size="large"
+              showSearch
+              placeholder="Select a Audit Module"
+              onChange={(value) => setTaskData({ ...taskData, audit: value })}
+            />
           </Form.Item>
           <Form.Item name="detection" label="DETECTION MODULE" required>
-            <div className="flex border border-[#322d3a] rounded-3xl p-1">
-              <Select
-                showSearch
-                placeholder="Select a Detection Module"
-                onChange={(value) =>
-                  setTaskData({ ...taskData, detection: value })
-                }
-              />
-            </div>
+            <Select
+              size="large"
+              showSearch
+              placeholder="Select a Detection Module"
+              onChange={(value) =>
+                setTaskData({ ...taskData, detection: value })
+              }
+            />
           </Form.Item>
         </Form>
         <div className="flex flex-col items-center justify-between mb-[24px] md:ml-10">
