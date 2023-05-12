@@ -61,15 +61,14 @@ const DepositManageModal = () => {
             <div>Withdraw</div>
           </div>
         </div>
-        <div className="text-lg font-semibold">Amount</div>
-        <div className="border border-gray-200 mb-6 mt-2 rounded-xl text-base">
-          <Input
-            placeholder="Number of Tokens Increased or Withdrawn"
-            style={{ width: "100%" }}
-            size="large"
-          />
-        </div>
-        <div className="flex items-center justify-center space-x-3">
+        <div className="text-lg font-semibold mb-2">Amount</div>
+
+        <Input
+          placeholder="Number of Tokens Increased or Withdrawn"
+          style={{ width: "100%" }}
+          size="large"
+        />
+        <div className="flex items-center justify-center space-x-3 mt-6">
           <PrimaryButton
             label="Submit"
             bgColor="#00BEA1"

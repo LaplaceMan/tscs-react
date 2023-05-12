@@ -2,12 +2,13 @@ import React, { useContext } from "react";
 import { OwnAssetsCard } from "../../types/baseTypes";
 import { Tooltip } from "antd";
 import {
+  shortenText,
   bignumberConvert,
   personalAssetBalanceOptimize,
 } from "../../utils/tools";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ApplicationContext } from "../../context/ApplicationContext";
-import { DECIMALS_18, DECIMALS_6 } from "../../utils/constants";
+import { DECIMALS_6 } from "../../utils/constants";
 
 const AssetCardItem = ({ label, value }: { label: string; value: string }) => {
   return (
@@ -45,22 +46,22 @@ const OwnAssetCard = ({ token }: { token: OwnAssetsCard }) => {
             <div className="text-lg font-medium">{token.name}</div>
           </Tooltip>
         </div>
+
         <div className="grid grid-cols-3 items-center my-3 mx-1 space-x-1">
-          <Tooltip title={bignumberConvert(token.balance, "0", 0)}>
-            <AssetCardItem
-              label="Balance"
-              value={
-                token.type == "ERC-20"
-                  ? bignumberConvert(token.balance, DECIMALS_18, 2)
-                  : personalAssetBalanceOptimize(
-                      bignumberConvert(token.balance, DECIMALS_6, 2)
-                    )
-              }
-            />
+          <Tooltip title={token.balance.toString()}>
+            <div>
+              <AssetCardItem
+                label="Balance"
+                value={personalAssetBalanceOptimize(
+                  bignumberConvert(token.balance, DECIMALS_6, 2)
+                )}
+              />
+            </div>
           </Tooltip>
           <AssetCardItem label="Type" value={token.type} />
-          <AssetCardItem label="Issuer" value={token.issuser} />
+          <AssetCardItem label="Issuer" value={shortenText(token.issuser, 4)} />
         </div>
+
         <div className="flex w-full justify-between font-semibold text-base space-x-2 px-2 mb-3">
           <div
             className="w-1/2 py-1.5 rounded-full bg-[#00BEA1] text-center hover:brightness-110 text-white cursor-pointer"

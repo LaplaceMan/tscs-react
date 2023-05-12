@@ -29,9 +29,9 @@ export const shortenAmount = (amount: string) => {
   return amount;
 };
 
-export const shortenText = (text: string): string => {
-  if (text.length > 12) {
-    return `${text.slice(0, 6)}...${text.slice(text.length - 6)}`;
+export const shortenText = (text: string, len: number): string => {
+  if (text.length > len * 2) {
+    return `${text.slice(0, len)}...${text.slice(text.length - len)}`;
   } else {
     return text;
   }

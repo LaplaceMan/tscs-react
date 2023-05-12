@@ -5,7 +5,6 @@ export { default as OwnAssetCard } from "./OwnAssetCard/index";
 export { default as OwnOtherCard } from "./OwnOtherCard/index";
 export { default as TokenTransactionModal } from "./TokenTransactionModal/index";
 export { default as UpdateTaskModal } from "./UpdateTaskModal/index";
-export { default as WithdrawRewardModal } from "./WithdrawRewardModal/index";
 export { default as DepositManageModal } from "./DepositManageModal/index";
 export { default as GuardManageModal } from "./GuardManageModal/index";
 export { default as ToolsMenu } from "./ToolsMenu/index";

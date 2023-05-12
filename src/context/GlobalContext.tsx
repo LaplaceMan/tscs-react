@@ -11,8 +11,6 @@ export const GlobalProvider = ({ children }: any) => {
   const [isTokenTransactionModalOpen, setIsTokenTransactionModalOpen] =
     useState(false);
   const [isUpdateTaskModalOpen, setIsUpdateTaskModalOpen] = useState(false);
-  const [isWithdrawRewardModalOpen, setIsWithdrawRewardModalOpen] =
-    useState(false);
   const [isDepositAssetModalOpen, setIsDepositAssetModalOpen] = useState(false);
   const [isGuardManageModalOpen, setIsGuardManageModalOpen] = useState(false);
 
@@ -22,14 +20,6 @@ export const GlobalProvider = ({ children }: any) => {
 
   const hideDepositAssetModal = () => {
     setIsDepositAssetModalOpen(false);
-  };
-
-  const showWithdrawRewardModal = () => {
-    setIsWithdrawRewardModalOpen(true);
-  };
-
-  const hideWithdrawRewardModal = () => {
-    setIsWithdrawRewardModalOpen(false);
   };
 
   const showUpdateTaskModal = () => {
@@ -84,9 +74,6 @@ export const GlobalProvider = ({ children }: any) => {
         showUpdateTaskModal,
         hideUpdateTaskModal,
         isUpdateTaskModalOpen,
-        showWithdrawRewardModal,
-        hideWithdrawRewardModal,
-        isWithdrawRewardModalOpen,
         showDepositAssetModal,
         hideDepositAssetModal,
         isDepositAssetModalOpen,

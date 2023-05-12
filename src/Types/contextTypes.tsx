@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import {
   Item,
   Task,
@@ -19,32 +20,29 @@ import {
   RealTokenTransaction,
   Submit,
   TokenTransaction,
-  UpdateApplication,
   RealUpdateApplictaionTransaction,
   RealWithdrawRewardTransaction,
 } from "./formTypes";
 
 export type ApplicationContent = {
-  defaultUploadSubtitleData: { applyId: string; language: string };
-  updateDefaultUploadSubtitleData: (applyId: string, language: string) => void;
-  defaultAuditSubtitleData: Item | undefined;
-  updateDefaultAuditSubtitleData: (subtitle: Item) => void;
-  submitApplication: (params: Submit) => void;
-  uploadSubtitle: (params: Upload) => void;
-  auditSubtitle: (params: Audit) => void;
+  postTask: (params: Submit) => void;
+  submitItem: (params: Upload) => void;
+  auditItem: (params: Audit) => void;
   tokenTransaction: (params: RealTokenTransaction) => void;
   defaultTokenTransactionData: TokenTransaction | null;
   updateDefaultTokenTransaction: (params: TokenTransaction) => void;
   preSettlement: (type: string, applyId: string) => void;
-  updateDefaultUpdateApplication: (params: UpdateApplication) => void;
-  defaultUpdateApplicationData: UpdateApplication;
+  updateDefaultUpdateTask: (param: string) => void;
+  defaultUpdateTaskData: string | null;
   updateDefaultWithdrawOrDeposit: (platform: string, manage: string) => void;
   defaultWithdrawOrDepositData: { platform: string; manage: string };
-  updateApplication: (params: RealUpdateApplictaionTransaction) => void;
+  updateTask: (params: RealUpdateApplictaionTransaction) => void;
   withdrawReward: (params: RealWithdrawRewardTransaction) => void;
   depoitZimuManage: (address: string, amount: number) => void;
-  getPersonalPageData: (address: string) => void;
-  cancelApplication: (taskId: string) => void;
+  getPTBalance: (
+    address: string
+  ) => Promise<ethers.BigNumber[] | undefined | null>;
+  cancelTask: (taskId: string) => void;
   updateRevenueInLens: (videoId: string) => void;
   swapRevenueInLens: (amount: string) => void;
   getLensRevenueSettlable: (videoId: string) => void;
@@ -108,9 +106,6 @@ export type GlobalContent = {
   showUpdateTaskModal: () => void;
   hideUpdateTaskModal: () => void;
   isUpdateTaskModalOpen: boolean;
-  showWithdrawRewardModal: () => void;
-  hideWithdrawRewardModal: () => void;
-  isWithdrawRewardModalOpen: boolean;
   showDepositAssetModal: () => void;
   hideDepositAssetModal: () => void;
   isDepositAssetModalOpen: boolean;

@@ -11,35 +11,30 @@ const UpdateTaskModal = () => {
   const [form] = Form.useForm();
   const { isLoading, hideUpdateTaskModal, isUpdateTaskModalOpen } =
     useContext(GlobalContext);
-  const { defaultUpdateApplicationData, updateApplication } =
-    useContext(ApplicationContext);
+  const { defaultUpdateTaskData, updateTask } = useContext(ApplicationContext);
 
   const onFinish = () => {
     const values = form.getFieldsValue();
     const date = values.deadline.valueOf();
     values.deadline = parseInt((date / 1000).toString());
-    updateApplication(values as RealUpdateApplictaionTransaction);
+    updateTask(values as RealUpdateApplictaionTransaction);
   };
 
   useEffect(() => {
     if (isUpdateTaskModalOpen) {
-      if (defaultUpdateApplicationData.applyId != "0") {
-        form.setFieldsValue({ ...defaultUpdateApplicationData });
-      } else {
-        form.setFieldsValue(null);
+      if (defaultUpdateTaskData) {
+        form.setFieldsValue({ taskId: defaultUpdateTaskData });
       }
     }
-  });
+  }, [defaultUpdateTaskData]);
 
   return (
     <Spin spinning={isLoading} size="large">
-      <div className="flex w-full ">
+      <div className="flex w-full">
         <Form
           form={form}
           layout="vertical"
           preserve={false}
-          requiredMark="optional"
-          initialValues={{}}
           onFinish={onFinish}
           className="w-full"
         >
@@ -49,36 +44,28 @@ const UpdateTaskModal = () => {
           </div>
           <div className="text-lg font-semibold mt-3">Task ID</div>
           <Form.Item name="taskId" required>
-            <div className=" border border-gray-200 mt-2 rounded-xl text-base">
-              <Input
-                placeholder="ID of The Task to Be Updated"
-                style={{ width: "100%" }}
-                disabled={
-                  defaultUpdateApplicationData.applyId != "0" ? true : false
-                }
-                size="large"
-              />
-            </div>
+            <Input
+              placeholder="ID of The Task to Be Updated"
+              style={{ width: "100%" }}
+              disabled={defaultUpdateTaskData ? true : false}
+              size="large"
+            />
           </Form.Item>
           <div className="text-lg font-semibold">Increase Amount</div>
           <Form.Item name="amount" required>
-            <div className=" border border-gray-200 mt-2 rounded-xl text-base">
-              <Input
-                placeholder="Payment Amount or Proportion"
-                style={{ width: "100%" }}
-                size="large"
-              />
-            </div>
+            <Input
+              placeholder="Payment Amount or Proportion"
+              style={{ width: "100%" }}
+              size="large"
+            />
           </Form.Item>
           <div className="text-lg font-semibold">Extended Days</div>
           <Form.Item name="extended" required>
-            <div className=" border border-gray-200 mt-2 rounded-xl text-base">
-              <Input
-                placeholder="The Base Unit is Day"
-                style={{ width: "100%" }}
-                size="large"
-              />
-            </div>
+            <Input
+              placeholder="The Base Unit is Day"
+              style={{ width: "100%" }}
+              size="large"
+            />
           </Form.Item>
           <div className="flex items-center justify-center space-x-3">
             <PrimaryButton

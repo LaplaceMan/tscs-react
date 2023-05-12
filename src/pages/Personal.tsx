@@ -9,6 +9,7 @@ import {
 } from "react-icons/ri";
 import { DataContext } from "../context/DataContext";
 import { GlobalContext } from "../context/GlobalContext";
+import { ApplicationContext } from "../context/ApplicationContext";
 import { shortenAddress, bignumberConvert } from "../utils/tools";
 import {
   DECIMALS_6,
@@ -22,7 +23,6 @@ import {
   NoItems,
   UpdateTaskModal,
   TokenTransactionModal,
-  WithdrawRewardModal,
   DepositManageModal,
   GuardManageModal,
 } from "../components";
@@ -36,6 +36,7 @@ import {
   OwnAuditCard,
   User,
 } from "../types/baseTypes";
+import { ethers } from "ethers";
 
 const PersonalItem = ({
   label,
@@ -83,16 +84,19 @@ const Personal = (): React.ReactElement => {
     showUpdateTaskModal,
     showGuardManageModal,
     isUpdateTaskModalOpen,
-    isWithdrawRewardModalOpen,
     isDepositAssetModalOpen,
     isTokenTransactionModalOpen,
     isGuardManageModalOpen,
   } = useContext(GlobalContext);
+  const { getPTBalance } = useContext(ApplicationContext);
+  const { updateDefaultUpdateTask } = useContext(ApplicationContext);
   const [user, setUser] = useState<User | null>(null);
   const [ownTasks, setOwnTasks] = useState<OwnTaskCard[] | null>([]);
   const [ownItems, setOwnItems] = useState<OwnItemCard[] | null>([]);
   const [ownAudits, setOwnAudits] = useState<OwnAuditCard[] | null>();
-
+  const [userBalaces, setUserBalances] = useState<ethers.BigNumber[] | null>(
+    []
+  );
   useEffect(() => {
     const feachData = async (id: string) => {
       const data = await querySpecialUser(id);
@@ -101,6 +105,10 @@ const Personal = (): React.ReactElement => {
       }
       if (data && data.tasks != undefined) {
         setOwnTasks(data.tasks);
+      }
+      const balances = await getPTBalance(id);
+      if (balances) {
+        setUserBalances(balances);
       }
     };
     param.id != undefined && feachData(param.id.toLocaleLowerCase());
@@ -147,7 +155,7 @@ const Personal = (): React.ReactElement => {
           <OwnAssetCard
             token={{
               name: "PlatformToken-0",
-              balance: "",
+              balance: userBalaces ? userBalaces[0] : "None",
               type: "ERC-1155",
               issuser: "Murmes",
               address:
@@ -163,7 +171,7 @@ const Personal = (): React.ReactElement => {
           <OwnAssetCard
             token={{
               name: "PlatformToken-1",
-              balance: "",
+              balance: userBalaces ? userBalaces[1] : "None",
               type: "ERC-1155",
               issuser: "Lens",
               address:
@@ -179,6 +187,11 @@ const Personal = (): React.ReactElement => {
         </div>
       </div>
     );
+  };
+
+  const updateTaskHandle = (taskId: string) => {
+    updateDefaultUpdateTask(taskId);
+    showUpdateTaskModal();
   };
 
   const Tasks = () => {
@@ -203,7 +216,7 @@ const Personal = (): React.ReactElement => {
                   value3: item.state,
                   icon: <RiTodoFill />,
                   fn1Name: "Update",
-                  fn1: showUpdateTaskModal,
+                  fn1: () => updateTaskHandle(item.taskId),
                   fn2Name: "Cancel",
                   fn2: () => [],
                 }}
@@ -377,17 +390,6 @@ const Personal = (): React.ReactElement => {
         centered
       >
         <UpdateTaskModal />
-      </Modal>
-      <Modal
-        getContainer={false}
-        open={isWithdrawRewardModalOpen}
-        destroyOnClose={true}
-        forceRender
-        closable={false}
-        footer={null}
-        centered
-      >
-        <WithdrawRewardModal />
       </Modal>
       <Modal
         getContainer={false}

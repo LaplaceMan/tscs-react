@@ -18,7 +18,7 @@ const dataFormat = (value: string, type: string) => {
     case "amount-D1":
       return bignumberConvert(value, "10000", 2) + "%";
     default:
-      return shortenText(value);
+      return shortenText(value, 6);
   }
 };
 

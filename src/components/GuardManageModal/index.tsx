@@ -26,26 +26,22 @@ const GuardManageModal = ({
           </div>
           <div>Customised Screening of Makers and Auditors</div>
         </div>
-        <div className="text-lg font-semibold mt-5">Current Guard</div>
-        <div className=" border border-gray-200 mb-6 mt-2 rounded-xl text-base">
-          <Input
-            disabled={true}
-            style={{ width: "100%" }}
-            size="large"
-            defaultValue={
-              !current || typeof current == undefined ? "None" : current
-            }
-          />
-        </div>
-        <div className="text-lg font-semibold">New Guard</div>
-        <div className=" border border-gray-200 mb-6 mt-2 rounded-xl text-base">
-          <Input
-            placeholder="Address of The Guard You Want to Set"
-            style={{ width: "100%" }}
-            size="large"
-          />
-        </div>
-        <div className="flex items-center justify-center space-x-3">
+        <div className="text-lg font-semibold mt-5 mb-2">Current Guard</div>
+        <Input
+          disabled={true}
+          style={{ width: "100%" }}
+          size="large"
+          defaultValue={
+            !current || typeof current == undefined ? "None" : current
+          }
+        />
+        <div className="text-lg font-semibold mt-6 mb-2">New Guard</div>
+        <Input
+          placeholder="Address of The Guard You Want to Set"
+          style={{ width: "100%" }}
+          size="large"
+        />
+        <div className="flex items-center justify-center space-x-3 mt-6">
           <PrimaryButton
             label="Submit"
             bgColor="#00BEA1"

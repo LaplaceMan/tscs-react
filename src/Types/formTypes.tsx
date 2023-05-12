@@ -29,25 +29,6 @@ export type TokenTransaction = {
   operation: string;
 };
 
-export type UpdateApplication = {
-  payType: string;
-  oldAmount: string;
-  oldDeadline: string;
-  applyId: string;
-  amount: string;
-  deadline: number;
-};
-
-export const defaultUpdateApplication = {
-  payType: "",
-  oldAmount: "0",
-  oldDeadline: "",
-  applyId: "0",
-  amount: "0",
-  deadline: 0,
-  type: "",
-};
-
 export type RealUpdateApplictaionTransaction = {
   applyId: string;
   amount: number;

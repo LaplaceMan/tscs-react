@@ -51,7 +51,7 @@ export const columns: {
       key: "amount",
       dataIndex: "amount",
       width: "150px",
-      render: (text) => shortenText(text),
+      render: (text) => shortenText(text, 6),
     },
     {
       title: "Audit",
@@ -118,14 +118,14 @@ export const columns: {
       dataIndex: "source",
       key: "source",
       width: "200px",
-      render: (text) => shortenText(text),
+      render: (text) => shortenText(text, 6),
     },
     {
       title: "Fingerprint",
       dataIndex: "fingerprint",
       key: "fingerprint",
       width: "200px",
-      render: (text) => shortenText(text),
+      render: (text) => shortenText(text, 6),
     },
   ],
   Users: [

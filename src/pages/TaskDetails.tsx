@@ -133,7 +133,8 @@ const TaskDetails = () => {
                     },
                     {
                       label: "Adopted Item",
-                      value: taskDetail && taskDetail.adopted,
+                      value:
+                        taskDetail && taskDetail.adopted && taskDetail.adopted,
                       type: "",
                     },
                   ].map((item, index) => (

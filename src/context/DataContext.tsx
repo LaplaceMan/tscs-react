@@ -264,7 +264,10 @@ export const DataProvider = ({ children }: any) => {
             detection: getTask.detectionModule,
             state: getTask.state,
             uploads: getTask.itemCount,
-            adopted: getTask.adopted ? getTask.adopted : "None",
+            adopted:
+              getTask.adopted || typeof (getTask.adopted != undefined)
+                ? getTask.adopted.id
+                : "None",
           };
           /***********************/
           const getItems = data.data.task.items;

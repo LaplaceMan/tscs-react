@@ -22,7 +22,7 @@ const ToolForLens = () => {
   };
 
   return (
-    <div className="flex flex-col w-full space-y-3">
+    <div className="flex flex-col w-full space-y-3 styled">
       <div className="bg-[#0f0a19] flex flex-col w-full rounded-xl items-center p-3 space-y-3">
         <div className="flex w-full justify-between items-end text-base">
           <div className="flex items-center space-x-1 font-medium text-white">
@@ -33,14 +33,14 @@ const ToolForLens = () => {
             Renewable: {lensSettleable}
           </div>
         </div>
-        <div className="w-full border-2 border-[#1b1524] rounded-xl text-base">
-          <Input
-            size="large"
-            placeholder="Box's Real ID (Based on ProfileId and PubId)"
-            style={{ width: "100%", color: "white" }}
-            onChange={(e) => handleVideoChange(e.target.value)}
-          />
-        </div>
+
+        <Input
+          size="large"
+          placeholder="Box's Real ID (Based on ProfileId and PubId)"
+          style={{ width: "100%", color: "white" }}
+          onChange={(e) => handleVideoChange(e.target.value)}
+        />
+
         <FullButton label="Update" fn={() => updateRevenueInLens(videoId)} />
       </div>
       <div className="bg-[#0f0a19] flex flex-col w-full rounded-xl items-center p-3 space-y-3">
@@ -53,14 +53,12 @@ const ToolForLens = () => {
             Swapable: {bignumberConvert("0", DECIMALS_6, 2)}
           </div>
         </div>
-        <div className="w-full border-2 border-[#1b1524] rounded-xl text-base">
-          <Input
-            size="large"
-            placeholder="Number of Tokens Exchanged"
-            style={{ color: "white" }}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-        </div>
+        <Input
+          size="large"
+          placeholder="Number of Tokens Exchanged"
+          style={{ color: "white" }}
+          onChange={(e) => setAmount(e.target.value)}
+        />
         <FullButton label="Swap" fn={() => swapRevenueInLens(amount)} />
       </div>
     </div>
