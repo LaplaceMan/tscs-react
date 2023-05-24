@@ -5,7 +5,7 @@ const Tools = () => {
     <div
       className="w-full flex items-center justify-center my-5 md:m-0"
       style={{
-        height: document.body.clientHeight - 180,
+        minHeight: document.body.clientHeight - 180,
       }}
     >
       <ToolsMenu />

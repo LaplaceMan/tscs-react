@@ -99,12 +99,12 @@ const ItemDetails = () => {
                     {
                       label: "Audit Module",
                       value: itemDetail?.audit,
-                      type: "address",
+                      type: "module",
                     },
                     {
                       label: "Detection Module",
                       value: itemDetail?.detection,
-                      type: "address",
+                      type: "module",
                     },
                   ].map((item, index) => (
                     <PropItem

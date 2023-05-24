@@ -4,11 +4,17 @@ import { PrimaryButton, DotsContainer } from "../components";
 import { toPng } from "html-to-image";
 import { invitation, logo_single } from "../assets";
 import download from "downloadjs";
-import { PostTaskData, defaultPostTaskData } from "../types/baseTypes";
+import {
+  ListModule,
+  ListToken,
+  PostTaskData,
+  defaultPostTaskData,
+} from "../types/baseTypes";
 import dayjs from "dayjs";
 import { antdDateFormat } from "../utils/tools";
 import { DataContext } from "../context/DataContext";
 import { getNetwork } from "@wagmi/core";
+import { ZERO_ADDRESS } from "../utils/constants";
 const { Option } = Select;
 
 const UserStateItem = ({ label, value }: { label: string; value: string }) => {
@@ -40,13 +46,40 @@ const InvitationItem = ({
 const Post = () => {
   const [form] = Form.useForm();
   const [taskData, setTaskData] = useState<PostTaskData>(defaultPostTaskData);
-  const { platforms, requires, queryRequires, queryPlatforms } =
-    useContext(DataContext);
+  const [tokens, setTokens] = useState<ListToken[] | null>([]);
+  const [auditModules, setAuditModules] = useState<ListModule[] | null>([]);
+  const [detectionModules, setDetectionModules] = useState<ListModule[] | null>(
+    []
+  );
+  const {
+    platforms,
+    requires,
+    queryRequires,
+    queryPlatforms,
+    queryWhitelistedTokens,
+    queryWhitelistedAuditAndDetectionModules,
+  } = useContext(DataContext);
   const { chain } = getNetwork();
 
   useEffect(() => {
     queryRequires();
     queryPlatforms();
+    const fetchData = async () => {
+      const data1 = await queryWhitelistedTokens();
+      if (data1 && data1 != undefined) {
+        setTokens(data1);
+      }
+      const data2 = await queryWhitelistedAuditAndDetectionModules();
+      if (data2) {
+        if (data2.audit != undefined) {
+          setAuditModules(data2.audit);
+        }
+        if (data2.detection != undefined) {
+          setDetectionModules(data2.detection);
+        }
+      }
+    };
+    fetchData();
   }, [chain?.id]);
 
   const onReset = () => {
@@ -168,21 +201,20 @@ const Post = () => {
             <Select
               size="large"
               placeholder="Select a Currency"
-              onChange={(value) =>
-                setTaskData({ ...taskData, currency: value })
-              }
+              onChange={(value) => {
+                tokens?.forEach((item) => {
+                  if (item.key == value) {
+                    setTaskData({ ...taskData, currency: item.symbol });
+                  }
+                });
+              }}
             >
-              {[
-                { value: "NONE", label: "NONE" },
-                { value: "USDT", label: "USDT" },
-                { value: "USDC", label: "USDC" },
-                { value: "DAI", label: "DAI" },
-                { value: "WTOKEN", label: "WETH/WMATIC" },
-              ].map((item, index) => (
-                <Option value={item.value} key={index}>
-                  {item.label}
-                </Option>
-              ))}
+              {tokens &&
+                tokens.map((item, index) => (
+                  <Option value={item.key} key={index}>
+                    {item.symbol}
+                  </Option>
+                ))}
             </Select>
           </Form.Item>
           <Form.Item name="amount" label="AMOUNT" required>
@@ -239,18 +271,44 @@ const Post = () => {
               size="large"
               showSearch
               placeholder="Select a Audit Module"
-              onChange={(value) => setTaskData({ ...taskData, audit: value })}
-            />
+              onChange={(value) => {
+                auditModules?.forEach((item) => {
+                  if (item.key == value) {
+                    setTaskData({ ...taskData, audit: item.name });
+                  }
+                });
+              }}
+            >
+              {auditModules &&
+                auditModules.length > 0 &&
+                auditModules.map((item, index) => (
+                  <Option value={item.key} key={index}>
+                    {item.name}
+                  </Option>
+                ))}
+            </Select>
           </Form.Item>
           <Form.Item name="detection" label="DETECTION MODULE" required>
             <Select
               size="large"
               showSearch
               placeholder="Select a Detection Module"
-              onChange={(value) =>
-                setTaskData({ ...taskData, detection: value })
-              }
-            />
+              onChange={(value) => {
+                detectionModules?.forEach((item) => {
+                  if (item.key == value) {
+                    setTaskData({ ...taskData, detection: item.name });
+                  }
+                });
+              }}
+            >
+              {detectionModules &&
+                detectionModules.length > 0 &&
+                detectionModules.map((item, index) => (
+                  <Option value={item.key} key={index}>
+                    {item.name}
+                  </Option>
+                ))}
+            </Select>
           </Form.Item>
         </Form>
         <div className="flex flex-col items-center justify-between mb-[24px] md:ml-10">

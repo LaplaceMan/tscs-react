@@ -97,12 +97,12 @@ const TaskDetails = () => {
                     {
                       label: "Audit Module",
                       value: taskDetail?.audit,
-                      type: "address",
+                      type: "module",
                     },
                     {
                       label: "Detection Module",
                       value: taskDetail?.detection,
-                      type: "address",
+                      type: "module",
                     },
                     {
                       label: "State",

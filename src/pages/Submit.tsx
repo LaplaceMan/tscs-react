@@ -43,6 +43,9 @@ const Submit = () => {
 
   useEffect(() => {
     queryRequires();
+    const taskId = searchParams.get("taskId");
+    const require = searchParams.get("require");
+    taskId && require && form.setFieldsValue({ taskId, require });
   }, [chain?.id]);
 
   const onFinish = () => {
@@ -85,7 +88,6 @@ const Submit = () => {
               <Input
                 size="large"
                 placeholder="ID of the Task to Which the Work Belongs"
-                defaultValue={searchParams.get("taskId")?.toString()}
               />
             </Form.Item>
             <Form.Item name="cid" label="SOURCE LINK" required>
@@ -105,7 +107,6 @@ const Submit = () => {
                 size="large"
                 showSearch
                 placeholder="Select a Rquire"
-                defaultValue={searchParams.get("require")}
                 // optionFilterProp="children"
                 //   filterOption={(input, option) =>
                 //     (option!.children as unknown as string)

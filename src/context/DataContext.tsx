@@ -4,6 +4,8 @@ import {
   ListItem,
   ListUser,
   ListReuire,
+  ListToken,
+  ListModule,
   User,
   ListPlatform,
   ListAudit,
@@ -28,6 +30,8 @@ import {
   QueryUserOwnItems,
   QueryUserOwnTasks,
   QueryUserOwnAudits,
+  QueryWhitelistedTokens,
+  QueryWhitelistedAuditAndDetectionModules,
 } from "../utils/graphql/graphqls";
 import { getAccount, getNetwork } from "@wagmi/core";
 import { SUPPORT_NETWORK } from "../utils/constants";
@@ -97,8 +101,8 @@ export const DataProvider = ({ children }: any) => {
               payment: item.strategy,
               currency: item.currency.symbol,
               amount: item.amount,
-              audit: item.auditModule,
-              detection: item.detectionModule,
+              audit: item.auditModule.id,
+              detection: item.detectionModule.id,
               state: item.state,
             });
           });
@@ -260,8 +264,9 @@ export const DataProvider = ({ children }: any) => {
             start: getTask.start,
             deadline: getTask.deadline,
             source: getTask.source,
-            audit: getTask.auditModule,
-            detection: getTask.detectionModule,
+            audit: getTask.auditModule.id + getTask.auditModule.name,
+            detection:
+              getTask.detectionModule.id + getTask.detectionModule.name,
             state: getTask.state,
             uploads: getTask.itemCount,
             adopted:
@@ -323,8 +328,10 @@ export const DataProvider = ({ children }: any) => {
             time: getItem.time,
             require: getItem.requires.notes,
             taskSource: getItem.task.source,
-            audit: getItem.task.auditModule,
-            detection: getItem.task.detectionModule,
+            audit: getItem.task.auditModule.id + getItem.task.auditModule.name,
+            detection:
+              getItem.task.detectionModule.id +
+              getItem.task.detectionModule.name,
             versions: getItem.versionCount,
             state: getItem.state,
           };
@@ -561,6 +568,82 @@ export const DataProvider = ({ children }: any) => {
     }
   };
 
+  const queryWhitelistedTokens = async (): Promise<
+    ListToken[] | null | undefined
+  > => {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      try {
+        const data = await Client(chain.id).query({
+          query: gql(QueryWhitelistedTokens),
+        });
+        if (data && data.data && data.data.whitelistedTokens) {
+          const getTokens = data.data.whitelistedTokens;
+          const tokenArray = new Array<ListToken>();
+          getTokens.map((item: any) => {
+            tokenArray.push({
+              key: item.id,
+              symbol: item.symbol,
+              decimal: item.decimal,
+            });
+          });
+          return tokenArray;
+        }
+        return null;
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+      }
+    }
+  };
+
+  const queryWhitelistedAuditAndDetectionModules = async (): Promise<
+    | { audit: null | ListModule[]; detection: null | ListModule[] }
+    | null
+    | undefined
+  > => {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      try {
+        const data = await Client(chain.id).query({
+          query: gql(QueryWhitelistedAuditAndDetectionModules),
+        });
+        if (data && data.data) {
+          const moduleArray: {
+            audit: null | ListModule[];
+            detection: null | ListModule[];
+          } = { audit: null, detection: null };
+          console.log(data.data);
+          if (data.data.whitelistedAuditModules) {
+            const getAuditModules = data.data.whitelistedAuditModules;
+            const aduitModuleArray = new Array<ListModule>();
+            getAuditModules.map((item: any) => {
+              aduitModuleArray.push({
+                key: item.id,
+                name: item.name,
+              });
+            });
+            moduleArray.audit = aduitModuleArray;
+          }
+          if (data.data.whitelistedDetectionModules) {
+            const getDetectionModules = data.data.whitelistedDetectionModules;
+            const detectionModuleArray = new Array<ListModule>();
+            getDetectionModules.map((item: any) => {
+              detectionModuleArray.push({
+                key: item.id,
+                name: item.name,
+              });
+            });
+            moduleArray.detection = detectionModuleArray;
+          }
+          return moduleArray;
+        }
+        return null;
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+      }
+    }
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -581,6 +664,8 @@ export const DataProvider = ({ children }: any) => {
         querySpecialUserOwnItems,
         querySpecialUserOwnTasks,
         querySpecialUserOwnAudits,
+        queryWhitelistedTokens,
+        queryWhitelistedAuditAndDetectionModules,
       }}
     >
       {children}

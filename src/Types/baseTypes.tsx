@@ -99,6 +99,17 @@ export type ListItem = {
   fingerprint: string;
 };
 
+export type ListToken = {
+  key: string;
+  symbol: string;
+  decimal: string;
+};
+
+export type ListModule = {
+  key: string;
+  name: string;
+};
+
 export type Dashboard = {
   taskCount: string;
   userCount: string;

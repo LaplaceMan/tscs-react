@@ -13,6 +13,8 @@ import {
   ListPlatform,
   ListAudit,
   ListReuire,
+  ListToken,
+  ListModule,
 } from "./baseTypes";
 import {
   Upload,
@@ -90,6 +92,12 @@ export type DataContent = {
   querySpecialUserOwnAudits: (
     id: string
   ) => Promise<OwnAuditCard[] | null | undefined>;
+  queryWhitelistedTokens: () => Promise<ListToken[] | null | undefined>;
+  queryWhitelistedAuditAndDetectionModules: () => Promise<
+    | { audit: null | ListModule[]; detection: null | ListModule[] }
+    | null
+    | undefined
+  >;
 };
 
 export type GlobalContent = {

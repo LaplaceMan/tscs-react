@@ -7,20 +7,26 @@ export const QueryUsers =
 export const QueryPlatforms =
   "query { platforms {id name platformId authorityModule rateCountsToProfit rateAuditorDivide boxCount}}";
 
+/************************************************/
 export const QueryRequires = "query { requires {id notes }}";
+
+export const QueryWhitelistedTokens =
+  "query { whitelistedTokens {id symbol decimal} }";
+export const QueryWhitelistedAuditAndDetectionModules =
+  "query {whitelistedAuditModules{id name} whitelistedDetectionModules{id name}}";
 
 /************************************************/
 export const QueryTasks =
-  "query($first: Int, $skip: Int) {tasks(first: $first, skip: $skip, orderBy: start, orderDirection: desc) { id requires { notes } strategy currency {symbol} amount auditModule detectionModule state }}";
+  "query($first: Int, $skip: Int) {tasks(first: $first, skip: $skip, orderBy: start, orderDirection: desc) { id requires { notes } strategy currency {symbol} amount auditModule {id} detectionModule {id} state }}";
 
 export const QuerySpecialTask =
-  "query($id: String) {task(id: $id){applicant {id} box{orderId platform{name}}  requires { id notes } strategy currency {symbol} amount start deadline source auditModule detectionModule state itemCount adopted {id} items{id requires{notes} supporterCount opponentCount state cid fingerprint } }}";
+  "query($id: String) {task(id: $id){applicant {id} box{orderId platform{name}}  requires { id notes } strategy currency {symbol} amount start deadline source auditModule{id name} detectionModule{id name} state itemCount adopted {id} items{id requires{notes} supporterCount opponentCount state cid fingerprint } }}";
 
 export const QueryItems =
   "query($first: Int, $skip: Int) {items(first: $first, skip: $skip, orderBy: time, orderDirection: desc) {id task{id} requires{notes} supporterCount opponentCount state cid fingerprint }}";
 
 export const QuerySpecialItem =
-  "query($id: String) {item(id: $id) { task{id source auditModule detectionModule} maker{id} supporterCount opponentCount cid fingerprint time requires{notes} versionCount state audits{time attitude auditor{id userId reputation } } }}";
+  "query($id: String) {item(id: $id) { task{id source auditModule{id name} detectionModule{id name}} maker{id} supporterCount opponentCount cid fingerprint time requires{notes} versionCount state audits{time attitude auditor{id userId reputation } } }}";
 
 /************************************************/
 

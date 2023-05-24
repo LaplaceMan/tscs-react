@@ -17,6 +17,20 @@ const dataFormat = (value: string, type: string) => {
       return timestampToDate(parseInt(value));
     case "amount-D1":
       return bignumberConvert(value, "10000", 2) + "%";
+    case "module":
+      return value.slice(42);
+    default:
+      return shortenText(value, 6);
+  }
+};
+
+const tipFormat = (value: string | undefined | null, type: string) => {
+  if (!value || value === undefined) {
+    return "";
+  }
+  switch (type) {
+    case "module":
+      return value.slice(0, 42);
     default:
       return shortenText(value, 6);
   }
@@ -32,7 +46,7 @@ const PropItem = ({
   type: string;
 }) => {
   return (
-    <Tooltip title={value}>
+    <Tooltip title={tipFormat(value, type)}>
       <div className="flex flex-col bg-[#322d3a] rounded-xl min-w-[150px] p-1.5">
         <div className="text-[#00BEA1] font-semibold">{label}</div>
         <div className="text-white">
