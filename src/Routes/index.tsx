@@ -10,6 +10,7 @@ import {
   Submit,
   TaskDetails,
   ItemDetails,
+  RequireDetails,
 } from "../pages";
 import React from "react";
 
@@ -26,6 +27,7 @@ export const AllRoutes = (): React.ReactElement => {
       <Route path="/Submit" element={<Submit />} />
       <Route path="/Task/:id" element={<TaskDetails />} />
       <Route path="/Item/:id" element={<ItemDetails />} />
+      <Route path="/Require/:id" element={<RequireDetails />} />
     </Routes>
   );
 };

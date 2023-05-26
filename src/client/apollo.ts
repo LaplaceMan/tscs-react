@@ -26,6 +26,9 @@ export const TestClient = new ApolloClient({
       User: {
         merge: true,
       },
+      Require: {
+        merge: true,
+      },
     },
   }),
 });

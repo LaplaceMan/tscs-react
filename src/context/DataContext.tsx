@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   ListTask,
   ListItem,
   ListUser,
-  ListReuire,
+  Require,
   ListToken,
   ListModule,
   User,
@@ -12,6 +12,7 @@ import {
   OwnTaskCard,
   OwnItemCard,
   OwnAuditCard,
+  ListRequire,
 } from "../types/baseTypes";
 import { DataContent } from "../types/contextTypes";
 import { Task, Item, Dashboard } from "../types/baseTypes";
@@ -32,6 +33,8 @@ import {
   QueryUserOwnAudits,
   QueryWhitelistedTokens,
   QueryWhitelistedAuditAndDetectionModules,
+  QuerySpecialRequireWithTasks,
+  QuerySpecialRequireWithItems,
 } from "../utils/graphql/graphqls";
 import { getAccount, getNetwork } from "@wagmi/core";
 import { SUPPORT_NETWORK } from "../utils/constants";
@@ -44,7 +47,7 @@ export const DataProvider = ({ children }: any) => {
   const account = getAccount();
   const [isGetDataLoading, setIsGetDataLoading] = useState<boolean>(false);
   const [dashboard, setDashboard] = useState<Dashboard | null>(null);
-  const [requires, setRequires] = useState<ListReuire[] | null>([]);
+  const [requires, setRequires] = useState<Require[] | null>([]);
   const [platforms, setPlatforms] = useState<ListPlatform[] | null>([]);
   const { chain } = getNetwork();
 
@@ -551,10 +554,9 @@ export const DataProvider = ({ children }: any) => {
         });
         if (data && data.data && data.data.requires) {
           const getReuires = data.data.requires;
-          const requireArray = new Array<ListReuire>();
+          const requireArray = new Array<Require>();
           getReuires.map((item: any) => {
             requireArray.push({
-              key: item.id,
               id: item.id,
               name: item.notes,
             });
@@ -611,7 +613,6 @@ export const DataProvider = ({ children }: any) => {
             audit: null | ListModule[];
             detection: null | ListModule[];
           } = { audit: null, detection: null };
-          console.log(data.data);
           if (data.data.whitelistedAuditModules) {
             const getAuditModules = data.data.whitelistedAuditModules;
             const aduitModuleArray = new Array<ListModule>();
@@ -644,6 +645,79 @@ export const DataProvider = ({ children }: any) => {
     }
   };
 
+  const querySpecialRequire = async (
+    filter: string,
+    id: string
+  ): Promise<
+    | { details: ListRequire; entities: (ListTask | ListItem)[] }
+    | null
+    | undefined
+  > => {
+    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
+      try {
+        const data = await Client(chain.id).query({
+          query: gql(
+            filter == "Tasks"
+              ? QuerySpecialRequireWithTasks
+              : QuerySpecialRequireWithItems
+          ),
+          variables: {
+            id,
+          },
+        });
+        if (data && data.data && data.data.require) {
+          const require = data.data.require;
+          const details: ListRequire = {
+            key: require.id,
+            id: require.id,
+            name: require.notes,
+            time: require.time,
+            registrant: require.registrant,
+            taskCount: require.taskCount,
+            itemCount: require.itemCount,
+          };
+          const dataArray = new Array<ListItem | ListTask>();
+          if (filter == "Tasks" && require.tasks) {
+            const data = require.tasks;
+            data.map((item: any) => {
+              dataArray.push({
+                key: item.id,
+                id: item.id,
+                require: item.requires.notes,
+                payment: item.strategy,
+                currency: item.currency.symbol,
+                amount: item.amount,
+                audit: item.auditModule.id,
+                detection: item.detectionModule.id,
+                state: item.state,
+              });
+            });
+          } else if (require.items) {
+            const data = require.items;
+            data.map((item: any) => {
+              dataArray.push({
+                key: item.id,
+                id: item.id,
+                task: item.task.id,
+                require: item.requires.notes,
+                support: item.supporterCount,
+                oppose: item.opponentCount,
+                state: item.state,
+                source: item.cid,
+                fingerprint: item.fingerprint,
+              });
+            });
+          }
+          return { details: details, entities: dataArray };
+        }
+        return null;
+      } catch (err) {
+        console.log("Error fetching data: ", err);
+        message.error("Error: " + err);
+      }
+    }
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -664,6 +738,7 @@ export const DataProvider = ({ children }: any) => {
         querySpecialUserOwnItems,
         querySpecialUserOwnTasks,
         querySpecialUserOwnAudits,
+        querySpecialRequire,
         queryWhitelistedTokens,
         queryWhitelistedAuditAndDetectionModules,
       }}

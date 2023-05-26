@@ -7,4 +7,5 @@ export { default as Post } from "./Post";
 export { default as Submit } from "./Submit";
 export { default as TaskDetails } from "./TaskDetails";
 export { default as ItemDetails } from "./ItemDetails";
+export { default as RequireDetails } from "./RequireDetails";
 export { default as UserNotFound } from "./NotFound/UserNotFound";

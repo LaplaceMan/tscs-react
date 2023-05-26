@@ -7,8 +7,8 @@ import {
   AuditModal,
 } from "../components";
 import { BsListUl } from "react-icons/bs";
-import { columns, data } from "../utils/table/columns";
-import { Link, useParams } from "react-router-dom";
+import { columns } from "../utils/table/columns";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { DataContext } from "../context/DataContext";
 import { GlobalContext } from "../context/GlobalContext";
 import { Item, ListAudit } from "../types/baseTypes";
@@ -20,6 +20,7 @@ const ItemDetails = () => {
   const [itemDetail, setItemDetail] = useState<Item | null>();
   const [itemAudits, setItemAudits] = useState<ListAudit[] | null>([]);
   const param = useParams();
+  const navigate = useNavigate();
   const { chain } = getNetwork();
 
   useEffect(() => {
@@ -153,9 +154,9 @@ const ItemDetails = () => {
                   width: document.body.clientWidth - 40,
                   maxHeight: "522px",
                 }}
-                onRow={(record) => {
+                onRow={(record: any) => {
                   return {
-                    onClick: () => console.log(record),
+                    onClick: () => navigate(`/Personal/${record.auditor}`),
                   };
                 }}
               />

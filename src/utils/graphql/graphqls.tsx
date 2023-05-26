@@ -28,6 +28,11 @@ export const QueryItems =
 export const QuerySpecialItem =
   "query($id: String) {item(id: $id) { task{id source auditModule{id name} detectionModule{id name}} maker{id} supporterCount opponentCount cid fingerprint time requires{notes} versionCount state audits{time attitude auditor{id userId reputation } } }}";
 
+export const QuerySpecialRequireWithItems =
+  "query($id: String) {require(id: $id) {notes registrant taskCount itemCount time items{id task{id} requires{notes} supporterCount opponentCount state cid fingerprint } } } ";
+
+export const QuerySpecialRequireWithTasks =
+  "query($id: String) {require(id: $id) {notes registrant taskCount itemCount time tasks{id requires { notes } strategy currency {symbol} amount auditModule {id} detectionModule {id} state } } } ";
 /************************************************/
 
 export const QuerySpecialUser =

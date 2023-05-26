@@ -2,7 +2,7 @@ import { Select, Table, Input } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { BsPlus } from "react-icons/bs";
 import { DataContext } from "../context/DataContext";
-import { columns, data } from "../utils/table/columns";
+import { columns } from "../utils/table/columns";
 import { Link, useNavigate } from "react-router-dom";
 import { getNetwork } from "@wagmi/core";
 import { ListTask } from "../types/baseTypes";
@@ -10,8 +10,13 @@ import { ListTask } from "../types/baseTypes";
 const TasksPage = (): React.ReactElement => {
   const { queryTasks, isGetDataLoading } = useContext(DataContext);
   const [tasks, setListTasks] = useState<ListTask[] | null>([]);
+  const [searchSelete, setSearchSelete] = useState({
+    type: "taskId",
+    value: "",
+  });
   const navigate = useNavigate();
   const { chain } = getNetwork();
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await queryTasks(10, 0, "0");
@@ -21,6 +26,14 @@ const TasksPage = (): React.ReactElement => {
     };
     fetchData();
   }, [chain?.id]);
+
+  const searchHanler = () => {
+    if (searchSelete.type == "taskId") {
+      navigate(`/Task/${searchSelete.value}`);
+    } else {
+      navigate(`/Require/${searchSelete.value}?filter=Tasks`);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center styled">
@@ -36,6 +49,9 @@ const TasksPage = (): React.ReactElement => {
                 { value: "taskId", label: "Task ID" },
                 { value: "requireId", label: "Require ID" },
               ]}
+              onChange={(value) =>
+                setSearchSelete({ ...searchSelete, type: value })
+              }
             />
             <div
               style={{
@@ -50,8 +66,14 @@ const TasksPage = (): React.ReactElement => {
             className="search"
             placeholder="Search the Task"
             style={{ border: "none" }}
+            onChange={(e) =>
+              setSearchSelete({ ...searchSelete, value: e.target.value })
+            }
           />
-          <div className="flex rounded-3xl bg-[#00BEA1] h-full items-center justify-center px-5 text-white font-medium cursor-pointer">
+          <div
+            className="flex rounded-3xl bg-[#00BEA1] h-full items-center justify-center px-5 text-white font-medium cursor-pointer"
+            onClick={searchHanler}
+          >
             Search
           </div>
         </div>

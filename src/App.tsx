@@ -17,7 +17,13 @@ const App = () => {
           </Header>
         </Affix>
         <div className="flex w-full items-center justify-center">
-          <Content>{AllRoutes()}</Content>
+          <Content
+            style={{
+              minHeight: document.body.clientHeight - 180,
+            }}
+          >
+            {AllRoutes()}
+          </Content>
         </div>
         <Footer>
           <DefaultFooter />

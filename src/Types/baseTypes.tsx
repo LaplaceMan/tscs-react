@@ -149,12 +149,20 @@ export type ListPlatform = {
   boxes: string;
 };
 
-export type ListReuire = {
-  key: string;
+export type Require = {
   id: string;
   name: string;
 };
 
+export type ListRequire = {
+  key: string;
+  id: string;
+  name: string;
+  time: string;
+  registrant: string;
+  taskCount: string;
+  itemCount: string;
+};
 export type ListAudit = {
   key: string;
   id: string;

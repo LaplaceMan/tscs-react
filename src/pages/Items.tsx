@@ -2,7 +2,7 @@ import { Select, Table, Input } from "antd";
 import { BsPlus } from "react-icons/bs";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { columns, data } from "../utils/table/columns";
+import { columns } from "../utils/table/columns";
 import { DataContext } from "../context/DataContext";
 import { getNetwork } from "@wagmi/core";
 import { ListItem } from "../types/baseTypes";
@@ -10,8 +10,13 @@ import { ListItem } from "../types/baseTypes";
 const Items = (): React.ReactElement => {
   const { queryItems, isGetDataLoading } = useContext(DataContext);
   const [items, setListItems] = useState<ListItem[] | null>([]);
+  const [searchSelete, setSearchSelete] = useState({
+    type: "itemId",
+    value: "",
+  });
   const navigate = useNavigate();
   const { chain } = getNetwork();
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await queryItems(10, 0, "0");
@@ -21,6 +26,14 @@ const Items = (): React.ReactElement => {
     };
     fetchData();
   }, [chain?.id]);
+
+  const searchHanler = () => {
+    if (searchSelete.type == "itemId") {
+      navigate(`/Item/${searchSelete.value}`);
+    } else {
+      navigate(`/Require/${searchSelete.value}?filter=Items`);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center styled">
@@ -36,6 +49,9 @@ const Items = (): React.ReactElement => {
                 { value: "itemId", label: "Item ID" },
                 { value: "requireId", label: "Require ID" },
               ]}
+              onChange={(value) =>
+                setSearchSelete({ ...searchSelete, type: value })
+              }
             />
             <div
               style={{
@@ -50,8 +66,14 @@ const Items = (): React.ReactElement => {
             className="search"
             placeholder="Search the Item"
             style={{ border: "none" }}
+            onChange={(e) =>
+              setSearchSelete({ ...searchSelete, value: e.target.value })
+            }
           />
-          <div className="flex rounded-3xl bg-[#00BEA1] h-full items-center justify-center px-5 text-white font-medium cursor-pointer">
+          <div
+            className="flex rounded-3xl bg-[#00BEA1] h-full items-center justify-center px-5 text-white font-medium cursor-pointer"
+            onClick={searchHanler}
+          >
             Search
           </div>
         </div>

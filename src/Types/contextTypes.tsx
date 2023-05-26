@@ -12,7 +12,8 @@ import {
   ListUser,
   ListPlatform,
   ListAudit,
-  ListReuire,
+  Require,
+  ListRequire,
   ListToken,
   ListModule,
 } from "./baseTypes";
@@ -72,7 +73,7 @@ export type DataContent = {
   querySpecialTask: (
     id: string
   ) => Promise<{ task: Task; items: ListItem[] | null } | null | undefined>;
-  requires: ListReuire[] | null;
+  requires: Require[] | null;
   platforms: ListPlatform[] | null;
   isGetDataLoading: boolean;
   queryRequires: () => void;
@@ -95,6 +96,14 @@ export type DataContent = {
   queryWhitelistedTokens: () => Promise<ListToken[] | null | undefined>;
   queryWhitelistedAuditAndDetectionModules: () => Promise<
     | { audit: null | ListModule[]; detection: null | ListModule[] }
+    | null
+    | undefined
+  >;
+  querySpecialRequire: (
+    filter: string,
+    id: string
+  ) => Promise<
+    | { details: ListRequire; entities: (ListTask | ListItem)[] }
     | null
     | undefined
   >;
