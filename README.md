@@ -1,15 +1,17 @@
 # Murmes Front-end Demo
 
-[Murmes](https://murmes.gitbook.io/murmes-protocol/) is a blockchain-based tokenized subtitling crowdsourcing system. It is dedicated to solving the problem of "language silos" in the current video media platform. Through a complete set of trading mechanisms and economic models, video creators, subtitle makers, viewers, and investors are connected in an open, transparent, and multi-profit ecosystem.
+[Murmes](https://murmes.gitbook.io/murmes-protocol/) is a modular, customizable and multi-ecology compatible crowdsourcing protocol on the blockchain that will provide WEB3 users with a flexible, fun and multi-beneficial crowdsourcing marketplace.
 
 This front-end implements the main functions in the Murmes protocol:
 
-- Submit applications.
-- Upload subtitles.
-- Audit (evaluation) subtitles.
-- Token transfer and authorization (Zimu and VT).
-- Pledge and withdrawal (User join).
-- Pre-settlement and settlement.
+- Post tasks.
+- Submit items.
+- Audit items.
+- Add requires.
+- Token transfer and Approve.
+- Deposit and Withdraw.
+- Pre-extract and Extract.
+- Integration with Lens Protocol ecology.
 
 # Running locally
 
@@ -26,8 +28,3 @@ This front-end implements the main functions in the Murmes protocol:
 ## Build
 
 `npm run build`
-
-# Future and need to be fixed
-
-- [ ] 语言 -> 申请（字幕） 平台 -> 视频 申请 -> 字幕
-- [ ] 解决 Hook 的 BUG（初步认为是使用 Apollo 造成的冲突，不影响 Demo 使用）

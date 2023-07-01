@@ -13,11 +13,11 @@ const ToolForLens = () => {
     getLensRevenueSettlable,
     lensSettleable,
   } = useContext(ApplicationContext);
-  const [videoId, setVideoId] = useState("");
+  const [boxId, setBoxId] = useState("");
   const [amount, setAmount] = useState("");
 
-  const handleVideoChange = (videoId: string) => {
-    setVideoId(videoId);
+  const handleUpdateChange = (videoId: string) => {
+    setBoxId(videoId);
     videoId != "" && getLensRevenueSettlable(videoId);
   };
 
@@ -36,12 +36,12 @@ const ToolForLens = () => {
 
         <Input
           size="large"
-          placeholder="Box's Real ID (Based on ProfileId and PubId)"
+          placeholder="Box's ID"
           style={{ width: "100%", color: "white" }}
-          onChange={(e) => handleVideoChange(e.target.value)}
+          onChange={(e) => handleUpdateChange(e.target.value)}
         />
 
-        <FullButton label="Update" fn={() => updateRevenueInLens(videoId)} />
+        <FullButton label="Update" fn={() => updateRevenueInLens(boxId)} />
       </div>
       <div className="bg-[#0f0a19] flex flex-col w-full rounded-xl items-center p-3 space-y-3">
         <div className="flex w-full justify-between items-end text-[#696969] text-base">

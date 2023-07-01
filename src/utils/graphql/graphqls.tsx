@@ -42,10 +42,10 @@ export const QueryUserOwnTasks =
   "query($id: String) { user(id: $id) { tasks(orderBy: time, orderDirection: desc){ id box{orderId platform{name} } state source} }}";
 
 export const QueryUserOwnItems =
-  "query($id: String) { user(id: $id) { itemsOwner(orderBy: time, orderDirection: desc) {id cid task{id box{orderId}} state} }}";
+  "query($id: String) { user(id: $id) { itemsOwner(orderBy: time, orderDirection: desc) {id cid task{id box{orderId} strategy} state} }}";
 
 export const QueryUserOwnAudits =
-  "query($id: String) { user(id: $id) { audits(orderBy: time, orderDirection: desc) { item{id cid task{id} state} attitude} }}";
+  "query($id: String) { user(id: $id) { audits(orderBy: time, orderDirection: desc) { item{id cid task{id strategy box{orderId}} state} attitude} }}";
 
 /************************************************/
 

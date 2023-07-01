@@ -4,10 +4,21 @@ import { ApplicationContext } from "../../context/ApplicationContext";
 import { GlobalContext } from "../../context/GlobalContext";
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import PrimaryButton from "../PrimaryButton";
+import { useParams } from "react-router-dom";
 
 const AuditModal = () => {
   const { hideAuditModal, isLoading } = useContext(GlobalContext);
+  const { auditItem } = useContext(ApplicationContext);
   const [auditResult, setAuditResult] = useState("");
+  const param = useParams();
+
+  const auditItemHandle = () => {
+    const result = auditResult == "support" ? "0" : "1";
+    const itemId = param.id;
+    if(itemId && itemId != undefined) {
+      auditItem({itemId: itemId, attitude: result});
+    }
+  }
 
   return (
     <Spin spinning={isLoading} size="large">
@@ -41,7 +52,7 @@ const AuditModal = () => {
             label="Submit"
             bgColor="#00BEA1"
             textColor="#fff"
-            fn={() => []}
+            fn={auditItemHandle}
           />
           <PrimaryButton
             label="Cancel"

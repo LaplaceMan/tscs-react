@@ -1,0 +1,361 @@
+[
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "platform",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint16",
+          "name": "rate1",
+          "type": "uint16"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint16",
+          "name": "rate2",
+          "type": "uint16"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "authority",
+          "type": "address"
+        }
+      ],
+      "name": "RegisterPlatform",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "Murmes",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        }
+      ],
+      "name": "createBox",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "boxId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getBox",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "platform",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "unsettled",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "tasks",
+              "type": "uint256[]"
+            }
+          ],
+          "internalType": "struct DataTypes.BoxStruct",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "platfrom",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "realId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getBoxOrderIdByRealId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "boxId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getBoxTasks",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "platform",
+          "type": "address"
+        }
+      ],
+      "name": "getPlatform",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "symbol",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "platformId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint16",
+              "name": "rateCountsToProfit",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint16",
+              "name": "rateAuditorDivide",
+              "type": "uint16"
+            },
+            {
+              "internalType": "address",
+              "name": "authorityModule",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct DataTypes.PlatformStruct",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "platform",
+          "type": "address"
+        }
+      ],
+      "name": "getPlatformAuthorityModule",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "platform",
+          "type": "address"
+        }
+      ],
+      "name": "getPlatformIdByAddress",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "platform",
+          "type": "address"
+        }
+      ],
+      "name": "getPlatformRate",
+      "outputs": [
+        {
+          "internalType": "uint16",
+          "name": "",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "",
+          "type": "uint16"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "rate1",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "rate2",
+          "type": "uint16"
+        }
+      ],
+      "name": "setPlatformRate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "boxId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "tasks",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "updateBoxTasksByMurmes",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "boxId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "int256",
+          "name": "differ",
+          "type": "int256"
+        }
+      ],
+      "name": "updateBoxUnsettledRevenueByMurmes",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "ids",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "updateBoxesRevenue",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]

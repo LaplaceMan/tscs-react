@@ -1,11 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import type { UploadProps } from "antd";
+import { UploadProps, Spin } from "antd";
 import { Form, Input, Select, Upload } from "antd";
 import { PrimaryButton, DotsContainer } from "../components";
 import { BsUpload } from "react-icons/bs";
 import { DataContext } from "../context/DataContext";
+import { ApplicationContext } from "../context/ApplicationContext";
 import { useSearchParams } from "react-router-dom";
-import { getNetwork } from "@wagmi/core";
+import { getNetwork, getAccount } from "@wagmi/core";
+import { User } from "../types/baseTypes";
+import { bignumberConvert } from "../utils/tools";
+import { DECIMALS_18 } from "../utils/constants";
+import { GlobalContext } from "../context/GlobalContext";
 const { Option } = Select;
 
 const UserStateItem = ({ label, value }: { label: string; value: string }) => {
@@ -34,9 +39,14 @@ const BundlrStateItem = ({
 
 const Submit = () => {
   const [form] = Form.useForm();
-  const { queryRequires, requires } = useContext(DataContext);
+  const { queryRequires, requires, querySpecialUser } = useContext(DataContext);
+  const { submitItem } = useContext(ApplicationContext);
+  const { isLoading } = useContext(GlobalContext)
   const { chain } = getNetwork();
   const [searchParams] = useSearchParams();
+  const [user, setUser] = useState<User | null>(null);
+  const account = getAccount();
+
   const onReset = () => {
     form.resetFields();
   };
@@ -46,11 +56,19 @@ const Submit = () => {
     const taskId = searchParams.get("taskId");
     const require = searchParams.get("require");
     taskId && require && form.setFieldsValue({ taskId, require });
+
+    const feachData = async (id: string) => {
+      const data = await querySpecialUser(id);
+      if (data && data.item != undefined) {
+        setUser(data.item);
+      }
+    };
+    account.address && feachData(account.address.toLocaleLowerCase());
   }, [chain?.id]);
 
   const onFinish = () => {
     const values = form.getFieldsValue();
-    console.log(values);
+    submitItem(values);
   };
 
   const uploadProps: UploadProps = {
@@ -73,158 +91,160 @@ const Submit = () => {
   };
 
   return (
-    <div className="flex items-center justify-center styled">
-      <div className="flex md:w-[1200px] md:flex-row flex-col justify-between">
-        <div className="flex w-full flex-col items-center justify-center">
-          <Form
-            form={form}
-            layout="vertical"
-            requiredMark="optional"
-            className="w-full"
-            onFinish={onFinish}
-            id="form"
-          >
-            <Form.Item name="taskId" label="TASK ID" required>
-              <Input
-                size="large"
-                placeholder="ID of the Task to Which the Work Belongs"
-              />
-            </Form.Item>
-            <Form.Item name="cid" label="SOURCE LINK" required>
-              <Input
-                size="large"
-                placeholder="Storage Address for Completed Work"
-              />
-            </Form.Item>
-            <Form.Item name="fingerprint" label="Fingerprint" required>
-              <Input
-                size="large"
-                placeholder="Fingerprint Value for Completed Work"
-              />
-            </Form.Item>
-            <Form.Item name="require" label="REQUIRE" required>
-              <Select
-                size="large"
-                showSearch
-                placeholder="Select a Rquire"
+    <Spin spinning={isLoading} size="large">
+      <div className="flex items-center justify-center styled">
+        <div className="flex md:w-[1200px] md:flex-row flex-col justify-between">
+          <div className="flex w-full flex-col items-center justify-center">
+            <Form
+              form={form}
+              layout="vertical"
+              requiredMark="optional"
+              className="w-full"
+              onFinish={onFinish}
+              id="form"
+            >
+              <Form.Item name="taskId" label="TASK ID" required>
+                <Input
+                  size="large"
+                  placeholder="ID of the Task to Which the Work Belongs"
+                />
+              </Form.Item>
+              <Form.Item name="cid" label="SOURCE LINK" required>
+                <Input
+                  size="large"
+                  placeholder="Storage Address for Completed Work"
+                />
+              </Form.Item>
+              <Form.Item name="fingerprint" label="Fingerprint" required>
+                <Input
+                  size="large"
+                  placeholder="Fingerprint Value for Completed Work"
+                />
+              </Form.Item>
+              <Form.Item name="require" label="REQUIRE" required>
+                <Select
+                  size="large"
+                  showSearch
+                  placeholder="Select a Rquire"
                 // optionFilterProp="children"
                 //   filterOption={(input, option) =>
                 //     (option!.children as unknown as string)
                 //       .toLowerCase()
                 //       .includes(input.toLowerCase())
                 //   }
-              >
-                {requires &&
-                  requires.map((item, index) => (
-                    <Option key={index} value={item.id}>
-                      {item.name}
-                    </Option>
-                  ))}
-              </Select>
-            </Form.Item>
-          </Form>
-          <div className="flex text-white items-center justify-center border-2 border-dashed border-[#322d3a] rounded-xl w-full py-5 mb-10 mt-5">
-            <div className="flex space-x-10 items-center justify-center">
-              <UserStateItem label="Reputation" value="100.0" />
-              <div
-                style={{
-                  width: "2px",
-                  height: "30px",
-                  backgroundColor: "#322d3a",
-                  borderRadius: "10px",
-                }}
+                >
+                  {requires &&
+                    requires.map((item, index) => (
+                      <Option key={index} value={item.id}>
+                        {item.name}
+                      </Option>
+                    ))}
+                </Select>
+              </Form.Item>
+            </Form>
+            <div className="flex text-white items-center justify-center border-2 border-dashed border-[#322d3a] rounded-xl w-full py-5 mb-10 mt-5">
+              <div className="flex space-x-10 items-center justify-center">
+                <UserStateItem label="Reputation" value={user ? bignumberConvert(user.reputation, 10, 1) : "None"} />
+                <div
+                  style={{
+                    width: "2px",
+                    height: "30px",
+                    backgroundColor: "#322d3a",
+                    borderRadius: "10px",
+                  }}
+                />
+                <UserStateItem label="Deposit" value={user ? bignumberConvert(user.deposit, DECIMALS_18, 1) : "None"} />
+                <div
+                  style={{
+                    width: "2px",
+                    height: "30px",
+                    backgroundColor: "#322d3a",
+                    borderRadius: "10px",
+                  }}
+                />
+                <UserStateItem label="ID" value={user ? `#${user.userId}` : "None"} />
+              </div>
+            </div>
+            <div className="flex space-x-10">
+              <PrimaryButton
+                label="Reset"
+                bgColor="#edebdc"
+                textColor="#000000"
+                fn={onReset}
               />
-              <UserStateItem label="Deposit" value="100.0" />
-              <div
-                style={{
-                  width: "2px",
-                  height: "30px",
-                  backgroundColor: "#322d3a",
-                  borderRadius: "10px",
-                }}
+              <PrimaryButton
+                label="Submit"
+                bgColor="#00BEA1"
+                textColor="#fff"
+                fn={onFinish}
               />
-              <UserStateItem label="Status" value="Normal" />
             </div>
           </div>
-          <div className="flex space-x-10">
-            <PrimaryButton
-              label="Reset"
-              bgColor="#edebdc"
-              textColor="#000000"
-              fn={onReset}
-            />
-            <PrimaryButton
-              label="Submit"
-              bgColor="#00BEA1"
-              textColor="#fff"
-              fn={onFinish}
-            />
-          </div>
-        </div>
-        <div className="flex flex-col items-center justify-between md:ml-10">
-          <div className="flex flex-col h-full w-[550px] items-center justify-between text-white">
-            <DotsContainer
-              title={
-                <div className="flex flex-col items-center title text-xl">
-                  Upload File
-                </div>
-              }
-              content={
-                <div className="flex flex-col items-center justify-center min-h-[150px] cursor-pointer">
-                  <Upload {...uploadProps}>
-                    <div className="flex flex-col items-center justify-center  ">
-                      <BsUpload fontSize={35} color="#edebdc" />
-                      <div className="mt-5 text-lg font- text-white">
-                        Click to Upload File
-                      </div>
-                    </div>
-                  </Upload>
-                </div>
-              }
-            />
-
-            <DotsContainer
-              title={
-                <div className="flex flex-col items-center title text-xl">
-                  Upload to Arwarve
-                </div>
-              }
-              content={
-                <div className="flex flex-col w-full p-5 space-y-2">
-                  <BundlrStateItem label="Your Balance" value={<>10.0</>} />
-                  <BundlrStateItem
-                    label="Your Storage Balance"
-                    value={<>10.0</>}
-                  />
-                  <BundlrStateItem
-                    label="Estimated Cost to Upload"
-                    value={<>10.0</>}
-                  />
-                  <BundlrStateItem
-                    label="Amount to Deposit"
-                    value={
-                      <div className="flex border border-[#322d3a] rounded-3xl p-1 w-full mt-[8px]">
-                        <Input
-                          placeholder="Support By Bundlr"
-                          style={{
-                            width: "100%",
-                            fontWeight: "",
-                            border: "none",
-                          }}
-                        />
-                        <div className="flex items-center rounded-full font-semibold text-sm cursor-pointer hover:brightness-110 bg-[#edebdc] text-black px-5 -m-1">
-                          Deposit
+          <div className="flex flex-col items-center justify-between md:ml-10">
+            <div className="flex flex-col h-full w-[550px] items-center justify-between text-white">
+              <DotsContainer
+                title={
+                  <div className="flex flex-col items-center title text-xl">
+                    Upload File
+                  </div>
+                }
+                content={
+                  <div className="flex flex-col items-center justify-center min-h-[150px] cursor-pointer">
+                    <Upload {...uploadProps}>
+                      <div className="flex flex-col items-center justify-center  ">
+                        <BsUpload fontSize={35} color="#edebdc" />
+                        <div className="mt-5 text-lg font- text-white">
+                          Click to Upload File
                         </div>
                       </div>
-                    }
-                  />
-                </div>
-              }
-            />
+                    </Upload>
+                  </div>
+                }
+              />
+
+              <DotsContainer
+                title={
+                  <div className="flex flex-col items-center title text-xl">
+                    Upload to Arwarve
+                  </div>
+                }
+                content={
+                  <div className="flex flex-col w-full p-5 space-y-2">
+                    <BundlrStateItem label="Your Balance" value={<>10.0</>} />
+                    <BundlrStateItem
+                      label="Your Storage Balance"
+                      value={<>10.0</>}
+                    />
+                    <BundlrStateItem
+                      label="Estimated Cost to Upload"
+                      value={<>10.0</>}
+                    />
+                    <BundlrStateItem
+                      label="Amount to Deposit"
+                      value={
+                        <div className="flex border border-[#322d3a] rounded-3xl p-1 w-full mt-[8px]">
+                          <Input
+                            placeholder="Support By Bundlr"
+                            style={{
+                              width: "100%",
+                              fontWeight: "",
+                              border: "none",
+                            }}
+                          />
+                          <div className="flex items-center rounded-full font-semibold text-sm cursor-pointer hover:brightness-110 bg-[#edebdc] text-black px-5 -m-1">
+                            Deposit
+                          </div>
+                        </div>
+                      }
+                    />
+                  </div>
+                }
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Spin>
   );
 };
 

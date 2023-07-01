@@ -2,9 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Form, Input, Spin } from "antd";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ApplicationContext } from "../../context/ApplicationContext";
-import { BASE_RATE } from "../../utils/constants";
-import { ethers } from "ethers";
-import { RealUpdateApplictaionTransaction } from "../../types/formTypes";
+import { UpdateTask } from "../../types/formTypes";
 import { PrimaryButton } from "..";
 
 const UpdateTaskModal = () => {
@@ -15,9 +13,7 @@ const UpdateTaskModal = () => {
 
   const onFinish = () => {
     const values = form.getFieldsValue();
-    const date = values.deadline.valueOf();
-    values.deadline = parseInt((date / 1000).toString());
-    updateTask(values as RealUpdateApplictaionTransaction);
+    updateTask(values);
   };
 
   useEffect(() => {
@@ -72,7 +68,7 @@ const UpdateTaskModal = () => {
               label="Update"
               bgColor="#00BEA1"
               textColor="#fff"
-              fn={() => []}
+              fn={onFinish}
             />
             <PrimaryButton
               label="Cancel"

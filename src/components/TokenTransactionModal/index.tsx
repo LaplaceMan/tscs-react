@@ -37,7 +37,7 @@ const TokenTransactionModal = () => {
         >
           <div className="flex flex-col p-5 bg-gray-200 rounded-xl text-center">
             <div className="text-xl font-bold">
-              {defaultTokenTransactionData?.operation}{" "}
+              {defaultTokenTransactionData?.operation}
               {!defaultTokenTransactionData && "Operate"} Your Tokens
             </div>
             <div>Operate on The Tokens You Hold</div>

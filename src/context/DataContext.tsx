@@ -22,7 +22,6 @@ import {
   QueryTasks,
   QueryItems,
   QueryUsers,
-  QueryLockedToken,
   QueryRequires,
   QueryPlatforms,
   QuerySpecialTask,
@@ -36,7 +35,7 @@ import {
   QuerySpecialRequireWithTasks,
   QuerySpecialRequireWithItems,
 } from "../utils/graphql/graphqls";
-import { getAccount, getNetwork } from "@wagmi/core";
+import { getNetwork } from "@wagmi/core";
 import { SUPPORT_NETWORK } from "../utils/constants";
 import { gql } from "@apollo/client";
 import { Client } from "../client/apollo";
@@ -44,7 +43,6 @@ import { message } from "antd";
 
 export const DataContext = React.createContext<DataContent>({} as DataContent);
 export const DataProvider = ({ children }: any) => {
-  const account = getAccount();
   const [isGetDataLoading, setIsGetDataLoading] = useState<boolean>(false);
   const [dashboard, setDashboard] = useState<Dashboard | null>(null);
   const [requires, setRequires] = useState<Require[] | null>([]);
@@ -273,7 +271,7 @@ export const DataProvider = ({ children }: any) => {
             state: getTask.state,
             uploads: getTask.itemCount,
             adopted:
-              getTask.adopted || typeof (getTask.adopted != undefined)
+              getTask.adopted && typeof (getTask.adopted != undefined)
                 ? getTask.adopted.id
                 : "None",
           };
@@ -469,6 +467,7 @@ export const DataProvider = ({ children }: any) => {
               taskId: item.task.id,
               boxId: item.task.box.orderId,
               state: item.state,
+              payment: item.task.strategy
             });
           });
           setIsGetDataLoading(false);
@@ -497,15 +496,18 @@ export const DataProvider = ({ children }: any) => {
           },
         });
         if (data && data.data && data.data.user && data.data.user.audits) {
+          console.log(data)
           const getAudits = data.data.user.audits;
           const auditArray = new Array<OwnAuditCard>();
           getAudits.map((item: any) => {
             auditArray.push({
               itemId: item.item.id,
               taskId: item.item.task.id,
+              boxId: item.item.task.box?.orderId,
               source: item.item.cid,
               result: item.attitude,
               state: item.item.state,
+              payment: item.item.task.strategy
             });
           });
           setIsGetDataLoading(false);
@@ -517,31 +519,6 @@ export const DataProvider = ({ children }: any) => {
         console.log("Error fetching data: ", err);
         message.error("Error: " + err);
         setIsGetDataLoading(false);
-      }
-    }
-  };
-
-  const queryUserLockedToken = async (platform: string, day: number) => {
-    if (chain && SUPPORT_NETWORK.includes(chain.id)) {
-      try {
-        const data = await Client(chain.id).query({
-          query: gql(QueryLockedToken),
-          variables: {
-            id:
-              account.address!.toLocaleLowerCase() +
-              "-" +
-              platform +
-              "-" +
-              day.toString(),
-          },
-        });
-        if (data && data.data && data.data.reward && data.data.reward.locked) {
-          const locked = data.data.reward.locked;
-        } else {
-        }
-      } catch (err) {
-        console.log("Error fetching data: ", err);
-        message.error("Error: " + err);
       }
     }
   };
@@ -726,7 +703,6 @@ export const DataProvider = ({ children }: any) => {
         queryTasks,
         queryItems,
         queryUsers,
-        queryUserLockedToken,
         querySpecialTask,
         requires,
         platforms,

@@ -23,8 +23,8 @@ const DefaultFooter = () => {
           footerLinkIcon(item.src, item.link, index)
         )}
       </div>
-      <div className="flex text-sm mt-3">
-        Copyright © 2023 Heichen. All rights reserved.
+      <div className="flex text-sm mt-3 text-[#E6E6E6]">
+        COPYRIGHT © 2023 HEICHEN. All RIGHTS RESERVED.
       </div>
     </div>
   );

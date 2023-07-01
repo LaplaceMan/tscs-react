@@ -5,6 +5,7 @@ import {
   shortenText,
   bignumberConvert,
   personalAssetBalanceOptimize,
+  shortenItemContent,
 } from "../../utils/tools";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ApplicationContext } from "../../context/ApplicationContext";
@@ -22,7 +23,7 @@ const AssetCardItem = ({ label, value }: { label: string; value: string }) => {
 const OwnAssetCard = ({ token }: { token: OwnAssetsCard }) => {
   const { showTokenTransactionModal } = useContext(GlobalContext);
   const { updateDefaultTokenTransaction } = useContext(ApplicationContext);
-
+  
   const tokenTransactionHandle = (label: string) => {
     updateDefaultTokenTransaction({
       decimals: token.decimals,
@@ -53,7 +54,7 @@ const OwnAssetCard = ({ token }: { token: OwnAssetsCard }) => {
               <AssetCardItem
                 label="Balance"
                 value={personalAssetBalanceOptimize(
-                  bignumberConvert(token.balance, DECIMALS_6, 2)
+                  shortenItemContent(bignumberConvert(token.balance, DECIMALS_6, 2))
                 )}
               />
             </div>

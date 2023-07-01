@@ -1,24 +1,27 @@
-export type Submit = {
+
+export type PostTask = {
   amount: string;
-  platform: string;
+  audit: string;
+  currency: string;
   deadline: number;
-  language: number;
+  detection: string;
+  payment: string;
+  platform: string;
+  require: string;
   source: string;
-  strategy: number;
-  videoId: number;
+  sourceId: string;
 };
 
-export type Upload = {
-  applyId: string;
-  language: number;
+export type SubmitItem = {
+  taskId: string;
+  require: string;
   fingerprint: string;
   cid: string;
 };
 
-export type Audit = {
-  subtitleId: string;
-  attitude: number;
-  auditor: string;
+export type AuditItem = {
+  itemId: string;
+  attitude: string;
 };
 
 export type TokenTransaction = {
@@ -29,15 +32,15 @@ export type TokenTransaction = {
   operation: string;
 };
 
-export type RealUpdateApplictaionTransaction = {
-  applyId: string;
-  amount: number;
-  deadline: number;
+export type WithdrawReward = {
+  platform: string;
+  day: string | undefined;
 };
 
-export type RealWithdrawRewardTransaction = {
-  platform: string;
-  day: number;
+export type UpdateTask = {
+  taskId: string;
+  amount: string;
+  extended: string;
 };
 
 export type RealTokenTransaction = {
@@ -48,3 +51,21 @@ export type RealTokenTransaction = {
   tokenId: number;
   amount: number;
 };
+
+export type GetLockedReward = {
+  address: string;
+  platform: string;
+  day: string;
+}
+
+export type ManageDeposit = {
+  op: string;
+  address: string;
+  amount: string;
+}
+
+export type PreExtract = {
+  payment: string;
+  taskId: string;
+  boxId: string;
+}

@@ -11,12 +11,36 @@ import {
 
 export const GoerliClient = new ApolloClient({
   uri: GRAPHQL_SUBGRAPH_GOERLI_ABI,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      User: {
+        merge: true,
+      },
+      Require: {
+        merge: true,
+      },
+      Box: {
+        merge: true
+      }
+    },
+  }),
 });
 
 export const MumbaiClient = new ApolloClient({
   uri: MUMBAI_SUBGRAPH_GOERLI_ABI,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      User: {
+        merge: true,
+      },
+      Require: {
+        merge: true,
+      },
+      Box: {
+        merge: true
+      }
+    },
+  }),
 });
 
 export const TestClient = new ApolloClient({
@@ -29,6 +53,9 @@ export const TestClient = new ApolloClient({
       Require: {
         merge: true,
       },
+      Box: {
+        merge: true
+      }
     },
   }),
 });
@@ -44,7 +71,7 @@ export const Client = (
     case 80001:
       client = MumbaiClient;
       break;
-    case 1337:
+    case 31337:
       client = TestClient;
     default:
       client = TestClient;

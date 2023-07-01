@@ -37,12 +37,17 @@ export const shortenText = (text: string, len: number): string => {
   }
 };
 
-export const shortenItemContent = (text: string): string => {
-  if (text.length > 9) {
-    return `${text.slice(0, 4)}...${text.slice(text.length - 2)}`;
+export const shortenItemContent = (text: string | null): string => {
+  if(text) {
+    if (text.length > 9) {
+      return `${text.slice(0, 4)}...${text.slice(text.length - 2)}`;
+    } else {
+      return text;
+    }
   } else {
-    return text;
+    return "";
   }
+
 };
 
 export const timestampToDate = (time: number) => {

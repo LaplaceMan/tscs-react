@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Form, Input, Select, DatePicker } from "antd";
+import { Form, Input, Select, DatePicker, Spin } from "antd";
 import { PrimaryButton, DotsContainer } from "../components";
 import { toPng } from "html-to-image";
 import { invitation, logo_single } from "../assets";
@@ -8,13 +8,17 @@ import {
   ListModule,
   ListToken,
   PostTaskData,
+  User,
   defaultPostTaskData,
 } from "../types/baseTypes";
 import dayjs from "dayjs";
-import { antdDateFormat } from "../utils/tools";
+import { antdDateFormat, bignumberConvert, shortenText } from "../utils/tools";
 import { DataContext } from "../context/DataContext";
-import { getNetwork } from "@wagmi/core";
-import { ZERO_ADDRESS } from "../utils/constants";
+import { ApplicationContext } from "../context/ApplicationContext";
+import { GlobalContext } from "../context/GlobalContext";
+import { getNetwork, getAccount } from "@wagmi/core";
+import { ethers } from "ethers";
+import { DECIMALS_18 } from "../utils/constants";
 const { Option } = Select;
 
 const UserStateItem = ({ label, value }: { label: string; value: string }) => {
@@ -48,18 +52,23 @@ const Post = () => {
   const [taskData, setTaskData] = useState<PostTaskData>(defaultPostTaskData);
   const [tokens, setTokens] = useState<ListToken[] | null>([]);
   const [auditModules, setAuditModules] = useState<ListModule[] | null>([]);
+  const [user, setUser] = useState<User | null>(null);
   const [detectionModules, setDetectionModules] = useState<ListModule[] | null>(
     []
   );
   const {
     platforms,
     requires,
+    querySpecialUser,
     queryRequires,
     queryPlatforms,
     queryWhitelistedTokens,
     queryWhitelistedAuditAndDetectionModules,
   } = useContext(DataContext);
+  const { postTask } = useContext(ApplicationContext);
+  const { isLoading } = useContext(GlobalContext);
   const { chain } = getNetwork();
+  const account = getAccount();
 
   useEffect(() => {
     queryRequires();
@@ -79,7 +88,14 @@ const Post = () => {
         }
       }
     };
+    const fetchUserData = async(id: string) => {
+      const data = await querySpecialUser(id);
+      if (data && data.item != undefined) {
+        setUser(data.item);
+      }
+    }
     fetchData();
+    account.address && fetchUserData(account.address.toLocaleLowerCase());
   }, [chain?.id]);
 
   const onReset = () => {
@@ -88,7 +104,16 @@ const Post = () => {
 
   const onFinish = () => {
     const values = form.getFieldsValue();
-    console.log(values);
+    if(values.payment == "D1") {
+      values.amount = parseInt(String(Number(values.amount) * 100)).toString();
+    } else {
+      const t = tokens?.find(item => item.key == values.currency) as ListToken;
+      values.amount = ethers.utils.parseUnits(values.amount, t.decimal).toString();
+    }
+    values.platform = platforms && platforms[values.platform].owner;
+    values.deadline = antdDateFormat(values.deadline?.valueOf());
+    values.payment = values.payment?.slice(values.payment.length - 1);
+    postTask(values);
     generateImg();
   };
 
@@ -106,7 +131,7 @@ const Post = () => {
       value:
         taskData.sourceId != "*" ? "#" + taskData.sourceId : taskData.sourceId,
     },
-    { label: "Source Link", value: taskData.source },
+    { label: "Source Link", value: shortenText(taskData.source, 6)},
     { label: "Payment", value: taskData.payment },
     { label: "Currency", value: taskData.currency },
     { label: "Amount", value: taskData.amount },
@@ -127,6 +152,7 @@ const Post = () => {
   ];
 
   return (
+    <Spin spinning={isLoading} size="large">
     <div className="flex items-center justify-center">
       <div className="flex md:w-[1200px] md:flex-row flex-col justify-between styled">
         <Form
@@ -240,7 +266,7 @@ const Post = () => {
               onChange={(value) =>
                 setTaskData({
                   ...taskData,
-                  require: requires && requires[value].name,
+                  require: requires && requires[value - 1].name,
                 })
               }
             >
@@ -321,7 +347,7 @@ const Post = () => {
             content={
               <div
                 id="invitation-letter"
-                className="flex flex-col w-[550px] h-full min-h-[650px] bg-no-repeat bg-center bg-cover items-center justify-between p-5"
+                className="flex flex-col w-[550px] h-full min-h-[600px] bg-no-repeat bg-center bg-cover items-center justify-between p-4"
                 style={{ backgroundImage: `url(${invitation})` }}
               >
                 <div className="flex flex-col items-center">
@@ -330,7 +356,7 @@ const Post = () => {
                   </div>
                   <img
                     src={logo_single}
-                    style={{ width: "100px", marginTop: "-60px" }}
+                    style={{ width: "100px", marginTop: "-70px" }}
                   />
                 </div>
 
@@ -366,10 +392,10 @@ const Post = () => {
             }
           />
 
-          <div className="flex flex-col items-center justify-center w-full mt-10">
-            <div className="flex text-white items-center justify-center border-2 border-dashed border-[#322d3a] rounded-xl w-full py-5 mb-10">
+          <div className="flex flex-col items-center justify-center w-full mt-6">
+            <div className="flex text-white items-center justify-center border-2 border-dashed border-[#322d3a] rounded-xl w-full py-5 mb-6">
               <div className="flex space-x-10 items-center justify-center">
-                <UserStateItem label="Reputation" value="100.0" />
+                <UserStateItem label="Reputation" value={user ? bignumberConvert(user.reputation, 10, 1) : "None"} />
                 <div
                   style={{
                     width: "2px",
@@ -378,7 +404,7 @@ const Post = () => {
                     borderRadius: "10px",
                   }}
                 />
-                <UserStateItem label="Deposit" value="100.0" />
+                <UserStateItem label="Deposit" value={user ? bignumberConvert(user.deposit, DECIMALS_18, 1) : "None"} />
                 <div
                   style={{
                     width: "2px",
@@ -387,7 +413,7 @@ const Post = () => {
                     borderRadius: "10px",
                   }}
                 />
-                <UserStateItem label="Status" value="Normal" />
+                <UserStateItem label="ID" value={user ? `#${user.userId}` : "None"} />
               </div>
             </div>
             <div className="flex space-x-10">
@@ -408,6 +434,7 @@ const Post = () => {
         </div>
       </div>
     </div>
+    </Spin>
   );
 };
 

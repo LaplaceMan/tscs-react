@@ -18,38 +18,42 @@ import {
   ListModule,
 } from "./baseTypes";
 import {
-  Upload,
-  Audit,
+  AuditItem,
   RealTokenTransaction,
-  Submit,
   TokenTransaction,
-  RealUpdateApplictaionTransaction,
-  RealWithdrawRewardTransaction,
+  WithdrawReward,
+  PostTask,
+  SubmitItem,
+  GetLockedReward,
+  ManageDeposit,
+  PreExtract,
+  UpdateTask,
 } from "./formTypes";
 
 export type ApplicationContent = {
-  postTask: (params: Submit) => void;
-  submitItem: (params: Upload) => void;
-  auditItem: (params: Audit) => void;
+  postTask: (params: PostTask) => void;
+  submitItem: (params: SubmitItem) => void;
+  auditItem: (params: AuditItem) => void;
   tokenTransaction: (params: RealTokenTransaction) => void;
   defaultTokenTransactionData: TokenTransaction | null;
   updateDefaultTokenTransaction: (params: TokenTransaction) => void;
-  preSettlement: (type: string, applyId: string) => void;
+  preExtract: (params: PreExtract) => void;
   updateDefaultUpdateTask: (param: string) => void;
   defaultUpdateTaskData: string | null;
-  updateDefaultWithdrawOrDeposit: (platform: string, manage: string) => void;
-  defaultWithdrawOrDepositData: { platform: string; manage: string };
-  updateTask: (params: RealUpdateApplictaionTransaction) => void;
-  withdrawReward: (params: RealWithdrawRewardTransaction) => void;
-  depoitZimuManage: (address: string, amount: number) => void;
+  updateTask: (params: UpdateTask) => void;
+  withdraw: (params: WithdrawReward) => void;
+  manageDeposit: (params: ManageDeposit) => void;
   getPTBalance: (
     address: string
   ) => Promise<ethers.BigNumber[] | undefined | null>;
-  cancelTask: (taskId: string) => void;
+  cancelTask: (param: string) => void;
   updateRevenueInLens: (videoId: string) => void;
   swapRevenueInLens: (amount: string) => void;
   getLensRevenueSettlable: (videoId: string) => void;
   lensSettleable: string;
+  registerRequire: (param: string) => void;
+  getLockedReward: (params: GetLockedReward) => Promise<ethers.BigNumber | null | undefined>;
+  setGuard: (param: string) => void;
 };
 
 export type DataContent = {
@@ -69,7 +73,6 @@ export type DataContent = {
     first: number,
     skip: number
   ) => Promise<ListUser[] | null | undefined>;
-  queryUserLockedToken: (platform: string, day: number) => void;
   querySpecialTask: (
     id: string
   ) => Promise<{ task: Task; items: ListItem[] | null } | null | undefined>;

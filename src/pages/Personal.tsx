@@ -12,7 +12,6 @@ import { GlobalContext } from "../context/GlobalContext";
 import { ApplicationContext } from "../context/ApplicationContext";
 import { shortenAddress, bignumberConvert } from "../utils/tools";
 import {
-  DECIMALS_6,
   DECIMALS_18,
   RANDOM_AVATAR_API,
   SUPPORT_NETWORK,
@@ -88,8 +87,8 @@ const Personal = (): React.ReactElement => {
     isTokenTransactionModalOpen,
     isGuardManageModalOpen,
   } = useContext(GlobalContext);
-  const { getPTBalance } = useContext(ApplicationContext);
-  const { updateDefaultUpdateTask } = useContext(ApplicationContext);
+  const { getPTBalance, preExtract } = useContext(ApplicationContext);
+  const { cancelTask, updateDefaultUpdateTask } = useContext(ApplicationContext);
   const [user, setUser] = useState<User | null>(null);
   const [ownTasks, setOwnTasks] = useState<OwnTaskCard[] | null>([]);
   const [ownItems, setOwnItems] = useState<OwnItemCard[] | null>([]);
@@ -115,21 +114,21 @@ const Personal = (): React.ReactElement => {
   }, [chain?.id]);
 
   const queryItems = async (id: string) => {
-    const data = await querySpecialUserOwnItems(id);
+    const data = await querySpecialUserOwnItems(id.toLocaleLowerCase());
     if (data && data != undefined) {
       setOwnItems(data);
     }
   };
 
   const queryTasks = async (id: string) => {
-    const data = await querySpecialUserOwnTasks(id);
+    const data = await querySpecialUserOwnTasks(id.toLocaleLowerCase());
     if (data && data != undefined) {
       setOwnTasks(data);
     }
   };
 
   const queryAudits = async (id: string) => {
-    const data = await querySpecialUserOwnAudits(id);
+    const data = await querySpecialUserOwnAudits(id.toLocaleLowerCase());
     if (data && data != undefined) {
       setOwnAudits(data);
     }
@@ -155,7 +154,7 @@ const Personal = (): React.ReactElement => {
           <OwnAssetCard
             token={{
               name: "PlatformToken-0",
-              balance: userBalaces ? userBalaces[0] : "None",
+              balance: userBalaces && userBalaces[0] ? userBalaces[0] : "None",
               type: "ERC-1155",
               issuser: "Murmes",
               address:
@@ -171,7 +170,7 @@ const Personal = (): React.ReactElement => {
           <OwnAssetCard
             token={{
               name: "PlatformToken-1",
-              balance: userBalaces ? userBalaces[1] : "None",
+              balance: userBalaces && userBalaces[1] ? userBalaces[1] : "None",
               type: "ERC-1155",
               issuser: "Lens",
               address:
@@ -218,7 +217,7 @@ const Personal = (): React.ReactElement => {
                   fn1Name: "Update",
                   fn1: () => updateTaskHandle(item.taskId),
                   fn2Name: "Cancel",
-                  fn2: () => [],
+                  fn2: () => cancelTask(item.taskId),
                 }}
                 key={index}
               />
@@ -250,10 +249,10 @@ const Personal = (): React.ReactElement => {
                   label3: "State",
                   value3: item.state,
                   icon: <RiUploadCloud2Fill />,
-                  fn1Name: "Pre Settlement",
-                  fn1: () => [],
-                  fn2Name: "Settlement",
-                  fn2: () => [],
+                  fn1Name: "Pre Extract",
+                  fn1: () => preExtract({payment: item.payment, taskId: item.taskId, boxId: item.boxId}),
+                  fn2Name: "Extract",
+                  fn2: () => navigate("/Tools"),
                 }}
                 key={index}
               />
@@ -285,10 +284,10 @@ const Personal = (): React.ReactElement => {
                   label3: "State",
                   value3: item.state,
                   icon: <RiShieldCheckFill />,
-                  fn1Name: "Pre Settlement",
-                  fn1: () => [],
-                  fn2Name: "Settlement",
-                  fn2: () => [],
+                  fn1Name: "Pre Extract",
+                  fn1: () => item.boxId && preExtract({payment: item.payment, taskId: item.taskId, boxId: item.boxId}),
+                  fn2Name: "Extract",
+                  fn2: () => navigate("/Tools"),
                 }}
                 key={index}
               />

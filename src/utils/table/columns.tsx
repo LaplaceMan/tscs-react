@@ -212,13 +212,13 @@ export const columns: {
       title: "Earnings Rate",
       dataIndex: "rate1",
       key: "rate1",
-      render: (text) => parseInt(text) / 10000 + "%",
+      render: (text) => parseInt(text) / 100 + "%",
     },
     {
       title: "Share Rate",
       dataIndex: "rate2",
       key: "rate2",
-      render: (text) => parseInt(text) / 10000 + "%",
+      render: (text) => parseInt(text) / 100 + "%",
     },
     {
       title: "Boxes",

@@ -5,7 +5,7 @@ import { GlobalContext } from "../../context/GlobalContext";
 import { Spin } from "antd";
 
 const ToolsMenu = () => {
-  const [toolPage, setToolPage] = useState("Lens");
+  const [toolPage, setToolPage] = useState("Murmes");
   const { isLoading } = useContext(GlobalContext);
 
   const ToolsButton = ({ label }: { label: string }) => {

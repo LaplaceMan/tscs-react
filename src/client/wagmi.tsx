@@ -6,11 +6,11 @@ import {
 } from "@rainbow-me/rainbowkit/wallets";
 import { configureChains, createClient, Chain } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
-import { goerli, localhost, polygonMumbai } from "wagmi/chains";
+import { polygonMumbai } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
 const test = {
-  id: 1337,
+  id: 31337,
   name: "Test",
   network: "test",
   nativeCurrency: {
@@ -25,7 +25,7 @@ const test = {
 } as const satisfies Chain;
 
 export const { chains, provider, webSocketProvider } = configureChains(
-  [goerli, polygonMumbai, test],
+  [polygonMumbai, test],
   [
     publicProvider(),
     alchemyProvider({ apiKey: "q0kNwMwj7fQV3pZSonSrjyV17xtnWAbs" }),

@@ -9,12 +9,15 @@ const GuardManageModal = ({
 }: {
   current: string | null | undefined;
 }) => {
-  const { isLoading, hideGuardManageModal, isGuardManageModalOpen } =
+  const [newGuard, setNewGuard] = useState<string | null>(null);
+  const { isLoading, hideGuardManageModal } =
     useContext(GlobalContext);
-  const { depoitZimuManage } = useContext(ApplicationContext);
+  const { setGuard } = useContext(ApplicationContext);
 
   const onFinish = () => {
-    // depoitZimuManage(values.address, values.amount);
+    if(newGuard) {
+      setGuard(newGuard);
+    }
   };
 
   return (
@@ -40,13 +43,14 @@ const GuardManageModal = ({
           placeholder="Address of The Guard You Want to Set"
           style={{ width: "100%" }}
           size="large"
+          onChange={(e) => setNewGuard(e.target.value)}
         />
         <div className="flex items-center justify-center space-x-3 mt-6">
           <PrimaryButton
             label="Submit"
             bgColor="#00BEA1"
             textColor="#fff"
-            fn={() => []}
+            fn={onFinish}
           />
           <PrimaryButton
             label="Cancel"

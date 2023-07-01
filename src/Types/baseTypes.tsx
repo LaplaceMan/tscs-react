@@ -225,14 +225,17 @@ export type OwnItemCard = {
   taskId: string;
   boxId: string;
   state: string;
+  payment: string;
 };
 
 export type OwnAuditCard = {
   itemId: string;
   taskId: string;
+  boxId: string | null;
   source: string;
   result: string;
   state: string;
+  payment: string;
 };
 
 export type PersonalPageData = {

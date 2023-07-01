@@ -9,7 +9,7 @@ const OtherCardItem = ({ label, value }: { label: string; value: string }) => {
       <div className="flex flex-col items-center bg-[#322d3a] rounded-xl">
         <div className="text-sm text-[#00BEA1]">{label}</div>
         <div className="text-base font-semibold text-white">
-          {shortenItemContent(value)}
+          {value ? shortenItemContent(value) : "*"}
         </div>
       </div>
     </Tooltip>

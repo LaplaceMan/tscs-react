@@ -32,7 +32,7 @@ const tipFormat = (value: string | undefined | null, type: string) => {
     case "module":
       return value.slice(0, 42);
     default:
-      return shortenText(value, 6);
+      return value;
   }
 };
 
